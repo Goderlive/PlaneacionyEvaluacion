@@ -8,7 +8,7 @@ session_destroy();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/estilos.css">
+    <link rel="stylesheet" href="./css/styles.css">
     <!-- MDB -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.0.0/mdb.min.css" rel="stylesheet"/>
 	  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
@@ -19,12 +19,12 @@ session_destroy();
   <div class="container-fluid h-custom">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col-md-9 col-lg-6 col-xl-5">
-        <img src="./images/logo-ayuntamiento.png" class="img-fluid" alt="">
+      <img src="./img/logo_ayuntamiento.png" class="img-fluid" alt="">
       </div>
       <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-      <h3 class="text-center">Sistema de Monitoreo y Control</h3>
+      <h3 class="text-center">Sistema de Control y Monitoreo</h3>
       <br>
-        <form action="validar_login.php" method="POST">
+        <form action="validar_login.php" method="POST" autocomplete="off">
           <!-- Email input -->
           <div class="form-outline mb-4">
             <input type="email" name="correo_electronico" class="form-control form-control-lg" placeholder="Ingresa tu correo electrónico" required />
@@ -45,13 +45,13 @@ session_destroy();
           </div>
 
           <div class="text-center text-lg-center mt-4 pt-2">
-            <button type="submit" class="btn btn-info btn-lg" style="padding-left: 1.5rem; padding-right: 1.5rem;">Ingresar</button>
+            <button type="submit" class="btn text-white btn-lg" style="padding-left: 1.5rem; padding-right: 1.5rem; background-color:#a184bc;">Ingresar</button>
           </div>
         </form>
       </div>
     </div>
   </div>
-  <div class="d-flex flex-column flex-md-row text-md-start justify-content-center py-4 px-4 px-xl-5 bg-info">
+  <div class="d-flex flex-column flex-md-row text-md-start justify-content-center py-4 px-4 px-xl-5" style="background-color: #a184bc;" >
     <!-- Copyright -->
     <div class="text-white mb-3 mb-md-0">
       Copyright © 2022. H. Ayuntamiento Metepec 2022-2024.
@@ -66,5 +66,8 @@ session_destroy();
 <script>
     function ver_contrasena(){
         document.getElementById('contrasena').type = document.getElementById('contrasena').type == 'password' ? 'text' : 'password';
+    }
+    function resetear(){
+      form.reset();
     }
 </script>

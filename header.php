@@ -1,7 +1,6 @@
 <?php
-session_start();
-$id_usuario = $_SESSION['id_usuario'];
-
+if($_SESSION['id_permiso'] == 1){
+    $id_usuario = $_SESSION['id_usuario'];
 require_once 'models/inicio_modelo.php';
 // Aqui estan las variables de los Menus
 $actual = $_SERVER['REQUEST_URI'];
@@ -19,14 +18,17 @@ if($actual == $inicio){
 }
 
 function item_context($destino, $texto){
-    return '<li>
-    <a href="'.$destino.'" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">'.$texto.'</a>
-    </li>
+    return '
+    <div class="text-center">
+        <li>
+        <a href="'.$destino.'"class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">'.$texto.'</a>
+        </li>
+    </div>
     ';
 }
 function item_principal($actual, $destino, $texto){
     $destino2 = "/simp/".$destino;
-    $tipo = ($actual == $destino2) ? 'class="block py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white" aria-current="page"' : 'class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"' ;
+    $tipo = ($actual == $destino2) ? 'class="py-6 pr-4 pl-3 text-white bg-gray-200 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white"' : 'class="py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"' ;
     return '<li><a href="'. $destino .'"'.$tipo.'>'.$texto.'</a></li>';
 }
 
@@ -90,8 +92,6 @@ function item_principal($actual, $destino, $texto){
                             }
                             ?>
                         </div>
-                    </li>
-                    <li>
                         <a href="login.php"><svg class="w-6 h-6 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg></a>
                     </li>
                 </ul>
@@ -99,8 +99,12 @@ function item_principal($actual, $destino, $texto){
         </div>
     </nav>
 </header>
-
-
-<!-- LINK SALIR 
-    <a href="login.php" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"></a>
--->
+<?php
+} else {
+    ?>
+    <script>
+        window.location.href = 'login.php';
+    </script>
+    <?php
+}
+?>

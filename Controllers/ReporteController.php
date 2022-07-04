@@ -36,25 +36,35 @@ function MenuMes($el_mes, $id_area){
 }
 
 function Actividades($con, $mes, $id_area, $meses, $actividadesDB){
+
     $resp = '';
     foreach ($actividadesDB as $a){
+        // echo "<pre>";
+        // var_dump($actividadesDB);
         $anual = $a['enero'] + $a['febrero'] + $a['marzo'] + $a['abril'] + $a['mayo'] + $a['junio'] + $a['julio'] + $a['agosto'] + $a['septiembre'] + $a['octubre'] + $a['noviembre'] + $a['diciembre'];
         $mesi = strtolower($meses[$mes]);
-        //AvanceMes($con, $a["id_actividad"], $mes); Debera incluirse en el modal, para avance sugerido. Y Debera servir para bloquear los capturados.
+        if($mes <  intval(date('m')) || $a['validado'] != 0 ){
+            $boton = "";
+        }else{
+            $boton = "disabled";
+        }
+        $boton2 = ($mes <  intval(date('m')+1)) ? "" : "cursor-not-allowed";
 
+        //AvanceMes($con, $a["id_actividad"], $mes); Debera incluirse en el modal, para avance sugerido. Y Debera servir para bloquear los capturados.
+        
         $resp .= 
         '<tr class="bg-white text-center border-b dark:bg-gray-800 dark:border-gray-700">
             <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">'.
-            $a['codigo_actividad']
+                $a['codigo_actividad']
             .'</th>
             <td class="px-6 py-4">'.
-            $a['nombre_actividad']
+                $a['nombre_actividad']
             .'</td>
             <td class="px-6 py-4">'.
-            $a['unidad']
+                $a['unidad']
             .'</td>
             <td class="px-6 py-4">'.
-            $anual
+                $anual
             .'</td>
             <td class="px-6 py-4">
                 <div class="w-full bg-gray-200 rounded-full dark:bg-gray-700">
@@ -65,7 +75,7 @@ function Actividades($con, $mes, $id_area, $meses, $actividadesDB){
             $a[$mesi]
             .'</td>
             <td class="px-6 py-4 text-right">
-                <button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button" data-modal-toggle="mymodal'. $a['codigo_actividad'] .'">
+                <button ' . $boton . ' class=" ' . $boton2 . ' text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button" data-modal-toggle="mymodal'. $a['codigo_actividad'] .'">
                     Reportar
                 </button>
             </td>

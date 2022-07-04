@@ -1,13 +1,15 @@
 <?php
-include 'head.php';
-include 'header.php';
+session_start();
 require_once 'Controllers/Actividades_Controlador.php';
+
 areas($con, $dep);
+
 if($_SESSION['id_permiso'] == 1){
 ?>
 <!DOCTYPE html>
 <html lang="es">
-
+<?php include 'head.php';?>
+<?php include 'header.php';?>
 <body>
 <div class="container mx-auto">
     <br>
@@ -30,8 +32,7 @@ if($_SESSION['id_permiso'] == 1){
     <br>
 
     <div class="grid grid-cols-4">
-        <?= areas($con, $dep)?>
-        
+        <?= areas($con, $dep) ?>
     </div>
 </div>
 <?php include 'footer.php';?>
