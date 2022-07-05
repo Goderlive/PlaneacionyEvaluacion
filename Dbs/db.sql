@@ -2500,6 +2500,7 @@ CREATE TABLE avances(
     justificacion TEXT,
     path_evidenia VARCHAR(255),
     path_evidenia_evidencia VARCHAR(255),
+    descripcion_evidencia TEXT,
     id_actividad INT,
     id_usuario_avance INT,
     validado INT,
@@ -2536,7 +2537,7 @@ CREATE TABLE indicadores(
 DROP TABLE IF EXISTS indicadores_uso;
 CREATE TABLE indicadores_uso(
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    anio VARCHAR(4)
+    anio VARCHAR(4),
     id_dep_general INT,
     id_dep_aux INT,
     id_proyecto INT,

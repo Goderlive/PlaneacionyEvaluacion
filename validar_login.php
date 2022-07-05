@@ -21,6 +21,7 @@ if( isset( $_POST['g-recaptcha-response'] ) && $_POST['g-recaptcha-response'] !=
                 $_SESSION['id_permiso'] = $datos['id_permiso'];
                 $_SESSION['activo'] = $datos['activo'];
                 $_SESSION['sistema'] = 'pbrm';
+                $_SESSION['id_dependencia'] = $datos['id_dependencia'];
                 ?>
                 <script>window.location.href = 'index.php';</script>
                 <?php

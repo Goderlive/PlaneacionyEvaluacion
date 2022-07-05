@@ -39,16 +39,22 @@ function Actividades($con, $mes, $id_area, $meses, $actividadesDB){
 
     $resp = '';
     foreach ($actividadesDB as $a){
-        // echo "<pre>";
-        // var_dump($actividadesDB);
+        $avanceMensual = AvanceMes($con, $a['id_actividad'], $mes);
+
+
         $anual = $a['enero'] + $a['febrero'] + $a['marzo'] + $a['abril'] + $a['mayo'] + $a['junio'] + $a['julio'] + $a['agosto'] + $a['septiembre'] + $a['octubre'] + $a['noviembre'] + $a['diciembre'];
         $mesi = strtolower($meses[$mes]);
-        if($mes <  intval(date('m')) || $a['validado'] != 0 ){
-            $boton = "";
-        }else{
-            $boton = "disabled";
+
+        $boton = 'class = "bg-blue-700 text-white hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800';
+
+        if($boton){
+            $boton = 'class = "bg-yellow-300 text-white hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800';
         }
-        $boton2 = ($mes <  intval(date('m')+1)) ? "" : "cursor-not-allowed";
+
+        if($mes >  intval(date('m')) || isset($avanceMensual['validado'])){
+            $boton = 'disabled class="text-white bg-blue-400 dark:bg-blue-500 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center';
+        }
+
 
         //AvanceMes($con, $a["id_actividad"], $mes); Debera incluirse en el modal, para avance sugerido. Y Debera servir para bloquear los capturados.
         
@@ -75,7 +81,7 @@ function Actividades($con, $mes, $id_area, $meses, $actividadesDB){
             $a[$mesi]
             .'</td>
             <td class="px-6 py-4 text-right">
-                <button ' . $boton . ' class=" ' . $boton2 . ' text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button" data-modal-toggle="mymodal'. $a['codigo_actividad'] .'">
+                <button ' . $boton . 'type="button" data-modal-toggle="mymodal'. $a['codigo_actividad'] .'">
                     Reportar
                 </button>
             </td>
@@ -86,7 +92,9 @@ function Actividades($con, $mes, $id_area, $meses, $actividadesDB){
 
 
 function Modales($actividadesDB,$meses, $el_mes){
+    //var_dump($actividadesDB);
     $var = '';
+    $year = date('o');
     foreach ($actividadesDB as $a) {
         $var .= '<!-- Main modal -->
         <div id="mymodal'. $a['codigo_actividad'] .'" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full">
@@ -106,16 +114,23 @@ function Modales($actividadesDB,$meses, $el_mes){
                     <!-- Modal body -->
                     <div class="p-6 space-y-6">
                         <form action="models/Reporte_Model.php" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="mes" value="'.$el_mes.'">
+                        <input type="hidden" name="year" value="'.$year.'">
+                        <input type="hidden" name="id_actividad" value="'.$a['id_actividad'].'">
+                        <input type="hidden" name="id_dependencia" value="'.$_SESSION['id_dependencia'].'">
+                        <input type="hidden" name="id_area" value="'.$a['id_area'].'">
+                        <input type="hidden" name="id_actividad" value="'.$a['id_actividad'].'">
+
                             <div class="relative"> 
                                 <label for="floating_outlined" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-800 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Alcanzado Mes</label>
-                                <input required name ="cantidad" id="cantidad" type="number" id="floating_outlined" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+                                <input required name ="cantidad" min=0 id="cantidad" type="number" id="floating_outlined" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
                             </div>
 
                             <label class="block mb-1 text-sm font-medium text-gray-900 dark:text-gray-300" for="small_size">Evidencia:</label>
-                            <input type="file" required name="imagenes[]" accept=".xls,.xlsx,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.pdf, image/png, image/jpeg, image/jpg" class="block mb-5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"/>
+                            <input type="file" required name="evidencia" id= accept=".xls,.xlsx,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.pdf, image/png, image/jpeg, image/jpg" class="block mb-5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"/>
 
                             <label class="block mb-1 text-sm font-medium text-gray-900 dark:text-gray-300" for="small_size">Evidencia de la Evidencia:</label>
-                            <input type="file" required name="imagenes[]" accept="image/png, image/jpeg, image/jpg" class="block mb-5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"/>
+                            <input type="file" required name="evidencia_de_evidencia" accept="image/png, image/jpeg, image/jpg" class="block mb-5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"/>
                     
                             <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Justificación caso de variación:</label>
                             <textarea id="message" name="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
@@ -136,4 +151,4 @@ function Modales($actividadesDB,$meses, $el_mes){
 
 
 ?>
-<input type="hidden" name="">
+
