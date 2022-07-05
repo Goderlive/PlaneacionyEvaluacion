@@ -1,6 +1,6 @@
 <?php
     session_start();
-    if($_SESSION['id_permiso'] == 1){
+    if($_SESSION['sistema'] == 'pbrm'){
         if(isset($_POST['actualizar'])){
             include 'conexion.php';
             $nombre_empleado = $mysqli->real_escape_string($_POST['nombre_empleado']);

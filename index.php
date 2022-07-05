@@ -1,12 +1,15 @@
 <?php
 session_start();
-if($_SESSION['id_permiso'] == 1){
-include 'head.php';
-require_once 'Controllers/Inicio_Controlador.php';
+
+if($_SESSION['sistema'] == "pbrm"){    
+    include 'header.php';
+    include 'head.php';
+    require_once 'Controllers/Inicio_Controlador.php';
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
-<?php include 'header.php';?>
+
 <body>
     <div class="container text-center mx-auto">
         <br>
@@ -22,24 +25,23 @@ require_once 'Controllers/Inicio_Controlador.php';
         </div>
         <h3 class="font-bold text-4xl text-gray-800 border-b-3 border-gray-100 p-2 mb-2">Bienvenido <?= $user['nombre'] . " ". $user['apellidos'] ?></h3>
         <br>
-        <p>Meta Primer Trimestre</p>
-        <hr>
-        <br>
-        <div class="w-full bg-gray-200 rounded-full dark:bg-gray-700">
-            <div class="bg-red-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style="width: 15%"> 15%</div>
-        </div>
+        <?php
+        // Aqui va lo que pasa si eres nivel 2 (osea de la wipe o gobierno digital)
+
+            //RevisionAvances();
+        ?>
         <br>
         <hr>
     </div>
+
 <?php include 'footer.php';?>
 </body>
 </html>
-<?php
-}else{
-    ?>
+<?php 
+}else{?>
     <script>
-        window.location.href = 'login.php';
+    window.location.href = 'login.php';
     </script>
-    <?php
+<?php
 }
 ?>

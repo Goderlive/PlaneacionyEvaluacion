@@ -8,7 +8,8 @@ CREATE TABLE titulares(
     nombre VARCHAR(255) NOT NULL, 
     apellidos VARCHAR(255) NOT NULL,
     cargo ENUM('Director', 'Coordinador', 'Jefe de Departamento', 'Subdirector', 'Enlace Administrativo'),
-    codigo_area VARCHAR(3)
+    codigo_area VARCHAR(3),
+    id_dependencia INT
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 DROP TABLE IF EXISTS dependencias_generales;
@@ -757,7 +758,12 @@ INSERT INTO areas (nombre_area, id_dependencia, id_dependencia_general, id_depen
 
 
 
-
+-- Permisos:
+-- 1 > Maxima autoridad (gobierno Digital y Gobierno por resultados)
+-- 2 > validacion de avances, agregar actividades e indicadores, validar reconducciones y mas
+-- 3 > Presidente municipal. Permite ver estadisticas de cada area, no puede editar.
+-- 4 > Director o coordinador de dependencia, puede agrar avances, evidencia, pedir reconducciones y CREAR USUARIOS.
+-- 5 > Enlace. Permite capturar avances, pedir reconducciones, solo administra su propia cuenta. 
 
 DROP TABLE IF EXISTS usuarios;
 CREATE TABLE usuarios(
@@ -2506,7 +2512,7 @@ CREATE TABLE avances(
     validado INT,
     id_usuario_validador INT,
     fecha_avance TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    fecha_validador TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    fecha_validador TIMESTAMP,
     CONSTRAINT FK_avane_actividad FOREIGN KEY (id_actividad) REFERENCES actividades (id_actividad) ON DELETE CASCADE,
     CONSTRAINT FK_user_captura FOREIGN KEY (id_usuario_avance) REFERENCES usuarios (id_usuario) ON DELETE CASCADE,
     CONSTRAINT FK_user_valida FOREIGN KEY (id_usuario_validador) REFERENCES usuarios (id_usuario) ON DELETE CASCADE

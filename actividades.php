@@ -4,7 +4,7 @@ require_once 'Controllers/Actividades_Controlador.php';
 
 areas($con, $dep);
 
-if($_SESSION['id_permiso'] == 1){
+if($_SESSION['sistema'] == 'pbrm'){
 ?>
 <!DOCTYPE html>
 <html lang="es">

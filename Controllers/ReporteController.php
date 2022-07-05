@@ -35,6 +35,30 @@ function MenuMes($el_mes, $id_area){
     return $item;
 }
 
+
+function ValidaBotones($mes, $actividad){
+    $boton = 'class = "bg-blue-700 text-white hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800';
+    $text = 'Reportar';
+
+    if(isset($actividad['avance'])){
+        $text = "Revisión";
+        $boton = 'disabled class = "bg-yellow-300 cursor-not-allowed text-white hover:bg-yellow-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800';
+    }
+    if($mes >  intval(date('m')-1)){
+        $boton = 'disabled class="text-white bg-blue-400 dark:bg-blue-500 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center';
+    }
+    if(isset($actividad['validado']) && $actividad['validado'] == 1 ){
+        $boton = 'disabled class="text-white bg-green-500 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center';
+        $text = "Reportado";
+    }
+    $regreso=[];
+    array_push($regreso, $boton);
+    array_push($regreso, $text);
+
+    return $regreso;
+}
+
+
 function Actividades($con, $mes, $id_area, $meses, $actividadesDB){
 
     $resp = '';
@@ -45,18 +69,7 @@ function Actividades($con, $mes, $id_area, $meses, $actividadesDB){
         $anual = $a['enero'] + $a['febrero'] + $a['marzo'] + $a['abril'] + $a['mayo'] + $a['junio'] + $a['julio'] + $a['agosto'] + $a['septiembre'] + $a['octubre'] + $a['noviembre'] + $a['diciembre'];
         $mesi = strtolower($meses[$mes]);
 
-        $boton = 'class = "bg-blue-700 text-white hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800';
-
-        if($boton){
-            $boton = 'class = "bg-yellow-300 text-white hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800';
-        }
-
-        if($mes >  intval(date('m')) || isset($avanceMensual['validado'])){
-            $boton = 'disabled class="text-white bg-blue-400 dark:bg-blue-500 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center';
-        }
-
-
-        //AvanceMes($con, $a["id_actividad"], $mes); Debera incluirse en el modal, para avance sugerido. Y Debera servir para bloquear los capturados.
+        $botones = ValidaBotones($mes, $avanceMensual);
         
         $resp .= 
         '<tr class="bg-white text-center border-b dark:bg-gray-800 dark:border-gray-700">
@@ -81,9 +94,9 @@ function Actividades($con, $mes, $id_area, $meses, $actividadesDB){
             $a[$mesi]
             .'</td>
             <td class="px-6 py-4 text-right">
-                <button ' . $boton . 'type="button" data-modal-toggle="mymodal'. $a['codigo_actividad'] .'">
-                    Reportar
-                </button>
+                <button ' . $botones[0] . 'type="button" data-modal-toggle="mymodal'. $a['codigo_actividad'] .'"> '.
+                    $botones[1]
+                .'</button>
             </td>
         </tr>';
     }
@@ -118,22 +131,24 @@ function Modales($actividadesDB,$meses, $el_mes){
                         <input type="hidden" name="year" value="'.$year.'">
                         <input type="hidden" name="id_actividad" value="'.$a['id_actividad'].'">
                         <input type="hidden" name="id_dependencia" value="'.$_SESSION['id_dependencia'].'">
+                        <input type="hidden" name="id_usuario" value="'.$_SESSION['id_usuario'].'">
                         <input type="hidden" name="id_area" value="'.$a['id_area'].'">
                         <input type="hidden" name="id_actividad" value="'.$a['id_actividad'].'">
 
                             <div class="relative"> 
-                                <label for="floating_outlined" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-800 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Alcanzado Mes</label>
-                                <input required name ="cantidad" min=0 id="cantidad" type="number" id="floating_outlined" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+                                <label for="avance" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-800 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Alcanzado Mes</label>
+                                <input required name ="avance" min=0 id="avance" type="number" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
                             </div>
-
-                            <label class="block mb-1 text-sm font-medium text-gray-900 dark:text-gray-300" for="small_size">Evidencia:</label>
-                            <input type="file" required name="evidencia" id= accept=".xls,.xlsx,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.pdf, image/png, image/jpeg, image/jpg" class="block mb-5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"/>
-
+                            <br>
                             <label class="block mb-1 text-sm font-medium text-gray-900 dark:text-gray-300" for="small_size">Evidencia de la Evidencia:</label>
                             <input type="file" required name="evidencia_de_evidencia" accept="image/png, image/jpeg, image/jpg" class="block mb-5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"/>
                     
-                            <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Justificación caso de variación:</label>
-                            <textarea id="message" name="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                            <label for="descripcion_evidencia" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Descripción de la Evidencia:</label>
+                            <textarea id="descripcion_evidencia" name="descripcion_evidencia" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                            
+                            <br>
+                            <label for="justificacion" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Justificación caso de variación:</label>
+                            <textarea id="justificacion" name="justificacion" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
                         </div>
                         <!-- Modal footer -->
                         <div class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600">
@@ -151,4 +166,7 @@ function Modales($actividadesDB,$meses, $el_mes){
 
 
 ?>
+<!-- <label class="block mb-1 text-sm font-medium text-gray-900 dark:text-gray-300" for="small_size">Evidencia:</label>
+<input type="file" required name="evidencia" id= accept=".xls,.xlsx,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.pdf, image/png, image/jpeg, image/jpg" class="block mb-5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"/> -->
+
 

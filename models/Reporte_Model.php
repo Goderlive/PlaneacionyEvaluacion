@@ -21,6 +21,8 @@ function AvanceMes($con, $actividad, $mes){
 
 if (isset($_POST['jfnkasjnkasdf34q345']) == "Enviar") {
     $data = $_POST;
+
+    var_dump($data);
     $year = $data['year'];
     $mes = $data['mes'];
     $id_actividad = $data['id_actividad'];
@@ -46,25 +48,16 @@ if (isset($_POST['jfnkasjnkasdf34q345']) == "Enviar") {
 
     $dir = "../archivos/actividades/$year/$mes/$id_dependencia/$id_area/$id_actividad/";
 
-    if($_FILES["evidencia"]["error"] == UPLOAD_ERR_OK){
-        $uno = rand(1,99);
-        $nombre_tmp = $_FILES["evidencia"]["tmp_name"];
-        $nombre_evidencia = basename("evidencia".$uno.$_FILES["evidencia"]["name"]);
-        $full = $dir.$nombre_evidencia;
-        move_uploaded_file($nombre_tmp, $full);
-    }
-
     if($_FILES["evidencia_de_evidencia"]["error"] == UPLOAD_ERR_OK){
         $uno = rand(1,99);
         $nombre_tmp = $_FILES["evidencia_de_evidencia"]["tmp_name"];
         $nombre_evidencia_de_evidencia = basename("evidencia_de_evidencia".$uno.$_FILES["evidencia_de_evidencia"]["name"]);
-        $full = $dir.$nombre_evidencia_de_evidencia;
-        move_uploaded_file($nombre_tmp, $full);
+        $full_evidencia_evidencia = $dir.$nombre_evidencia_de_evidencia;
+        move_uploaded_file($nombre_tmp, $full_evidencia_evidencia);
     }
-
-    $sql = "INSERT INTO avances (mes, avance, justificacion, dir_evidenia, dir_evidenia_evidencia, id_actividad) VALUES (?,?,?,?,?,?)";
+    $sql = "INSERT INTO avances (mes, avance, justificacion, path_evidenia_evidencia, descripcion_evidencia, id_actividad, id_usuario_avance) VALUES (?,?,?,?,?,?,?)";
     $sqlr = $con->prepare($sql);
-    $sqlr->execute(array());
+    $sqlr->execute(array($mes, $data['avance'], $data['justificacion'], $full_evidencia_evidencia, $data['descripcion_evidencia'], $id_actividad, $data['id_usuario']));
 }
 
 ?>
