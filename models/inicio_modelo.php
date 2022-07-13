@@ -12,5 +12,18 @@ function get_usuario($id_usuario,$con){
     return $data_usuario;
 }
 
+function VerificaAvancesActividades($con){
+    $stm = $con->query("SELECT * FROM avances a
+    LEFT JOIN programaciones p ON p.id_actividad = a.id_actividad
+    WHERE a.validado != 1");
+    $data_avances_actividades = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $data_avances_actividades;
+}
+function VerificaAvancesIndicadores($con){
+    $stm = $con->query("SELECT * FROM avances_indicadores WHERE validado != 1");
+    $data_avances_actividades = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $data_avances_actividades;
+}
+
 
 ?>
