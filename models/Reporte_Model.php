@@ -21,8 +21,6 @@ function AvanceMes($con, $actividad, $mes){
 
 if (isset($_POST['jfnkasjnkasdf34q345']) == "Enviar") {
     $data = $_POST;
-
-    var_dump($data);
     $year = $data['year'];
     $mes = $data['mes'];
     $id_actividad = $data['id_actividad'];
@@ -58,6 +56,18 @@ if (isset($_POST['jfnkasjnkasdf34q345']) == "Enviar") {
     $sql = "INSERT INTO avances (mes, avance, justificacion, path_evidenia_evidencia, descripcion_evidencia, id_actividad, id_usuario_avance) VALUES (?,?,?,?,?,?,?)";
     $sqlr = $con->prepare($sql);
     $sqlr->execute(array($mes, $data['avance'], $data['justificacion'], $full_evidencia_evidencia, $data['descripcion_evidencia'], $id_actividad, $data['id_usuario']));
-}
+    //header("Location: ../revisa_avances.php?type=$tipo");
 
-?>
+    ?>
+    
+    <form id="myForm" action="../reportes.php" method="post">
+        <input type="hidden" name="id_area" value="<?=$id_area?>">
+        <input type="hidden" name="mes" value="<?=$mes?>">
+    </form>
+<script type="text/javascript">
+    document.getElementById('myForm').submit();
+</script>
+    
+<?php
+
+}?>

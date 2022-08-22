@@ -1,12 +1,12 @@
 <?php
-if( isset( $_POST['g-recaptcha-response'] ) && $_POST['g-recaptcha-response'] != '' ) {
+/* if( isset( $_POST['g-recaptcha-response'] ) && $_POST['g-recaptcha-response'] != '' ) {
 	$secretKey = "6LfZhsceAAAAAKvH9bKZACZM9L7uG4W3wv3wXObb";
 	$curl = curl_init();
 	curl_setopt($curl, CURLOPT_URL, "https://www.google.com/recaptcha/api/siteverify?secret=" . $secretKey . "&response=" . trim( $_POST['g-recaptcha-response'] ) . "&remoteip=" . $_SERVER['REMOTE_ADDR']);
 	curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 	$recaptcha = json_decode( curl_exec($curl), true );
-	curl_close($curl);
-	if( $recaptcha['success'] == 1 ) {
+	curl_close($curl); */
+	if($_POST) {
 		if( isset( $_POST['correo_electronico'] ) && $_POST['correo_electronico'] != '' && isset( $_POST['contrasena'] ) && $_POST['contrasena'] != '' ) {
             include  'conexion.php';
             $consulta = "SELECT * FROM usuarios WHERE activo = 1 AND correo_electronico = '" . $mysqli->real_escape_string( $_POST['correo_electronico'] ) . "' AND contrasena =  '" . $mysqli->real_escape_string( $_POST['contrasena'] ) . "'";
@@ -51,6 +51,6 @@ if( isset( $_POST['g-recaptcha-response'] ) && $_POST['g-recaptcha-response'] !=
         </script>
         <?php
     }
-}
+/* } */
 ?>
 

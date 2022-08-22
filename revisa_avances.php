@@ -1,4 +1,8 @@
 <?php
+if(!$_GET['type']){
+    header("Location: index.php");
+}
+$tipo = $_GET['type'];
 session_start();
 if($_SESSION['sistema'] == "pbrm" || $_SESSION['id_permiso'] != 1){    
     include 'header.php';
@@ -11,9 +15,15 @@ if($_SESSION['sistema'] == "pbrm" || $_SESSION['id_permiso'] != 1){
 <body>
 	<div class="container text-center mx-auto">
 <br>
-		<?php
-			echo MuestraAvancesActividades($con);
-		?>
+    <?php
+        if($tipo == "actividades"){
+            echo MuestraAvancesActividades($con);
+        }
+        if($tipo == "indicadores"){
+            echo MuestraAvancesIndicadores($con);
+        }
+        
+    ?>
 
 		<br>
 

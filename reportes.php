@@ -3,7 +3,6 @@ session_start();
 require_once 'Controllers/ReporteController.php';
 if($_SESSION['id_permiso'] == 1){
 
-
 ?>
 <!DOCTYPE html>
 <html lang="es">
