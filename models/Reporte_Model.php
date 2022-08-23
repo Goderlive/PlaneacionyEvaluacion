@@ -18,6 +18,26 @@ function AvanceMes($con, $actividad, $mes){
     return $actividades;
 }
 
+function ProgramaActividad($con, $id_actividad){
+    $stm = $con->query("SELECT * FROM programaciones WHERE id_actividad = $id_actividad");
+    $programacion = $stm->fetch(PDO::FETCH_ASSOC);
+    $programacion = array_slice($programacion, 1, -1);
+    return $programacion;
+}
+
+function AvancesActividad($con, $id_actividad, $mes){
+    $stm = $con->query("SELECT SUM(avance) FROM avances WHERE id_actividad = $id_actividad AND mes < $mes+1 AND validado = 1");
+    $avances = $stm->fetch(PDO::FETCH_ASSOC);
+
+    $avances = ($avances['SUM(avance)']) ? $avances['SUM(avance)'] : NULL;
+    return $avances;
+}
+
+function AvanceThisMes($con, $id_actividad, $mes){
+    $stm = $con->query("SELECT avance FROM avances WHERE id_actividad = $id_actividad AND mes = $mes AND validado = 1");
+    $avance = $stm->fetch(PDO::FETCH_ASSOC);
+    return $avance;
+}
 
 if (isset($_POST['jfnkasjnkasdf34q345']) == "Enviar") {
     $data = $_POST;

@@ -65,6 +65,9 @@ if($_SESSION['id_permiso'] == 1){
                                 Programado <?= $meses[$el_mes]?>
                             </th>
                             <th scope="col" class="px-6 py-3">
+                                Reportado <?= $meses[$el_mes]?>
+                            </th>
+                            <th scope="col" class="px-6 py-3">
                             Reportar
                             </th>
                         </tr>

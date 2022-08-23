@@ -58,6 +58,61 @@ function ValidaBotones($mes, $actividad){
     return $regreso;
 }
 
+function barraAvance($con, $id_actividad, $mes){
+    $text ='';
+
+    $programado = ProgramaActividad($con, $id_actividad); //Aqui traemos la programacion y la sumamos hasta el mes actual 
+    $contador = 0;
+    $sumaProgramacion = 0;
+    foreach ($programado as $av) {
+        if($contador < $mes){
+            $sumaProgramacion += $av;
+        }
+        $contador += 1;
+    }
+    
+    $avance = AvancesActividad($con, $id_actividad, $mes); //Aqui traemos los avances y la sumamos hasta el mes actual
+var_dump($avance);
+    if(!$avance){
+        $total = 100;
+        $text .= '<div class="w-full bg-gray-200 rounded-full dark:bg-gray-700">
+                    <div class="bg-ray-600 text-xs font-medium text-blue-200 text-center p-0.5 leading-none rounded-full" style="width: '.$total.'%"> 0%</div>
+                </div>';
+    }
+    elseif($avance == 0 && $sumaProgramacion == 0){
+        $total = 100;
+        $text .= '<div class="w-full bg-gray-200 rounded-full dark:bg-gray-700">
+                    <div class="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style="width: '.$total.'%"> 100%</div>
+                </div>';
+    }elseif($avance == 0 && $sumaProgramacion != 0){
+        $total = 100;
+        $text .= '<div class="w-full bg-gray-200 rounded-full dark:bg-gray-700">
+                    <div class="bg-red-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style="width: '.$total.'%"> 0%</div>
+                </div>';
+    }elseif($avance < $sumaProgramacion){
+        $total = ($avance / $sumaProgramacion) * 100;
+        $total = intval($total);
+        $total = ($total == 0) ? 100 : $total;
+
+        $text .= '<div class="w-full bg-gray-200 rounded-full dark:bg-gray-700">
+                    <div class="bg-yellow-300 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style="width: '.$total.'%"> '.$total.'%</div>
+                </div>';
+    }elseif($avance == $sumaProgramacion){
+        $total = 100;
+        $text .= '<div class="w-full bg-gray-200 rounded-full dark:bg-gray-700">
+                    <div class="bg-blue-500 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style="width: '.$total.'%"> '.$total.'%</div>
+                </div>';
+    }elseif($avance > $sumaProgramacion){
+        $total = ($avance / $sumaProgramacion) * 100;
+        $total = intval($total);
+        $text .= '<div class="w-full bg-gray-200 rounded-full dark:bg-gray-700">
+                    <div class="bg-pink-400 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style="width: 100%"> '.$total.'%</div>
+                </div>';
+    }
+
+    return $text;
+}
+
 
 function Actividades($con, $mes, $id_area, $meses, $actividadesDB){
 
@@ -70,7 +125,12 @@ function Actividades($con, $mes, $id_area, $meses, $actividadesDB){
         $mesi = strtolower($meses[$mes]);
 
         $botones = ValidaBotones($mes, $avanceMensual);
-        
+        $avance = barraAvance($con, $a['id_actividad'], $mes);
+
+        $avanceThisMes = AvanceThisMes($con, $a['id_actividad'], $mes);
+        $avanceThisMes = ($avanceThisMes) ? $avanceThisMes['avance'] : "";
+
+
         $resp .= 
         '<tr class="bg-white text-center border-b dark:bg-gray-800 dark:border-gray-700">
             <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">'.
@@ -85,13 +145,14 @@ function Actividades($con, $mes, $id_area, $meses, $actividadesDB){
             <td class="px-6 py-4">'.
                 $anual
             .'</td>
-            <td class="px-6 py-4">
-                <div class="w-full bg-gray-200 rounded-full dark:bg-gray-700">
-                    <div class="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style="width: 45%"> 45%</div>
-                </div>
-            </td>
             <td class="px-6 py-4">'.
-            $a[$mesi]
+                $avance  
+            .'</td>
+            <td class="px-6 py-4">'.
+                $a[$mesi]
+            .'</td>
+            <td class="px-6 py-4">'.
+                $avanceThisMes
             .'</td>
             <td class="px-6 py-4 text-right">
                 <button ' . $botones[0] . 'type="button" data-modal-toggle="mymodal'. $a['codigo_actividad'] .'"> '.

@@ -32,17 +32,24 @@ if($_SESSION['sistema'] == "pbrm" || $_SESSION['id_permiso'] != 1){
                 <?php 
                 $programaciones = CalendarizacionesdeReconduccion($con, $reconduccion['id_reconduccion_actividades']);
                 foreach($programaciones as $programacion):
-                //var_dump($programacion)?>
-                    <div class="bg-gray-100 rounded-full dark:bg-gray-700">
-                        <?= MuestraProgramacion($con, $programacion['programacion_inicial'], $programacion['programacion_final'], $programacion['id_actividad']) ?>
+                if(DefineTipo($con, $programacion['programacion_inicial'], $programacion['programacion_final']) == "Externa"){
+                    $bg_table = "bg-blue-200 ";
+                }else{
+                    $bg_table = "";
+                }?>
+
+                    <div class="bg-gray-100 rounded dark:bg-gray-700 my-2">
+                        <?= MuestraProgramacion($con, $programacion['programacion_inicial'], $programacion['programacion_final'], $programacion['id_actividad'], $bg_table) ?>
                     </div>
+                    <br>
                 <?php endforeach?>
                 <div class="flex items-center mt-4 space-x-3">
-                    <svg class="w-14 h-14 text-gray-200 dark:text-gray-700" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd"></path></svg>
-                    <div>
-                        <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-2"></div>
-                        <div class="w-48 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
+                    <form action="models/avances_modelo.php" method="post">
+                        
+                        <button type="submit" name="valida_actividad" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Validar</button>
+                        <button type="submit" name="cancela_actividad" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Rechazar</button>
+
+                    </form>
                 </div>
             </div>
             <br>

@@ -3036,6 +3036,7 @@ DROP TABLE IF EXISTS programacion_reconducciones;
 CREATE TABLE programacion_reconducciones(
     id_programaciones_reconduccion INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     id_reconduccion INT NOT NULL,
+    tipo ENUM("interna", "externa"),
     no_actividad VARCHAR(2),
     id_actividad INT,
     desc_actividad VARCHAR(255),
