@@ -1,7 +1,12 @@
 <?php
 session_start();
-require_once 'Controllers/ReporteController.php';
+require_once 'Controllers/prog_act_Controller.php';
 if($_SESSION['id_permiso'] == 1){
+    if(!$_POST){
+        header("Location: actividades.php");
+    }else{
+        $id_area = $_POST['id_area'];
+    }
 
 ?>
 <!DOCTYPE html>
@@ -28,19 +33,11 @@ if($_SESSION['id_permiso'] == 1){
                 <li aria-current="page">
                     <div class="flex items-center">
                         <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                        <span class="ml-1 text-sm font-medium text-gray-400 md:ml-2 dark:text-gray-500">Reportes</span>
+                        <span class="ml-1 text-sm font-medium text-gray-400 md:ml-2 dark:text-gray-500">Programación</span>
                     </div>
                 </li>
             </ol>
         </nav>
-        <br>
-        <div class="text-center">
-            <nav aria-label="Page navigation example">
-                <ul class="inline-flex -space-x-px">
-                    <?=MenuMes($el_mes, $id_area)?>
-                </ul>
-            </nav>
-        </div>           
         <br>
         <div class="relative overflow-x-auto shadow-md sm:rounded-md">
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -59,28 +56,51 @@ if($_SESSION['id_permiso'] == 1){
                                 Programado Anual
                             </th>
                             <th scope="col" class="px-6 py-3">
-                                Avance Actual
+                                Ene
                             </th>
                             <th scope="col" class="px-6 py-3">
-                                Programado <?= $meses[$el_mes]?>
+                                Feb
                             </th>
                             <th scope="col" class="px-6 py-3">
-                                Reportado <?= $meses[$el_mes]?>
+                                Mar
                             </th>
                             <th scope="col" class="px-6 py-3">
-                            Reportar
+                                Abr
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                May
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Jun
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Jul
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Ago
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Sep
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Oct
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Nov
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Dic
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                    <?= Actividades($con, $el_mes, $id_area, $meses, $actividadesDB)?>
+                    <?= Programacion($con, $id_area)?>
 
                     </tbody>
             </table>
         </div>
     </div>
 
-    <?=Modales($actividadesDB, $meses, $el_mes)?>
 <?php include 'footer.php';?>
 
 
