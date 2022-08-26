@@ -1696,6 +1696,7 @@ INSERT INTO actividades (codigo_actividad, nombre_actividad, unidad, programado_
 INSERT INTO actividades (codigo_actividad, nombre_actividad, unidad, programado_anual_anterior, alcanzado_anual_anterior, id_area, id_validacion, validado, year) VALUES ("4","Brindar la atención de emergencias urbanas de manera oportuna.","Informe","0","0",191,1,1, "2022");
 
 
+
 DROP TABLE IF EXISTS programaciones;
 CREATE TABLE programaciones(
     id_programacion INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
