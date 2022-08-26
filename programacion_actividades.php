@@ -14,6 +14,8 @@ if($_SESSION['id_permiso'] == 1){
 <?php include 'head.php';?>
 <?php include 'header.php';?>
 <body>
+<div class="container mx-auto">        
+
     <br>
     <div class="container mx-auto">        
         <nav class="flex py-3 px-5 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700" aria-label="Breadcrumb">
@@ -94,8 +96,61 @@ if($_SESSION['id_permiso'] == 1){
                         </tr>
                     </thead>
                     <tbody>
-                    <?= Programacion($con, $id_area)?>
+                        
+                        <?= $actividades = TraeActividades($con, $id_area);
+                    foreach($actividades as $actividad):?>
+                        <tr>
+                            <td class="py-4 px-6">
+                                <?= $actividad['codigo_actividad']?>
+                            </td>
+                            <td class="py-4 px-6">
+                                <?= $actividad['nombre_actividad']?>
+                            </td>
+                            <td class="py-4 px-6">
+                                <?= $actividad['unidad']?>
+                            </td>
+                            <td class="py-4 px-6">
+                                <?= SumaAnual($actividad)?>
+                            </td>
+                            <td class="py-4 px-6">
+                                <?= $actividad['enero']?>
+                            </td>
+                            <td class="py-4 px-6">
+                                <?= $actividad['febrero']?>
+                            </td>
+                            <td class="py-4 px-6">
+                                <?= $actividad['marzo']?>
+                            </td>
+                            <td class="py-4 px-6">
+                                <?= $actividad['abril']?>
+                            </td>
+                            <td class="py-4 px-6">
+                                <?= $actividad['mayo']?>
+                            </td>
+                            <td class="py-4 px-6">
+                                <?= $actividad['junio']?>
+                            </td> 
+                            <td class="py-4 px-6">
+                                <?= $actividad['julio']?>
+                            </td>
+                            <td class="py-4 px-6">
+                                <?= $actividad['agosto']?>
+                            </td>
+                            <td class="py-4 px-6">
+                                <?= $actividad['septiembre']?>
+                            </td> 
+                            <td class="py-4 px-6">
+                                <?= $actividad['octubre']?>
+                            </td>
+                            <td class="py-4 px-6">
+                                <?= $actividad['noviembre']?>
+                            </td>
+                            <td class="py-4 px-6">
+                                <?= $actividad['diciembre']?>
+                            </td>
 
+                        </tr>
+                        <?php endforeach?>
                     </tbody>
             </table>
         </div>
@@ -103,7 +158,7 @@ if($_SESSION['id_permiso'] == 1){
 
 <?php include 'footer.php';?>
 
-
+</div>
 </body>
 </html>
 <?php

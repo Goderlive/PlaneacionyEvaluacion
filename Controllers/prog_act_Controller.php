@@ -2,8 +2,9 @@
 require_once 'models/prog_act_Model.php';
 
 
-function Programacion($con, $id_area){
-    $actividades = TraeActividades($con, $id_area);
+function SumaAnual($d){
+    $suma = $d['enero'] + $d['febrero'] + $d['marzo'] + $d['abril'] + $d['mayo'] + $d['junio'] + $d['julio'] + $d['agosto'] + $d['septiembre'] + $d['octubre'] + $d['noviembre'] + $d['diciembre']; 
+    return $suma;
 }
 
 
