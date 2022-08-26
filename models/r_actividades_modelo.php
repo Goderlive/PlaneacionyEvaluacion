@@ -26,4 +26,12 @@ function datosdeActividad($con, $id_actividad){
     return $dataActividad;
 }
 
+
+
+if (iseet($_POST['valida_reconduccion'])) {
+    //vamos haciendo anotaciones o no nos sale
+
+    //lo primero que hay que hacer es respaldar los datos que vamos a eliminar
+}
+
 ?>
