@@ -1,9 +1,6 @@
 <?php
 session_start();
 require_once 'Controllers/Actividades_Controlador.php';
-
-areas($con, $dep);
-
 if($_SESSION['sistema'] == 'pbrm'){
 ?>
 <!DOCTYPE html>
@@ -42,6 +39,7 @@ if($_SESSION['sistema'] == 'pbrm'){
 }else{
     ?>
     <script>
+        alert("ya te hubiera sacado");
         window.location.href = 'login.php';
     </script>
     <?php

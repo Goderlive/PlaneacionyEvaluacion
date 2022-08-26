@@ -11,7 +11,7 @@ if($_SESSION['sistema'] == "pbrm"){
 <html lang="es">
 
 <body>
-    
+    <?php var_dump($_SESSION)?>
 
   <div class="container text-center mx-auto">
         <br>

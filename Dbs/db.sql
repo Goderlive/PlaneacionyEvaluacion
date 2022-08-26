@@ -820,18 +820,18 @@ INSERT INTO usuarios VALUES(NULL, "Regiduría 6", "Master", "4", "reg6@metepec.g
 INSERT INTO usuarios VALUES(NULL, "Regiduría 7", "Master", "4", "reg7@metepec.gob.mx", "7224531128", "4GvI8d89", "19", 1);
 INSERT INTO usuarios VALUES(NULL, "Regiduría 8", "Master", "4", "reg8@metepec.gob.mx", "7224531128", "YM3dHFME", "20", 1);
 INSERT INTO usuarios VALUES(NULL, "Regiduría 9", "Master", "4", "reg9@metepec.gob.mx", "7224531128", "pfAX1(qD", "21", 1);
-INSERT INTO usuarios VALUES(NULL, "Seguridad Pública", "Master", "4", "segpública@metepec.gob.mx", "7224531128", "VuH1uHGt", "22", 1);
+INSERT INTO usuarios VALUES(NULL, "Seguridad Pública", "Master", "4", "segpublica@metepec.gob.mx", "7224531128", "VuH1uHGt", "22", 1);
 INSERT INTO usuarios VALUES(NULL, "Medio Ambiente", "Master", "4", "medambiente@metepec.gob.mx", "7224531128", "CIg6UZQG", "23", 1);
 INSERT INTO usuarios VALUES(NULL, "Defensoría Municipal de los Derechos Humanos", "Master", "4", "defhumanos@metepec.gob.mx", "7224531128", "kxqzJUOv", "24", 1);
-INSERT INTO usuarios VALUES(NULL, "Gobernación", "Master", "4", "gobgobernación@metepec.gob.mx", "7224531128", "eI76(DVs", "25", 1);
-INSERT INTO usuarios VALUES(NULL, "Educación", "Master", "4", "edueducación@metepec.gob.mx", "7224531128", "DG1BC5aY", "26", 1);
+INSERT INTO usuarios VALUES(NULL, "Gobernación", "Master", "4", "gobgobernacion@metepec.gob.mx", "7224531128", "eI76(DVs", "25", 1);
+INSERT INTO usuarios VALUES(NULL, "Educación", "Master", "4", "edueducacion@metepec.gob.mx", "7224531128", "DG1BC5aY", "26", 1);
 INSERT INTO usuarios VALUES(NULL, "Desarrollo Urbano", "Master", "4", "desurbano@metepec.gob.mx", "7224531128", "bST1hHxh", "27", 1);
 INSERT INTO usuarios VALUES(NULL, "Obras Publicas", "Master", "4", "obrpublicas@metepec.gob.mx", "7224531128", "vy*daRwP", "28", 1);
 INSERT INTO usuarios VALUES(NULL, "Desarrollo Social", "Master", "4", "dessocial@metepec.gob.mx", "7224531128", "AZJyWZjj", "29", 1);
 INSERT INTO usuarios VALUES(NULL, "Cultura", "Master", "4", "culcultura@metepec.gob.mx", "7224531128", "cNp4f(wT", "30", 1);
-INSERT INTO usuarios VALUES(NULL, "Administración", "Master", "4", "admadministración@metepec.gob.mx", "7224531128", ")jaur0vJ", "31", 1);
-INSERT INTO usuarios VALUES(NULL, "Contraloría Interna Municipal", "Master", "4", "conmunicipal@metepec.gob.mx", "7224531128", "Rw4bnreA", "32", 1);
-INSERT INTO usuarios VALUES(NULL, "Consejería Jurídica Municipal", "Master", "4", "conmunicipal@metepec.gob.mx", "7224531128", "Zrpqj8)j", "33", 1);
+INSERT INTO usuarios VALUES(NULL, "Administración", "Master", "4", "admadministracion@metepec.gob.mx", "7224531128", ")jaur0vJ", "31", 1);
+INSERT INTO usuarios VALUES(NULL, "Contraloría Interna Municipal", "Master", "4", "contmunicipal@metepec.gob.mx", "7224531128", "Rw4bnreA", "32", 1);
+INSERT INTO usuarios VALUES(NULL, "Consejería Jurídica Municipal", "Master", "4", "consmunicipal@metepec.gob.mx", "7224531128", "Zrpqj8)j", "33", 1);
 INSERT INTO usuarios VALUES(NULL, "Sindicatura Municipal", "Master", "4", "sinmunicipal@metepec.gob.mx", "7224531128", "KOIIQHM8", "34", 1);
 
 

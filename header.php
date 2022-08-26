@@ -10,12 +10,16 @@ $id_usuario = $_SESSION['id_usuario'];
 require_once 'models/inicio_modelo.php';
 // Aqui estan las variables de los Menus
 $actual = $_SERVER['PHP_SELF'];
-$inicio = array("/simp/index.php", "/simp/mi_perfil.php", "/simp/mis_areas.php", "/simp/mis_formatos.php");
-$actividades = array("/simp/actividades.php", "/simp/reconduccion_actividades.php", "/simp/actividades_todas.php", "/simp/reportes.php");
-$indicadores = array("/simp/indicadores.php", "/simp/reconduccion_indicadores.php", "/simp/matrices.php");
+$actual = substr($actual, 1,);
+$actual = explode('/',$actual);
+$actual = $actual[count($actual)-1];
+
+$inicio = array("index.php", "mi_perfil.php", "mis_areas.php", "mis_formatos.php");
+$actividades = array("actividades.php", "reconduccion_actividades.php", "actividades_todas.php", "reportes.php");
+$indicadores = array("indicadores.php", "reconduccion_indicadores.php", "matrices.php");
 
 
-if($actual == $inicio){
+if(in_array($actual, $inicio)){
     $titulo_menu = "Inicio";
 }elseif($actual == $actividades){
     $titulo_menu = "Actividades";
@@ -30,9 +34,8 @@ function item_context($destino, $texto){
         </li>
     ';
 }
-function item_principal($actual, $destino, $texto){
-    $destino2 = "/simp/".$destino;
-    $tipo = ($actual == $destino2) ? 'class="py-6 pr-4 pl-3 text-white bg-gray-200 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white"' : 'class="py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"' ;
+function item_principal($actual, $buscador, $texto, $destino){
+    $tipo = (in_array($actual, $buscador)) ? 'class="py-6 pr-4 pl-3 text-white bg-gray-200 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white"' : 'class="py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"' ;
     return '<li><a href="'. $destino .'"'.$tipo.'>'.$texto.'</a></li>';
 }
 
@@ -54,9 +57,9 @@ function item_principal($actual, $destino, $texto){
                     <li>
                         <a href="index.php" class="text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" aria-current="page"><?= get_usuario($id_usuario,$con)['nombre_dependencia']?></a>
                     </li>
-                    <?= item_principal($actual, "index.php", "Inicio")?>
-                    <?= item_principal($actual, "actividades.php", "Actividades")?>
-                    <?= item_principal($actual, "indicadores.php", "Indicadores")?>
+                    <?= item_principal($actual, $inicio, "Inicio", "index.php")?>
+                    <?= item_principal($actual, $actividades, "Actividades", "actividades.php")?>
+                    <?= item_principal($actual, $indicadores, "Indicadores", "indicadores.php")?>
                     <button id="dropdownNavbarButton" data-dropdown-toggle="dropdownNavbar" class="flex justify-between items-center py-2 pr-4 pl-3 w-full font-medium text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-gray-400 dark:hover:text-white dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">Mas <svg class="ml-1 w-4 h-4" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg></button>
     <!-- Dropdown menu -->
                     <?php if(in_array($actual, $inicio)):?>

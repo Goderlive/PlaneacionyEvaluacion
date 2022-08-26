@@ -72,7 +72,6 @@ function barraAvance($con, $id_actividad, $mes){
     }
     
     $avance = AvancesActividad($con, $id_actividad, $mes); //Aqui traemos los avances y la sumamos hasta el mes actual
-var_dump($avance);
     if(!$avance){
         $total = 100;
         $text .= '<div class="w-full bg-gray-200 rounded-full dark:bg-gray-700">
@@ -166,7 +165,6 @@ function Actividades($con, $mes, $id_area, $meses, $actividadesDB){
 
 
 function Modales($actividadesDB,$meses, $el_mes){
-    //var_dump($actividadesDB);
     $var = '';
     $year = date('o');
     foreach ($actividadesDB as $a) {

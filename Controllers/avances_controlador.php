@@ -28,6 +28,8 @@ function MuestraAvancesActividades($con){
                 $imgb = '<img src="' . $img . '" alt="evidencia">';
             }else{
                 $img = "No subió Evidencia";
+                $imgs = '';
+                $imgb = '';
             }
             $date = $a['fecha_avance'];
             //Sumamos para meta anual
@@ -97,7 +99,7 @@ function MuestraAvancesActividades($con){
                                 </td>
                                 <td rowspan=2 class="py-2 px-6" align="center">
                                 <button type="button" data-modal-toggle="modal'.$a['id_avance'].'">
-                                ' . $imgs . '                               
+                                ' . $imgs . '
                                 </button>
                                 </td>
                             </tr>
