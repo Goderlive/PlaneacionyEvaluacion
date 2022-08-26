@@ -43,115 +43,114 @@ if($_SESSION['id_permiso'] == 1){
         <br>
         <div class="relative overflow-x-auto shadow-md sm:rounded-md">
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                    <thead class="text-xs text-center text-gray-500 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
-                        <tr>
-                            <th scope="col" class="px-6 py-3">
-                                #
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Nombre Actividad
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Unidad de Medida
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Programado Anual
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Ene
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Feb
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Mar
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Abr
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                May
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Jun
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Jul
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Ago
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Sep
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Oct
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Nov
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Dic
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        
-                        <?= $actividades = TraeActividades($con, $id_area);
-                    foreach($actividades as $actividad):?>
-                        <tr>
-                            <td class="py-4 px-6">
-                                <?= $actividad['codigo_actividad']?>
-                            </td>
-                            <td class="py-4 px-6">
-                                <?= $actividad['nombre_actividad']?>
-                            </td>
-                            <td class="py-4 px-6">
-                                <?= $actividad['unidad']?>
-                            </td>
-                            <td class="py-4 px-6">
-                                <?= SumaAnual($actividad)?>
-                            </td>
-                            <td class="py-4 px-6">
-                                <?= $actividad['enero']?>
-                            </td>
-                            <td class="py-4 px-6">
-                                <?= $actividad['febrero']?>
-                            </td>
-                            <td class="py-4 px-6">
-                                <?= $actividad['marzo']?>
-                            </td>
-                            <td class="py-4 px-6">
-                                <?= $actividad['abril']?>
-                            </td>
-                            <td class="py-4 px-6">
-                                <?= $actividad['mayo']?>
-                            </td>
-                            <td class="py-4 px-6">
-                                <?= $actividad['junio']?>
-                            </td> 
-                            <td class="py-4 px-6">
-                                <?= $actividad['julio']?>
-                            </td>
-                            <td class="py-4 px-6">
-                                <?= $actividad['agosto']?>
-                            </td>
-                            <td class="py-4 px-6">
-                                <?= $actividad['septiembre']?>
-                            </td> 
-                            <td class="py-4 px-6">
-                                <?= $actividad['octubre']?>
-                            </td>
-                            <td class="py-4 px-6">
-                                <?= $actividad['noviembre']?>
-                            </td>
-                            <td class="py-4 px-6">
-                                <?= $actividad['diciembre']?>
-                            </td>
-
-                        </tr>
-                        <?php endforeach?>
-                    </tbody>
+                <thead class="text-xs text-center text-gray-500 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">
+                            #
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Nombre Actividad
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Unidad de Medida
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Programado Anual
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Ene
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Feb
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Mar
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Abr
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            May
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Jun
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Jul
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Ago
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Sep
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Oct
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Nov
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Dic
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <?= $actividades = TraeActividades($con, intval($id_area));
+                foreach($actividades as $actividad):?>
+                    <tr>
+                        <td class="py-4 px-6">
+                            <?= $actividad['codigo_actividad']?>
+                        </td>
+                        <td class="py-4 px-6">
+                            <?= $actividad['nombre_actividad']?>
+                        </td>
+                        <td class="py-4 px-6">
+                            <?= $actividad['unidad']?>
+                        </td>
+                        <td class="py-4 px-6">
+                            <?= SumaAnual($actividad)?>
+                        </td>
+                        <td class="py-4 px-6">
+                            <?= $actividad['enero']?>
+                        </td>
+                        <td class="py-4 px-6">
+                            <?= $actividad['febrero']?>
+                        </td>
+                        <td class="py-4 px-6">
+                            <?= $actividad['marzo']?>
+                        </td>
+                        <td class="py-4 px-6">
+                            <?= $actividad['abril']?>
+                        </td>
+                        <td class="py-4 px-6">
+                            <?= $actividad['mayo']?>
+                        </td>
+                        <td class="py-4 px-6">
+                            <?= $actividad['junio']?>
+                        </td> 
+                        <td class="py-4 px-6">
+                            <?= $actividad['julio']?>
+                        </td>
+                        <td class="py-4 px-6">
+                            <?= $actividad['agosto']?>
+                        </td>
+                        <td class="py-4 px-6">
+                            <?= $actividad['septiembre']?>
+                        </td> 
+                        <td class="py-4 px-6">
+                            <?= $actividad['octubre']?>
+                        </td>
+                        <td class="py-4 px-6">
+                            <?= $actividad['noviembre']?>
+                        </td>
+                        <td class="py-4 px-6">
+                            <?= $actividad['diciembre']?>
+                        </td>
+                    </tr>
+                    <?php endforeach?>
+                </tbody>
             </table>
         </div>
     </div>
