@@ -1,6 +1,6 @@
 <?php
 session_start();
-if($_SESSION['id_permiso'] == 1){
+if($_SESSION['id_permiso'] == 1 || $_SESSION['id_permiso'] == 4 || $_SESSION['id_permiso'] == 5){
 ?>
 <!DOCTYPE html>
 <html lang="es">

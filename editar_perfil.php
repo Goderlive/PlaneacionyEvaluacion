@@ -3,14 +3,13 @@
     if($_SESSION['sistema'] == 'pbrm'){
         if(isset($_POST['actualizar'])){
             include 'conexion.php';
-            $nombre_empleado = $mysqli->real_escape_string($_POST['nombre_empleado']);
+            $nombre = $mysqli->real_escape_string($_POST['nombre']);
+            $apellido = $mysqli->real_escape_string($_POST['apellidos']);
             $telefono = $mysqli->real_escape_string($_POST['telefono']);
             $contrasena = $mysqli->real_escape_string($_POST['contrasena']);
             $correo_electronico = $mysqli->real_escape_string($_POST['correo_electronico']);
-            $activo = $mysqli->real_escape_string($_POST['activo']);
-            $consulta = "UPDATE usuarios SET nombre_empleado = '$nombre_empleado', telefono = '$telefono', contrasena = '$contrasena', correo_electronico = '$correo_electronico', activo = $activo";
+            $consulta = "UPDATE usuarios SET nombre = '$nombre', apellidos = '$apellido', tel = '$telefono', contrasena = '$contrasena', correo_electronico = '$correo_electronico'";
             $resultado = $mysqli->query($consulta);
-            print_r($consulta);
             if(!$resultado){
                 ?>
                 <script>

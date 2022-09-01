@@ -55,7 +55,14 @@ function item_principal($actual, $buscador, $texto, $destino){
             <div class="hidden w-full md:block md:w-auto" id="mobile-menu">
                 <ul class="flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium">
                     <li>
-                        <a href="index.php" class="text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" aria-current="page"><?= get_usuario($id_usuario,$con)['nombre_dependencia']?></a>
+                        <a href="index.php" class="text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" aria-current="page"><?php
+                        $dependencia = get_usuario($id_usuario,$con);
+                        if(isset($dependencia['nombre_dependencia'])){
+                            print($dependencia['nombre_dependencia']);
+                        }else{
+                            print "Admin";
+                        }
+                        ?></a>
                     </li>
                     <?= item_principal($actual, $inicio, "Inicio", "index.php")?>
                     <?= item_principal($actual, $actividades, "Actividades", "actividades.php")?>

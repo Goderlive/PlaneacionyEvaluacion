@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once 'Controllers/prog_act_Controller.php';
-if($_SESSION['id_permiso'] == 1){
+if($_SESSION['id_permiso'] == 5 || $_SESSION['id_permiso'] == 4){
     if(!$_POST){
         header("Location: actividades.php");
     }else{
@@ -14,8 +14,7 @@ if($_SESSION['id_permiso'] == 1){
 <?php include 'head.php';?>
 <?php include 'header.php';?>
 <body>
-<div class="container mx-auto">        
-
+<div class="container mx-auto">
     <br>
     <div class="container mx-auto">        
         <nav class="flex py-3 px-5 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700" aria-label="Breadcrumb">
@@ -41,111 +40,115 @@ if($_SESSION['id_permiso'] == 1){
             </ol>
         </nav>
         <br>
+
+        <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-800 md:text-5xl lg:text-6xl dark:text-white">Programación Mensual</h1>
+
         <div class="relative overflow-x-auto shadow-md sm:rounded-md">
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-center text-gray-500 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-5 py-3">
                             #
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-5 py-3">
                             Nombre Actividad
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-5 py-3">
                             Unidad de Medida
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-5 py-3">
                             Programado Anual
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-2 py-3">
                             Ene
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-2 py-3">
                             Feb
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-2 py-3">
                             Mar
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-2 py-3">
                             Abr
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-2 py-3">
                             May
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-2 py-3">
                             Jun
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-2 py-3">
                             Jul
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-2 py-3">
                             Ago
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-2 py-3">
                             Sep
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-2 py-3">
                             Oct
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-2 py-3">
                             Nov
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-2 py-3">
                             Dic
                         </th>
                     </tr>
                 </thead>
                 <tbody>
                     
-                    <?= $actividades = TraeActividades($con, intval($id_area));
+                    <?php
+                    $actividades = TraeActividades($con, $id_area);
                 foreach($actividades as $actividad):?>
                     <tr>
-                        <td class="py-4 px-6">
+                        <td class="py-4 px-5">
                             <?= $actividad['codigo_actividad']?>
                         </td>
-                        <td class="py-4 px-6">
+                        <td class="py-4 px-5">
                             <?= $actividad['nombre_actividad']?>
                         </td>
-                        <td class="py-4 px-6">
+                        <td class="py-4 px-5">
                             <?= $actividad['unidad']?>
                         </td>
-                        <td class="py-4 px-6">
+                        <td class="py-4 px-5">
                             <?= SumaAnual($actividad)?>
                         </td>
-                        <td class="py-4 px-6">
+                        <td class="py-4 px-2">
                             <?= $actividad['enero']?>
                         </td>
-                        <td class="py-4 px-6">
+                        <td class="py-4 px-2">
                             <?= $actividad['febrero']?>
                         </td>
-                        <td class="py-4 px-6">
+                        <td class="py-4 px-2">
                             <?= $actividad['marzo']?>
                         </td>
-                        <td class="py-4 px-6">
+                        <td class="py-4 px-2">
                             <?= $actividad['abril']?>
                         </td>
-                        <td class="py-4 px-6">
+                        <td class="py-4 px-2">
                             <?= $actividad['mayo']?>
                         </td>
-                        <td class="py-4 px-6">
+                        <td class="py-4 px-2">
                             <?= $actividad['junio']?>
                         </td> 
-                        <td class="py-4 px-6">
+                        <td class="py-4 px-2">
                             <?= $actividad['julio']?>
                         </td>
-                        <td class="py-4 px-6">
+                        <td class="py-4 px-2">
                             <?= $actividad['agosto']?>
                         </td>
-                        <td class="py-4 px-6">
+                        <td class="py-4 px-2">
                             <?= $actividad['septiembre']?>
                         </td> 
-                        <td class="py-4 px-6">
+                        <td class="py-4 px-2">
                             <?= $actividad['octubre']?>
                         </td>
-                        <td class="py-4 px-6">
+                        <td class="py-4 px-2">
                             <?= $actividad['noviembre']?>
                         </td>
-                        <td class="py-4 px-6">
+                        <td class="py-4 px-2">
                             <?= $actividad['diciembre']?>
                         </td>
                     </tr>

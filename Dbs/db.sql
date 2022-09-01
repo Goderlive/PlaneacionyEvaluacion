@@ -794,45 +794,29 @@ CREATE TABLE usuarios(
     tel VARCHAR(255),
     contrasena VARCHAR(255),
     id_dependencia INT,
-    activo INT,
-    CONSTRAINT FK_dependencia FOREIGN KEY (id_dependencia) REFERENCES dependencias (id_dependencia) ON DELETE CASCADE
+    fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP(),
+    id_registro INT,
+    CONSTRAINT fk_usuarios_usuarios FOREIGN KEY (id_registro) REFERENCES usuarios (id_usuario) ON DELETE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-INSERT INTO usuarios VALUES (NULL, 'German', 'Guillen', 1, 'goder@live.com', '7224531128', '123456', 6, 1);
+INSERT INTO usuarios (nombre, apellidos, id_permiso, correo_electronico, tel, contrasena) VALUES('German', 'Guillen', 1, 'goder@live.com', '7224531128', '123456');
 
-INSERT INTO usuarios VALUES(NULL, "Presidencia", "Master", "4", "presidencia@metepec.gob.mx", "7224531128", "w3I)zJOF", "1", 1);
-INSERT INTO usuarios VALUES(NULL, "Giras y Logística", "Master", "4", "giras@metepec.gob.mx", "7224531128", "hmU4a*5s", "2", 1);
-INSERT INTO usuarios VALUES(NULL, "Gobierno Digital y Electrónico", "Master", "4", "digital@metepec.gob.mx", "7224531128", "ao044BAg", "3", 1);
-INSERT INTO usuarios VALUES(NULL, "Transparencia", "Master", "4", "transparencia@metepec.gob.mx", "7224531128", "bH9MpScu", "4", 1);
-INSERT INTO usuarios VALUES(NULL, "Comunicación Social", "Master", "4", "comsocial@metepec.gob.mx", "7224531128", "wbv7Y47l", "5", 1);
-INSERT INTO usuarios VALUES(NULL, "Secretaría del Ayuntamiento", "Master", "4", "secayuntamiento@metepec.gob.mx", "7224531128", "em*ZZ0JH", "6", 1);
-INSERT INTO usuarios VALUES(NULL, "Servicios Públicos", "Master", "4", "servpub@metepec.gob.mx", "7224531128", "*yzgKzxd", "7", 1);
-INSERT INTO usuarios VALUES(NULL, "Igualdad de Género", "Master", "4", "igualdad@metepec.gob.mx", "7224531128", "kBn3XiPe", "8", 1);
-INSERT INTO usuarios VALUES(NULL, "Tesorería", "Master", "4", "tesoreria@metepec.gob.mx", "7224531128", "SIwQgGJl", "9", 1);
-INSERT INTO usuarios VALUES(NULL, "Desarrollo Económico, Turístico y Artesanal", "Master", "4", "desarrolloeco@metepec.gob.mx", "7224531128", "p2B)(uH(", "10", 1);
-INSERT INTO usuarios VALUES(NULL, "Protección Civil y Bomberos", "Master", "4", "proteccioncivil@metepec.gob.mx", "7224531128", "X(5PNatK", "11", 1);
-INSERT INTO usuarios VALUES(NULL, "Gobierno Por Resultados", "Master", "4", "gobporres@metepec.gob.mx", "7224531128", "4Ghl1(1b", "12", 1);
-INSERT INTO usuarios VALUES(NULL, "Regiduría 1", "Master", "4", "reg1@metepec.gob.mx", "7224531128", "D*9ZKo)c", "13", 1);
-INSERT INTO usuarios VALUES(NULL, "Regiduría 2", "Master", "4", "reg2@metepec.gob.mx", "7224531128", "uqyEwCO4", "14", 1);
-INSERT INTO usuarios VALUES(NULL, "Regiduría 3", "Master", "4", "reg3@metepec.gob.mx", "7224531128", "re78Nu4b", "15", 1);
-INSERT INTO usuarios VALUES(NULL, "Regiduría 4", "Master", "4", "reg4@metepec.gob.mx", "7224531128", "SFFA(K46", "16", 1);
-INSERT INTO usuarios VALUES(NULL, "Regiduría 5", "Master", "4", "reg5@metepec.gob.mx", "7224531128", "UCv0TueR", "17", 1);
-INSERT INTO usuarios VALUES(NULL, "Regiduría 6", "Master", "4", "reg6@metepec.gob.mx", "7224531128", "i4Pyszij", "18", 1);
-INSERT INTO usuarios VALUES(NULL, "Regiduría 7", "Master", "4", "reg7@metepec.gob.mx", "7224531128", "4GvI8d89", "19", 1);
-INSERT INTO usuarios VALUES(NULL, "Regiduría 8", "Master", "4", "reg8@metepec.gob.mx", "7224531128", "YM3dHFME", "20", 1);
-INSERT INTO usuarios VALUES(NULL, "Regiduría 9", "Master", "4", "reg9@metepec.gob.mx", "7224531128", "pfAX1(qD", "21", 1);
-INSERT INTO usuarios VALUES(NULL, "Seguridad Pública", "Master", "4", "segpublica@metepec.gob.mx", "7224531128", "VuH1uHGt", "22", 1);
-INSERT INTO usuarios VALUES(NULL, "Medio Ambiente", "Master", "4", "medambiente@metepec.gob.mx", "7224531128", "CIg6UZQG", "23", 1);
-INSERT INTO usuarios VALUES(NULL, "Defensoría Municipal de los Derechos Humanos", "Master", "4", "defhumanos@metepec.gob.mx", "7224531128", "kxqzJUOv", "24", 1);
-INSERT INTO usuarios VALUES(NULL, "Gobernación", "Master", "4", "gobgobernacion@metepec.gob.mx", "7224531128", "eI76(DVs", "25", 1);
-INSERT INTO usuarios VALUES(NULL, "Educación", "Master", "4", "edueducacion@metepec.gob.mx", "7224531128", "DG1BC5aY", "26", 1);
-INSERT INTO usuarios VALUES(NULL, "Desarrollo Urbano", "Master", "4", "desurbano@metepec.gob.mx", "7224531128", "bST1hHxh", "27", 1);
-INSERT INTO usuarios VALUES(NULL, "Obras Publicas", "Master", "4", "obrpublicas@metepec.gob.mx", "7224531128", "vy*daRwP", "28", 1);
-INSERT INTO usuarios VALUES(NULL, "Desarrollo Social", "Master", "4", "dessocial@metepec.gob.mx", "7224531128", "AZJyWZjj", "29", 1);
-INSERT INTO usuarios VALUES(NULL, "Cultura", "Master", "4", "culcultura@metepec.gob.mx", "7224531128", "cNp4f(wT", "30", 1);
-INSERT INTO usuarios VALUES(NULL, "Administración", "Master", "4", "admadministracion@metepec.gob.mx", "7224531128", ")jaur0vJ", "31", 1);
-INSERT INTO usuarios VALUES(NULL, "Contraloría Interna Municipal", "Master", "4", "contmunicipal@metepec.gob.mx", "7224531128", "Rw4bnreA", "32", 1);
-INSERT INTO usuarios VALUES(NULL, "Consejería Jurídica Municipal", "Master", "4", "consmunicipal@metepec.gob.mx", "7224531128", "Zrpqj8)j", "33", 1);
-INSERT INTO usuarios VALUES(NULL, "Sindicatura Municipal", "Master", "4", "sinmunicipal@metepec.gob.mx", "7224531128", "KOIIQHM8", "34", 1);
+
+DROP TABLE IF EXISTS usuarios_eliminados;
+CREATE TABLE usuarios_eliminados(
+    id_usuario_eliminado INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    id_anterior INT,
+    nombre VARCHAR(255),
+    apellidos VARCHAR(255),
+    id_permiso INT NOT NULL,
+    correo_electronico VARCHAR(255),
+    tel VARCHAR(255),
+    contrasena VARCHAR(255),
+    id_dependencia INT,
+    fecha_creacion DATETIME,
+    fecha_eliminacion DATETIME DEFAULT CURRENT_TIMESTAMP(),
+    id_registro INT,
+    id_eliminante INT
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 
 

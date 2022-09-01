@@ -14,14 +14,13 @@ if($_SESSION['sistema'] == "pbrm"){
 
   <div class="container text-center mx-auto">
         <br>
-        
         <h3 class="font-bold text-4xl text-gray-800 border-b-3 border-gray-100 p-2 mb-2">Bienvenido <?= $user['nombre'] . " ". $user['apellidos'] ?></h3>
         <br>
 
 
         <?php
         // Aqui va lo que pasa si eres nivel 2 (osea de la wipe o gobierno digital)
-		if($_SESSION['id_permiso'] == 1){
+		if($_SESSION['id_permiso'] == 1 || $_SESSION['id_permiso'] == 2){
 			print AlertaAvancesActividades($con);
 			print AlertaAvancesIndicadores($con);
             print AlertaReconduccionActividades($con);

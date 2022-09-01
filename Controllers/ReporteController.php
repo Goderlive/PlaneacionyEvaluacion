@@ -220,12 +220,7 @@ function Modales($actividadesDB,$meses, $el_mes){
     }
     return $var;
 }
-//cursor-not-allowed
 
 
 
 ?>
-<!-- <label class="block mb-1 text-sm font-medium text-gray-900 dark:text-gray-300" for="small_size">Evidencia:</label>
-<input type="file" required name="evidencia" id= accept=".xls,.xlsx,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.pdf, image/png, image/jpeg, image/jpg" class="block mb-5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"/> -->
-
-

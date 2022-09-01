@@ -1,14 +1,13 @@
 <?php
 require_once 'models/conection.php';
 
-
 function get_usuario($id_usuario,$con){
-    $stm = $con->query("SELECT * FROM dependencias dp
-    LEFT JOIN dependencias_generales dg ON dp.id_dependencia_gen = dg.id_dependencia 
-    LEFT JOIN usuarios u ON u.id_dependencia = dp.id_dependencia 
+    $stm = $con->query("SELECT * FROM usuarios u
     LEFT JOIN dependencias ds ON u.id_dependencia = ds.id_dependencia
     WHERE u.id_usuario = $id_usuario");
     $data_usuario = $stm->fetch(PDO::FETCH_ASSOC);
+
+    //var_dump($data_usuario);
     return $data_usuario;
 }
 

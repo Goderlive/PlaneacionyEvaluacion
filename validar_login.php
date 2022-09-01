@@ -9,7 +9,7 @@
 	if($_POST) {
 		if( isset( $_POST['correo_electronico'] ) && $_POST['correo_electronico'] != '' && isset( $_POST['contrasena'] ) && $_POST['contrasena'] != '' ) {
             include  'conexion.php';
-            $consulta = "SELECT * FROM usuarios WHERE activo = 1 AND correo_electronico = '" . $mysqli->real_escape_string( $_POST['correo_electronico'] ) . "' AND contrasena =  '" . $mysqli->real_escape_string( $_POST['contrasena'] ) . "'";
+            $consulta = "SELECT * FROM usuarios WHERE correo_electronico = '" . $mysqli->real_escape_string( $_POST['correo_electronico'] ) . "' AND contrasena =  '" . $mysqli->real_escape_string( $_POST['contrasena'] ) . "'";
             $resultado = $mysqli->query($consulta);
 
             if( $resultado->num_rows > 0 ) {
@@ -19,7 +19,6 @@
                 $_SESSION['id_usuario'] = $datos['id_usuario'];
                 $_SESSION['correo_electronico'] = $datos['correo_electronico'];
                 $_SESSION['id_permiso'] = $datos['id_permiso'];
-                $_SESSION['activo'] = $datos['activo'];
                 $_SESSION['sistema'] = 'pbrm';
                 $_SESSION['id_dependencia'] = $datos['id_dependencia'];
                 ?>

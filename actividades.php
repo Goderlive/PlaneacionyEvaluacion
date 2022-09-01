@@ -1,5 +1,11 @@
 <?php
 session_start();
+if(!$_SESSION){?>
+    <script>
+        window.location.href = 'login.php';
+    </script>
+    <?php
+}
 require_once 'Controllers/Actividades_Controlador.php';
 if($_SESSION['sistema'] == 'pbrm'){
 ?>
@@ -27,7 +33,6 @@ if($_SESSION['sistema'] == 'pbrm'){
         </ol>
     </nav>
     <br>
-
     <div class="grid grid-cols-4">
         <?= areas($con, $dep) ?>
     </div>

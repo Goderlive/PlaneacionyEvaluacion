@@ -1,9 +1,7 @@
 <?php
 session_start();
 require_once 'Controllers/ReporteController.php';
-if($_SESSION['id_permiso'] == 1){
-
-?>
+if($_SESSION['id_permiso'] == 1 || $_SESSION['id_permiso'] == 4 || $_SESSION['id_permiso'] == 5){?>
 <!DOCTYPE html>
 <html lang="es">
 <?php include 'head.php';?>

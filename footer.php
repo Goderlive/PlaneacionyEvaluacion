@@ -1,1 +1,2 @@
-<script src="https://unpkg.com/flowbite@1.4.5/dist/flowbite.js"></script>
+<script src="https://unpkg.com/flowbite@1.5.0/dist/flowbite.js"></script>
+
