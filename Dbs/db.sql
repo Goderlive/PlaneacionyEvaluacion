@@ -1697,6 +1697,7 @@ CREATE TABLE programaciones(
     noviembre INT,
     diciembre INT,
     id_actividad INT,
+    fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP(),
     CONSTRAINT FK_programacion_actividad FOREIGN KEY (id_actividad) REFERENCES actividades (id_actividad) ON DELETE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 INSERT INTO programaciones VALUES (NULL, "0","0","1","0","0","1","0","0","1","0","0","1",1);
@@ -2539,6 +2540,30 @@ INSERT INTO programaciones VALUES (NULL, "20","25","25","30","30","31","31","30"
 INSERT INTO programaciones VALUES (NULL, "1","1","1","1","1","1","1","1","1","1","1","1",838);
 
 
+
+
+DROP TABLE IF EXISTS programaciones_eliminadas;
+CREATE TABLE programaciones_eliminadas(
+    id_programacion_eliminadas INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    enero INT,
+    febrero INT,
+    marzo INT,
+    abril INT,
+    mayo INT,
+    junio INT,
+    julio INT,
+    agosto INT,
+    septiembre INT,
+    octubre INT,
+    noviembre INT,
+    diciembre INT,
+    id_actividad INT,
+    creacion DATETIME,
+    eliminacion DATETIME DEFAULT CURRENT_TIMESTAMP(),
+    CONSTRAINT FK_programacion_actividad FOREIGN KEY (id_actividad) REFERENCES actividades (id_actividad) ON DELETE CASCADE
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+
 DROP TABLE IF EXISTS avances;
 CREATE TABLE avances(
     id_avance INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -3013,7 +3038,7 @@ CREATE TABLE reconducciones_atividades(
     validado INT DEFAULT 0,
     id_solicitante INT,
     id_validador INT,
-    fecha_validacion DATETIME
+    fecha_validacion DATETIME 
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 
