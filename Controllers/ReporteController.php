@@ -5,6 +5,7 @@ if (!isset($_POST['id_area'])){
     echo "Se murio";
     die();
 }else{
+    var_dump($_POST);
     $id_area = $_POST['id_area'];
     $el_mes = (isset($_POST['mes'])) ? $_POST['mes'] : intval(date('m'))-1;
 }
