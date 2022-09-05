@@ -2,10 +2,9 @@
 date_default_timezone_set('America/Mexico_City');
 require_once 'models/Reporte_Model.php';
 if (!isset($_POST['id_area'])){
-    echo "Se murio";
-    die();
+    header("Location: actividades.php");
+
 }else{
-    var_dump($_POST);
     $id_area = $_POST['id_area'];
     $el_mes = (isset($_POST['mes'])) ? $_POST['mes'] : intval(date('m'))-1;
 }
@@ -102,7 +101,11 @@ function barraAvance($con, $id_actividad, $mes){
         $text .= '<div class="w-full bg-gray-200 rounded-full dark:bg-gray-700">
                     <div class="bg-blue-500 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style="width: '.$total.'%"> '.$total.'%</div>
                 </div>';
-    }elseif($avance > $sumaProgramacion){
+    }elseif($avance > $sumaProgramacion && $sumaProgramacion == 0){
+        $text = '<div class="w-full bg-gray-200 rounded-full dark:bg-gray-700">
+                <div class="bg-pink-400 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style="width: 100%">100%</div>
+            </div>';
+    }elseif($avance > $sumaProgramacion  && $sumaProgramacion != 0){
         $total = ($avance / $sumaProgramacion) * 100;
         $total = intval($total);
         $text .= '<div class="w-full bg-gray-200 rounded-full dark:bg-gray-700">
@@ -221,6 +224,43 @@ function Modales($actividadesDB,$meses, $el_mes){
     }
     return $var;
 }
+
+
+
+
+function BotonImprimir($con, $id_area, $mes){
+//sleep(1);
+if ($mes == 1 || $mes == 2 || $mes == 4 || $mes == 5|| $mes == 7 || $mes == 8 || $mes == 10 || $mes == 11){
+    return NULL;
+}
+
+$div = '<div id="toast-interactive" class="flex absolute my-10 top-5 right-5 items-center p-4 space-x-4 w-full max-w-xs text-gray-500 bg-white rounded-lg divide-x divide-gray-200 shadow dark:text-gray-400 dark:divide-gray-700 space-x dark:bg-gray-800" role="alert">
+<div class="flex">
+    <div class="inline-flex flex-shrink-0 justify-center items-center w-8 h-8 text-blue-500 bg-blue-100 rounded-lg dark:text-blue-300 dark:bg-blue-900">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg> <span class="sr-only">Refresh icon</span>
+    </div>
+    <div class="ml-3 text-sm font-normal">
+        <span class="mb-1 text-sm font-semibold text-gray-900 dark:text-white">Imprimir Trimestrales</span>
+        <div class="mb-2 text-sm font-normal">Ya puedes descargar tus formatos trimestrales</div> 
+            <div class="grid grid-cols-2 gap-2">
+                <div>
+                    <a href="#" class="inline-flex justify-center w-full px-2 py-1.5 text-xs font-medium text-center text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800">Descargar</a>
+                </div>
+            </div>    
+        </div>
+        <button type="button" class="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700" data-dismiss-target="#toast-interactive" aria-label="Close">
+            <span class="sr-only">Close</span>
+            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+        </button>
+    </div>
+</div>';
+
+if ((CuentaActividades($con, $id_area, $mes) * $mes)  ==  CuentaAvances($con, $id_area, $mes)){
+    return $div;
+}
+
+}
+
 
 
 
