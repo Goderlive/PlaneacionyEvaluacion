@@ -15,7 +15,7 @@ $actual = explode('/',$actual);
 $actual = $actual[count($actual)-1];
 
 $inicio = array("index.php", "mi_perfil.php", "mis_areas.php", "mis_formatos.php");
-$actividades = array("actividades.php", "reconduccion_actividades.php", "actividades_todas.php", "reportes.php");
+$actividades = array("actividades.php", "reconduccion_actividades.php", "actividades_todas.php", "formatos_actividades.php", "reportes.php", );
 $indicadores = array("indicadores.php", "reconduccion_indicadores.php", "matrices.php");
 
 
@@ -82,6 +82,7 @@ function item_principal($actual, $buscador, $texto, $destino){
                             <ul class="py-1 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownNavbarButton">
                                 <?= item_context("actividades.php", "Actividades por Área") ?>
                                 <?= item_context("reconduccion_actividades.php", "Nueva Reducción de Actividades") ?>
+                                <?= item_context("formatos_actividades.php", "Impresion Formatos") ?>
                                 <?= item_context("actividades_todas.php", "Todas las Actividades") ?>
                             </ul>
                         </div> <?php endif ?>
