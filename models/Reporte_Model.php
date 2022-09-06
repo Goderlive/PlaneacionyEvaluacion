@@ -7,8 +7,6 @@ function Actividades_DB($con, $id_area){
     WHERE a.id_area = $id_area";
     $stm = $con->query($sql);
     $actividades = $stm->fetchAll(PDO::FETCH_ASSOC);
-    print "<pre>";
-    var_dump($actividades);
     return $actividades;
 }
 
