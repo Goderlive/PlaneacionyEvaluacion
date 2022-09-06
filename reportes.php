@@ -40,6 +40,7 @@ if($_SESSION['id_permiso'] == 1 || $_SESSION['id_permiso'] == 4 || $_SESSION['id
             </nav>
         </div>           
         <br>
+
         <div class="relative overflow-x-auto shadow-md sm:rounded-md">
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-center text-gray-500 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
@@ -80,6 +81,19 @@ if($_SESSION['id_permiso'] == 1 || $_SESSION['id_permiso'] == 4 || $_SESSION['id
 
     <?=Modales($actividadesDB, $meses, $el_mes)?>
 <?php include 'footer.php';?>
+
+
+
+
+
+<?= BotonImprimir($con, $id_area, $el_mes);
+?>
+
+
+
+
+
+
 
 
 </body>

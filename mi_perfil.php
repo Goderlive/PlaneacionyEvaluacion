@@ -230,8 +230,8 @@ if(isset($dependientes) && $dependientes):?>
     </div>
 </div>
 
-
 </div> <!-- Este es el div principal -->
+<br>
 
 <?php include 'footer.php';?>
 </body>

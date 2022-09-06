@@ -55,22 +55,22 @@ function MuestraAvancesActividades($con){
                 U d M
                                 </th>
                                 <th scope="col" class="py-3 px-6" align="center">
-                                Prog. Anual
+                                    Prog. Anual
                                 </th>
                                 <th scope="col" class="py-3 px-6" align="center">
-                                Mes
+                                    Mes
                                 </th>
                                 <th scope="col" class="py-3 px-6" align="center">
-                                Prog Mes
+                                    Prog Mes
                                 </th>
                                 <th scope="col" class="py-3 px-6" align="center">
-                                Alcanzada
+                                    Alcanzada
                                 </th>
                                 <th scope="col" class="py-3 px-6" align="center">
-                                Variacion
+                                    Variacion
                                 </th>
                                 <th scope="col" class="py-3 px-6" align="center">
-                                Evidencia
+                                    Evidencia
                                 </th>
                                 </tr>
                                 </thead>
@@ -89,10 +89,10 @@ function MuestraAvancesActividades($con){
                                     ' . $thismes . '
                                     </td>
                                     <td class="py-2 px-6" align="center" valign="top">
-                                    ' . $prog_mes . '
+                                    <b>' . $prog_mes . '</b>
                                 </td>
                                 <td class="py-2 px-6" align="center" valign="top">
-                                    ' . $a['avance'] . '
+                                    <b>' . $a['avance'] . '</b>
                                     </td>
                                     <td class="py-2 px-6" align="center" valign="top">
                                     ' . $a['avance'] - $prog_mes . '

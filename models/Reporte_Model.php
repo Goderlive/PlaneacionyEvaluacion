@@ -1,6 +1,25 @@
 <?php
 require_once 'conection.php';
 
+
+function CuentaAvances($con, $id_area, $mes){
+    $stm = $con->query("SELECT COUNT(av.id_avance) FROM avances av
+    LEFT JOIN actividades ac ON ac.id_actividad = av.id_actividad
+    WHERE ac.id_area = $id_area AND av.mes < $mes+1 AND av.validado = 1");
+    $c_avance = $stm->fetch(PDO::FETCH_ASSOC);
+    $c_avance = ($c_avance['COUNT(av.id_avance)']) ? $c_avance['COUNT(av.id_avance)'] : NULL;
+    return $c_avance;
+}
+
+function CuentaActividades($con, $id_area, $mes){
+    $stm = $con->query("SELECT COUNT(id_actividad) FROM actividades WHERE id_area = $id_area");
+    $c_avance = $stm->fetch(PDO::FETCH_ASSOC);
+    $c_avance = ($c_avance['COUNT(id_actividad)']) ? $c_avance['COUNT(id_actividad)'] : NULL;
+    return $c_avance;
+}
+
+
+
 function Actividades_DB($con, $id_area){
     $sql = "SELECT * FROM actividades a
     LEFT JOIN programaciones p ON p.id_actividad = a.id_actividad
