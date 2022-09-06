@@ -41,7 +41,7 @@ if($_SESSION['id_permiso'] == 5 || $_SESSION['id_permiso'] == 4){
         </nav>
         <br>
 
-        <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-800 md:text-5xl lg:text-6xl dark:text-white">Programación Mensual</h1>
+        <h1 class="mb-4 text-2xl font-extrabold tracking-tight leading-none text-gray-800 md:text-5xl lg:text-6xl dark:text-white">Programación Mensual</h1>
 
         <div class="relative overflow-x-auto shadow-md sm:rounded-md">
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
