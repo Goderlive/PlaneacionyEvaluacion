@@ -1,6 +1,11 @@
 <?php
-
-
+session_start();
+if($_SESSION['sistema'] != "pbrm" || !isset($_POST['trimestre'])){
+	header("Location: ../../../formatos_actividades.php");
+	die();
+}
+$id_area = $_POST['id_area'];
+$trimestre = $_POST['trimestre'];
 // Include the main TCPDF library (search for installation path).
 require_once('tcpdf_include.php');
 require_once '../../../models/conection.php';
@@ -33,24 +38,35 @@ function Sumador($data){
 }
 
 function BuscaAvances($con, $actividad, $trimestre){
-	if($trimestre == 1){
+	if($trimestre == "1er"){
 		$inicio = 1;
 		$fin = 3;
 	}
-
+	if($trimestre == "2do"){
+		$inicio = 4;
+		$fin = 6;
+	}
+	if($trimestre == "3er"){
+		$inicio = 7;
+		$fin = 9;
+	}
+	if($trimestre == "4to"){
+		$inicio = 10;
+		$fin = 12;
+	}
 	$stm = $con->query("SELECT SUM(avance) FROM avances  
-	WHERE id_actividad = 134 AND mes > $inicio - 1 AND mes < $fin + 1 AND validado = 1");
-	$avances = $stm->fetchAll(PDO::FETCH_ASSOC);
-	var_dump($avances);
+	WHERE id_actividad = $actividad AND mes > $inicio - 1 AND mes < $fin + 1 AND validado = 1");
+	$avances = $stm->fetch(PDO::FETCH_ASSOC);
+	$avances = $avances['SUM(avance)'];
 	return $avances;
 }
 
 
-function AgregaMetas($con){
+function AgregaMetas($con, $trimestre, $id_area){
 	$cols = '';
 	$stm = $con->query("SELECT * FROM actividades a 
 	LEFT JOIN programaciones p ON p.id_actividad = a.id_actividad
-	WHERE id_area = 134 ");
+	WHERE id_area = $id_area ");
 	$actividades = $stm->fetchAll(PDO::FETCH_ASSOC);
 
 
@@ -59,29 +75,30 @@ function AgregaMetas($con){
 
 		$suma = Sumador(array_slice($actividad, 14,-1));
 		$metaTrimestral = Sumador(array_slice($actividad, 14, 3));
-		$porcentajeProgramado = ($metaTrimestral / $suma) * 100;
-		$alcanzadoTrimestre = BuscaAvances($con, $actividad['id_actividad'], 1);
+		$alcanzadoTrimestre = BuscaAvances($con, $actividad['id_actividad'], $trimestre);
 
 
 
 		$cols .= 
-		'<tr>
-		<td style="text-align: center; border:1px solid gray; font-size: 6px">'.$actividad['codigo_actividad'].'</td>
-		<td style="text-align: left; border:1px solid gray; font-size: 6px">'.$actividad['nombre_actividad'].'</td>
-		<td style="text-align: left; border:1px solid gray; font-size: 6px">'.$actividad['unidad'].'</td>
-		<td style="text-align: center; border:1px solid gray; font-size: 6px">'.$suma.'</td>
-		<td style="text-align: center; border:1px solid gray; font-size: 6px">'.$metaTrimestral.'</td>
-		<td style="text-align: center; border:1px solid gray; font-size: 6px">'.$porcentajeProgramado.'</td>
-		<td style="text-align: center; border:1px solid gray; font-size: 6px">'.$alcanzadoTrimestre.'</td>
+			'<tr>
+				<td style="text-align: center; border:1px solid gray; font-size: 6px">'.$actividad['codigo_actividad'].'</td>
+				<td style="text-align: left; border:1px solid gray; font-size: 6px">'.$actividad['nombre_actividad'].'</td>
+				<td style="text-align: left; border:1px solid gray; font-size: 6px">'.$actividad['unidad'].'</td>
+				<td style="text-align: center; border:1px solid gray; font-size: 6px">'.$suma.'</td>
+				<td style="text-align: center; border:1px solid gray; font-size: 6px">'.$metaTrimestral.'</td>
+				<td style="text-align: center; border:1px solid gray; font-size: 6px">'.intval(($metaTrimestral / $suma) * 100).'</td>
+				<td style="text-align: center; border:1px solid gray; font-size: 6px">'.$alcanzadoTrimestre.'</td>
+				<td style="text-align: center; border:1px solid gray; font-size: 6px">'.intval(($alcanzadoTrimestre / $suma) * 100).'</td>
+				<td style="text-align: center; border:1px solid gray; font-size: 6px">'.intval($alcanzadoTrimestre - $metaTrimestral).'</td>
 
-		</tr>
+			</tr>
 		';
 	}
 	return $cols;
 }
 
 
-$cols = AgregaMetas($con);
+$cols = AgregaMetas($con, $trimestre, $id_area);
 
 
 $html = '
