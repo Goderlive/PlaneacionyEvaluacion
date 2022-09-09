@@ -29,6 +29,3 @@ return $data;
 
 ?>
 
-<form action="">
-    <input type="submit" value="">
-</form>

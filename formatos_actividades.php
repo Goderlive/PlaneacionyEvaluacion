@@ -80,12 +80,14 @@ if($_SESSION['sistema'] == 'pbrm'){
         <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Seleccione el Trimestre a Imprimir.</p>
         <form action="sources/TCPDF-main/examples/example_006.php" method="POST">
             <input type="hidden" name="id_area" value="<?= $area['id_area'] ?>">
-            <div class="inline-flex rounded-md shadow-sm" role="group">
-                <?= Botones($con, $area['id_area']) ?>
-            </div>
-
-        </form>
-
+            <?php if(TieneDirector($con, $id_dependencia) && TienePuestoMedio($con, $area['id_area'])): ?>
+                <div class="inline-flex rounded-md shadow-sm" role="group">
+                    <?= Botones($con, $area['id_area']) ?>
+                </div>
+            </form>
+            <?php else: ?>
+                <a href="mis_areas.php" class="py-2 px-3 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Necesitas Registrar Encargado</a>
+            <?php endif ?>
     </div>
 
     <?php endforeach ?>

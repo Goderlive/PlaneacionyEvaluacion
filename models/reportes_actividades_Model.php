@@ -41,5 +41,16 @@ function CuentaActividades($con, $id_area){
     return $c_avance*3;
 }
 
+function TieneDirector($con, $id_dependencia){
+    $stm = $con->query("SELECT * FROM titulares WHERE id_dependencia = $id_dependencia");
+    $titularDependencia = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $titularDependencia;
+}
 
+
+function TienePuestoMedio($con, $id_area){
+    $stm = $con->query("SELECT * FROM titulares WHERE id_area = $id_area");
+    $titularArea = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $titularArea;
+}
 ?>
