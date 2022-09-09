@@ -779,9 +779,7 @@ INSERT INTO areas (nombre_area, id_dependencia, id_dependencia_general, id_depen
 -- 2 > validacion de avances, agregar actividades e indicadores, validar reconducciones y mas
 -- 3 > Presidente municipal. Permite ver estadisticas de cada area, no puede editar.
 -- 4 > Director o coordinador de dependencia, puede agrar avances, evidencia, pedir reconducciones y CREAR USUARIOS. @metepec.
--- 5 > Enlace. Permite capturar avances, pedir reconducciones, solo administra su propia cuenta.  @
-
-
+-- 5 > Enlace. Permite capturar avances, pedir reconducciones, solo administra su propia cuenta.  
 
 
 DROP TABLE IF EXISTS usuarios;
@@ -3085,4 +3083,26 @@ CREATE TABLE reconducciones_indicadores(
     calendario_trimestral TEXT,
     justificacion_impacto TEXT,
     id_dependencia INT
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+
+
+DROP TABLE IF EXISTS unidades_medida; 
+CREATE TABLE unidades_medida(
+    id_unidad INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    nombre_unidad VARCHAR(255) NOT NULL,
+    descripcion_unidad TEXT
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+
+
+
+
+
+
+DROP TABLE IF EXISTS setings; 
+CREATE TABLE setings(
+    id_setings INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    year_report VARCHAR(4) NOT NULL,
+    
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
