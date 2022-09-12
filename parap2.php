@@ -2,34 +2,26 @@
 <html lang="en">
 <body>
 
-<?php
-
-$uno = 45 * 170390;
-$dos = 2 * 170390;
-$dato1 = bin2hex($uno);
-$dato2 = bin2hex($dos);
-$id_area = bin2hex("id_area");
-$trimestre = bin2hex("trimestre");
+<?php if($_POST){
+    var_dump($_POST);
+}
 
 ?>
 
-<form action="" method="get">
-    <input type="hidden" name="<?= $id_area ?>" value="<?= $dato1 ?>">
-    <input type="hidden" name="<?= $trimestre ?>" value="<?= $dato2 ?>">
-    <input type="submit" value="send">
+<form action="" method="post">
+<input list="browsers" name="browser" id="browser">
+
+<datalist id="browsers">
+  <option value="Edge">
+  <option value="Firefox">
+  <option value="Chrome">
+  <option value="Opera">
+  <option value="Safari">
+</datalist>
+
+
+<input type="submit" value="enviar">
 </form>
-
-
-<?php 
-
-if($_GET){
-
-    var_dump($_GET);
-
-    print $_GET[bin2hex("id_area")];
-}   
-
-?>
 
 </body>
 </html>
