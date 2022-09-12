@@ -3097,12 +3097,10 @@ CREATE TABLE unidades_medida(
 
 
 
-
-
-
 DROP TABLE IF EXISTS setings; 
 CREATE TABLE setings(
     id_setings INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     year_report VARCHAR(4) NOT NULL,
-    
+    id_tesorero INT,
+    id_uippe INT
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;

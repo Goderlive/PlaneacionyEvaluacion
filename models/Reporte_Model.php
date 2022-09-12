@@ -96,7 +96,6 @@ if (isset($_POST['jfnkasjnkasdf34q345']) == "Enviar") {
     $sqlr = $con->prepare($sql);
     $sqlr->execute(array($mes, $data['avance'], $data['justificacion'], $full_evidencia_evidencia, $data['descripcion_evidencia'], $id_actividad, $data['id_usuario']));
     //header("Location: ../revisa_avances.php?type=$tipo");
-
     ?>
     
     <form id="myForm" action="../reportes.php" method="post">
@@ -104,6 +103,7 @@ if (isset($_POST['jfnkasjnkasdf34q345']) == "Enviar") {
         <input type="hidden" name="mes" value="<?=$mes?>">
     </form>
 <script type="text/javascript">
+    alert("Meta Actualizada")
     document.getElementById('myForm').submit();
 </script>
     

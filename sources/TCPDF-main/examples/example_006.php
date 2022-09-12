@@ -355,8 +355,20 @@ try {
 var_dump($evidencias);
 
 function TablaEvidencias($evidencias){
-	$ciclos 
-	if 
+	$ciclos = 0;   // Primero vamos a hacer que el array tenga una longitud completa
+	if(($evidencias['contador'] % 5) != 0){
+		$array_vacio = array();
+		$diferencia = $evidencias['contador'] %5;
+		if($diferencia > 1){
+			for ($i=0; $i < $diferencia; $i++) { 
+				array_push($evidencias, $array_vacio);
+			}
+		}else{
+			array_push($evidencias, $array_vacio);
+		}
+	}
+	 // Hasta aqui ya igualamos el tamaño de nuestro array con el de la longitud de las tablas
+	
 	$data = "";
 	$datatemp = "";
 	$contador = 1;
