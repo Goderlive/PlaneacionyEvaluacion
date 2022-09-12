@@ -67,7 +67,8 @@ $stm = $con->query("SELECT * FROM titulares WHERE id_area = $id_area ");
 $titular_area = $stm->fetch(PDO::FETCH_ASSOC);
 
 
-$stm = $con->query("SELECT * FROM titulares WHERE cargo LIKE '%Gobierno por Resultados%' ");
+$stm = $con->query("SELECT * FROM setings a
+JOIN titulares t ON t.id_titular = a.id_uippe");
 $Director_gobierno_por_resultados = $stm->fetch(PDO::FETCH_ASSOC);
 
 // ******************************************  FIN ****************************************** 
@@ -343,24 +344,26 @@ $pdf->AddPage('P', 'A4');
 
 // ================== Obtenemos las evidencias ==================
 try {
-	$stm = $con->query("SELECT *, COUNT(a.id_avance) as 'contador' FROM avances e 
-	JOIN actividades ac ON e.id_actividad = ac.id_actividad
-	JOIN areas a ON a.id_area = ac.id_area
+	$stm = $con->query("SELECT * FROM avances e 
+	LEFT JOIN actividades ac ON e.id_actividad = ac.id_actividad
+	LEFT JOIN areas a ON a.id_area = ac.id_area
 	WHERE e.path_evidenia_evidencia IS NOT NULL AND a.id_area = $id_area
 	ORDER BY ac.codigo_actividad ASC, e.mes ASC");
 	$evidencias = $stm->fetchAll(PDO::FETCH_ASSOC);
 } catch (\Throwable $th) {
 	throw $th;
 }
-var_dump($evidencias);
 
 function TablaEvidencias($evidencias){
+	$contador = count($evidencias);
+
 	$ciclos = 0;   // Primero vamos a hacer que el array tenga una longitud completa
-	if(($evidencias['contador'] % 5) != 0){
+	if(($contador % 5) != 0){
 		$array_vacio = array();
-		$diferencia = $evidencias['contador'] %5;
+		$diferencia = $contador % 5;
+		$diferencia = 5 - $diferencia;
 		if($diferencia > 1){
-			for ($i=0; $i < $diferencia; $i++) { 
+			for ($i=1; $i <= $diferencia; $i++) { 
 				array_push($evidencias, $array_vacio);
 			}
 		}else{
@@ -368,34 +371,37 @@ function TablaEvidencias($evidencias){
 		}
 	}
 	 // Hasta aqui ya igualamos el tamaño de nuestro array con el de la longitud de las tablas
-	
+
 	$data = "";
 	$datatemp = "";
-	$contador = 1;
+	$contador = 0;
 	foreach($evidencias as $evidencia){
+		$data .= "<tr>";
+		if($contador < 5){
 		
-		$datatemp .= '<td>'.$evidencia.' </td>';
-		if ($contador%4 ==0){
-			$data .= "<tr>" . $datatemp . '</tr>';
-		}
-
-		if($evidencia['id_avance'] == $evidencias[-1]['id_avance']){
-			$data .= "<tr>" . $datatemp . '</tr>';
-		}
-
+			if($evidencia){
+				$datatemp .= '
+				<td style="width:25%; text-align: center; font-size: 8px">'.
+				$evidencia['nombre_actividad'].'
+				<br> Mes: '. $evidencia['mes'] .' <br> 
+				<img src="../../'.$evidencia['path_evidenia_evidencia'].'" width="100px" alt="">
+				</td>';
+			}else{
+				$datatemp .= '<td> hola</td>';
+			}
+		}else{
+			$data .= $datatemp . "</tr>";
+			$datatemp = "";
+			$contador = -1;
+		}	
 		$contador += 1;
-		
 	}
 	return $data;	
+
 }
 
 
 $data = TablaEvidencias($evidencias);
-
-
-print $data;
-
-die();
 
 
 $html = '
@@ -444,9 +450,20 @@ $html = '
 </table>
 &nbsp;
 <br>
-<table>
+
+<table style="width:100%;">
 '.$data.'	
 
+</table>
+
+&nbsp;
+<br>
+<table style="width: 100%; text-align: center; border-spacing: 3px; ">
+	<tr>
+		<td style="font-size: 8px; width: 34%; border: 1px solid gray;"> ELABORÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $titular_area['nombre'] . " " . $titular_area['apellidos'] . "<br>" . $titular_area['cargo']. '</td>
+		<td style="font-size: 8px; width: 34%; border: 1px solid gray;"> REVISÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $titular_dependencia['nombre'] . " " . $titular_dependencia['apellidos'] . "<br>" . $titular_dependencia['cargo']. '</td>
+		<td style="font-size: 8px; width: 32%;"> Aqui va un codigo QR </td>
+	</tr>	
 </table>
 
 ';
@@ -467,7 +484,6 @@ $pdf->Output('example_006.pdf', 'I');
 // END OF FILE
 //============================================================+
 ?>
-
 
 
 

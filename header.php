@@ -14,7 +14,7 @@ $actual = substr($actual, 1,);
 $actual = explode('/',$actual);
 $actual = $actual[count($actual)-1];
 
-$inicio = array("index.php", "mi_perfil.php", "mis_areas.php", "mis_formatos.php");
+$inicio = array("index.php", "mi_perfil.php", "mis_areas.php", "mis_formatos.php", "ajustes.php");
 $actividades = array("actividades.php", "reconduccion_actividades.php", "actividades_todas.php", "formatos_actividades.php", "reportes.php", );
 $indicadores = array("indicadores.php", "reconduccion_indicadores.php", "matrices.php");
 
@@ -75,6 +75,7 @@ function item_principal($actual, $buscador, $texto, $destino){
                                 <?= item_context("mi_perfil.php", "Mi Perfil") ?>
                                 <?= item_context("mis_areas.php", "Mis Areas") ?>
                                 <?= item_context("mis_formatos.php", "Mis Formatos") ?>
+                                <?= item_context("ajustes.php", "Ajustes")?>
                             </ul>
                         </div> <?php endif ?>
                     <?php if(in_array($actual, $actividades)):?>
