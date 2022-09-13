@@ -7,6 +7,7 @@ if(!$_SESSION['sistema'] == "pbrm"){
     <?php
 }else{
 $id_usuario = $_SESSION['id_usuario'];
+$mi_permiso = $_SESSION['id_permiso'];
 require_once 'models/inicio_modelo.php';
 // Aqui estan las variables de los Menus
 $actual = $_SERVER['PHP_SELF'];
@@ -14,7 +15,7 @@ $actual = substr($actual, 1,);
 $actual = explode('/',$actual);
 $actual = $actual[count($actual)-1];
 
-$inicio = array("index.php", "mi_perfil.php", "mis_areas.php", "mis_formatos.php", "ajustes.php");
+$inicio = array("index.php", "mi_perfil.php", "mis_areas.php", "mis_formatos.php", "ajustes.php", "unidades_medida.php");
 $actividades = array("actividades.php", "reconduccion_actividades.php", "actividades_todas.php", "formatos_actividades.php", "reportes.php", );
 $indicadores = array("indicadores.php", "reconduccion_indicadores.php", "matrices.php");
 
@@ -27,12 +28,15 @@ if(in_array($actual, $inicio)){
     $titulo_menu ="Indicadores";
 }
 
-function item_context($destino, $texto){
-    return '
-        <li>
-            <a href="'.$destino.'" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">'.$texto.'</a>
-        </li>
-    ';
+function item_context($destino, $texto, $permisos, $mi_permiso){
+    if(in_array($mi_permiso, $permisos)){
+        return '
+            <li>
+                <a href="'.$destino.'" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">'.$texto.'</a>
+            </li>
+        '; 
+    }
+    
 }
 function item_principal($actual, $buscador, $texto, $destino){
     $tipo = (in_array($actual, $buscador)) ? 'class="py-6 pr-4 pl-3 text-white bg-gray-200 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white"' : 'class="py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"' ;
@@ -72,29 +76,30 @@ function item_principal($actual, $buscador, $texto, $destino){
                     <?php if(in_array($actual, $inicio)):?>
                         <div id="dropdownNavbar" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                             <ul class="py-1 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownNavbarButton">
-                                <?= item_context("mi_perfil.php", "Mi Perfil") ?>
-                                <?= item_context("mis_areas.php", "Mis Areas") ?>
-                                <?= item_context("mis_formatos.php", "Mis Formatos") ?>
-                                <?= item_context("ajustes.php", "Ajustes")?>
+                                <?= item_context("mi_perfil.php", "Mi Perfil", array(1,2,3,4,5), $mi_permiso) ?>
+                                <?= item_context("mis_areas.php", "Mis Areas", array(1,2,3,4,5), $mi_permiso) ?>
+                                <?= item_context("mis_formatos.php", "Mis Formatos", array(1,2,3,4,5), $mi_permiso) ?>
+                                <?= item_context("ajustes.php", "Ajustes", array(1,2), $mi_permiso)?>
+                                <?= item_context("unidades_medida.php", "Unidades de Medida", array(1,2), $mi_permiso)?>
                             </ul>
                         </div> <?php endif ?>
                     <?php if(in_array($actual, $actividades)):?>
                         <div id="dropdownNavbar" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                             <ul class="py-1 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownNavbarButton">
-                                <?= item_context("actividades.php", "Actividades por Área") ?>
-                                <?= item_context("reconduccion_actividades.php", "Nueva Reducción de Actividades") ?>
-                                <?= item_context("formatos_actividades.php", "Impresion Formatos") ?>
-                                <?= item_context("actividades_todas.php", "Todas las Actividades") ?>
+                                <?= item_context("actividades.php", "Actividades por Área", array(1,2,3,4,5), $mi_permiso) ?>
+                                <?= item_context("reconduccion_actividades.php", "Nueva Reducción de Actividades", array(1,2,3,4,5), $mi_permiso) ?>
+                                <?= item_context("formatos_actividades.php", "Impresion Formatos", array(1,2,3,4,5), $mi_permiso) ?>
+                                <?= item_context("actividades_todas.php", "Todas las Actividades", array(1,2,3,4,5), $mi_permiso) ?>
                             </ul>
                         </div> <?php endif ?>
                                 
                     <?php if(in_array($actual, $indicadores)):?>
                         <div id="dropdownNavbar" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                             <ul class="py-1 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownNavbarButton">
-                                <?= item_context("indicadores.php", "Reportar Indicadores") ?>
-                                <?= item_context("matrices.php", "Mis Matries") ?>
-                                <?= item_context("reconduccion_indicadores.php", "Nueva Reconducción de Indicadores")?>
-                                <?= item_context("indicadores_todos.php", "Todos los Indicadores")?>
+                                <?= item_context("indicadores.php", "Reportar Indicadores", array(1,2,3,4,5), $mi_permiso) ?>
+                                <?= item_context("matrices.php", "Mis Matries", array(1,2,3,4,5), $mi_permiso) ?>
+                                <?= item_context("reconduccion_indicadores.php", "Nueva Reconducción de Indicadores", array(1,2,3,4,5), $mi_permiso)?>
+                                <?= item_context("indicadores_todos.php", "Todos los Indicadores", array(1,2,3,4,5), $mi_permiso)?>
                             </ul>
                         </div> <?php endif ?>
                         <a href="login.php"><svg class="w-6 h-6 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg></a>

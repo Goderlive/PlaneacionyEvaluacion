@@ -1,30 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
-<body>
-<tr><tr><tr><tr>
-  <tr>
-				<td style="width:25%; text-align: center; font-size: 8px">Reporte de la participación  en comités y comisiones del ayuntamiento en materia hacendaria
-				<br> Mes: 3 <br> 
-				<img src="../../../archivos/actividades/2022/3/9/125/463/evidencia_de_evidencia52 Pantalla Bienvenida.png" width="100px" alt="">
-				</td>
-				<td style="width:25%; text-align: center; font-size: 8px">Supervisar la elaboración de estados financieros, informes mensuales y trimestrales.
-				<br> Mes: 1 <br> 
-				<img src="../../../archivos/actividades/2022/1/9/125/464/evidencia_de_evidencia833 indicadores.png" width="100px" alt="">
-				</td>
-				<td style="width:25%; text-align: center; font-size: 8px">Supervisar la elaboración de estados financieros, informes mensuales y trimestrales.
-				<br> Mes: 2 <br> 
-				<img src="../../../archivos/actividades/2022/2/9/125/464/evidencia_de_evidencia606 Avance actual.png" width="100px" alt="">
-				</td>
-				<td style="width:25%; text-align: center; font-size: 8px">Supervisar la elaboración de estados financieros, informes mensuales y trimestrales.
-				<br> Mes: 3 <br> 
-				<img src="../../../archivos/actividades/2022/3/9/125/464/evidencia_de_evidencia53 indicadores.png" width="100px" alt="">
-				</td>
-				<td style="width:25%; text-align: center; font-size: 8px">Coordinación de la elaboración y publicación del presupuesto de ingresos y egresos 2022
-				<br> Mes: 2 <br> 
-				<img src="../../../archivos/actividades/2022/2/9/125/465/evidencia_de_evidencia581 Login Sistema SIMONTS.png" width="100px" alt="">
-				</td>
-  </tr><tr>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#myTable tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
 
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+</head>
+<body>
+
+<h2>Filterable Table</h2>
+<p>Type something in the input field to search the table for first names, last names or emails:</p>  
+<input id="myInput" type="text" placeholder="Search..">
+<br><br>
+
+<table>
+  <thead>
+  <tr>
+    <th>Firstname</th>
+    <th>Lastname</th>
+    <th>Email</th>
+  </tr>
+  </thead>
+  <tbody id="myTable">
+  <tr>
+    <td>John</td>
+    <td>Doe</td>
+    <td>john@example.com</td>
+  </tr>
+  <tr>
+    <td>Mary</td>
+    <td>Moe</td>
+    <td>mary@mail.com</td>
+  </tr>
+  <tr>
+    <td>July</td>
+    <td>Dooley</td>
+    <td>july@greatstuff.com</td>
+  </tr>
+  <tr>
+    <td>Anja</td>
+    <td>Ravendale</td>
+    <td>a_r@test.com</td>
+  </tr>
+  </tbody>
+</table>
+  
+<p>Note that we start the search in tbody, to prevent filtering the table headers.</p>
 
 </body>
 </html>
