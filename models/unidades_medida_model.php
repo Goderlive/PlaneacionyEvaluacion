@@ -7,15 +7,11 @@ function TraeUnidadesMedida($con){
     return $unidades;
 }
 
-
-
 function TraeIndividual($con, $id_unidad){
     $stm = $con->query("SELECT * FROM unidades_medida WHERE id_unidad = $id_unidad");
     $unidad = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $unidad;
 }
-
-
 
 if($_POST){
     if(isset($_POST['eliminar']) && $_POST['eliminar']){
