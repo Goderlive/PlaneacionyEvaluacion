@@ -60,7 +60,7 @@ if($_SESSION['id_permiso'] == 1 || $_SESSION['id_permiso'] == 4 || $_SESSION['id
         </div>
     </div>
 
-    <?=Modales($actividadesDB, $meses, $el_mes)?>
+    <?=Modales($actividadesDB, $el_mes)?>
 <?php include 'footer.php';?>
 
 

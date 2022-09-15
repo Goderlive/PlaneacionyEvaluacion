@@ -6,8 +6,8 @@ if(!$_SESSION){?>
     </script>
     <?php
 }
-require_once 'Controllers/Actividades_Controlador.php';
 if($_SESSION['sistema'] == 'pbrm'){
+require_once 'Controllers/Actividades_Controlador.php';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -23,7 +23,7 @@ if($_SESSION['sistema'] == 'pbrm'){
 
 
     
-
+<?php if ($_SESSION['id_permiso'] > 3): ?>
     <div class="grid grid-cols-4">
         <?php
         $all = '';
@@ -53,10 +53,24 @@ if($_SESSION['sistema'] == 'pbrm'){
             </div>
         <?php endforeach ?>
     </div>
+<?php endif ?>
 
 
 
 
+
+<?php if ($_SESSION['id_permiso'] < 3):?>
+    <div class="grid grid-cols-4">
+        <?php $dependencias = dependencias($con); 
+        foreach ($dependencias as $value):?> 
+            <div class="items-start p-4 ml-2 mr-2 mb-4 text-center  bg-white rounded-lg border border-gray-400 shadow-md dark:bg-gray-800 dark:border-gray-700">
+            <h5 class="text-lg font-bold dark:text-white"><?= $value['nombre_dependencia'] ?></h5>
+
+            
+            </div>
+    <?php endforeach ?>
+    </div>
+<?php endif ?>
 
 
 

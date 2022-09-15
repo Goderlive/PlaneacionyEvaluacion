@@ -12,8 +12,6 @@ function areas_con($con, $dep){
     return $areas;
 }
 
-
-
 function dependencias($con){
     $stm = $con->query("SELECT * FROM dependencias");
     $dependencias = $stm->fetchAll(PDO::FETCH_ASSOC);
