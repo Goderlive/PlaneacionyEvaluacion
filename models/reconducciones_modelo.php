@@ -75,7 +75,7 @@ function TraeEncargados($con, $id_area, $id_dependencia){
 
 if (isset($_POST['data'])) {
     print"<pre>";
-
+    var_dump($_POST);
     // Primero creamos la reconduccion
     $sql = "INSERT INTO reconducciones_atividades (id_area, id_solicitante, no_oficio, dep_general, dep_aux, programa) VALUES (?,?,?,?,?,?)";
     $sqlr = $con->prepare($sql);

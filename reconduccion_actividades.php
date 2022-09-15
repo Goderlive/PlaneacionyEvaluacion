@@ -11,7 +11,7 @@ if($_SESSION['sistema'] == "pbrm"){
 $dep = $_SESSION['id_dependencia'];
 $id_usuario = $_SESSION['id_usuario'];
 // Nos permite saber el trimestre
-if (date('m') > 8) {
+if (date('m') > 9) {
 	$thismes = 9;
 }elseif(date('m') > 5){
 	$thismes = 6;
@@ -258,7 +258,7 @@ if (date('m') > 8) {
 												</td>	
 											<?php else:?>
 												<td class="py-4 px-6">
-													<input type="text" name="<?= $actividad?>[]" id="first_name" class="mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"  value="<?= $mes ?>" required>
+													<input type="text" name="<?= $actividad?>[]" class="mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"  value="<?= $mes ?>" required>
 												</td>
 											<?php endif?>		
 
