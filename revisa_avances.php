@@ -8,12 +8,16 @@ if($_SESSION['sistema'] == "pbrm" || $_SESSION['id_permiso'] != 1){
     include 'header.php';
     include 'head.php';
     require_once 'Controllers/avances_controlador.php';
+    include 'Controllers/breadcrumbs.php';
 ?>
 <!DOCTYPE html>
 <html lang="es">
 
 <body>
 	<div class="container text-center mx-auto">
+        <br>
+<?= breadcrumbs(array("Inicio"=> "index.php", "Revisa Avances"=>""))?>
+
 <br>
     <?php
         if($tipo == "actividades"){

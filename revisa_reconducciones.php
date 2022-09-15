@@ -7,7 +7,10 @@ session_start();
 if($_SESSION['sistema'] == "pbrm" || $_SESSION['id_permiso'] != 1){    
     include 'header.php';
     include 'head.php';
-    require_once 'Controllers/r_actividadesController.php';}
+    require_once 'Controllers/r_actividadesController.php';
+    include 'Controllers/breadcrumbs.php';
+
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -15,6 +18,8 @@ if($_SESSION['sistema'] == "pbrm" || $_SESSION['id_permiso'] != 1){
 <body>
 	<div class="container text-center mx-auto">
     <br>
+<?= breadcrumbs(array("Inicio"=> "index.php", "Revisar Reconducciones"=>""))?>
+<br>
         <!-- Aqui comienza el area de las reconducciones de Actividades -->
         <?php if($tipo == "actividades"){
         //primero vamos a llamar las reconducciones

@@ -8,41 +8,13 @@
 </head>
 <body>
 
-<?php 
-print (1%4)
+
+<?php
+
+$data = array("gato", "perro", "perico");
+
+print count($data);
 ?>
-    <table>
-    <tr>
-        <td>Array </td>
-    </tr>
-    <tr>
-        <td>Array </td>
-        <td>Array </td>
-    </tr>
-    <tr>
-        <td>Array </td>
-        <td>Array </td>
-        <td>Array </td>
-    </tr>
-    <tr>
-        <td>Array </td>
-        <td>Array </td>
-        <td>Array </td>
-        <td>Array </td>
-    </tr>
-    <tr>
-        <td>Array </td>
-        <td>Array </td>
-        <td>Array </td>
-        <td>Array </td>
-    </tr>
-    <tr>
-        <td>Array </td>
-        <td>Array </td>
-        <td>Array </td>
-        <td>Array </td>
-        <td>Array </td>
-    </tr><tr><td>Array </td><td>Array </td><td>Array </td><td>Array </td><td>Array </td><td>Array </td></tr>
-    </table>
+
 </body>
 </html>

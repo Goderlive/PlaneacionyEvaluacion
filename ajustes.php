@@ -4,6 +4,7 @@ if($_SESSION['sistema'] == "pbrm" && $_SESSION['id_permiso'] < 3):
     include 'header.php';
     include 'head.php';
     require_once 'Controllers/ajustes_controller.php';
+    include 'Controllers/breadcrumbs.php';
 
     $ajustes = TraeAjustes($con);
 
@@ -17,6 +18,7 @@ if($_SESSION['sistema'] == "pbrm" && $_SESSION['id_permiso'] < 3):
 <div class="container text-center mx-auto">
 
     <br>
+    <?= breadcrumbs(array("Inicio"=>"index,php", "Ajustes"=> "ajustes.php")); ?>
     <h2 class="text-2xl font-bold dark:text-white mr-auto">Puestos de importancia para impresión de formatos</h2>
     <br>
 
