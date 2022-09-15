@@ -17,19 +17,6 @@ function Select($con, $string, $option){
 }
 
 
-function Insert($con, $sentence, $data){
-    var_dump($sentence);
-    var_dump($data);
-    try {
-        $sqlr = $con->prepare($sentence);
-        $sqlr->execute($data);
-    } catch (\Throwable $th) {
-        throw $th;
-        die();
-    }
-}
-
-
 function TraeUnidadesMedida($con){
     $unidades = Select($con, "SELECT * FROM unidades_medida ORDER BY nombre_unidad ASC", "all");
     return $unidades;
@@ -42,7 +29,7 @@ function TraeIndividual($con, $id_unidad){
 }
 
 if(isset($_POST['edit'])){
-    $id_unidad = $_POST['id_unidad'];
+    $id_unidad = (isset($_POST['id_unidad'])) ? $_POST['id_unidad'] : "";
     if(isset($_POST['eliminar'])){
         // Primero traemos la que vamos a eliminar y la subimos a eliminadas
         $borrar = TraeIndividual($con, $id_unidad);
@@ -54,7 +41,10 @@ if(isset($_POST['edit'])){
         VALUES (?,?,?,?,?,?)";
         $sqlr = $con->prepare($sql);
         
-        $sqlr->execute(array($mes, $data['avance'], $data['justificacion'], $full_evidencia_evidencia, $data['descripcion_evidencia'], $id_actividad, $data['id_usuario']));
+        var_dump(array_values($borrar));
+
+        $sqlr->execute(array_values($borrar));
+
 
         $sql = "DELETE FROM unidades_medida WHERE id_unidad = $id_unidad";
         try {
@@ -80,6 +70,22 @@ if(isset($_POST['edit'])){
     
 
     if(isset($_POST['new'])){
+        var_dump($_POST);
+        $nombre = $_POST['nombre_unidad'];
+        $descripcion = $_POST['descripcion_unidad'];
+        $id_registro = $_POST['id_registro'];
+
+        try {
+            $sql = "INSERT INTO unidades_medida
+            (nombre_unidad, descripcion_unidad, id_registro) 
+            VALUES (?,?,?)";
+            $sqlr = $con->prepare($sql);
+            
+            $sqlr->execute(array($nombre, $descripcion, $id_registro));
+
+        } catch (\Throwable $th) {
+            throw $th;
+        }
         
     }
 

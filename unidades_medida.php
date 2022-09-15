@@ -57,7 +57,7 @@ $(document).ready(function(){
 
 
     <div role="status" class="content-center p-5 max-w-xl rounded border border-gray-200 shadow animate-pulse md:p-6 dark:border-gray-700">
-        <form action="models/unidades_medida_model.php" method="post">
+        <form action="models/unidades_medida_model.php" method="post" onsubmit="return confirm('Seguro?');">
             <input type="hidden" name="edit">
             <input type="hidden" name="id_unidad" value="<?= $_POST['id_unidad']?>">
             <input type="hidden" name="id_elimina" value="<?= $id_usuario?>">
