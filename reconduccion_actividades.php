@@ -243,7 +243,7 @@ if (date('m') > 9) {
 
 
 									<?php $mensual = ProgramaMensual($con, $actividad);
-										$contadorMes = 0;
+										$contadorMes = 0 ;
 									foreach($mensual as $mes): 
 										if($contadorMes < $thismes): ?>
 											<td class="py-4 px-6">

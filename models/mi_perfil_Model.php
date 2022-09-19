@@ -3,7 +3,7 @@ require_once 'conection.php';
 
 
 function TraeAreas($con){
-    $stm = $con->query("SELECT id_dependencia, nombre_dependencia FROM dependencias");
+    $stm = $con->query("SELECT id_dependencia, nombre_dependencia FROM dependencias ORDER BY nombre_dependencia ASC");
     $areas = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $areas;
 }
