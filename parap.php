@@ -11,9 +11,18 @@
 
 <?php
 
-$data = array("gato", "perro", "perico");
-
-print count($data);
+print ceil(1/3);
+print ceil(2/3);
+print ceil(3/3);
+print ceil(4/3);
+print ceil(5/3);
+print ceil(6/3);
+print ceil(7/3);
+print ceil(8/3);
+print ceil(9/3);
+print ceil(10/3);
+print ceil(11/3);
+print ceil(12/3);
 ?>
 
 </body>

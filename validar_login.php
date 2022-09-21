@@ -21,6 +21,7 @@
                 $_SESSION['id_permiso'] = $datos['id_permiso'];
                 $_SESSION['sistema'] = 'pbrm';
                 $_SESSION['id_dependencia'] = $datos['id_dependencia'];
+                $_SESSION['anio'] = date('Y');
                 ?>
                 <script>window.location.href = 'index.php';</script>
                 <?php
