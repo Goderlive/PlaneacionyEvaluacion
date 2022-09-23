@@ -1,6 +1,18 @@
 <?php
 require_once 'conection.php';
 
+function FetchAll($con, $sentencia){
+    $stm = $con->query($sentencia);
+    $data = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $data;
+}
+
+
+function Fetch($con, $sentencia){
+    $stm = $con->query($sentencia);
+    $data = $stm->fetch(PDO::FETCH_ASSOC);
+    return $data;
+}
 
 function TraeTodasReconduccionesActividades($con){
     $sql = "SELECT * FROM reconducciones_atividades ra
@@ -24,6 +36,13 @@ function datosdeActividad($con, $id_actividad){
     $stm = $con->query("SELECT * FROM actividades WHERE id_actividad = $id_actividad");
     $dataActividad = $stm->fetch(PDO::FETCH_ASSOC);
     return $dataActividad;
+}
+
+function TraeNombreArea($con, $id_area){
+    $sentencia = "SELECT * FROM dependencias d
+    LEFT JOIN areas a ON d.id_dependencia = a.id_dependencia
+    WHERE a.id_area = $id_area";
+    return Fetch($con, $sentencia);
 }
 
 

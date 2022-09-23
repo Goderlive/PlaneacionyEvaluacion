@@ -10,16 +10,11 @@ if($_SESSION['sistema'] == "pbrm"){
 
 $dep = $_SESSION['id_dependencia'];
 $id_usuario = $_SESSION['id_usuario'];
+
+
 // Nos permite saber el trimestre
-if (date('m') > 9) {
-	$thismes = 9;
-}elseif(date('m') > 5){
-	$thismes = 6;
-}elseif(date('m') > 2){
-	$thismes = 3;
-}else{
-	$thismes = 0;
-}
+$thismes = ceil(date('m'));
+
 	?>
 
 <!DOCTYPE html>
@@ -131,6 +126,10 @@ if (date('m') > 9) {
 	<?php endif?>
 
 		<?php if(isset($_POST['actividad'])): //Hacemos la verificacion de se pasan actividades a reconducir
+
+			
+			$nombre_area = TraeNombreArea($con, $_POST['id_area']);
+			print $nombre_area;
 			$id_area = $_POST['id_area'];
 			$data = TraeDatosReconduccion($con, $id_area);
 			$id_dependencia = $data['id_dependencia'];
