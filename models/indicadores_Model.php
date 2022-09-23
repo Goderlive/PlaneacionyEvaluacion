@@ -7,3 +7,9 @@ function TraeUsuario($con, $id_usuario){
     $usuario = $stm->fetch(PDO::FETCH_ASSOC);
     return $usuario;
 }
+
+function TraeConfiguracion($con){
+    $stm = $con->query("SELECT * FROM setings");
+    $setings = $stm->fetch(PDO::FETCH_ASSOC);
+    return $setings;
+}

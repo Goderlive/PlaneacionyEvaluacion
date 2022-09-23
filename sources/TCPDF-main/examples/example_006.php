@@ -402,7 +402,7 @@ function TablaEvidencias($evidencias){
 
 
 $data = TablaEvidencias($evidencias);
-
+$data = "";
 
 $html = '
 <table class="GeneratedTable" style="width: 100%;">

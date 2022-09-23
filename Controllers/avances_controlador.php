@@ -32,6 +32,9 @@ function MuestraAvancesActividades($con){
                 $imgb = '';
             }
             $date = $a['fecha_avance'];
+
+            var_dump($imgs);
+            var_dump($imgb);
             //Sumamos para meta anual
             $meta_anual = intval($a['enero'])+intval($a['febrero'])+intval($a['marzo'])+intval($a['abril'])+intval($a['mayo'])+intval($a['junio'])+intval($a['julio'])+intval($a['agosto'])+intval($a['septiembre'])+intval($a['octubre'])+intval($a['noviembre'])+intval($a['diciembre']);
             

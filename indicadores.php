@@ -14,10 +14,21 @@ if($_SESSION['id_permiso'] !=3){
 include 'Controllers/breadcrumbs.php';
 include 'Controllers/indicadores_Controller.php';
 
+$setings = TraeConfiguracion($con);
+
+
+$year = $setings['year_report'];
+
+
 
 //Prmero definimos el trimestre en el que estamos
-$trimestre_actual = ceil(date('m')/3);
 
+
+if(isset($_POST) && $_POST){
+    @$trimestre_actual = $_POST['trimestre'];
+}else{
+    $trimestre_actual = ceil(date('m')/3);
+}
 ?>
 
 <body>
@@ -44,6 +55,8 @@ $trimestre_actual = ceil(date('m')/3);
                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
             </button>
         </div>
+
+
         <div class="relative overflow-x-auto shadow-md sm:rounded-md">
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-center text-gray-500 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">

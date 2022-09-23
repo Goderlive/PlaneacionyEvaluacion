@@ -32,7 +32,8 @@ DROP TABLE IF EXISTS dependencias_generales;
 CREATE TABLE dependencias_generales(
     id_dependencia INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     clave_dependencia VARCHAR(15) NOT NULL,
-    nombre_dependencia_general VARCHAR(255) NOT NULL
+    nombre_dependencia_general VARCHAR(255) NOT NULL,
+    fecha_alta DATETIME DEFAULT CURRENT_TIMESTAMP()
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 INSERT INTO dependencias_generales (clave_dependencia, nombre_dependencia_general) VALUES ("A00", "PRESIDENCIA");
 INSERT INTO dependencias_generales (clave_dependencia, nombre_dependencia_general) VALUES ("A01", "COMUNICACIÓN SOCIAL");
@@ -92,7 +93,8 @@ DROP TABLE IF EXISTS dependencias_auxiliares;
 CREATE TABLE dependencias_auxiliares(
     id_dependencia_auxiliar INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     clave_dependencia_auxiliar VARCHAR(15),
-    nombre_dependencia_auxiliar VARCHAR(255)
+    nombre_dependencia_auxiliar VARCHAR(255),
+    fecha_alta DATETIME DEFAULT CURRENT_TIMESTAMP()
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 INSERT INTO dependencias_auxiliares (clave_dependencia_auxiliar, nombre_dependencia_auxiliar) VALUES ("100","Secretaría Particular");
 INSERT INTO dependencias_auxiliares (clave_dependencia_auxiliar, nombre_dependencia_auxiliar) VALUES ("101","Secretaría Técnica");
@@ -233,7 +235,8 @@ CREATE TABLE programas_presupuestarios(
     pilar_o_eje VARCHAR(255), -- Transcripcion de la gaceta
     tema_desarrollo VARCHAR(255),
     codigo_programa VARCHAR(12) NOT NULL,
-    nombre_programa VARCHAR(255) NOT NULL
+    nombre_programa VARCHAR(255) NOT NULL,
+    fecha_alta DATETIME DEFAULT CURRENT_TIMESTAMP()
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 INSERT INTO programas_presupuestarios (objetivo_pp, dependencia_general_gaceta, pilar_o_eje, tema_desarrollo, codigo_programa, nombre_programa) VALUES ("Engloba los proyectos orientados a proteger, defender y garantizar los derechos humanos de todas las personas que se encuentren en cada territorio municipal, sin discriminación por condición alguna y fomentar la cultura de los derechos humanos para promover el respeto y la tolerancia entre los individuos en todos los ámbitos de la interrelación social apoyando a las organizaciones sociales que impulsan estas actividades","A02 Derechos Humanos","Pilar 4 Seguridad","Derechos Humanos","01020401","Derechos humanos");
 INSERT INTO programas_presupuestarios (objetivo_pp, dependencia_general_gaceta, pilar_o_eje, tema_desarrollo, codigo_programa, nombre_programa) VALUES ("Incluye las acciones que favorezcan el desarrollo de un gobierno democrático que impulse la participación social y ofrezca servicio de calidad en el marco de legalidad y justicia, para elevar las condiciones de vida de la población.","J00 Gobierno municipal","Eje transversal II Gobierno Moderno, Capaz y Responsible","Comunicación y diálogo con la ciudadanía como elemento clave de gobernabilidad.","01030101","Conducción de las políticas generales de gobierno");
@@ -320,6 +323,7 @@ CREATE TABLE proyectos(
     descripcion TEXT,
     conac VARCHAR(1),
     id_programa INT, 
+    fecha_alta DATETIME DEFAULT CURRENT_TIMESTAMP(),
     CONSTRAINT FK_programa FOREIGN KEY (id_programa) REFERENCES programas_presupuestarios(id_programa) ON DELETE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 INSERT INTO proyectos (codigo_proyecto, nombre_proyecto, conac, descripcion, id_programa) VALUES("010204010101","Investigación, capacitación, promoción y divulgación de los derechos humanos","E","Comprende las actividades de investigación y docencia, como mecanismos para fortalecer la capacitación, promoción, difusión y divulgación entre la sociedad civil y las instituciones públicas que consoliden el conocimiento en derechos humanos y los servicios que se ofrecen en la materia.",1);
@@ -524,6 +528,7 @@ CREATE TABLE dependencias(
     nivel VARCHAR(50),
     id_dependencia_gen INT,
     id_director INT,
+    fecha_alta DATETIME DEFAULT CURRENT_TIMESTAMP(),
     CONSTRAINT FK_dependencia_general FOREIGN KEY (id_dependencia_gen) REFERENCES dependencias_generales(id_dependencia) ON DELETE CASCADE,
     CONSTRAINT FK_director FOREIGN KEY (id_director) REFERENCES titulares(id_titular) ON DELETE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
@@ -574,6 +579,7 @@ CREATE TABLE areas(
     id_dependencia_aux INT,
     id_proyecto INT,
     id_titular INT,
+    fecha_alta DATETIME DEFAULT CURRENT_TIMESTAMP(),
     CONSTRAINT FK_area_dependencia_general FOREIGN KEY (id_dependencia) REFERENCES dependencias(id_dependencia) ON DELETE CASCADE,
     CONSTRAINT FK_area_clave_general FOREIGN KEY (id_dependencia_general) REFERENCES dependencias_generales(id_dependencia) ON DELETE CASCADE,
     CONSTRAINT FK_dependencia_auxiliar FOREIGN KEY (id_dependencia_aux) REFERENCES dependencias_auxiliares(id_dependencia_auxiliar) ON DELETE CASCADE,
@@ -2634,7 +2640,8 @@ CREATE TABLE indicadores_uso(
     t2 VARCHAR(10),
     t3 VARCHAR(10),
     t4 VARCHAR(10),
-    id_dependencia INT
+    id_dependencia INT,
+    fecha_alta DATETIME DEFAULT CURRENT_TIMESTAMP()
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 INSERT INTO indicadores_uso (anio, id_dep_general, id_dep_aux, id_proyecto, nombre_indicador, variable_a, variable_b, tipo_op_a, tipo_op_b, umedida_a, umedida_b, interpretacion, tipo, formula, dimension, periodicidad, factor_de_comparacion, linea_base, medios_de_verificacion, t1, t2, t3, t4, id_dependencia) VALUES ("2022", "A02", "102", "10204010102", "Tasa de variacion de quejas atendidas por violacion a los derechos humanos.", "Atencion a quejas por violacion a los derechos humanos presentadas en el ano actual", "Atencion a quejas por violacion a los derechos humanos presentadas en el ano anterior", "Sumable", "Sumable", "Queja", "Queja", "Tasa de variacion de quejas atendidas por violacion a los derechos humanos", "Estrategico", "((Atencion a quejas por violacion a los derechos humanos presentadas en el ano actual/Atencion a quejas por violacion a los derechos humanos presentadas en el ano anterior) *100", "Eficiencia", "Anual", "2021", "4", "Dato oficial municipal en termino numerico señalado en los Presupuestos Basados en Resultados 2020", "0", "0", "0", "2",24);
@@ -3010,6 +3017,7 @@ CREATE TABLE descripcion_programas(
     objetivos_ods TEXT,
     metas_ods TEXT,
     id_area INT,
+    fecha_alta DATETIME DEFAULT CURRENT_TIMESTAMP(),
     CONSTRAINT FK_descripcion_programa_area FOREIGN KEY (id_area) REFERENCES areas(id_area) ON DELETE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
@@ -3036,7 +3044,7 @@ CREATE TABLE reconducciones_atividades(
     validado INT DEFAULT 0,
     id_solicitante INT,
     id_validador INT,
-    fecha_validacion DATETIME 
+    fecha_validacion DATETIME
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 
@@ -3509,7 +3517,7 @@ CREATE TABLE unidades_medida_eliminadas(
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 
-DROP TABLE IF EXISTS setings; 
+DROP TABLE IF EXISTS setings;
 CREATE TABLE setings(
     id_setings INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     year_report VARCHAR(4) NOT NULL,
