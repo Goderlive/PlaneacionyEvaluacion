@@ -66,6 +66,10 @@ if($_POST){
         $tipo = "actividades";
     }
 
+
+
+    
+
     header("Location: ../revisa_avances.php?type=$tipo");
 }
 
