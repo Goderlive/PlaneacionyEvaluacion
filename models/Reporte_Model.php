@@ -58,6 +58,16 @@ function AvanceThisMes($con, $id_actividad, $mes){
     return $avance;
 }
 
+
+function AvanceFullThisMes($con, $id_actividad, $mes){
+    $stm = $con->query("SELECT * FROM avances a
+    JOIN usuarios u ON a.id_usuario_avance = u.id_usuario
+    WHERE id_actividad = $id_actividad AND mes = $mes AND validado = 1");
+    $avance = $stm->fetch(PDO::FETCH_ASSOC);
+    return $avance;
+}
+
+
 if (isset($_POST['jfnkasjnkasdf34q345']) == "Enviar") {
     $data = $_POST;
     $year = $data['year'];
