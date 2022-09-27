@@ -6,7 +6,7 @@ function MenuTrimestre($id_dependencia, $this_mes){
     $item = '';
     $trimestre = array("Sin Trimestre", "1er Trimestre", "2do Trimestre", "3er Trimestre", "4to Trimestre");
         for ($i=1; $i < 5; $i++) { 
-            $l= $i+1;
+            $l= $i;
             if($i == $this_mes){
                 $item .= '<li>
                 <form action="indicadores.php" method="POST">

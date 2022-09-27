@@ -21,13 +21,11 @@ $year = $setings['year_report'];
 
 
 
-//Prmero definimos el trimestre en el que estamos
-
-
+//Primero definimos el trimestre en el que estamos
 if(isset($_POST) && $_POST){
     @$trimestre_actual = $_POST['trimestre'];
 }else{
-    $trimestre_actual = ceil(date('m')/3);
+    $trimestre_actual = ceil(date('m')/3) -1;
 }
 ?>
 
@@ -40,21 +38,23 @@ if(isset($_POST) && $_POST){
         <div class="text-center">
             <nav aria-label="Page navigation example">
                 <ul class="inline-flex -space-x-px">
-                    <?= MenuTrimestre($id_dependencia, $trimestre_actual -1); ?>
+                    <?= MenuTrimestre($id_dependencia, $trimestre_actual); ?>
                 </ul>
             </nav>
         </div>   
         <br>
+        <?php if($trimestre_actual == ceil(date('m')/3) -1): ?>
         <div id="alert-1" class="flex p-4 mb-4 bg-blue-100 rounded-lg dark:bg-blue-200" role="alert">
             <svg class="flex-shrink-0 w-5 h-5 text-blue-700 dark:text-blue-800" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
             <div class="ml-3 text-sm font-medium text-blue-700 dark:text-blue-800">
-                Estamos en el trimestre <?= $trimestre_actual;?>, Debemos reportar el trimestre anterior
+                Estamos en el trimestre <?= $trimestre_actual +1;?>, Se debe reportar este trimestre
             </div>
             <button type="button" class="ml-auto -mx-1.5 -my-1.5 bg-blue-100 text-blue-500 rounded-lg focus:ring-2 focus:ring-blue-400 p-1.5 hover:bg-blue-200 inline-flex h-8 w-8 dark:bg-blue-200 dark:text-blue-600 dark:hover:bg-blue-300" data-dismiss-target="#alert-1" aria-label="Close">
                 <span class="sr-only">Close</span>
                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
             </button>
         </div>
+        <?php endif ?>
 
 
         <div class="relative overflow-x-auto shadow-md sm:rounded-md">
@@ -74,7 +74,7 @@ if(isset($_POST) && $_POST){
                                 Frecuencia
                             </th>
                             <th scope="col" class="px-6 py-3">
-                                Trimestre <?php echo $_SESSION['trimestre'];?>
+                                Trimestre <?= $trimestre_actual?>
                             </th>
                             <th scope="col" class="px-6 py-3">
                                 Reportado
@@ -83,245 +83,171 @@ if(isset($_POST) && $_POST){
                                 Anual
                             </th>
                             <th scope="col" class="px-6 py-3">
-                                <span class="sr-only">Reportar</span>
+                                Accion
                             </th>
+
                         </tr>
                     </thead>
                     <tbody>
                         <?php
-                        $anio = $_SESSION['anio'];
-                        $i = 1;
-                        $id_dependencia = $mysqli->real_escape_string($_SESSION['id_dependencia']);
-                        $trimestre = $mysqli->real_escape_string($_SESSION['trimestre']); 
-                        if($trimestre == 1 && date('m') == 4 and date('d') >= 1){
-                            $consulta = "SELECT * FROM indicadores_uso iu LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador WHERE iu.anio = $anio AND id_dependencia = '$id_dependencia'  AND (periodicidad = 'trimestral' OR periodicidad = 'mensual')";
-                            $resultado = $mysqli->query($consulta);
-                            print_r($consulta);
-                            if( $resultado->num_rows > 0 ) {
-                                foreach( $resultado as $datos ) {
-                                    ?>
-                                    <tr class="bg-white text-center border-b dark:bg-gray-800 dark:border-gray-700">
-                                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                            <?php echo $i++;?>
-                                        </th>
-                                        <td class="px-6 py-4">
-                                            <?php echo $datos['nombre_indicador'];?>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <?php echo $datos['tipo'];?>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <?php echo $datos['periodicidad'];?>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <?php echo $datos['t1'];?>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <?php echo $datos['t1'] + $datos['t2'] + $datos['t3'] + $datos['t4']; ?>
-                                        </td>
-                                        <?php
-                                        if( date('m') == 4 && date('d') >= 05) {
-                                            ?>
-                                            <td class="px-6 py-4 text-right">
-                                                Ya no puedes reportar
-                                            </td>
-                                            <?php
-                                        }else if($datos['reportado'] == 0){
-                                            ?>
-                                            <td class="px-6 py-4 text-right">
-                                                <a href="reportar_indicador.php?id=<?php echo $datos['id'];?>" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Reportar</a>
-                                            </td>
-                                            <?php
-                                        }  else{
-                                            ?>
-                                            <td class="px-6 py-4 text-center">
-                                                <button type="button" class="text-white bg-blue-400 dark:bg-blue-500 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center" disabled>Reportado</button>
-                                            </td>
-                                            <?php
-                                        }               
-                                            ?>
-                                    </tr>
-                                    <?php                                       
+                        $indicadores = Indicadores($con, $trimestre_actual, $id_dependencia);
+
+                        //var_dump($indicadores);
+                        if($indicadores): 
+                            $i = 1;
+                            foreach( $indicadores as $datos ): ?>
+
+                            <?php 
+                                if($trimestre_actual == 1){
+                                    $ta = "t1";
                                 }
-                            } else {
-                                    ?>
-                                    <td class="px-6 py-4 text-center">Sin Indicadores</td>
-                                    <?php
-                            }   
-                        } else if($trimestre == 2 && date('m') == 7 and date('d') >= 01){
-                            $ano = $_SESSION['anio'];
-                            echo '2';
-                            echo'<br>';
-                            $trimestre_2 = "SELECT * FROM indicadores_uso iu LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador WHERE iu.anio = $ano  AND id_dependencia = '$id_dependencia' AND (periodicidad = 'trimestral' OR periodicidad = 'semestral' OR periodicidad = 'mensual')";
-                            $resul_t2 = $mysqli->query($trimestre_2);
-                            print_r($trimestre_2);
-                            if( $resul_t2->num_rows > 0 ) {
-                                foreach( $resul_t2 as $t2 ) {
-                                    ?>
-                                    <tr class="bg-white text-center border-b dark:bg-gray-800 dark:border-gray-700">
-                                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                            <?php echo $i++;?>
-                                        </th>
-                                        <td class="px-6 py-4">
-                                            <?php echo $t2['nombre_indicador'];?>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <?php echo $t2['tipo'];?>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <?php echo $t2['periodicidad'];?>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <?php echo $t2['t2'];?>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <?php echo $t2['t1'] + $t2['t2'] + $t2['t3'] + $t2['t4']; ?>
-                                        </td>
-                                        <?php
-                                        if( date('m') == 7 && date('d') == 05) {
-                                            ?>
-                                            <td class="px-6 py-4 text-right">
-                                                Ya no puedes reportar
-                                            </td>
-                                            <?php
-                                        }else{
-                                            ?>
-                                            <td class="px-6 py-4 text-right">
-                                                <a href="reportar_indicador.php?id=<?php echo $t2['id'];?>" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Reportar</a>
-                                        </td>
-                                            <?php
-                                        } 
-                                    ?>
-                                    </tr>
-                                    <?php                                       
+                                if($trimestre_actual == 2){
+                                    $ta = "t2";
                                 }
-                            } else {
-                                    ?>
-                                    <td class="px-6 py-4 text-center">Sin Indicadores</td>
-                                    <?php
-                            }
-                        } else if($trimestre == 3 && date('m') == 10 and date('d') >= 01){
-                            $ano = $_SESSION['anio'];
-                            echo '3';
-                            echo'<br>';
-                            $trimestre_3 = "SELECT * FROM indicadores_uso iu LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador WHERE iu.anio = $ano  AND id_dependencia = '$id_dependencia' AND (periodicidad = 'mensual' OR periodicidad = 'trimestral')";
-                            $resul_t3 = $mysqli->query($trimestre_3);
-                            print_r($trimestre_3);
-                            if( $resul_t3->num_rows > 0 ) {
-                                foreach( $resul_t3 as $t3 ) {
-                                    ?>
-                                    <tr class="bg-white text-center border-b dark:bg-gray-800 dark:border-gray-700">
-                                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                            <?php echo $i++;?>
-                                        </th>
-                                        <td class="px-6 py-4">
-                                            <?php echo $t3['nombre_indicador'];?>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <?php echo $t3['tipo'];?>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <?php echo $t3['periodicidad'];?>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <?php echo $t3['t3'];?>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <?php echo $t3['t1'] + $t3['t2'] + $t3['t3'] + $t3['t4']; ?>
-                                        </td>
-                                        <?php
-                                        if( date('m') == 10 && date('d') >= 05) {
-                                            ?>
-                                            <td class="px-6 py-4 text-right">
-                                                Ya no puedes reportar
-                                            </td>
-                                            <?php
-                                            }else if($t3['reportado'] == ''){
-                                            ?>
-                                            <td class="px-6 py-4 text-center">
-                                                <a href="reportar_indicador.php?id=<?php echo $t3['id'];?>" type="button" class="text-white bg-blue-600 dark:bg-blue-500 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Reportar</a>
-                                            </td>
-                                        <?php
-                                        } else if($t3['reportado'] == 0){
-                                            ?>
-                                            <td class="px-6 py-4 text-center">
-                                                <button type="button" class="text-white bg-yellow-300 hover:bg-yellow-500 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" disabled>En revisión</button>
-                                            </td>
-                                        <?php
-                                        } else if($t3['reportado'] == 1 ){
-                                            ?>
-                                            <td class="px-6 py-4 text-center">
-                                                <button type="button" class="text-white bg-green-400 dark:bg-blue-500 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center" disabled>Reportado</button>
-                                                <a href="./indicadores_pdf.php" type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900" download="reporte_indicador">PDF</a>
-                                            </td>
-                                            <?php
-                                        }
-                                        ?>
-                                    </tr>
-                                    <?php                                       
+                                if($trimestre_actual == 3){
+                                    $ta = "t3";
                                 }
-                            } else {
-                                    ?>
-                                    <td class="px-6 py-4 text-center">Sin Indicadores</td>
-                                    <?php
-                            }
-                        } else if($trimestre == 4 && date('m') == 1 && date('d') >= 1){
-                            $ano = $_SESSION['anio'];
-                            echo '4';
-                            echo'<br>';
-                            $trimestre_4 = "SELECT * FROM indicadores_uso iu LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador WHERE iu.anio = $ano  AND id_dependencia = '$id_dependencia'";
-                            print_r($trimestre_4);
-                            $trimestre_4 = $mysqli->query($trimestre_4);
-                            if( $trimestre_4->num_rows > 0 ) {
-                                foreach( $trimestre_4 as $t4 ) {
-                                    ?>
-                                    <tr class="bg-white text-center border-b dark:bg-gray-800 dark:border-gray-700">
-                                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                            <?php echo $i++;?>
-                                        </th>
-                                        <td class="px-6 py-4">
-                                            <?php echo $t4['nombre_indicador'];?>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <?php echo $t4['tipo'];?>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <?php echo $t4['periodicidad'] = 'Trimestral';?>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <?php echo $t4['t4'];?>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <?php echo $t4['t1'] + $t4['t2'] + $t4['t3'] + $t4['t4']; ?>
-                                        </td>
-                                        <?php
-                                        if( date('m') == 1 && date('d') >= 15) {
-                                            ?>
-                                            <td class="px-6 py-4 text-right">
-                                                Ya no puedes reportar
-                                            </td>
-                                            <?php
-                                        }else{
-                                            ?>
-                                            <td class="px-6 py-4 text-right">
-                                                <a href="reportar_indicador.php?id=<?php echo $t4['id'];?>" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Reportar</a>
-                                            </td>
-                                        <?php
-                                        }
-                                    ?>
-                                    </tr>
-                                    <?php                                       
+                                if($trimestre_actual == 4){
+                                    $ta = "t4";
                                 }
-                            } else {
-                                    ?>
-                                    <td class="px-6 py-4 text-center">Sin Indicadores</td>
-                                    <?php
-                            }
-                        }
-                        ?>                        
+                            ?>
+                                <tr class="bg-white text-center border-b dark:bg-gray-800 dark:border-gray-700">
+                                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                        <?= $i++;?>
+                                    </th>
+                                    <td class="px-6 py-4">
+                                        <?= $datos['nombre_indicador'];?>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <?= $datos['tipo'];?>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <?= $datos['periodicidad'];?>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <?= $datos[$ta];?>
+                                    </td>
+                                    <td>
+                                        tiene?
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <?= $datos['t1'] + $datos['t2'] + $datos['t3'] + $datos['t4']; ?>
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <button data-modal-toggle="mymodal<?= $datos['id']?>" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button" >
+                                            Reportar
+                                        </button>
+                                    </td>
+                                </tr>
+                        
+
+                            <?php endforeach ?> 
+                        <?php endif ?>
                     </tbody>
             </table>
         </div>
+
+
+
+        <?php foreach($indicadores as $ind): ?>
+            <div id="mymodal<?= $ind['id']?>" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full">
+                <div class="relative p-4 w-full max-w-4xl h-full md:h-auto">
+                    <!-- Modal content -->
+                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                        <button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-toggle="mymodal<?= $ind['id']?>">
+                            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                            <span class="sr-only">Cerrar modal</span>
+                        </button>
+                        <div class="py-6 px-6 lg:px-8">   <!-- Aqui comienza -->
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                                Reportar Indicador
+                            </h3>
+                            <br>
+                            <form action="guardar_reportar_indicador.php" method="POST" enctype="multipart/form-data">
+                                    
+                                <div class="overflow-x-auto relative">
+                                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                            <tr>
+                                                <th scope="col" class="py-3 px-6">
+                                                    Var
+                                                </th>
+                                                <th scope="col" class="py-3 px-6">
+                                                    Nombre Variable
+                                                </th>
+                                                <th scope="col" class="py-3 px-6">
+                                                    Unidad de Medida
+                                                </th>
+                                                <th scope="col" class="py-3 px-6">
+                                                    Avance
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                                <td class="py-4 px-5">
+                                                    A
+                                                </td>
+                                                <th class="py-4 px-5">
+                                                    <?= $ind['variable_a'] ?>
+                                                </th>
+                                                <td class="py-4 px-5">
+                                                    <?= $ind['umedida_a'] ?>
+                                                </td>
+                                                <td class="py-4 px-5">
+                                                    <input type="number" name="avvara" id="avvara" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                </td>
+                                            </tr>
+                                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                                <td class="py-4 px-5">
+                                                    B
+                                                </td>
+                                                <th class="py-4 px-5">
+                                                    <?= $ind['variable_b'] ?>
+                                                </th>
+                                                <td class="py-4 px-5">
+                                                <?= $ind['umedida_b'] ?>
+                                                </td>
+                                                <td class="py-4 px-5">
+                                                    <input type="number" name="avvarb" id="avvarb" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                </td>
+                                            </tr>
+                                            <?php if($ind['variable_c']): ?>
+                                                <tr class="bg-white dark:bg-gray-800">
+                                                    <th class="py-4 px-5">
+                                                        C
+                                                    </th>
+                                                    <td class="py-4 px-5">
+                                                        <?= $ind['variable_c'] ?>
+                                                    </td>
+                                                    <td class="py-4 px-5">
+                                                        <?= $ind['umedida_c'] ?>
+                                                    </td>
+                                                    <td class="py-4 px-5">
+                                                        <input type="number" name="avvarc" id="avvarc" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                    </td>
+                                                </tr>
+                                            <?php endif ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <br>
+                                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" for="file_input">Subir Evidencia</label>
+                                <input class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" type="file" accept="image/png,image/jpeg,image/jpg">
+                                <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
+                                
+                                <br>
+
+                                <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Reportar</button>
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        <?php endforeach ?>
+
     </div>
 <?php include 'footer.php';?>    
 </body>

@@ -2636,12 +2636,21 @@ CREATE TABLE indicadores_uso(
     desc_factor_de_comparacion VARCHAR(255),
     linea_base VARCHAR(255),
     medios_de_verificacion VARCHAR(255),
-    t1 VARCHAR(10),
-    t2 VARCHAR(10),
-    t3 VARCHAR(10),
-    t4 VARCHAR(10),
+    at1 VARCHAR(10),
+    at2 VARCHAR(10),
+    at3 VARCHAR(10),
+    at4 VARCHAR(10),
+    bt1 VARCHAR(10),
+    bt2 VARCHAR(10),
+    bt3 VARCHAR(10),
+    bt4 VARCHAR(10),
+    ct1 VARCHAR(10),
+    ct2 VARCHAR(10),
+    ct3 VARCHAR(10),
+    ct4 VARCHAR(10),
     id_dependencia INT,
-    fecha_alta DATETIME DEFAULT CURRENT_TIMESTAMP()
+    fecha_alta DATETIME DEFAULT CURRENT_TIMESTAMP(),
+    id_alta INT
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 INSERT INTO indicadores_uso (anio, id_dep_general, id_dep_aux, id_proyecto, nombre_indicador, variable_a, variable_b, tipo_op_a, tipo_op_b, umedida_a, umedida_b, interpretacion, tipo, formula, dimension, periodicidad, factor_de_comparacion, linea_base, medios_de_verificacion, t1, t2, t3, t4, id_dependencia) VALUES ("2022", "A02", "102", "10204010102", "Tasa de variacion de quejas atendidas por violacion a los derechos humanos.", "Atencion a quejas por violacion a los derechos humanos presentadas en el ano actual", "Atencion a quejas por violacion a los derechos humanos presentadas en el ano anterior", "Sumable", "Sumable", "Queja", "Queja", "Tasa de variacion de quejas atendidas por violacion a los derechos humanos", "Estrategico", "((Atencion a quejas por violacion a los derechos humanos presentadas en el ano actual/Atencion a quejas por violacion a los derechos humanos presentadas en el ano anterior) *100", "Eficiencia", "Anual", "2021", "4", "Dato oficial municipal en termino numerico señalado en los Presupuestos Basados en Resultados 2020", "0", "0", "0", "2",24);
