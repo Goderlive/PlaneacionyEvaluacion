@@ -529,6 +529,7 @@ CREATE TABLE dependencias(
     id_dependencia_gen INT,
     id_director INT,
     fecha_alta DATETIME DEFAULT CURRENT_TIMESTAMP(),
+    active INT,
     CONSTRAINT FK_dependencia_general FOREIGN KEY (id_dependencia_gen) REFERENCES dependencias_generales(id_dependencia) ON DELETE CASCADE,
     CONSTRAINT FK_director FOREIGN KEY (id_director) REFERENCES titulares(id_titular) ON DELETE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
@@ -580,6 +581,7 @@ CREATE TABLE areas(
     id_proyecto INT,
     id_titular INT,
     fecha_alta DATETIME DEFAULT CURRENT_TIMESTAMP(),
+    active INT,
     CONSTRAINT FK_area_dependencia_general FOREIGN KEY (id_dependencia) REFERENCES dependencias(id_dependencia) ON DELETE CASCADE,
     CONSTRAINT FK_area_clave_general FOREIGN KEY (id_dependencia_general) REFERENCES dependencias_generales(id_dependencia) ON DELETE CASCADE,
     CONSTRAINT FK_dependencia_auxiliar FOREIGN KEY (id_dependencia_aux) REFERENCES dependencias_auxiliares(id_dependencia_auxiliar) ON DELETE CASCADE,
@@ -2990,9 +2992,6 @@ INSERT INTO `indicadores_uso` (`id`, `anio`, `id_dep_general`, `id_dep_aux`, `id
 (331, '2022', 0, 133, 2147483647, 'Tasa de variacion en el numero de artesanos participantes en eventos.', 'Artesanos participantes en eventos en el ano actual', 'Artesanos participantes en eventos en el ano anterior', NULL, 'Sumable', 'Sumable', NULL, 'Repote', 'Repote', NULL, 'Numero de artesanos particpantes en eventos en el año, sobre los  artesanos participantes en el año anterior', 'Estrategico', '((Artesanos participantes en eventos en el ano act', 'Eficiencia', 'Anual', 'Resgistro internos d', NULL, 'Reporte de artesanos participantes en eventos en el año', 'Diferencia de artesanos participantes en eventos en el año, entre los artesanos participantes el año anterior', '0', '0', '0', '1', '0', '0', '0', '1', NULL, NULL, NULL, NULL, 10, '2022-09-28 17:27:07', NULL),
 (332, '2022', 0, 133, 2147483647, 'Porcentaje de eventos realizados para la venta de los productos de los artesanos.', 'Eventos para la venta de los productos de los artesanos realizados', 'Eventos para la venta de los productos de los artesanos programados y/o gestionados', NULL, 'Sumable', 'Sumable', NULL, 'Gestion', 'Gestion', NULL, 'Es la comparativa de los eventos realizados para la venta de productos de este año sobre los eventos realizados para la venta de productos del año anterior', 'Gestion', '(Eventos para la venta de los productos de los art', 'Eficiencia', 'Semestral', 'Regisros internos de', NULL, 'Gestiones realizadas de eventos para la venta de productos artesanales', 'Archivo de la Dependencia', '0', '2', '0', '2', '0', '2', '0', '2', NULL, NULL, NULL, NULL, 10, '2022-09-28 17:27:07', NULL),
 (333, '2022', 0, 133, 2147483647, 'Porcentaje de platicas informativas sobre promocion y comercializacion.', 'Platicas informativas sobre promocion y comercializacion otorgadas', 'Platicas informativas sobre promocion y comercializacion programadas', NULL, 'Sumable', 'Sumable', NULL, 'Reporte', 'Reporte', NULL, 'Diferencia de platicas informativas sobre promocion y comercializacion otorgadas, sobre las programadas', 'Gestion', '(Platicas informativas sobre promocion y comercial', 'Eficiencia', 'Trimestral', 'Registros internos d', NULL, 'Reportes de platicas informativas realizadas para promocion y comercializacion', 'Platicas informativas sobre promocion y comercializacion otorgadas, sobre las programadas en el trimestre', '1', '1', '1', '1', '1', '1', '1', '1', NULL, NULL, NULL, NULL, 10, '2022-09-28 17:27:07', NULL);
-
-
-
 
 
 

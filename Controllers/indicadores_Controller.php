@@ -27,4 +27,15 @@ function MenuTrimestre($id_dependencia, $this_mes){
 }
 
 
+function TextoTrimestre($trimestre_actual){
+    $data = array();
+    $str = "at" . strval($trimestre_actual);
+    array_push($data, $str);
+    $str = "bt" . strval($trimestre_actual);
+    array_push($data, $str);
+    $str = "ct" . strval($trimestre_actual);
+    array_push($data, $str);
+    return $data;
+}
+
 ?>

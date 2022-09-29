@@ -61,79 +61,82 @@ if(isset($_POST) && $_POST){
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-center text-gray-500 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" class="px-3 py-3">
                                 #
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" class="px-3 py-3">
                                 Nombre Indicador
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" class="px-3 py-3">
+                                Variables    
+                            </th>
+                            <th scope="col" class="px-3 py-3">
                                 Unidad de Medida
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" class="px-3 py-3">
                                 Frecuencia
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" class="px-3 py-3">
                                 Trimestre <?= $trimestre_actual?>
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" class="px-3 py-3">
                                 Reportado
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" class="px-3 py-3">
                                 Anual
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" class="px-3 py-3">
                                 Accion
                             </th>
 
                         </tr>
                     </thead>
                     <tbody>
-                        <?php
-                        $indicadores = Indicadores($con, $trimestre_actual, $id_dependencia);
-
+                        <?php $ta = TextoTrimestre($trimestre_actual)?>
+                        <?php $indicadores = Indicadores($con, $trimestre_actual, $id_dependencia);
                         //var_dump($indicadores);
                         if($indicadores): 
                             $i = 1;
                             foreach( $indicadores as $datos ): ?>
 
-                            <?php 
-                                if($trimestre_actual == 1){
-                                    $ta = "t1";
-                                }
-                                if($trimestre_actual == 2){
-                                    $ta = "t2";
-                                }
-                                if($trimestre_actual == 3){
-                                    $ta = "t3";
-                                }
-                                if($trimestre_actual == 4){
-                                    $ta = "t4";
-                                }
-                            ?>
                                 <tr class="bg-white text-center border-b dark:bg-gray-800 dark:border-gray-700">
-                                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                    <th scope="row" class="px-2 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                         <?= $i++;?>
                                     </th>
-                                    <td class="px-6 py-4">
+                                    <td class="px-2 py-4">
                                         <?= $datos['nombre_indicador'];?>
                                     </td>
-                                    <td class="px-6 py-4">
-                                        <?= $datos['tipo'];?>
+                                    <td class="px-2 py-4" align="left">
+                                        <?= "- " . $datos['variable_a'] . "<br>"?>
+                                        <?= "- " . $datos['variable_b']?>
+                                        <?php if($datos['variable_c']){
+                                            print "<br>- " . $datos['variable_c'];
+                                        }?>
                                     </td>
-                                    <td class="px-6 py-4">
+                                    <td class="px-2 py-4">
+                                        <?= $datos['umedida_a'] . "<br>"?>
+                                        <?= $datos['umedida_b']?>
+                                        <?php if($datos['umedida_c']){
+                                            print $datos['umedida_c'];
+                                        }?>
+                                    </td>
+                                    <td class="px-2 py-4">
                                         <?= $datos['periodicidad'];?>
                                     </td>
-                                    <td class="px-6 py-4">
-                                        <?= $datos[$ta];?>
+                                    <td class="px-2 py-4">
+                                        <?= $datos[$ta[0]] . "<br>" . $datos[$ta[1]];?>
                                     </td>
                                     <td>
-                                        tiene?
+                                        
                                     </td>
-                                    <td class="px-6 py-4">
-                                        <?= $datos['t1'] + $datos['t2'] + $datos['t3'] + $datos['t4']; ?>
+                                    <td class="px-2 py-4">
+                                        <?php print $datos['at1'] + $datos['at2'] + $datos['at3'] + $datos['at4'] . "<br>" . $datos['bt1'] + $datos['bt2'] + $datos['bt3'] + $datos['bt4']; 
+                                            if($datos['ct1']){
+                                                print "<br>" . $datos['at1'] + $datos['at2'] + $datos['at3'] + $datos['at4'];
+                                            }
+                                        ?>
                                     </td>
-                                    <td class="px-6 py-4 text-center">
+                                    <td class="px-2 py-4 text-center">
                                         <button data-modal-toggle="mymodal<?= $datos['id']?>" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button" >
                                             Reportar
                                         </button>
@@ -149,6 +152,8 @@ if(isset($_POST) && $_POST){
 
 
 
+
+<!-- Modales -->
         <?php foreach($indicadores as $ind): ?>
             <div id="mymodal<?= $ind['id']?>" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full">
                 <div class="relative p-4 w-full max-w-4xl h-full md:h-auto">
@@ -163,22 +168,25 @@ if(isset($_POST) && $_POST){
                                 Reportar Indicador
                             </h3>
                             <br>
-                            <form action="guardar_reportar_indicador.php" method="POST" enctype="multipart/form-data">
+                            <form action="guardar_reportar_indicador.php" method="POST" enctype="multipart/form-data">  <!-- datos ocultos del formulario -->
+                                <input type="hidden" name="id_dependencia" value="<?= $ind['id_dependencia'] ?>">
+                                <input type="hidden" name="id_indicador" value="<?= $ind['id'] ?>">
+                                <input type="hidden" name="id_indicador" value="<?= $ind['id_indicador'] ?>">
                                     
                                 <div class="overflow-x-auto relative">
                                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                             <tr>
-                                                <th scope="col" class="py-3 px-6">
+                                                <th scope="col" class="py-1 px-2">
                                                     Var
                                                 </th>
-                                                <th scope="col" class="py-3 px-6">
-                                                    Nombre Variable
+                                                <th scope="col" class="py-1 px-2">
+                                                    Variables
                                                 </th>
-                                                <th scope="col" class="py-3 px-6">
+                                                <th scope="col" class="py-1 px-2">
                                                     Unidad de Medida
                                                 </th>
-                                                <th scope="col" class="py-3 px-6">
+                                                <th scope="col" class="py-1 px-2">
                                                     Avance
                                                 </th>
                                             </tr>
@@ -192,10 +200,11 @@ if(isset($_POST) && $_POST){
                                                     <?= $ind['variable_a'] ?>
                                                 </th>
                                                 <td class="py-4 px-5">
-                                                    <?= $ind['umedida_a'] ?>
+                                                    <?= $ind['umedida_b'] ?>
                                                 </td>
+
                                                 <td class="py-4 px-5">
-                                                    <input type="number" name="avvara" id="avvara" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                    <input type="number" required name="avvara" id="avvara" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                                 </td>
                                             </tr>
                                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
@@ -209,7 +218,7 @@ if(isset($_POST) && $_POST){
                                                 <?= $ind['umedida_b'] ?>
                                                 </td>
                                                 <td class="py-4 px-5">
-                                                    <input type="number" name="avvarb" id="avvarb" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                    <input type="number" required name="avvarb" id="avvarb" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                                 </td>
                                             </tr>
                                             <?php if($ind['variable_c']): ?>
@@ -224,7 +233,7 @@ if(isset($_POST) && $_POST){
                                                         <?= $ind['umedida_c'] ?>
                                                     </td>
                                                     <td class="py-4 px-5">
-                                                        <input type="number" name="avvarc" id="avvarc" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                        <input type="number" required name="avvarc" id="avvarc" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                                     </td>
                                                 </tr>
                                             <?php endif ?>
@@ -233,11 +242,17 @@ if(isset($_POST) && $_POST){
                                 </div>
                                 <br>
                                 <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" for="file_input">Subir Evidencia</label>
-                                <input class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" type="file" accept="image/png,image/jpeg,image/jpg">
+                                <input aria-describedby="file_input_help" name="path_evidencia" id="file_input" type="file" accept="image/png,image/jpeg,image/jpg" class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400">
                                 <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
                                 
                                 <br>
-
+                                <label for="descripcion_evidencia" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Descripción de la Evidencia:</label>
+                                <textarea id="descripcion_evidencia" name="descripcion_evidencia" rows="2" placeholder="Fecha, lugar y descripción breve de la actividad" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                
+                                <br>
+                                <label for="justificacion" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Justificación caso de +10% o -10% de variación:</label>
+                                <textarea id="justificacion" name="justificacion" rows="2" placeholder="En caso de variacion superior al 10%, describir una justificación de la variación" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                    <br>
                                 <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Reportar</button>
 
                             </form>
@@ -249,6 +264,8 @@ if(isset($_POST) && $_POST){
         <?php endforeach ?>
 
     </div>
+
+    <br>
 <?php include 'footer.php';?>    
 </body>
 </html>

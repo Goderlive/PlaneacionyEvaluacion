@@ -26,8 +26,7 @@ if($_SESSION['sistema'] == "pbrm" || $_SESSION['id_permiso'] != 1){
             if(!$Avances){
                 print "No Tienes Avances Pendientes Por Revisión";
             }
-            foreach($Avances as $a):?>
-
+            foreach($Avances as $a): ?>
 
             <div class="p-6 w-full bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
                 
@@ -79,14 +78,15 @@ if($_SESSION['sistema'] == "pbrm" || $_SESSION['id_permiso'] != 1){
                             <td class="py-2 px-6" align="center" valign="top">
                                 <?php 
                                 $lowthismes = strtolower(ThisMes($a));
-                                print $prog_mes = $a[$lowthismes];
+                                $prog_mes = $a[$lowthismes];
+                                print "<b>" . $prog_mes . "</b>";
                                 ?>
                             </td>
                             <td class="py-2 px-6" align="center" valign="top">
-                                <?= $a['avance'] ?>
+                                <?= "<b>" . $a['avance'] . "<b>"?>
                             </td>
                             <td class="py-2 px-6" align="center" valign="top">
-                                <?= intval($a['unidad']) - $prog_mes ?>
+                                <?= intval($a['avance']) - $prog_mes ?>
                             </td>
                             <td rowspan=2 class="py-2 px-6" align="center">
                                 <button type="button" data-modal-toggle="modal<?=$a['id_avance']?>">
