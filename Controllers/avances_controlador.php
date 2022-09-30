@@ -48,16 +48,4 @@ function imgmd($data){
     }
 }
 
-
-
-function MuestraAvancesIndicadores($con){
-    $Avances = ConsultaAvancesIndicadores($con);
-    if($Avances){
-
-    }else{
-        return "Actualmente no cuentas con avances de indicadores pendientes";
-    }
-}
-
-
 ?>

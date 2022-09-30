@@ -3002,7 +3002,6 @@ CREATE TABLE avances_indicadores(
     avance_a VARCHAR(25),
     avance_b VARCHAR(25),
     avance_c VARCHAR(25),
-    porcentaje_avance VARCHAR(6),
     justificacion TEXT,
     path_evidenia VARCHAR(255),
     path_evidenia_evidencia VARCHAR(255),
@@ -3013,7 +3012,8 @@ CREATE TABLE avances_indicadores(
     validado INT DEFAULT 0,
     id_usuario_valida INT,
     fecha_reporta TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    fecha_valida TIMESTAMP NULL
+    fecha_valida TIMESTAMP NULL,
+    year VARCHAR(4)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 

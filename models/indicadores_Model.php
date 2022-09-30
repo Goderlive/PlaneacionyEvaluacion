@@ -14,7 +14,6 @@ function Fetch($con, $string){
         return $data;
     } catch (\Throwable $th) {
         print $th;
-        print $data;
     }
 }
 
@@ -49,7 +48,6 @@ function Indicadores($con, $trimestre, $id_dependencia){
 }
 
 function TraeConfiguracion($con){
-    $stm = $con->query("SELECT * FROM setings");
-    $setings = $stm->fetch(PDO::FETCH_ASSOC);
-    return $setings;
+    return Fetch($con, "SELECT * FROM setings");
 }
+
