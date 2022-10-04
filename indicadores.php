@@ -153,7 +153,8 @@ if(isset($_POST) && $_POST){
 
 
 <!-- Modales -->
-        <?php foreach($indicadores as $ind): ?>
+        <?php foreach($indicadores as $ind): 
+            var_dump($ind)?>
             <div id="mymodal<?= $ind['id']?>" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full">
                 <div class="relative p-4 w-full max-w-4xl h-full md:h-auto">
                     <!-- Modal content -->

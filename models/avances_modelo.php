@@ -30,7 +30,7 @@ function ConsultaAvancesActividades($con){
 function ConsultaAvancesIndicadores($con){
     $stm = $con->query("SELECT a.id_avance, a.trimestre, a.avance_a, a.avance_b, a.avance_c, a.justificacion, a.path_evidenia_evidencia, a.descripcion_evidencia, a.fecha_reporta,
     u.nombre, u.apellidos, u.id_permiso, u.correo_electronico, u.tel,
-    iu.variable_a, iu.variable_b, iu.variable_c, iu.tipo_op_a, iu.tipo_op_b, iu.tipo_op_c,  iu.umedida_a, iu.umedida_b, iu.umedida_c, iu.at1, iu.at2, iu.at3, iu.at4, iu.bt1, iu.bt2, iu.bt3, iu.bt4, iu.ct1, iu.ct2, iu.ct3, iu.ct4,
+    iu.nombre_indicador, iu.variable_a, iu.variable_b, iu.variable_c, iu.tipo_op_a, iu.tipo_op_b, iu.tipo_op_c, iu.umedida_a, iu.umedida_b, iu.umedida_c, iu.at1, iu.at2, iu.at3, iu.at4, iu.bt1, iu.bt2, iu.bt3, iu.bt4, iu.ct1, iu.ct2, iu.ct3, iu.ct4,
     dp.nombre_dependencia,
     dpg.clave_dependencia,
     dpa.clave_dependencia_auxiliar,

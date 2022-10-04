@@ -161,8 +161,11 @@ if($_SESSION['sistema'] == "pbrm" || $_SESSION['id_permiso'] != 1){
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-900 dark:text-gray-400">
                         <tr>
-                            <th scope="col" class="py-3 px-6" align="center"> 
-                                Nombre de la Meta de Actividad
+                            <th scope="col" solspan="2" class="py-3 px-6" align="center"> 
+                                Nombre del Indicador
+                            </th>
+                            <th scope="col" class="py-3 px-6" align="center">
+                                Variables
                             </th>
                             <th scope="col" class="py-3 px-6" align="center">
                                 U d M
@@ -171,13 +174,13 @@ if($_SESSION['sistema'] == "pbrm" || $_SESSION['id_permiso'] != 1){
                                 Prog. Anual
                             </th>
                             <th scope="col" class="py-3 px-6" align="center">
-                                Mes
+                                Trimestre
                             </th>
                             <th scope="col" class="py-3 px-6" align="center">
-                                Prog Mes
+                                Prog Trimestre
                             </th>
                             <th scope="col" class="py-3 px-6" align="center">
-                                Alcanzada
+                                Alcanzada Trimestre
                             </th>
                             <th scope="col" class="py-3 px-6" align="center">
                                 Variacion
@@ -189,43 +192,70 @@ if($_SESSION['sistema'] == "pbrm" || $_SESSION['id_permiso'] != 1){
                     </thead>
                     <tbody>
                         <tr class="bg-white dark:bg-gray-800">
-                            <th scope="row" class="py-2 px-6" align="center" valign="top">
-                                <?= $a['nombre_actividad'] ?>
+                            <th scope="row" rowspan="2" class="py-2 px-6" align="center" valign="top">
+                                <?= $a['nombre_indicador'] ?>
                             </th>
                             <td class="py-2 px-6" align="center" valign="top">
-                                <?= $a['unidad'] ?>
+                                <?= $a['variable_a'] ?>
                             </td>
                             <td class="py-2 px-6" align="center" valign="top">
-                                <?= MetaAnual($a) ?>
+                                <?= $a['umedida_a'] ?>
                             </td>
                             <td class="py-2 px-6" align="center" valign="top">
-                                <?= ThisMes($a) ?>
+                                <?= $a['at1'] + $a['at2'] + $a['at3'] + $a['at4']?>
+                            </td>
+                            <td class="py-2 px-6" rowspan="2" align="center" valign="top">
+                                <?= $a['trimestre'] . "° Trimestre" ?>
                             </td>
                             <td class="py-2 px-6" align="center" valign="top">
                                 <?php 
-                                $lowthismes = strtolower(ThisMes($a));
-                                $prog_mes = $a[$lowthismes];
-                                print "<b>" . $prog_mes . "</b>";
-                                ?>
+                                $str = "at" . $a['trimestre'];
+                                print $programado_trimestre = $a[$str]?>
                             </td>
                             <td class="py-2 px-6" align="center" valign="top">
-                                <?= "<b>" . $a['avance'] . "<b>"?>
+                                <?= "<b>" . $a['avance_a'] . "<b>"?>
                             </td>
                             <td class="py-2 px-6" align="center" valign="top">
-                                <?= intval($a['avance']) - $prog_mes ?>
+                                <?= intval($a['avance_a']) - $programado_trimestre ?>
                             </td>
                             <td rowspan=2 class="py-2 px-6" align="center">
                                 <button type="button" data-modal-toggle="modal<?=$a['id_avance']?>">
-                                    <?= imgsmall($a['path_evidenia_evidencia']) ?>
+                                    <?= imgsmall(".".$a['path_evidenia_evidencia']) ?>
                                 </button>
                             </td>
                         </tr>
+
+                        <tr class="bg-white dark:bg-gray-800">
+                            <td class="py-2 px-6" align="center" valign="top">
+                                <?= $a['variable_b'] ?>
+                            </td>
+                            <td class="py-2 px-6" align="center" valign="top">
+                                <?= $a['umedida_b'] ?>
+                            </td>
+                            <td class="py-2 px-6" align="center" valign="top">
+                                <?= $a['bt1'] + $a['bt2'] + $a['bt3'] + $a['bt4']?>
+                            </td>
+                            <td class="py-2 px-6" align="center" valign="top">
+                                <?php 
+                                $str = "at" . $a['trimestre'];
+                                print $programado_trimestre = $a[$str]?>
+                            </td>
+                            <td class="py-2 px-6" align="center" valign="top">
+                                <?= "<b>" . $a['avance_b'] . "<b>"?>
+                            </td>
+                            <td class="py-2 px-6" align="center" valign="top">
+                                <?= intval($a['avance_b']) - $programado_trimestre ?>
+                            </td>
+                            <td rowspan=2 class="py-2 px-6" align="center">
+                            </td>
+                        </tr>
+
                         <tr class="bg-white dark:bg-gray-800">
                             <td colspan="4" scope="row" class="py-2 px-6" valign="top">
                                 Justificación por variación:
                                 <?= $a['justificacion'] ?>
                                 <br>
-                                Reportado por:<b> <?= $a['justificacion'] . "<br>" . $a['nombre'].' ' . $a['apellidos']. "</b>" . dia($a['fecha_avance']) ?>
+                                Reportado por: <b> <?=  $a['nombre'].' ' . $a['apellidos']. "</b>" . dia($a['fecha_reporta']) ?>
                             </td>
                             <td class="py-2 px-6" colspan="3" align="center" valign="top">
                                 <form action="models/avances_modelo.php" method="post">
