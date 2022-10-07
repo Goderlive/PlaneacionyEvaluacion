@@ -36,7 +36,7 @@ function CreaBotones($id_indicador, $trimestre_actual, $con){
     $tieneAvance = Fetch($con, "SELECT id_avance, validado FROM avances_indicadores WHERE id_indicador = $id_indicador AND trimestre = $trimestre_actual");
     if($tieneAvance){
         if($tieneAvance['validado']){
-            $boton = '<button data-modal-toggle="mymodal'.$id_indicador.'" disabled class="text-white bg-blue-400 dark:bg-blue-500 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="button" >Reportado</button>';
+            $boton = '<button data-modal-toggle="mymodal'.$id_indicador.'" disabled class="text-white bg-green-400 dark:bg-green-500 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="button" >Reportado</button>';
             return $boton;
         }
         $boton = '<button data-modal-toggle="mymodal'.$id_indicador.'" disabled class="text-white bg-yellow-300 dark:bg-yellow-500 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="button" >Revisión</button>';

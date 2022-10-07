@@ -19,6 +19,14 @@ function NombreActividad($con, $actividad){
     return $actividad;
 }   
 
+
+function NombreArea($con, $id_area){
+    $stm = $con->query("SELECT nombre_area FROM areas WHERE id_area = $id_area");
+    $area = $stm->fetch(PDO::FETCH_ASSOC);
+    return $area['nombre_area'];
+}   
+
+
 function TraeDatosReconduccion($con, $id_area){
     $stm = $con->query("SELECT * FROM areas ar
     LEFT JOIN dependencias_generales dg ON dg.id_dependencia = ar.id_dependencia_general
@@ -35,7 +43,7 @@ function TraeDatosReconduccion($con, $id_area){
 function ProgramaMensual($con, $actividad){
     $stm = $con->query("SELECT * FROM programaciones WHERE id_actividad = $actividad");
     $data = $stm->fetch(PDO::FETCH_ASSOC);
-    $data = array_slice($data, 1,-1);
+    $data = array_slice($data, 1,-2);
     return $data;
 }
 

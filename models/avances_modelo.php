@@ -66,6 +66,19 @@ if($_POST){
     }
 
 
+    if(isset($_POST['valida_indicador'])){
+        $sql = "UPDATE avances_indicadores SET validado = 1, id_usuario_valida = ?, fecha_valida = NOW() WHERE id_avance = ?";
+        $sqlr = $con->prepare($sql);
+        $sqlr->execute(array($data['usuario'], $data['id_avance']));
+        $tipo = "indicadores";
+    }
+
+    if(isset($_POST['cancela_indicador'])){
+        $id_avance = $data['id_avance'];
+        $nrows = $con->exec("DELETE FROM avances_indicadores WHERE id_avance = $id_avance");
+        $tipo = "indicadores";
+    }
+
 
     
 

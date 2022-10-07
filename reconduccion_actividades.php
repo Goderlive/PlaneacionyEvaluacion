@@ -5,8 +5,7 @@ if($_SESSION['sistema'] == "pbrm"){
     include 'header.php';
     include 'head.php';
     require_once 'Controllers/reconducciona_Controlador.php';
-	require_once 'models/reconducciones_modelo.php';
-	include 'Controllers/breadcrumbs.php';
+ 	include 'Controllers/breadcrumbs.php';
 
 $dep = $_SESSION['id_dependencia'];
 $id_usuario = $_SESSION['id_usuario'];
@@ -14,8 +13,7 @@ $id_usuario = $_SESSION['id_usuario'];
 
 // Nos permite saber el trimestre
 $thismes = ceil(date('m'));
-
-	?>
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -28,8 +26,16 @@ $thismes = ceil(date('m'));
 <body>
 <div class="container mx-auto">
 
+<?php
+if(isset($_POST['id_area']) && $_POST){
+	$nombre_area = NombreArea($con, $_POST['id_area']);
+}else{
+	$nombre_area = "";
+}
+?>
+
 	<br>
-<?= breadcrumbs(array("Inicio"=> "index.php", "Actividades"=> "actividades.php", "Reconducción de Actividades"=>""))?>
+<?= breadcrumbs(array("Inicio"=> "index.php", "Actividades"=> "actividades.php", "Reconducción de Actividades"=>"", $nombre_area => ""))?>
 	
 <br>
 	<?php 
@@ -128,8 +134,7 @@ $thismes = ceil(date('m'));
 		<?php if(isset($_POST['actividad'])): //Hacemos la verificacion de se pasan actividades a reconducir
 
 			
-			$nombre_area = TraeNombreArea($con, $_POST['id_area']);
-			print $nombre_area;
+			//$nombre_area = TraeNombreArea($con, $_POST['id_area']);
 			$id_area = $_POST['id_area'];
 			$data = TraeDatosReconduccion($con, $id_area);
 			$id_dependencia = $data['id_dependencia'];
@@ -241,30 +246,34 @@ $thismes = ceil(date('m'));
 					<input type="hidden" name="<?= $actividad?>[]" value="<?= $dataActividad['unidad'] ?>">
 
 
-									<?php $mensual = ProgramaMensual($con, $actividad);
-										$contadorMes = 0 ;
-									foreach($mensual as $mes): 
-										if($contadorMes < $thismes): ?>
+									<?php $mensual = ProgramaMensual($con, $actividad); // La funcion limita lo 12 campos solamente de los 15 que tiene
+										$contadorMes = 1;
+										$thisTrimestre = ceil($thismes/3);
+									foreach($mensual as $mes): // Primer recorremos los 12 
+									// Primero tenemos que mostrar los que esten fuera del trimestre en el que estamos
+										$trimestreAvance= ceil($contadorMes/3);
+										
+										if($thisTrimestre > $trimestreAvance):?>  <!-- Si los avances estan en un trimestre menor al actual no se pueden cambiar, entonces mostraremos un boton desabilitado -->
 											<td class="py-4 px-6">
 												<input type="text" id="disabled-input" aria-label="disabled input" class="mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="<?= $mes ?>" disabled required>
 												<input type="hidden" name="<?= $actividad?>[]" value="<?= $mes ?>">
-											</td>		
-										<?php elseif ($contadorMes >= $thismes): 
-											if($avance = MuestraAvanceActual($con, $contadorMes+1, $actividad)):?>
-												<td class="py-4 px-6">
-													<input type="text" id="disabled-input" aria-label="disabled input" class="mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="<?= $avance['avance'] ?>" disabled required>
-													<input type="hidden" name="<?= $actividad?>[]" value="<?= $mes ?>">
-												</td>	
+											</td>
+											<!--Aqui ya sabemos que estamos ante un caso posible, primero vamos a revisar si tiene avance... -->
+										<?php else:
+											if($avance = MuestraAvanceActual($con, $contadorMes, $actividad)):?>
+											<td class="py-4 px-6">
+												<input type="text" id="disabled-input" aria-label="disabled input" class="mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="<?= $avance['avance'] ?>" disabled required>
+												<input type="hidden" name="<?= $actividad?>[]" value="<?= $mes ?>">
+											</td>	
 											<?php else:?>
 												<td class="py-4 px-6">
 													<input type="text" name="<?= $actividad?>[]" class="mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"  value="<?= $mes ?>" required>
 												</td>
-											<?php endif?>		
-
+											<?php endif ?>
 										<?php endif ?>
 									<?php 
-										$contadorMes += 1;
-										endforeach?>
+									$contadorMes += 1;
+									endforeach?>
 							</tr>
 							<tr>
 								<td colspan="12">

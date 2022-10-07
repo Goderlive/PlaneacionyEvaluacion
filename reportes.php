@@ -9,10 +9,14 @@ if($_SESSION['id_permiso'] == 1 || $_SESSION['id_permiso'] == 4 || $_SESSION['id
 <?php include 'Controllers/breadcrumbs.php';?>
 <body>
     <br>
-    <div class="container mx-auto">        
-<?= breadcrumbs(array("Inicio"=> "index.php", "Actividades"=> "actividades.php", "Reportar"=>""))?>
+    <div class="container mx-auto">
+<?php $area =  NombreArea($con, $actividadesDB[0]['id_area']) ?>
+<?= breadcrumbs(array("Inicio"=> "index.php", "Actividades"=> "actividades.php", "Reportar"=>"", $area => ""))?>
         
         <br>
+        <h2 class="text-2xl font-extrabold dark:text-white"></h2>
+<br>
+        
         <div class="text-center">
             <nav aria-label="Page navigation example">
                 <ul class="inline-flex -space-x-px">

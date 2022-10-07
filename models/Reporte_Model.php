@@ -1,6 +1,11 @@
 <?php
 require_once 'conection.php';
 
+function NombreArea($con, $id_area){
+    $stm = $con->query("SELECT * FROM areas WHERE id_area = $id_area");
+    $area = $stm->fetch(PDO::FETCH_ASSOC);
+    return $area["nombre_area"];
+}
 
 function CuentaAvances($con, $id_area, $mes){
     $stm = $con->query("SELECT COUNT(av.id_avance) FROM avances av
