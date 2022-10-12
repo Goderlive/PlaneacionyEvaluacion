@@ -1,6 +1,30 @@
 <?php
 require_once 'conection.php';
 
+
+function TraeReconduccionesporvalidar($con, $id_area){
+    $stm = $con->query("SELECT * FROM reconducciones_atividades ra 
+    JOIN areas ar ON ar.id_area = ra.id_area
+    JOIN actividades a ON a.id_area = ra.id_area
+    WHERE ra.id_area = $id_area AND ra.validado != 1");
+    $reconduccion = $stm->fetch(PDO::FETCH_ASSOC);
+    return $reconduccion;
+}
+
+
+function TraeReconduccionesValidadas($con, $id_area){
+    $stm = $con->query("SELECT * FROM reconducciones_atividades WHERE id_area = $id_area AND validado = 1");
+    $reconduccion = $stm->fetch(PDO::FETCH_ASSOC);
+    return $reconduccion;
+}
+
+
+function TraeProgramaciones($con, $id_reconduccion){
+    $stm = $con->query("SELECT * FROM programacion_reconducciones WHERE id_reconduccion = $id_reconduccion");
+    $programaciones = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $programaciones;
+}
+
 function TraerAreas($con,$dep){
     $stm = $con->query("SELECT * FROM areas WHERE id_dependencia = $dep");
     $areas = $stm->fetchAll(PDO::FETCH_ASSOC);
@@ -81,65 +105,78 @@ function TraeEncargados($con, $id_area, $id_dependencia){
     }
 }
 
-if (isset($_POST['data'])) {
-    print"<pre>";
-    var_dump($_POST);
-    // Primero creamos la reconduccion
-    $sql = "INSERT INTO reconducciones_atividades (id_area, id_solicitante, no_oficio, dep_general, dep_aux, programa) VALUES (?,?,?,?,?,?)";
-    $sqlr = $con->prepare($sql);
-    $sqlr->execute(array($_POST['id_area'], $_POST['id_usuario'], $_POST['no_oficio'], $_POST['general'], $_POST['auxiliar'], $_POST['programa']));
-
-    $stm = $con->query("SELECT LAST_INSERT_ID()");
-    $last = $stm->fetch(PDO::FETCH_ASSOC);
-    $last = $last['LAST_INSERT_ID()'];
 
 
-    foreach($_POST['actividades'] as $actividad){
-        $programacion_nueva = '{';
-        $no_actividad = array_splice($_POST[$actividad], 0, 1);
-        $no_actividad = $no_actividad[0];
-        
-        $descripcion_actividad = array_splice($_POST[$actividad], 0, 1);
-        $descripcion_actividad = $descripcion_actividad[0];
-        
-        $unidad_medida = array_splice($_POST[$actividad], 0, 1);
-        $unidad_medida = $unidad_medida[0];
-        
+if(isset($_POST) && $_POST){
 
-        $stm = $con->query("SELECT SUM(avance) FROM avances WHERE id_actividad = $actividad");
-        $avance_actual = $stm->fetch(PDO::FETCH_ASSOC);
-        $avance_actual = $avance_actual['SUM(avance)'];
-        
-        $stm = $con->query("SELECT * FROM programaciones WHERE id_actividad = $actividad");
-        $old_programacion = $stm->fetch(PDO::FETCH_ASSOC);
-        $old_programacion = array_slice($old_programacion, 1);
-        $old_programacion = array_slice($old_programacion, 0,-1);
-
-        $programacion_old = "";
-        $suma_old = 0;
-        foreach ($old_programacion as $old){
-            $programacion_old .= '"'.$old . '", '; 
-            $suma_old += $old;
-        }
-        $programacion_old = substr($programacion_old, 0, -2);
-        $programacion_old .= "";
-
-        $programacion_nueva = "";
-        $programacion_anual_nueva = 0;
-        $contador = 0;
-        $justificacion = end($_POST[$actividad]);
-        array_pop($_POST[$actividad]);
-        foreach($_POST[$actividad] as $prog){
-            $programacion_nueva .= '"'.$prog .'", '; 
-            $programacion_anual_nueva += $prog;
-        } 
-        $programacion_nueva = substr($programacion_nueva, 0, -2);
-        
-        $sql = "INSERT INTO programacion_reconducciones (id_reconduccion, id_actividad, no_actividad, desc_actividad, u_medida, meta_anual_anterior, meta_anual_actual, act_realizadas_sofar, programacion_inicial, programacion_final, justificacion) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+    if (isset($_POST['data'])) {
+        print"<pre>";
+        // Primero creamos la reconduccion
+        $sql = "INSERT INTO reconducciones_atividades (id_area, id_solicitante, no_oficio, dep_general, dep_aux, programa) VALUES (?,?,?,?,?,?)";
         $sqlr = $con->prepare($sql);
-        $sqlr->execute(array($last, $actividad, $no_actividad, $descripcion_actividad, $unidad_medida, $suma_old, $programacion_anual_nueva, $avance_actual, $programacion_old, $programacion_nueva, $justificacion));
-        header("Location: ../actividades.php");
-        
-    }  
+        $sqlr->execute(array($_POST['id_area'], $_POST['id_usuario'], $_POST['no_oficio'], $_POST['general'], $_POST['auxiliar'], $_POST['programa']));
+
+        $stm = $con->query("SELECT LAST_INSERT_ID()");
+        $last = $stm->fetch(PDO::FETCH_ASSOC);
+        $last = $last['LAST_INSERT_ID()'];
+
+
+        foreach($_POST['actividades'] as $actividad){
+            $programacion_nueva = '{';
+            $no_actividad = array_splice($_POST[$actividad], 0, 1);
+            $no_actividad = $no_actividad[0];
+            
+            $descripcion_actividad = array_splice($_POST[$actividad], 0, 1);
+            $descripcion_actividad = $descripcion_actividad[0];
+            
+            $unidad_medida = array_splice($_POST[$actividad], 0, 1);
+            $unidad_medida = $unidad_medida[0];
+            
+
+            $stm = $con->query("SELECT SUM(avance) FROM avances WHERE id_actividad = $actividad");
+            $avance_actual = $stm->fetch(PDO::FETCH_ASSOC);
+            $avance_actual = $avance_actual['SUM(avance)'];
+            
+
+            // ******************************** OLD Programacion **************************
+            $stm = $con->query("SELECT * FROM programaciones WHERE id_actividad = $actividad");
+            $old_programacion = $stm->fetch(PDO::FETCH_ASSOC);
+            $old_programacion = array_slice($old_programacion, 1);
+            $old_programacion = array_slice($old_programacion, 0,-2);
+
+            $programacion_old = "";
+            $suma_old = 0;
+            foreach ($old_programacion as $old){
+                $programacion_old .= '"'.$old . '", '; 
+                $suma_old += $old;
+            }
+            $programacion_old = substr($programacion_old, 0, -2);
+            $programacion_old .= "";
+
+
+
+            // ******************************** NEW Programacion **************************
+
+            $programacion_nueva = "";
+            $programacion_anual_nueva = 0;
+            $contador = 0;
+            $justificacion = end($_POST[$actividad]);
+            array_pop($_POST[$actividad]);
+            foreach($_POST[$actividad] as $prog){
+                $programacion_nueva .= '"'.$prog .'", '; 
+                $programacion_anual_nueva += $prog;
+            } 
+            $programacion_nueva = substr($programacion_nueva, 0, -2);
+
+
+
+// ***************************************** INCERTAMOS *******************************************
+            $sql = "INSERT INTO programacion_reconducciones (id_reconduccion, id_actividad, no_actividad, desc_actividad, u_medida, meta_anual_anterior, meta_anual_actual, act_realizadas_sofar, programacion_inicial, programacion_final, justificacion) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+            $sqlr = $con->prepare($sql);
+            $sqlr->execute(array($last, $actividad, $no_actividad, $descripcion_actividad, $unidad_medida, $suma_old, $programacion_anual_nueva, $avance_actual, $programacion_old, $programacion_nueva, $justificacion));
+            header("Location: ../actividades.php");
+            
+        }  
+    }
 }
 ?>

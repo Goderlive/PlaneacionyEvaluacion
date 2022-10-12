@@ -1,5 +1,5 @@
 <?php
-require_once 'models/r_actividades_modelo.php';
+require_once 'models/revisa_reconducciones_Model.php';
 $id_usuario = $_SESSION['id_usuario'];
 
 function LimpiaProgramaciones($data){
@@ -56,6 +56,33 @@ function DefineTipo($con, $pInicial, $pFinal){
 
 }
 
+
+function EncabezadoMeses(){
+    $data = "";
+
+    $meses = array("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Sept.", "Octubre", "Nov.", "Diciembre");
+
+    foreach ($meses as $mes):
+        $data .= '<th scope="col" class="py-3 px-6 bg-gray-50 dark:bg-gray-800">
+            '. $mes .'
+        </th>';
+    endforeach;
+    return $data;
+
+}
+
+
+function Programacion($dataIN){
+    $data = '';
+    foreach (LimpiaProgramaciones($dataIN) as $d) {
+        $data .= '
+            <td class="py-4 px-6"> '.
+                $d
+            .' </td>
+        ';
+    }
+    return $data;
+}
 
 function MuestraProgramacion($con, $dataActual, $dataReconduccion, $id_actividad, $bg_table){
 

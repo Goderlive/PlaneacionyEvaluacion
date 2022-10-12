@@ -2,7 +2,7 @@
 session_start();
 
 
-if(isset($_SESSION) && $_SESSION['sistema'] == "pbrm"){    
+if(isset($_SESSION) && isset($_SESSION['sistema']) && $_SESSION['sistema'] == "pbrm"){    
     include 'header.php';
     include 'head.php';
     require_once 'Controllers/Inicio_Controlador.php';

@@ -38,12 +38,130 @@ if(isset($_POST['id_area']) && $_POST){
 <?= breadcrumbs(array("Inicio"=> "index.php", "Actividades"=> "actividades.php", "Reconducción de Actividades"=>"", $nombre_area => ""))?>
 	
 <br>
+
+	<?php if(!$_POST): ?>
+		<?php if(($rec_pendientes = Existentes($con, $dep)) || ($rec_validadas = Validadas($con, $dep))):?>
+
+
+		
+		<div id="accordion-flush" data-accordion="collapse" data-active-classes="bg-white dark:bg-gray-900 text-gray-900 dark:text-white" data-inactive-classes="text-gray-500 dark:text-gray-400">
+			<h2 id="accordion-flush-heading-1">
+				<button type="button" class="flex items-center justify-between w-full py-5 font-medium text-left border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white" data-accordion-target="#accordion-flush-body-1" aria-expanded="true" aria-controls="accordion-flush-body-1">
+				<span>Reconducciones Pendientes de Validación</span>
+				<svg data-accordion-icon="" class="w-6 h-6 rotate-180 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+				</button>
+			</h2>
+			<div id="accordion-flush-body-1" class="hidden" aria-labelledby="accordion-flush-heading-1">
+				<div class="py-5 font-light border-b border-gray-200 dark:border-gray-700"> <!-- Aqui llega el drop -->
+				<?php foreach($rec_pendientes as $p):?>	
+					<div class="overflow-x-auto relative">
+						<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+							<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+								<tr>
+									<th scope="col" class="py-3 px-6">
+										Area
+									</th>
+									<th scope="col" class="py-3 px-6">
+										No. Oficio
+									</th>
+									<th scope="col" class="py-3 px-6">
+										Fecha
+									</th>
+									<th scope="col" class="py-3 px-6">
+										Estado
+									</th>
+								</tr>
+							</thead>
+								<tr>
+									<th scope="col" class="py-3 px-6">
+										<?= $p['id_area']?>
+									</th>
+									<th scope="col" class="py-3 px-6">
+										<?= $p['no_oficio']?>
+									</th>
+									<th scope="col" class="py-3 px-6">
+										<?= $p['fecha']?>
+									</th>
+									<th scope="col" class="py-3 px-6">
+										Pendiente de Revisión
+									</th>
+								</tr>
+							</tbody>
+						</table>
+						<br>
+						<table>
+
+						<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+							<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+								<?php $programacion = TraeProgramaciones($con, $p['id_reconduccion_actividades'])?>
+								<?php foreach($programacion as $q):?>
+									<?php var_dump($q)?>
+									<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+										<th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+											Nombre Actividad
+										</th>
+										<td class="py-4 px-6">
+											Unidad de Medida
+										</td>
+										<td class="py-4 px-6">
+											Prog Anual Inicial
+										</td>
+										<td class="py-4 px-6">
+											Prog Anual Final											
+										</td>
+										<td class="py-4 px-6">
+											Tipo											
+										</td>
+									</tr>
+							</thead>
+							<tbody>
+								<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+									<th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+										<?= $q['desc_actividad'] ?>
+									</th>
+									<td class="py-4 px-6">
+										<?= $q['u_medida'] ?>
+									</td>
+									<td class="py-4 px-6">
+										<?= SumaAnual($q['programacion_inicial']) ?>
+									</td>
+									<td class="py-4 px-6">
+										<?= SumaAnual($q['programacion_final']) ?>
+									</td>
+									<td class="py-4 px-6">
+										<?= DefineReconduccion($q['programacion_inicial'], $q['programacion_final']) ?>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<?php endforeach?>
+					</div>
+				<?php endforeach?>
+				</div>
+			</div>
+			<h2 id="accordion-flush-heading-2">
+				<button type="button" class="flex items-center justify-between w-full py-5 font-medium text-left text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400" data-accordion-target="#accordion-flush-body-2" aria-expanded="false" aria-controls="accordion-flush-body-2">
+				<span>Reconducciones Realizadas</span>
+				<svg data-accordion-icon="" class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+				</button>
+			</h2>
+			<div id="accordion-flush-body-2" class="hidden" aria-labelledby="accordion-flush-heading-2">
+				<div class="py-5 font-light border-b border-gray-200 dark:border-gray-700">
+					<p class="mb-2 text-gray-500 dark:text-gray-400">Flowbite is first conceptualized and designed using the Figma software so everything you see in the library has a design equivalent in our Figma file.</p>
+					<p class="text-gray-500 dark:text-gray-400">Check out the <a href="https://flowbite.com/figma/" class="text-blue-600 dark:text-blue-500 hover:underline">Figma design system</a> based on the utility classes from Tailwind CSS and components from Flowbite.</p>
+				</div>
+			</div>
+		</div>
+
+		<?php endif ?>
+	<?php endif ?>
+
 	<?php 
 	if(!$_POST): //Hacemos la verificacion de que no se ha seleccionado un area para reconducir
 		$areas = TraerAreas($con, $dep);
 		?> 
 		<br>
-		<h3 class="mb-2 center text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Seleccione el Área de la actividad a reconducir</h3>
+		<h3 class="mb-2 center text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Nueva Reconducción</h3>
 		<br>
 
 		<div class="grid grid-cols-2">
