@@ -185,7 +185,10 @@ if(isset($_POST['id_area']) && $_POST){
 											Validada
 										</th>
 										<th scope="col" class="py-3 px-6">
-											<button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Imprimir</button>
+											<form action="sources/TCPDF-main/examples/Reconduccion_Actividades.php" method="POST">
+												<input type="hidden" name="id_reconduccion" value="<?= $p['id_reconduccion_actividades']?>">
+												<input type="submit" value="aaaaa" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+											</form>
 										</th>
 									</tr>
 								</tbody>
@@ -245,7 +248,7 @@ if(isset($_POST['id_area']) && $_POST){
 		</div>
 
 		<?php endif ?>
-	<?php endif ?>
+	<?php endif ?>  <!-- Aqui terminamos el area de reconducciones realizadas -->
 
 	<?php 
 	if(!$_POST): //Hacemos la verificacion de que no se ha seleccionado un area para reconducir
