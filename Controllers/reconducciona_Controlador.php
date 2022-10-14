@@ -33,6 +33,16 @@ function arregladata($data){
 }
 
 
+function Sumador($data){
+    $sum = 0;
+    foreach ($data as $value) {
+        $sum += $value;
+    }
+    return $sum;
+}
+
+
+
 function SumaAnual($data){
     $data = arregladata($data);
     $sum = 0;
@@ -44,23 +54,25 @@ function SumaAnual($data){
 
 
 function DefineReconduccion($ini, $fin){
-
-    var_dump($ini);
-    var_dump($fin);
-    die();
-
-    $trimActual = ceil(date('m')/3) - 1;
-    $inipri = $ini[0] + $ini[1] + $ini[2]; 
-    $iniseg = $ini[3] + $ini[4] + $ini[5];
-    $initer = $ini[6] + $ini[7] + $ini[8];
-    $inicua = $ini[9] + $ini[10] + $ini[11];
-
-    $finpri = $fin[0] + $fin[1] + $fin[2]; 
-    $finseg = $fin[3] + $fin[4] + $fin[5];
-    $finter = $fin[6] + $fin[7] + $fin[8];
-    $fincua = $fin[9] + $fin[10] + $fin[11];
-
-    return "";
+    $Tini = SumaAnual($ini);
+    $Tfin = SumaAnual($fin);
+    
+    $ini = arregladata($ini);
+    $fin = arregladata($fin);
+    if ($Tini == $Tfin){ // Estamos hablando de Disminucion de programacion
+        if (Sumador(array_slice($ini, 0, 3)) == Sumador(array_slice($fin, 0, 3)) && Sumador(array_slice($ini, 3, 3)) == Sumador(array_slice($fin, 3, 3)) && Sumador(array_slice($ini, 6, 3)) == Sumador(array_slice($fin, 6, 3)) && Sumador(array_slice($ini, 9, 3)) == Sumador(array_slice($fin, 9, 3))){ 
+            return "Interna";
+        }else{
+            return 'Recalendirización';
+        }
+    }
+    if ($Tini < $Tfin){ // Estamos hablando de aumento de programacion
+        return "Ampliación";
+    }
+    if ($Tini > $Tfin){ // Estamos hablando de Disminucion de programacion
+        return "Reducción";        
+    }
+    return "Hola";
 }
 
 
