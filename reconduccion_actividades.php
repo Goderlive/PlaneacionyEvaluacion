@@ -186,7 +186,7 @@ if(isset($_POST['id_area']) && $_POST){
 										</th>
 										<th scope="col" class="py-3 px-6">
 											<form action="sources/TCPDF-main/examples/Reconduccion_Actividades.php" method="POST">
-												<input type="hidden" name="id_reconduccion" value="<?= $p['id_reconduccion_actividades']?>">
+												<input type="hidden" name="id_reconduccion" value="<?= $v['id_reconduccion_actividades']?>">
 												<input type="submit" value="aaaaa" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
 											</form>
 										</th>

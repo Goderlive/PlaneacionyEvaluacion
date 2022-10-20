@@ -25,17 +25,20 @@ function TraeProgramaciones($con, $id_reconduccion){
     return $programaciones;
 }
 
+
 function TraerAreas($con,$dep){
     $stm = $con->query("SELECT * FROM areas WHERE id_dependencia = $dep");
     $areas = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $areas;
 }
 
+
 function TraerActividades($con, $area){
     $stm = $con->query("SELECT * FROM actividades WHERE id_area = $area");
     $actividades = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $actividades;
 }
+
 
 function NombreActividad($con, $actividad){
     $stm = $con->query("SELECT * FROM actividades WHERE id_actividad = $actividad");
@@ -64,6 +67,7 @@ function TraeDatosReconduccion($con, $id_area){
     return $data;
 }
 
+
 function ProgramaMensual($con, $actividad){
     $stm = $con->query("SELECT * FROM programaciones WHERE id_actividad = $actividad");
     $data = $stm->fetch(PDO::FETCH_ASSOC);
@@ -71,11 +75,13 @@ function ProgramaMensual($con, $actividad){
     return $data;
 }
 
+
 function MuestraAvanceActual($con, $mes, $id_actividad){
     $stm = $con->query("SELECT * FROM avances WHERE id_actividad = $id_actividad AND mes = $mes");
     $data = $stm->fetch(PDO::FETCH_ASSOC);
     return $data;
 }
+
 
 function MuestraProgramacion($con, $id_actividad){
     $stm = $con->query("SELECT * FROM programaciones WHERE id_actividad = $id_actividad");
@@ -83,11 +89,13 @@ function MuestraProgramacion($con, $id_actividad){
     return $data;
 }
 
+
 function MuestraSumaProgramacion($con, $id_actividad){
     $data = MuestraProgramacion($con, $id_actividad);
     $sum = $data['enero'] + $data['febrero'] + $data['marzo'] + $data['abril'] + $data['mayo'] + $data['junio'] + $data['julio'] + $data['agosto'] + $data['septiembre'] + $data['octubre'] + $data['noviembre'] + $data['diciembre'];
     return $sum;
 }
+
 
 function TraeEncargados($con, $id_area, $id_dependencia){
     $stm = $con->query("SELECT * FROM titulares WHERE id_area = $id_area");
@@ -104,7 +112,6 @@ function TraeEncargados($con, $id_area, $id_dependencia){
         return 0;
     }
 }
-
 
 
 if(isset($_POST) && $_POST){
