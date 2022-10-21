@@ -166,31 +166,31 @@ if($a == 1 && $b == 0 && $c == 0 && $d == 0){
 	<table style="width: 100%;">
 		<thead>
 			<tr>
-				<td bgcolor="#97d6f7" style="width: 47%; border: 1px solid black; border-collapse: collapse;">Identificación del Proyecto que se Cancela o Reduce</td>
-				<td style="width: 6%"></td>
-				<td bgcolor="#97d6f7" style="width: 47%; border: 1px solid black; border-collapse: collapse;">Identificación del Proyecto que se Asigna o Amplía</td>
+				<td bgcolor="#97d6f7" style="width: 48%; border: 1px solid black; border-collapse: collapse;">Identificación del Proyecto que se Cancela o Reduce</td>
+				<td style="width: 4%"></td>
+				<td bgcolor="#97d6f7" style="width: 48%; border: 1px solid black; border-collapse: collapse;">Identificación del Proyecto que se Asigna o Amplía</td>
 			</tr>
 		</thead>
 		<tbody>
 			<tr>
-				<td style="width: 47%; border: 1px solid black; border-collapse: collapse;">Dependencia General: '.$reconduccion['dep_general'].'</td> 
-				<td style="width: 6%"></td>
-				<td style="width: 47%; border: 1px solid black; border-collapse: collapse;"></td> 
+				<td style="width: 48%; border: 1px solid black; border-collapse: collapse;">Dependencia General: '.$reconduccion['dep_general'].'</td> 
+				<td style="width: 4%"></td>
+				<td style="width: 48%; border: 1px solid black; border-collapse: collapse;"></td> 
 			</tr>
 			<tr>
-				<td style="width: 47%; border: 1px solid black; border-collapse: collapse;">Dependencia Auxiliar: '.$reconduccion['dep_aux'].'</td> 
-				<td style="width: 6%"></td>
-				<td style="width: 47%; border: 1px solid black; border-collapse: collapse;"></td> 
+				<td style="width: 48%; border: 1px solid black; border-collapse: collapse;">Dependencia Auxiliar: '.$reconduccion['dep_aux'].'</td> 
+				<td style="width: 4%"></td>
+				<td style="width: 48%; border: 1px solid black; border-collapse: collapse;"></td> 
 			</tr>
 			<tr>
-				<td style="width: 47%; border: 1px solid black; border-collapse: collapse;">Programa: '.$reconduccion['programa'].'</td> 
-				<td style="width: 6%"></td>
-				<td style="width: 47%; border: 1px solid black; border-collapse: collapse;"></td> 
+				<td style="width: 48%; border: 1px solid black; border-collapse: collapse;">Programa: '.$reconduccion['programa'].'</td> 
+				<td style="width: 4%"></td>
+				<td style="width: 48%; border: 1px solid black; border-collapse: collapse;"></td> 
 			</tr>
 			<tr>
-				<td style="width: 47%; border: 1px solid black; border-collapse: collapse;">Objetivo: '.$objetivo_programa.'</td> 
-				<td style="width: 6%"></td>
-				<td style="width: 47%; border: 1px solid black; border-collapse: collapse;"></td> 
+				<td style="width: 48%; border: 1px solid black; border-collapse: collapse;">Objetivo: '.$objetivo_programa.'</td> 
+				<td style="width: 4%"></td>
+				<td style="width: 48%; border: 1px solid black; border-collapse: collapse;"></td> 
 			</tr>
 		</tbody>
 	</table>	
@@ -203,31 +203,31 @@ if($b == 1 || $c == 1 || $d == 1){
 	<table style="width: 100%;">
 		<thead>
 			<tr>
-				<td bgcolor="#97d6f7" style="width: 47%; border: 1px solid black; border-collapse: collapse; text-align: center">Identificación del Proyecto que se Cancela o Reduce</td>
-				<td style="width: 6%"></td>
-				<td bgcolor="#97d6f7" style="width: 47%; border: 1px solid black; border-collapse: collapse; text-align: center">Identificación del Proyecto que se Asigna o Amplía</td>
+				<td bgcolor="#97d6f7" style="width: 48%; border: 1px solid black; border-collapse: collapse; text-align: center">Identificación del Proyecto que se Cancela o Reduce</td>
+				<td style="width: 4%"></td>
+				<td bgcolor="#97d6f7" style="width: 48%; border: 1px solid black; border-collapse: collapse; text-align: center">Identificación del Proyecto que se Asigna o Amplía</td>
 			</tr>
 		</thead>
 		<tbody>
 			<tr>
-				<td style="width: 47%; border: 1px solid black; border-collapse: collapse;"></td> 
-				<td style="width: 6%"></td>
-				<td style="width: 47%; border: 1px solid black; border-collapse: collapse;">Dependencia General: '.$reconduccion['dep_general'].'</td> 
+				<td style="width: 48%; border: 1px solid black; border-collapse: collapse;"></td> 
+				<td style="width: 4%"></td>
+				<td style="width: 48%; border: 1px solid black; border-collapse: collapse;">Dependencia General: '.$reconduccion['dep_general'].'</td> 
 			</tr>
 			<tr>
-				<td style="width: 47%; border: 1px solid black; border-collapse: collapse;"></td> 
-				<td style="width: 6%"></td>
-				<td style="width: 47%; border: 1px solid black; border-collapse: collapse;">Dependencia Auxiliar: '.$reconduccion['dep_aux'].'</td> 
+				<td style="width: 48%; border: 1px solid black; border-collapse: collapse;"></td> 
+				<td style="width: 4%"></td>
+				<td style="width: 48%; border: 1px solid black; border-collapse: collapse;">Dependencia Auxiliar: '.$reconduccion['dep_aux'].'</td> 
 			</tr>
 			<tr>
-				<td style="width: 47%; border: 1px solid black; border-collapse: collapse;"></td> 
-				<td style="width: 6%"></td>
-				<td style="width: 47%; border: 1px solid black; border-collapse: collapse;">Programa: '.$reconduccion['programa'].'</td> 
+				<td style="width: 48%; border: 1px solid black; border-collapse: collapse;"></td> 
+				<td style="width: 4%"></td>
+				<td style="width: 48%; border: 1px solid black; border-collapse: collapse;">Programa: '.$reconduccion['programa'].'</td> 
 			</tr>
 			<tr>
-				<td style="width: 47%; border: 1px solid black; border-collapse: collapse;"></td> 
-				<td style="width: 6%"></td>
-				<td style="width: 47%; border: 1px solid black; border-collapse: collapse;">Objetivo: '.$objetivo_programa.'</td> 
+				<td style="width: 48%; border: 1px solid black; border-collapse: collapse;"></td> 
+				<td style="width: 4%"></td>
+				<td style="width: 48%; border: 1px solid black; border-collapse: collapse;">Objetivo: '.$objetivo_programa.'</td> 
 			</tr>
 		</tbody>
 	</table>	
@@ -239,19 +239,19 @@ $vacio = '&nbsp;
 <table style="width: 100%;">
 	<thead>
 		<tr>
-			<td bgcolor="#97d6f7" style="width: 47%; border: 1px solid black; border-collapse: collapse; text-align: center">Identificación de recursos a nivel de Proyecto que se Cancela o Reduce</td>
-			<td style="width: 6%">&nbsp;</td> 
-			<td bgcolor="#97d6f7" style="width: 47%; border: 1px solid black; border-collapse: collapse; text-align: center">Identificación de recursos a nivel de Proyecto que se Asigna o Amplía</td>
+			<td bgcolor="#97d6f7" style="width: 48%; border: 1px solid black; border-collapse: collapse; text-align: center">Identificación de recursos a nivel de Proyecto que se Cancela o Reduce</td>
+			<td style="width: 4%">&nbsp;</td> 
+			<td bgcolor="#97d6f7" style="width: 48%; border: 1px solid black; border-collapse: collapse; text-align: center">Identificación de recursos a nivel de Proyecto que se Asigna o Amplía</td>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
 			<td bgcolor="#97d6f7" rowspan="2" style="width: 8%; border: 1px solid black; border-collapse: collapse; text-align: center;">&nbsp; <br>Clave</td> 
-			<td bgcolor="#97d6f7" rowspan="2" style="width: 8%; border: 1px solid black; border-collapse: collapse; text-align: center">&nbsp; <br>Denominación</td> 
+			<td bgcolor="#97d6f7" rowspan="2" style="width: 9%; border: 1px solid black; border-collapse: collapse; text-align: center">&nbsp; <br>Denominación</td> 
 			<td bgcolor="#97d6f7" style="width: 31%; border: 1px solid black; border-collapse: collapse; text-align: center">Presupuesto</td> 
-			<td style="width: 6%">&nbsp;</td> 
+			<td style="width: 4%">&nbsp;</td> 
 			<td bgcolor="#97d6f7" rowspan="2" style="width: 8%; border: 1px solid black; border-collapse: collapse; text-align: center;">&nbsp; <br>Clave</td> 
-			<td bgcolor="#97d6f7" rowspan="2" style="width: 8%; border: 1px solid black; border-collapse: collapse; text-align: center">&nbsp; <br>Denominación</td> 
+			<td bgcolor="#97d6f7" rowspan="2" style="width: 9%; border: 1px solid black; border-collapse: collapse; text-align: center">&nbsp; <br>Denominación</td> 
 			<td bgcolor="#97d6f7" style="width: 31%; border: 1px solid black; border-collapse: collapse; text-align: center">Presupuesto</td> 
 		</tr>
 		<tr>
@@ -259,7 +259,7 @@ $vacio = '&nbsp;
 			<td bgcolor="#97d6f7" style="width: 8%; border: 1px solid black; border-collapse: collapse; text-align: center">Por Ejercer</td> 
 			<td bgcolor="#97d6f7" style="width: 8%; border: 1px solid black; border-collapse: collapse; text-align: center">Por Cancelar o Reducir</td> 
 			<td bgcolor="#97d6f7" style="width: 7%; border: 1px solid black; border-collapse: collapse; text-align: center">Autorizado Modificado</td> 
-			<td  style="width: 6%">&nbsp;</td> 
+			<td  style="width: 4%">&nbsp;</td> 
 			<td bgcolor="#97d6f7" style="width: 8%; border: 1px solid black; border-collapse: collapse; text-align: center">Autorizado</td> 
 			<td bgcolor="#97d6f7" style="width: 8%; border: 1px solid black; border-collapse: collapse; text-align: center">Por Ejercer</td> 
 			<td bgcolor="#97d6f7" style="width: 8%; border: 1px solid black; border-collapse: collapse; text-align: center">Por Cancelar o Reducir</td> 
@@ -267,14 +267,14 @@ $vacio = '&nbsp;
 		</tr>
 		<tr>
 			<td style="width: 8%; border: 1px solid black; border-collapse: collapse; text-align: center">&nbsp;<br>N/A<br>&nbsp;</td> 
-			<td style="width: 8%; border: 1px solid black; border-collapse: collapse; text-align: center">&nbsp;<br>N/A<br>&nbsp;</td> 
+			<td style="width: 9%; border: 1px solid black; border-collapse: collapse; text-align: center">&nbsp;<br>N/A<br>&nbsp;</td> 
 			<td style="width: 8%; border: 1px solid black; border-collapse: collapse; text-align: center">&nbsp;<br>N/A<br>&nbsp;</td> 
 			<td style="width: 8%; border: 1px solid black; border-collapse: collapse; text-align: center">&nbsp;<br>N/A<br>&nbsp;</td> 
 			<td style="width: 8%; border: 1px solid black; border-collapse: collapse; text-align: center">&nbsp;<br>N/A<br>&nbsp;</td> 
 			<td style="width: 7%; border: 1px solid black; border-collapse: collapse; text-align: center">&nbsp;<br>N/A<br>&nbsp;</td> 
-			<td  style="width: 6%">&nbsp;</td> 
+			<td  style="width: 4%">&nbsp;</td> 
 			<td style="width: 8%; border: 1px solid black; border-collapse: collapse; text-align: center">&nbsp;<br>N/A<br>&nbsp;</td> 
-			<td style="width: 8%; border: 1px solid black; border-collapse: collapse; text-align: center">&nbsp;<br>N/A<br>&nbsp;</td> 
+			<td style="width: 9%; border: 1px solid black; border-collapse: collapse; text-align: center">&nbsp;<br>N/A<br>&nbsp;</td> 
 			<td style="width: 8%; border: 1px solid black; border-collapse: collapse; text-align: center">&nbsp;<br>N/A<br>&nbsp;</td> 
 			<td style="width: 8%; border: 1px solid black; border-collapse: collapse; text-align: center">&nbsp;<br>N/A<br>&nbsp;</td> 
 			<td style="width: 8%; border: 1px solid black; border-collapse: collapse; text-align: center">&nbsp;<br>N/A<br>&nbsp;</td> 
@@ -298,68 +298,120 @@ foreach ($programaciones as $prog) {
 }
 
 
-function CreaTabla(){
-	$table = '
-	<table style="width: 100%;">
-	<tbody>
-	<tr>
-		  <td style="width: 47%; text-align: center">Metas de Actividad Programadas y alcanzadas del Proyecto a cancelar o Reducir.
-			  <table style="width: 100%;">
-				  <tbody>
-					  <tr>
-						  <td bgcolor="#97d6f7" rowspan="2" style="width: 20%; border: 1px solid black; border-collapse: collapse; text-align: center;">Codigo</td>
-						  <td bgcolor="#97d6f7" rowspan="2" style="width: 20%; border: 1px solid black; border-collapse: collapse; text-align: center;">Descripción</td>
-						  <td bgcolor="#97d6f7" rowspan="2" style="width: 20%; border: 1px solid black; border-collapse: collapse; text-align: center;">Unidad de Medida</td>
-						  <td bgcolor="#97d6f7" style="width: 20%; border: 1px solid black; border-collapse: collapse; text-align: center;">Cantidad Programada de la Meta de Actividad</td>
-						  <td bgcolor="#97d6f7" style="width: 20%; border: 1px solid black; border-collapse: collapse; text-align: center;">Calendarización Trimestral Modificada</td>
-					  </tr>
-					  <tr>
-						  <td bgcolor="#97d6f7" style="width: 4%; border: 1px solid black; border-collapse: collapse; text-align: center;">1</td>
-						  <td bgcolor="#97d6f7" style="width: 4%; border: 1px solid black; border-collapse: collapse; text-align: center;">2</td>
-						  <td bgcolor="#97d6f7" style="width: 4%; border: 1px solid black; border-collapse: collapse; text-align: center;">3</td>
-						  <td bgcolor="#97d6f7" style="width: 4%; border: 1px solid black; border-collapse: collapse; text-align: center;">4</td>
-						  <td bgcolor="#97d6f7" style="width: 4%; border: 1px solid black; border-collapse: collapse; text-align: center;">5</td>
-						  <td bgcolor="#97d6f7" style="width: 4%; border: 1px solid black; border-collapse: collapse; text-align: center;">6</td>
-					  </tr>
-				  </tbody>
-			  </table>
-		  </td>
-		  <td style="width: 6%">&nbsp;</td> 
-		  <td style="width: 47%; text-align: center">Metas de Actividad Programadas y alcanzadas del Proyecto que se crea o incrementa.
+function traeavances($con, $id_actividad){
+	$stm = $con->query("SELECT SUM(avance) FROM avances WHERE id_actividad = $id_actividad");
+    $avances = $stm->fetch(PDO::FETCH_ASSOC);
+	if(!$avances['SUM(avance)']){
+		return "0";
+	}
+    return $avances['SUM(avance)'];
 
-		  </td>
-	  </tr>
-	</tbody>';
+}
+
+function Trimestres($data){
+	$trimestral = array();
+	$data = arregladata($data);
+	$per = Sumador(array_slice($data, 2,3));
+	$sdo = Sumador(array_slice($data, 5,3));
+	$tro = Sumador(array_slice($data, 7,3));
+	$cto = Sumador(array_slice($data, 9,3));
+	array_push($trimestral, $per, $sdo, $tro, $cto);
+	return $trimestral;
+}
+
+function CreaTabla($data, $con){
+	$temp = "";
+	foreach($data as $d){
+		//var_dump($d);
+		$tavances = traeavances($con, $d['id_actividad']);
+		$totalold = SumaAnual($d['programacion_inicial']);
+		$totalnew = SumaAnual($d['programacion_final']);
+		$trimestral = Trimestres($d['programacion_final']);
+		$temp.= '
+		<tr>
+			<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">'.$d['no_actividad'].'</td>
+			<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">'.$d['desc_actividad'].'</td>
+			<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">'.$d['u_medida'].'</td>
+			<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">'.$totalold.'</td>
+			<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">'.$tavances.'</td>
+			<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">'.$totalnew.'</td>
+			<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">'.$trimestral[0].'</td>
+			<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">'.$trimestral[1].'</td>
+			<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">'.$trimestral[2].'</td>
+			<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">'.$trimestral[3].'</td>
+		</tr>
+
+		';
+	}
+
+	$table = '&nbsp;
+	<br>&nbsp;
+	<table style="width: 100%;">
+		<tbody>
+			<tr>
+				<td bgcolor="#97d6f7" rowspan="2" style="width: 7%; border: 1px solid black; border-collapse: collapse; text-align: center;">&nbsp; <br>Codigo</td>
+				<td bgcolor="#97d6f7" rowspan="2" style="width: 27%; border: 1px solid black; border-collapse: collapse; text-align: center;">&nbsp; <br>Descripción</td>
+				<td bgcolor="#97d6f7" rowspan="2" style="width: 10%; border: 1px solid black; border-collapse: collapse; text-align: center;">Unidad de Medida</td>
+				<td bgcolor="#97d6f7" colspan="3" style="width: 31%; border: 1px solid black; border-collapse: collapse; text-align: center;">Cantidad Programada de la Meta de Actividad</td>
+				<td bgcolor="#97d6f7" colspan="4" style="width: 25%; border: 1px solid black; border-collapse: collapse; text-align: center;">Calendarización Trimestral Modificada</td>
+			</tr>
+			<tr>
+				<td bgcolor="#97d6f7" style="border: 1px solid black; border-collapse: collapse; text-align: center;">Inicial</td>
+				<td bgcolor="#97d6f7" style="border: 1px solid black; border-collapse: collapse; text-align: center;">Avance</td>
+				<td bgcolor="#97d6f7" style="border: 1px solid black; border-collapse: collapse; text-align: center;">Modificada</td>
+				<td bgcolor="#97d6f7" style="border: 1px solid black; border-collapse: collapse; text-align: center;">1</td>
+				<td bgcolor="#97d6f7" style="border: 1px solid black; border-collapse: collapse; text-align: center;">2</td>
+				<td bgcolor="#97d6f7" style="border: 1px solid black; border-collapse: collapse; text-align: center;">3</td>
+				<td bgcolor="#97d6f7" style="border: 1px solid black; border-collapse: collapse; text-align: center;">4</td>
+			</tr>
+			'.$temp.'
+		</tbody>
+	</table>';
+
+
 	return $table;
 }
 
 
 if($left){
-	$left = CreaTabla();
+	$left = CreaTabla($left, $con);
 }else{
 	$left = "";
 }
 
 if($right){
-	$right = CreaTabla();
+	$right = CreaTabla($right, $con);
 }else{
 	$right = "";
 }
 
+
+
+
 $htmlprog = '
 <table>
 	<tr>
-		<td style="width: 47%;">
+		<td style="width: 48%;">
 			'.$left.'
 		</td>
-		<td style="width: 6%">&nbsp;</td> 
-		<td style="width: 47%; ">
+		<td style="width: 3.5%">&nbsp;</td> 
+		<td style="width: 48.5%; ">
 			'.$right.'
 		</td>
 	
 	</tr>
 </table>';
 
+
+
+
+$justificacion = '
+<table style="width: 100%; border: 1px solid black; border-collapse: collapse;">
+	<tr>
+		<td>Justificación: '.$reconduccion['justificacion'].'</td>
+	</tr>
+</table>
+';
 
 
 
