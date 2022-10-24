@@ -289,7 +289,11 @@ $vacio = '&nbsp;
 
 $left = array();
 $right = array();
+$contadorProgramaciones = 0;
+$justificaciones = "";
 foreach ($programaciones as $prog) {
+	$contadorProgramaciones += 1;
+	$justificaciones .= $prog['no_actividad'] . $prog['justificacion'] . "; ";
 	if(DefineReconduccion($prog['programacion_inicial'], $prog['programacion_final']) == "Reducción"){
 		array_push($left, $prog);
 	}else{
@@ -297,6 +301,20 @@ foreach ($programaciones as $prog) {
 	}
 }
 
+
+function Espacios($data){
+	$espaciado = '';
+	if($data < 5){
+		$espacios = 5;
+	}
+	if($data > 5){
+		$espacios = 1;
+	}
+	for ($i=0; $i < $espacios; $i++) { 
+		$espaciado .= '&nbsp;<br>&nbsp;';
+	}
+	return $espaciado;
+}
 
 function traeavances($con, $id_actividad){
 	$stm = $con->query("SELECT SUM(avance) FROM avances WHERE id_actividad = $id_actividad");
@@ -321,7 +339,8 @@ function Trimestres($data){
 
 function CreaTabla($data, $con){
 	$temp = "";
-	foreach($data as $d){
+	if(count($data) != 0){
+		foreach($data as $d){
 		//var_dump($d);
 		$tavances = traeavances($con, $d['id_actividad']);
 		$totalold = SumaAnual($d['programacion_inicial']);
@@ -340,9 +359,25 @@ function CreaTabla($data, $con){
 			<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">'.$trimestral[2].'</td>
 			<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">'.$trimestral[3].'</td>
 		</tr>
-
+		';
+		}
+	}else{
+		$temp.= '
+		<tr>
+			<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">&nbsp; <br> N/A</td>
+			<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">&nbsp; <br> N/A</td>
+			<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">&nbsp; <br> N/A</td>
+			<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">&nbsp; <br> N/A</td>
+			<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">&nbsp; <br> N/A</td>
+			<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">&nbsp; <br> N/A</td>
+			<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">&nbsp; <br> N/A</td>
+			<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">&nbsp; <br> N/A</td>
+			<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">&nbsp; <br> N/A</td>
+			<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">&nbsp; <br> N/A</td>
+		</tr>
 		';
 	}
+	
 
 	$table = '&nbsp;
 	<br>&nbsp;
@@ -373,17 +408,13 @@ function CreaTabla($data, $con){
 }
 
 
-if($left){
-	$left = CreaTabla($left, $con);
-}else{
-	$left = "";
-}
 
-if($right){
+	$left = CreaTabla($left, $con);
+
+
+
 	$right = CreaTabla($right, $con);
-}else{
-	$right = "";
-}
+
 
 
 
@@ -405,17 +436,81 @@ $htmlprog = '
 
 
 
-$justificacion = '
+$justificacion = '&nbsp;
+<br>
+&nbsp;
+<br>
 <table style="width: 100%; border: 1px solid black; border-collapse: collapse;">
 	<tr>
-		<td>Justificación: '.$reconduccion['justificacion'].'</td>
+		<td>Justificación: '.$justificaciones.'</td>
+	</tr>
+
+</table>
+<br>
+&nbsp;
+<br>
+<table style="width: 100%; border: 1px solid black; border-collapse: collapse;">
+	<tr>
+		<td>De creación o reasignación de metas de actividad y/o recursos al proyecto (Benef icio, Impacto, Repercusión programática). En su caso Utilizar hoja anexa.</td>
+	</tr>
+</table>
+<br>
+&nbsp;
+<br>
+<table style="width: 100%; border: 1px solid black; border-collapse: collapse;">
+	<tr>
+		<td>Identificación del Origen de los recursos. En su caso utilizar hoja anexa.</td>
 	</tr>
 </table>
 ';
 
 
 
-$html = $membretes . $oficio_movimiento_fecha . $encabezado_gen_aux_etc . $vacio . $htmlprog;
+// ============================== Aqui traemos a los Titulares ===============================
+
+$id_area = $reconduccion['id_area'];
+
+$stm = $con->query("SELECT t.nombre, t.apellidos, t.cargo 
+FROM reconducciones_atividades pr
+JOIN areas a ON a.id_area = pr.id_area
+JOIN titulares t ON t.id_area = a.id_area  
+WHERE pr.id_area = $id_area");
+$titular_area = $stm->fetch(PDO::FETCH_ASSOC);
+
+
+$stm = $con->query("SELECT d.id_dependencia 
+FROM dependencias d
+JOIN areas a ON a.id_dependencia = d.id_dependencia
+WHERE id_area = $id_area ");
+$id_dependencia = $stm->fetch(PDO::FETCH_ASSOC);
+$id_dependencia = $id_dependencia['id_dependencia'];
+
+
+
+$stm = $con->query("SELECT * FROM titulares WHERE id_dependencia = $id_dependencia");
+$titular_dependencia = $stm->fetch(PDO::FETCH_ASSOC);
+
+
+
+
+
+$stm = $con->query("SELECT * FROM setings a
+JOIN titulares t ON t.id_titular = a.id_uippe");
+$Director_gobierno_por_resultados = $stm->fetch(PDO::FETCH_ASSOC);
+
+$espacios = Espacios($contadorProgramaciones);
+$firmas = $espacios .'
+<table style="width: 100%; text-align: center; border-spacing: 3px; ">
+	<tr>
+		<td style="font-size: 8px; width: 25%; border: 1px solid gray;"> ELABORÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $titular_area['nombre'] . " " . $titular_area['apellidos'] . "<br>" . $titular_area['cargo']. '</td>
+		<td style="font-size: 8px; width: 25%; border: 1px solid gray;"> REVISÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $titular_dependencia['nombre'] . " " . $titular_dependencia['apellidos'] . "<br>" . $titular_dependencia['cargo']. '</td>
+		<td style="font-size: 8px; width: 25%; border: 1px solid gray;"> AUTORIZÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $Director_gobierno_por_resultados['nombre'] . " " . $Director_gobierno_por_resultados['apellidos'] . "<br>" . $Director_gobierno_por_resultados['cargo']. '</td>
+		<td style="font-size: 8px; width: 25%;"> Aqui va un codigo QR </td>
+	</tr>	
+</table>';
+
+
+$html = $membretes . $oficio_movimiento_fecha . $encabezado_gen_aux_etc . $vacio . $htmlprog . $justificacion . $firmas;
 // output the HTML content
 $pdf->writeHTML($html, true, false, true, false, '');
 
