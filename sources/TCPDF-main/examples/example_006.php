@@ -354,12 +354,13 @@ try {
 	throw $th;
 }
 
+
 function TablaEvidencias($evidencias){
 	$contador = count($evidencias);
 
-	$ciclos = 0;   // Primero vamos a hacer que el array tenga una longitud completa
+	$ciclos = 0;   // Primero vamos a hacer que el array tenga una longitud completa multiplo de 5
 	if(($contador % 5) != 0){
-		$array_vacio = array();
+		$array_vacio = array("id_avance"=>"","mes"=>"","avance"=>"","justificacion"=>"","path_evidenia"=>"","path_evidenia_evidencia"=>"","descripcion_evidencia"=>"","id_actividad"=>"","id_usuario_avance"=>"","validado"=>"","id_usuario_validador"=>"","fecha_avance"=>"","fecha_validador"=>"","codigo_actividad"=>"","nombre_actividad"=>"","unidad"=>"","programado_anual_anterior"=>"","alcanzado_anual_anterior"=>"","id_area"=>"","id_validacion"=>"","creacion"=>"","id_creacion"=>"","modificacion"=>"","id_modifiacion"=>"","nombre_area"=>"","id_dependencia"=>"","id_dependencia_general"=>"","id_dependencia_aux"=>"","id_proyecto"=>"","id_titular"=>"","fecha_alta"=>"");
 		$diferencia = $contador % 5;
 		$diferencia = 5 - $diferencia;
 		if($diferencia > 1){
@@ -370,39 +371,71 @@ function TablaEvidencias($evidencias){
 			array_push($evidencias, $array_vacio);
 		}
 	}
+
+
 	 // Hasta aqui ya igualamos el tamaño de nuestro array con el de la longitud de las tablas
 
-	$data = "";
-	$datatemp = "";
-	$contador = 0;
+
+	 
+	 $data = "";
+	 $datatemp = "";
+	 $contador = 0;
+	 
+	 
+	 // Recorremos el array y cada 5, armamos una fila
+	$contadorcinco = 0;
+	$decinco = array();
 	foreach($evidencias as $evidencia){
-		$data .= "<tr>";
-		if($contador < 5){
-		
-			if($evidencia){
-				$datatemp .= '
-				<td style="width:25%; text-align: center; font-size: 8px">'.
-				$evidencia['nombre_actividad'].'
-				<br> Mes: '. $evidencia['mes'] .' <br> 
-				<img src="../../'.$evidencia['path_evidenia_evidencia'].'" width="100px" alt="">
-				</td>';
-			}else{
-				$datatemp .= '<td> hola</td>';
-			}
-		}else{
-			$data .= $datatemp . "</tr>";
-			$datatemp = "";
-			$contador = -1;
-		}	
-		$contador += 1;
+		if($contadorcinco < 5){
+			array_push($decinco, $evidencia);
+		}
+		$contadorcinco += 1;
+		if($contadorcinco % 5 == 0){
+			$uno = 
+			$data = '
+				<tr>
+					<td>
+						'.$decinco[0]['nombre_actividad'].' <br>
+						Mes: '. $decinco[0]['mes'] .' <br> 
+						<img src="../../'.$decinco[0]['path_evidenia_evidencia'].'" width="100px" alt="">
+					</td>
+					<td>
+						'.$decinco[1]['nombre_actividad'].' <br>
+						Mes: '. $decinco[1]['mes'] .' <br> 
+						<img src="../../'.$decinco[1]['path_evidenia_evidencia'].'" width="100px" alt="">
+					</td>
+					<td>
+						'.$decinco[2]['nombre_actividad'].' <br>
+						Mes: '. $decinco[2]['mes'] .' <br> 
+						<img src="../../'.$decinco[2]['path_evidenia_evidencia'].'" width="100px" alt="">
+					</td>
+					<td>
+						'.$decinco[3]['nombre_actividad'].' <br>
+						Mes: '. $decinco[3]['mes'] .' <br> 
+						<img src="../../'.$decinco[3]['path_evidenia_evidencia'].'" width="100px" alt="">
+					</td>
+					<td>
+						'.$decinco[4]['nombre_actividad'].' <br>
+						Mes: '. $decinco[4]['mes'] .' <br> 
+						<img src="../../'.$decinco[4]['path_evidenia_evidencia'].'" width="100px" alt="">
+					</td>
+				</tr>
+			';
+		$decinco = array();
+
+		}
 	}
+
+		
 	return $data;	
 
 }
 
-
-$data = TablaEvidencias($evidencias);
 $data = "";
+$data = TablaEvidencias($evidencias);
+
+print $data;
+
 
 $html = '
 <table class="GeneratedTable" style="width: 100%;">
