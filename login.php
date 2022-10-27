@@ -27,7 +27,7 @@ session_destroy();
         <form action="validar_login.php" method="POST" autocomplete="off">
           <!-- Email input -->
           <div class="form-outline mb-4">
-            <input type="email" name="correo_electronico" class="form-control form-control-lg" placeholder="Ingresa tu correo electrónico" required />
+            <input autofocus type="email" name="correo_electronico" class="form-control form-control-lg" placeholder="Ingresa tu correo electrónico" required />
             <label class="form-label">Correo</label>
           </div>
 
