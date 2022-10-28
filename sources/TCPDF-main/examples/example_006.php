@@ -6,6 +6,7 @@ if($_SESSION['sistema'] != "pbrm" || !isset($_POST['trimestre'])){
 }
 $id_area = $_POST['id_area'];
 $trimestre = $_POST['trimestre'];
+
 // Include the main TCPDF library (search for installation path).
 require_once('tcpdf_include.php');
 require_once '../../../models/conection.php';
@@ -344,10 +345,18 @@ $pdf->AddPage('P', 'A4');
 
 // ================== Obtenemos las evidencias ==================
 try {
+
+	$mestres = QueTrimestreEs($trimestre)[1];
+	$mesdos = $mestres -1;
+	$mesuno = $mesdos -1;
+
+	$meses = array();
 	$stm = $con->query("SELECT * FROM avances e 
 	LEFT JOIN actividades ac ON e.id_actividad = ac.id_actividad
 	LEFT JOIN areas a ON a.id_area = ac.id_area
-	WHERE e.path_evidenia_evidencia IS NOT NULL AND a.id_area = $id_area
+	WHERE e.path_evidenia_evidencia IS NOT NULL 
+	AND a.id_area = $id_area
+	AND (e.mes = $mesuno OR e.mes = $mesdos OR e.mes = $mestres)
 	ORDER BY ac.codigo_actividad ASC, e.mes ASC");
 	$evidencias = $stm->fetchAll(PDO::FETCH_ASSOC);
 } catch (\Throwable $th) {
@@ -378,10 +387,9 @@ function TablaEvidencias($evidencias){
 
 	 
 	 $data = "";
-	 $datatemp = "";
 	 $contador = 0;
-	 
-	 
+
+
 	 // Recorremos el array y cada 5, armamos una fila
 	$contadorcinco = 0;
 	$decinco = array();
@@ -391,33 +399,50 @@ function TablaEvidencias($evidencias){
 		}
 		$contadorcinco += 1;
 		if($contadorcinco % 5 == 0){
-			$uno = 
+			$img1 = ($decinco[0]['path_evidenia_evidencia']) ? '<img src="../../'.$decinco[0]['path_evidenia_evidencia'].'" width="50px" alt="">' : ""; 
+			$img2 = ($decinco[1]['path_evidenia_evidencia']) ? '<img src="../../'.$decinco[1]['path_evidenia_evidencia'].'" width="50px" alt="">' : ""; 
+			$img3 = ($decinco[2]['path_evidenia_evidencia']) ? '<img src="../../'.$decinco[2]['path_evidenia_evidencia'].'" width="50px" alt="">' : ""; 
+			$img4 = ($decinco[3]['path_evidenia_evidencia']) ? '<img src="../../'.$decinco[3]['path_evidenia_evidencia'].'" width="50px" alt="">' : ""; 
+			$img5 = ($decinco[4]['path_evidenia_evidencia']) ? '<img src="../../'.$decinco[4]['path_evidenia_evidencia'].'" width="50px" alt="">' : ""; 
+
+			$mesa1 = ($decinco[0]['mes']) ? "Mes: " . $decinco[0]['mes'] : "";
+			$mesa2 = ($decinco[1]['mes']) ? "Mes: " . $decinco[1]['mes'] : "";
+			$mesa3 = ($decinco[2]['mes']) ? "Mes: " . $decinco[2]['mes'] : "";
+			$mesa4 = ($decinco[3]['mes']) ? "Mes: " . $decinco[3]['mes'] : "";
+			$mesa5 = ($decinco[4]['mes']) ? "Mes: " . $decinco[4]['mes'] : "";
+			
+
 			$data = '
 				<tr>
 					<td>
 						'.$decinco[0]['nombre_actividad'].' <br>
-						Mes: '. $decinco[0]['mes'] .' <br> 
-						<img src="../../'.$decinco[0]['path_evidenia_evidencia'].'" width="100px" alt="">
+						' . $mesa1 . '
+						<br> 
+						' . $img1 . '
 					</td>
 					<td>
 						'.$decinco[1]['nombre_actividad'].' <br>
-						Mes: '. $decinco[1]['mes'] .' <br> 
-						<img src="../../'.$decinco[1]['path_evidenia_evidencia'].'" width="100px" alt="">
+						' . $mesa2 . '
+						<br> 
+						' . $img2 . '
 					</td>
 					<td>
 						'.$decinco[2]['nombre_actividad'].' <br>
-						Mes: '. $decinco[2]['mes'] .' <br> 
-						<img src="../../'.$decinco[2]['path_evidenia_evidencia'].'" width="100px" alt="">
+						' . $mesa3 . '
+						<br> 
+						' . $img3 . '
 					</td>
 					<td>
 						'.$decinco[3]['nombre_actividad'].' <br>
-						Mes: '. $decinco[3]['mes'] .' <br> 
-						<img src="../../'.$decinco[3]['path_evidenia_evidencia'].'" width="100px" alt="">
+						' . $mesa4 . '
+						<br> 
+						' . $img4 . '
 					</td>
 					<td>
 						'.$decinco[4]['nombre_actividad'].' <br>
-						Mes: '. $decinco[4]['mes'] .' <br> 
-						<img src="../../'.$decinco[4]['path_evidenia_evidencia'].'" width="100px" alt="">
+						' . $mesa5 . '
+						<br> 
+						' . $img5 . '
 					</td>
 				</tr>
 			';
@@ -434,7 +459,6 @@ function TablaEvidencias($evidencias){
 $data = "";
 $data = TablaEvidencias($evidencias);
 
-print $data;
 
 
 $html = '
