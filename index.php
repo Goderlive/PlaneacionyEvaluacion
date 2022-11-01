@@ -10,7 +10,6 @@ if(isset($_SESSION) && isset($_SESSION['sistema']) && $_SESSION['sistema'] == "p
 ?>
 <!DOCTYPE html>
 <html lang="es">
-
 <body>
 
   <div class="container text-center mx-auto">
