@@ -1,10 +1,7 @@
 <?php
 session_start();
 if($_SESSION['id_permiso'] !=3){
-    $id_dependencia = 3;
-    $_SESSION['trimestre'] = 3;
-
-    //Definimos el trimestre a mano
+    $id_dependencia = $_SESSION['id_dependencia'];
 ?>
 <!DOCTYPE html>
 <html lang="es">

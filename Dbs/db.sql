@@ -787,8 +787,7 @@ INSERT INTO areas (nombre_area, id_dependencia, id_dependencia_general, id_depen
 -- 2 > validacion de avances, agregar actividades e indicadores, validar reconducciones y mas
 -- 3 > Presidente municipal. Permite ver estadisticas de cada area, no puede editar.
 -- 4 > Director o coordinador de dependencia, puede agrar avances, evidencia, pedir reconducciones y CREAR USUARIOS. @metepec.
--- 5 > Enlace. Permite capturar avances, pedir reconducciones, solo administra su propia cuenta.  
-
+-- 5 > Enlace. Permite capturar avances, pedir reconducciones, solo administra su propia cuenta.
 
 DROP TABLE IF EXISTS usuarios;
 CREATE TABLE usuarios(

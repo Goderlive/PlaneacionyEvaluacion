@@ -1,5 +1,8 @@
 <?php
-require_once 'models/conection.php';
+
+use FontLib\Table\Type\post;
+
+require_once 'conection.php';
 
 function get_usuario($id_usuario,$con){
     $stm = $con->query("SELECT * FROM usuarios u
@@ -35,4 +38,13 @@ function VerificaReconduccionesIndicadores($con){
     $data_avances_actividades = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $data_avances_actividades;
 }
+
+if($_GET){
+    session_start();
+    if ($_GET['anteproyecto']) {
+        $_SESSION['anio'] = $_GET['anteproyecto'];
+    }
+    header("Location: ../index.php");
+}
+
 ?>

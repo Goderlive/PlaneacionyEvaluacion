@@ -68,6 +68,19 @@ function item_principal($actual, $buscador, $texto, $destino){
                         }
                         ?></a>
                     </li>
+                    <li>
+                        <?php
+
+                        $thisyear = date('Y');
+                        $myyear = $_SESSION['anio']; 
+                        if($thisyear == $myyear) {
+                            $ante = $thisyear + 1;
+                            print '<a href="models/inicio_modelo.php?anteproyecto='.$ante.'"> Anteproyecto '.$ante.' </a>';
+                        }else{
+                            print '<a href="models/inicio_modelo.php?anteproyecto='.$thisyear.'"> Regresar a '.$thisyear.' </a>';
+                        }
+                        ?>
+                    </li>
                     <?= item_principal($actual, $inicio, "Inicio", "index.php")?>
                     <?= item_principal($actual, $actividades, "Actividades", "actividades.php")?>
                     <?= item_principal($actual, $indicadores, "Indicadores", "indicadores.php")?>
