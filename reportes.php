@@ -7,6 +7,7 @@ if($_SESSION['id_permiso'] == 1 || $_SESSION['id_permiso'] == 4 || $_SESSION['id
 <?php include 'head.php';?>
 <?php include 'header.php';?>
 <?php include 'Controllers/breadcrumbs.php';?>
+
 <body>
     <br>
     <div class="container mx-auto">

@@ -8,6 +8,8 @@ if(!$_SESSION){?>
 }
 if($_SESSION['sistema'] == 'pbrm'){
 require_once 'Controllers/Actividades_Controlador.php';
+$real_anio = date('Y');
+$user_anio = $_SESSION['anio'];
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -22,12 +24,13 @@ require_once 'Controllers/Actividades_Controlador.php';
     <br>
 
 
-    
-<?php if ($_SESSION['id_permiso'] > 3): ?>
+
+<?php if ($_SESSION['id_permiso'] > 3):  // Primero veridicamos el permiso?> 
+    <?php if ($real_anio == $user_anio): // Luego verificamos si es un anio corriente ?>
     <div class="grid grid-cols-4">
         <?php
         $all = '';
-        $areas = areas_con($con, $dep);
+        $areas = areas_con($con, $dep, $real_anio);
         foreach ($areas as $area): ?>
 
             <div class="items-start p-4 ml-2 mr-2 mb-4 text-center  bg-white rounded-lg border border-gray-400 shadow-md dark:bg-gray-800 dark:border-gray-700"">
@@ -52,6 +55,28 @@ require_once 'Controllers/Actividades_Controlador.php';
                 </div>
             </div>
         <?php endforeach ?>
+    </div>
+    <?php endif ?> <!--Hasta aqui se menciona lo relacionado con los anios para reportar -->
+    
+    
+    <?php if ($real_anio != $user_anio): //  verificamos si es un anio de anteproyecto ?>
+    <div class="grid grid-cols-4">
+        <?php  
+        $areas = areas_con($con, $dep, $user_anio);
+        foreach ($areas as $area): ?>
+            <div class="items-start p-4 ml-2 mr-2 mb-4 text-center  bg-white rounded-lg border border-gray-400 shadow-md dark:bg-gray-800 dark:border-gray-700"">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"> <?= $area['nombre_area'] ?> </h5>
+                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Metas mensuales.</p>
+                <form action="actividades_anteproyecto.php" method="post">
+                    <button class="inline-flex mb-2 items-center py-2 px-3 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" name="id_area" value="<?= $area['id_area'] ?>">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg> Programar
+                    </button>
+                </form>
+
+            </div>
+        <?php endforeach ?>
+
+    <?php endif ?>
     </div>
 <?php endif ?>
 
