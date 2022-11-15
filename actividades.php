@@ -85,8 +85,9 @@ $user_anio = $_SESSION['anio'];
 
 
 <?php if ($_SESSION['id_permiso'] < 3):?>
+    <?php if($user_anio == $real_anio): ?>
     <div class="grid grid-cols-4">
-        <?php $dependencias = dependencias($con); 
+        <?php $dependencias = dependencias($con,$real_anio); 
         foreach ($dependencias as $value):?> 
             <div class="items-start p-4 ml-2 mr-2 mb-4 text-center  bg-white rounded-lg border border-gray-400 shadow-md dark:bg-gray-800 dark:border-gray-700">
             <h5 class="text-lg font-bold dark:text-white"><?= $value['nombre_dependencia'] ?></h5>
@@ -95,6 +96,19 @@ $user_anio = $_SESSION['anio'];
             </div>
     <?php endforeach ?>
     </div>
+    <?php endif ?>
+
+    <?php if($user_anio != $real_anio): ?>
+        <?php $dependencias = dependencias($con,$user_anio); ?>
+            <?php foreach ($dependencias as $value):?> 
+                <div class="items-start p-4 ml-2 mr-2 mb-4 text-center  bg-white rounded-lg border border-gray-400 shadow-md dark:bg-gray-800 dark:border-gray-700">
+                <h5 class="text-lg font-bold dark:text-white"><?= $value['nombre_dependencia'] ?></h5>
+
+                
+                </div>
+            <?php endforeach ?>
+    
+    <?php endif ?>
 <?php endif ?>
 
 

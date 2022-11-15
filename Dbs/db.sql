@@ -848,6 +848,7 @@
         codigo_actividad VARCHAR(2) NOT NULL,
         nombre_actividad VARCHAR(500) NOT NULL,
         unidad VARCHAR(255) NOT NULL, 
+        id_unidad INT,
         programado_anual_anterior VARCHAR(50),
         alcanzado_anual_anterior VARCHAR(50),
         id_area INT,

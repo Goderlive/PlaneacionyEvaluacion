@@ -1,6 +1,12 @@
 <?php
 require_once 'conection.php';
 
+function Fetch($con, $sentence){
+    $stm = $con->query($sentence);
+    $data = $stm->fetch(PDO::FETCH_ASSOC);
+    return $data;
+}
+
 function areas_con($con, $dep, $anio){
     $sql = "SELECT * FROM areas a
         INNER JOIN dependencias_generales dp ON a.id_dependencia = dp.id_dependencia
@@ -12,8 +18,8 @@ function areas_con($con, $dep, $anio){
     return $areas;
 }
 
-function dependencias($con){
-    $stm = $con->query("SELECT * FROM dependencias");
+function dependencias($con, $anio){
+    $stm = $con->query("SELECT * FROM dependencias WHERE anio = $anio");
     $dependencias = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $dependencias;
 }
@@ -28,8 +34,28 @@ function TraeUnidades_Medida($con){
 
 
 
-if(isset($_POST['guardar'])){
-    var_dump($_POST);
-    die();
+if(isset($_POST)){
+    if(isset($_POST['guardar'])){
+        session_start();
+        $id_area = $_POST['id_area'];
+        $usuario = $_SESSION['id_usuario'];
+
+        $nombre_actividad = $_POST['nombre_actividad'];
+        $id_unidad = $_POST['id_unidad'];
+        
+        // Verificamos si hay anteriores
+        $ultimo = Fetch($con, "SELECT * FROM actividades WHERE id_area = $id_area ORDER BY codigo_actividad DESC LIMIT 1;");
+        if($ultimo){
+            $numero = $ultimo + 1;
+        }else{
+            $numero = 1;
+        }
+
+
+        $sql = "INSERT INTO actividades (codigo_actividad,nombre_actividad,id_unidad,id_area,id_creacion) VALUES (?,?,?,?,?)";
+        $sqlr = $con->prepare($sql);
+        $sqlr->execute(array($numero, $nombre_actividad, $id_unidad. $id_area, $usuario));
+    }
+
 }
 ?>

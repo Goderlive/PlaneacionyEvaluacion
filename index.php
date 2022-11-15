@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-
 if(isset($_SESSION) && isset($_SESSION['sistema']) && $_SESSION['sistema'] == "pbrm"){    
     include 'header.php';
     include 'head.php';
