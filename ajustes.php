@@ -19,7 +19,8 @@ if($_SESSION['sistema'] == "pbrm" && $_SESSION['id_permiso'] < 3):
 
     <br>
     <?= breadcrumbs(array("Inicio"=>"index,php", "Ajustes"=> "ajustes.php")); ?>
-    <h2 class="text-2xl font-bold dark:text-white mr-auto">Puestos de importancia para impresión de formatos</h2>
+    <br>
+    <h2 class="mx-3 text-2xl font-bold dark:text-white mr-auto">Puestos de importancia para impresión de formatos</h2>
     <br>
 
 <!-- Primero vamos a revisar los puestos mas importantes. -->
@@ -105,6 +106,115 @@ if($_SESSION['sistema'] == "pbrm" && $_SESSION['id_permiso'] < 3):
     </table>
 </div>
 
+<hr class="my-8 h-px bg-gray-200 border-0 dark:bg-gray-700">
+<h2 class="text-2xl font-bold dark:text-white mr-auto">Fechas: Anteproyecto / Proyecto / Programa Anual</h2>
+<br>
+<div class="overflow-x-auto relative">
+    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="py-3 px-6">
+                    Nombre
+                </th>
+                <th colspan="2" scope="col" class="py-3 px-6">
+                    Fecha Inicio
+                </th>
+                <th colspan="2" scope="col" class="py-3 px-6">
+                    Fecha Fin
+                </th>
+                <th>
+                    Acción
+                </th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+            <form action="models/ajustes_model.php" method="post">     
+                <?php
+                if($ajustes["anteproyectoFechas"]):
+                $anteproyecto = SeparadorFechas($ajustes["anteproyectoFechas"]);
+                endif ?>
+                <tr class="bg-white dark:bg-gray-800">
+                    <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        Anteproyecto
+                    </th>
+                    <td class="py-4 px-6">
+                        <?= DayPiker($anteproyecto[0], 1)?>
+                    </td>
+                    <td class="py-4 px-6">
+                        <?= MontPiker($anteproyecto[1], 1) ?>
+                    </td>
+                    <td class="py-4 px-6">
+                        <?= DayPiker($anteproyecto[2], 2) ?>
+                    </td>
+                    <td class="py-4 px-6">
+                        <?= MontPiker($anteproyecto[3], 2) ?>
+                    </td>
+                    <td>
+                        <br>
+                        <button type="submit" name="anteproyecto" class="py-2 px-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Guardar</button>
+                    </td>
+                </tr>
+            </form>
+            <form action="models/ajustes_model.php" method="post">
+                <?php
+                if($ajustes["anteproyectoFechas"]):
+                $anteproyecto = SeparadorFechas($ajustes["proyectoFechas"]);
+                endif ?>    
+                <tr class="bg-white dark:bg-gray-800">
+                    <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        Proyecto
+                    </th>
+                    <td class="py-4 px-6">
+                        <?= DayPiker($anteproyecto[0], 1)?>
+                    </td>
+                    <td class="py-4 px-6">
+                        <?= MontPiker($anteproyecto[1], 1) ?>
+                    </td>
+                    <td class="py-4 px-6">
+                        <?= DayPiker($anteproyecto[2], 2) ?>
+                    </td>
+                    <td class="py-4 px-6">
+                        <?= MontPiker($anteproyecto[3], 2) ?>
+                    </td>
+                    <td>
+                        <br>
+                        <button type="submit" name="proyecto" class="py-2 px-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Guardar</button>
+                    </td>
+                </tr>
+            </form>
+            <form action="models/ajustes_model.php" method="post">
+                <?php
+                if($ajustes["programaAFechas"]):
+                $programa = SeparadorFechas($ajustes["programaAFechas"]);
+                endif ?>        
+                <tr class="bg-white dark:bg-gray-800">
+                    <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        Programa
+                    </th>
+                    <td class="py-4 px-6">
+                        <?= DayPiker($programa[0], 1)?>
+                    </td>
+                    <td class="py-4 px-6">
+                        <?= MontPiker($programa[1], 1) ?>
+                    </td>
+                    <td class="py-4 px-6">
+                        <?= DayPiker($programa[2], 2) ?>
+                    </td>
+                    <td class="py-4 px-6">
+                        <?= MontPiker($programa[3], 2) ?>
+                    </td>
+                    <td>
+                        <br>
+                        <button type="submit" name="programa" class="py-2 px-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Guardar</button>
+                    </td>
+                </tr>
+            </form>
+        </tbody>
+    </table>
+</div>
+
 
 </div>
 
@@ -117,7 +227,8 @@ if($_SESSION['sistema'] == "pbrm" && $_SESSION['id_permiso'] < 3):
     <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-            <!-- Modal header -->
+        
+        <!-- Modal header -->
             <div class="flex justify-between items-start p-4 rounded-t border-b dark:border-gray-600">
                 <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
                     Agrega un Director de UIPPE o Equivalente 
