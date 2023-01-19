@@ -6,9 +6,12 @@ if(!$_SESSION['sistema'] == "pbrm"){
     </script>
     <?php
 }else{
+
 $id_usuario = $_SESSION['id_usuario'];
-$mi_permiso = $_SESSION['id_permiso'];
 require_once 'models/inicio_modelo.php';
+$permisos = getPermisos($con, $_SESSION['id_usuario']);
+$mi_permiso = $permisos['nivel'];
+
 // Aqui estan las variables de los Menus
 $actual = $_SERVER['PHP_SELF'];
 $actual = substr($actual, 1,);

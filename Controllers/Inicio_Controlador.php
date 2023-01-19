@@ -5,6 +5,9 @@ $id_usuario = $_SESSION['id_usuario'];
 $user = get_usuario($id_usuario,$con);
 
 
+
+
+
 function AlertaAvancesActividades($con){    
 	if(VerificaAvancesActividades($con)){
 		return '

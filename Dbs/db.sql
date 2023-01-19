@@ -1253,19 +1253,11 @@ INSERT INTO areas (nombre_area, id_dependencia, id_dependencia_general, id_depen
 ("Jefatura Técnca operativa",11,52,7,48,"2022");
 
 
-
--- Permisos:
--- 1 > Maxima autoridad (gobierno Digital y Gobierno por resultados)
--- 2 > validacion de avances, agregar actividades e indicadores, validar reconducciones y mas
--- 3 > Presidente municipal. Permite ver estadisticas de cada area, no puede editar.
--- 4 > Director o coordinador de dependencia, puede agrar avances, evidencia, pedir reconducciones y CREAR USUARIOS. @metepec.
--- 5 > Enlace. Permite capturar avances, pedir reconducciones, solo administra su propia cuenta.
 DROP TABLE IF EXISTS usuarios;
 CREATE TABLE usuarios(
     id_usuario INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(255),
     apellidos VARCHAR(255),
-    id_permiso INT NOT NULL,
     correo_electronico VARCHAR(255),
     tel VARCHAR(255),
     contrasena VARCHAR(255),
@@ -1275,6 +1267,24 @@ CREATE TABLE usuarios(
     CONSTRAINT fk_usuarios_usuarios FOREIGN KEY (id_registro) REFERENCES usuarios (id_usuario) ON DELETE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 INSERT INTO usuarios (nombre, apellidos, id_permiso, correo_electronico, tel, contrasena) VALUES('German', 'Guillen', 1, 'goder@live.com', '7224531128', '123456');
+
+
+-- Permisos:
+-- 1 > Maxima autoridad (gobierno Digital y Gobierno por resultados)
+-- 2 > validacion de avances, agregar actividades e indicadores, validar reconducciones y mas
+-- 3 > Presidente municipal. Permite ver estadisticas de cada area, no puede editar.
+-- 4 > Director o coordinador de dependencia, puede agrar avances, evidencia, pedir reconducciones y CREAR USUARIOS. @metepec.
+-- 5 > Enlace. Permite capturar avances, pedir reconducciones, solo administra su propia cuenta.
+
+DROP TABLE IF EXISTS permisos;
+CREATE TABLE permisos(
+    permiso INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    id_usuario INT,
+    id_dependencia INT,
+    id_area INT,
+    nivel INT 
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
 
 
 DROP TABLE IF EXISTS usuarios_eliminados;
@@ -1292,14 +1302,6 @@ CREATE TABLE usuarios_eliminados(
     fecha_eliminacion DATETIME DEFAULT CURRENT_TIMESTAMP(),
     id_registro INT,
     id_eliminante INT
-)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
-
-
-DROP TABLE IF EXISTS permisos;
-CREATE TABLE permisos(
-    id_permiso INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 

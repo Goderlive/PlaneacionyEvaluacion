@@ -2,6 +2,18 @@
 require_once 'conection.php';
 
 
+function TraeDepsGen($con, $anio){ // Trae las dependencias generales de centralizados y no centralizados
+    $stm = $con->query("SELECT * FROM dependencias_generales WHERE anio = $anio");
+    $dependencias = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $dependencias;
+}
+
+function dependencias($con, $anio){
+    $stm = $con->query("SELECT * FROM dependencias WHERE anio = $anio ORDER BY nombre_dependencia ASC");
+    $dependencias = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $dependencias;
+}
+
 function TraerAreas($con, $id_dependencia){
     $stm = $con->query("SELECT * FROM areas WHERE id_dependencia = $id_dependencia");
     $dependencias = $stm->fetchAll(PDO::FETCH_ASSOC);

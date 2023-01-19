@@ -18,7 +18,6 @@
                 session_start();
                 $_SESSION['id_usuario'] = $datos['id_usuario'];
                 $_SESSION['correo_electronico'] = $datos['correo_electronico'];
-                $_SESSION['id_permiso'] = $datos['id_permiso'];
                 $_SESSION['sistema'] = 'pbrm';
                 $_SESSION['id_dependencia'] = $datos['id_dependencia'];
                 $_SESSION['anio'] = date('Y');
