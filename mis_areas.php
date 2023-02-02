@@ -48,11 +48,7 @@ No traemos POST o Area en Session:
     
     
 <?php if(isset($_SESSION['id_area']) || $_POST['id_dependencia']): ?>
-        
-        
-        
-        
-        
+    
 <?php endif ?>
         
         
@@ -60,7 +56,10 @@ No traemos POST o Area en Session:
         
         
 <?php if($permisos['nivel'] ==1 || $permisos['nivel'] ==2): ?>
+
 <?php endif ?>
+
+
 
 
 
