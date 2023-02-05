@@ -987,7 +987,7 @@ INSERT INTO proyectos (codigo_proyecto, nombre_proyecto, conac, descripcion, id_
 
 
 DROP TABLE IF EXISTS dependencias;
-CREATE TABLE dependencias(
+CREATE TABLE depenchas(
     id_dependencia INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     nombre_dependencia VARCHAR(255) NOT NULL,
     nivel VARCHAR(50),

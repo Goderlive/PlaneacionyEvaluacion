@@ -16,7 +16,7 @@ function get_usuario($id_usuario,$con){
 
 function VerificaAvancesActividades($con){
     $stm = $con->query("SELECT * FROM avances a
-    LEFT JOIN programaciones p ON p.id_actividad = a.id_actividad
+    LEFT JOIN actividades p ON p.id_actividad = a.id_actividad
     WHERE a.validado != 1");
     $data_avances_actividades = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $data_avances_actividades;
