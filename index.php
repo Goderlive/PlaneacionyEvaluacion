@@ -2,10 +2,10 @@
 session_start();
 
 if(isset($_SESSION) && isset($_SESSION['sistema']) && $_SESSION['sistema'] == "pbrm"){    
+    require_once 'Controllers/Inicio_Controlador.php';
     include 'header.php';
     include 'head.php';
-    require_once 'Controllers/Inicio_Controlador.php';
-
+    // consultamos los permisos
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -19,7 +19,7 @@ if(isset($_SESSION) && isset($_SESSION['sistema']) && $_SESSION['sistema'] == "p
 
         <?php
         // Aqui va lo que pasa si eres nivel 2 (osea de la wipe o gobierno digital)
-		if($_SESSION['id_permiso'] == 1 || $_SESSION['id_permiso'] == 2){
+		if($permisos['nivel']  == 1 || $permisos['nivel']  == 2){
 			print AlertaAvancesActividades($con);
 			print AlertaAvancesIndicadores($con);
             print AlertaReconduccionActividades($con);
