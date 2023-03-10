@@ -19,8 +19,6 @@ $user_anio = $_SESSION['anio'];
 <?php $dependenciasAuxiliares = DependenciasAuxiliares($con, $user_anio)?>
 <?php $proyectos = Proyectos($con, $user_anio)?>
 
-<?php var_dump($proyectos);
-die(); ?>
 
 <body>
 <div class="container mx-auto">

@@ -3563,9 +3563,21 @@ CREATE TABLE unidades_medida_eliminadas(
 
 DROP TABLE IF EXISTS setings;
 CREATE TABLE setings(
+<<<<<<< HEAD
   id_setings INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
   year_report VARCHAR(4) NOT NULL,
   id_tesoreria INT,
   id_uippe INT
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 INSERT INTO setings VALUES (NULL,"2022", NULL, NULL);
+=======
+    id_setings INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    year_report VARCHAR(4) NOT NULL,
+    id_tesoreria INT,
+    id_uippe INT,
+    anteproyectoFechas VARCHAR(13),
+    proyectoFechas VARCHAR(13),
+    programaAFechas VARCHAR(13)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+INSERT INTO setings (year_report, anteproyectoFechas, proyectoFechas, programaAFechas) VALUES ("2022", "01,01;01,01", "01,01;01,01", "01,01;01,01");
+>>>>>>> 5bed57f04aaa50bfd23fad98971f8631c9789597

@@ -23,7 +23,11 @@ function getPermisos($con, $id_usuario){
 
 function VerificaAvancesActividades($con){
     $stm = $con->query("SELECT * FROM avances a
+<<<<<<< HEAD
+    LEFT JOIN actividades p ON p.id_actividad = a.id_actividad
+=======
     LEFT JOIN actividades ac ON ac.id_actividad = a.id_actividad
+>>>>>>> 841b8827b18cbe727022cd8d0ec34402b5d304ec
     WHERE a.validado != 1");
     $data_avances_actividades = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $data_avances_actividades;
