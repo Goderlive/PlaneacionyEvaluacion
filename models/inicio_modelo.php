@@ -18,9 +18,6 @@ function get_usuario($id_usuario,$con){
 function getPermisos($con, $id_usuario){
     $stm = $con->query("SELECT * FROM permisos WHERE id_usuario = $id_usuario");
     $permiso = $stm->fetchAll(PDO::FETCH_ASSOC);
-    if(count($permiso) < 2){
-        $permiso = $permiso[0];
-    }
     return $permiso;
 }
 

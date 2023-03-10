@@ -13,8 +13,8 @@ $user_anio = $_SESSION['anio'];
 ?>
 <!DOCTYPE html>
 <html lang="es">
-<?php include 'head.php';?>
-<?php include 'header.php';?>
+<?php include 'head.php';  // Esto solo carga el html de un head?>
+<?php include 'header.php'; // Carga el menu de arriba y la programacion de los permisos?>
 <?php include 'Controllers/breadcrumbs.php';?>
 <?php $dependenciasAuxiliares = DependenciasAuxiliares($con, $user_anio)?>
 <?php $proyectos = Proyectos($con, $user_anio)?>
