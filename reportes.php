@@ -66,7 +66,7 @@ require_once 'Controllers/ReporteController.php';
         </div>
     </div>
 
-    <?= Modales($actividadesDB, $el_mes)?>
+    <?= Modales($con, $actividadesDB, $el_mes)?>
     <br>
     <?= ModalesEvidencias($con, $actividadesDB, $el_mes)?>    
 <?php include 'footer.php';?>

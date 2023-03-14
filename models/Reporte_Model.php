@@ -7,6 +7,13 @@ function NombreArea($con, $id_area){
     return $area["nombre_area"];
 }
 
+
+function buscaactilistas($con, $id_actividad){
+    $stm = $con->query("SELECT * FROM lineasactividades WHERE id_actividad = $id_actividad");
+    $actividad = $stm->fetch(PDO::FETCH_ASSOC);
+    return $actividad;
+}
+
 function CuentaAvances($con, $id_area, $mes){
     $stm = $con->query("SELECT COUNT(av.id_avance) FROM avances av
     LEFT JOIN actividades ac ON ac.id_actividad = av.id_actividad
@@ -81,6 +88,9 @@ if (isset($_POST['jfnkasjnkasdf34q345']) == "Enviar") {
     $id_dependencia = $data['id_dependencia'];
     $id_area = $data['id_area'];
     $id_actividad = $data['id_actividad'];
+    $localidades = isset($data['localidades']) ? $data['localidades'] : NULL;
+    $beneficiarios = isset($data['beneficiarios']) ? $data['beneficiarios'] : NULL;
+    $recursos = isset($data['recursos']) ? $data['recursos'] : NULL;
 
     if(!is_dir("../archivos/actividades/$year")){
         mkdir("../archivos/actividades/$year");
@@ -107,9 +117,9 @@ if (isset($_POST['jfnkasjnkasdf34q345']) == "Enviar") {
         $full_evidencia_evidencia = $dir.$nombre_evidencia_de_evidencia;
         move_uploaded_file($nombre_tmp, $full_evidencia_evidencia);
     }
-    $sql = "INSERT INTO avances (mes, avance, justificacion, path_evidenia_evidencia, descripcion_evidencia, id_actividad, id_usuario_avance) VALUES (?,?,?,?,?,?,?)";
+    $sql = "INSERT INTO avances (mes, avance, justificacion, path_evidenia_evidencia, descripcion_evidencia, id_actividad, id_usuario_avance, localidades, beneficiarios, recursos) VALUES (?,?,?,?,?,?,?,?,?,?)";
     $sqlr = $con->prepare($sql);
-    $sqlr->execute(array($mes, $data['avance'], $data['justificacion'], $full_evidencia_evidencia, $data['descripcion_evidencia'], $id_actividad, $data['id_usuario']));
+    $sqlr->execute(array($mes, $data['avance'], $data['justificacion'], $full_evidencia_evidencia, $data['descripcion_evidencia'], $id_actividad, $data['id_usuario'], $localidades, $beneficiarios, $recursos));
     //header("Location: ../revisa_avances.php?type=$tipo");
     ?>
     
