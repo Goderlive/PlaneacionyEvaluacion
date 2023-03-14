@@ -1,12 +1,13 @@
 <?php
 session_start();
 require_once 'Controllers/ReporteController.php';
-if($_SESSION['id_permiso'] == 1 || $_SESSION['id_permiso'] == 4 || $_SESSION['id_permiso'] == 5){?>
+?>
 <!DOCTYPE html>
 <html lang="es">
 <?php include 'head.php';?>
 <?php include 'header.php';?>
 <?php include 'Controllers/breadcrumbs.php';?>
+<?php if($permisos['nivel'] == 1 || $permisos['nivel'] == 4 || $permisos['nivel'] == 5){?>
 
 <body>
     <br>

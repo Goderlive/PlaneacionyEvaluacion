@@ -1,14 +1,11 @@
 <?php
-if(!$_GET['type']){
-    header("Location: index.php");
-}
-$tipo = $_GET['type'];
 session_start();
-if($_SESSION['sistema'] == "pbrm" || $_SESSION['id_permiso'] != 1){    
+if($_SESSION['sistema'] == "pbrm"){    
     include 'header.php';
     include 'head.php';
     require_once 'Controllers/avances_controlador.php';
     include 'Controllers/breadcrumbs.php';
+    $tipo = $_GET['type'];
 ?>
 <!DOCTYPE html>
 <html lang="es">

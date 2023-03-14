@@ -12,6 +12,8 @@ require_once 'models/inicio_modelo.php';
 $permisos = getPermisos($con, $_SESSION['id_usuario']);
 $mi_permiso = $permisos['nivel'];
 
+
+
 // Aqui estan las variables de los Menus
 $actual = $_SERVER['PHP_SELF'];
 $actual = substr($actual, 1,);
@@ -74,14 +76,14 @@ function item_principal($actual, $buscador, $texto, $destino){
                     <li>
                         <?php
 
-                        $thisyear = date('Y');
-                        $myyear = $_SESSION['anio']; 
-                        if($thisyear == $myyear) {
-                            $ante = $thisyear + 1;
-                            print '<a href="models/inicio_modelo.php?anteproyecto='.$ante.'"> Anteproyecto '.$ante.' </a>';
-                        }else{
-                            print '<a href="models/inicio_modelo.php?anteproyecto='.$thisyear.'"> Regresar a '.$thisyear.' </a>';
-                        }
+                        // $thisyear = date('Y');
+                        // $myyear = $_SESSION['anio']; 
+                        // if($thisyear == $myyear) {
+                        //     $ante = $thisyear + 1;
+                        //     print '<a href="models/inicio_modelo.php?anteproyecto='.$ante.'"> Anteproyecto '.$ante.' </a>';
+                        // }else{
+                        //     print '<a href="models/inicio_modelo.php?anteproyecto='.$thisyear.'"> Regresar a '.$thisyear.' </a>';
+                        // }
                         ?>
                     </li>
                     <?= item_principal($actual, $inicio, "Inicio", "index.php")?>

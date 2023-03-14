@@ -6,7 +6,7 @@ if (!isset($_POST['id_area'])){
 
 }else{
     $id_area = $_POST['id_area'];
-    $el_mes = (isset($_POST['mes'])) ? $_POST['mes'] : intval(date('m'))-1;
+    $el_mes = (isset($_POST['mes'])) ? $_POST['mes'] : intval(date('m'));
 }
 $meses = array("Sin Mes", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");
 
@@ -44,7 +44,7 @@ function ValidaBotones($mes, $actividad){
         $text = "Revisión";
         $boton = 'disabled class = "bg-yellow-300 cursor-not-allowed text-white hover:bg-yellow-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800';
     }
-    if($mes >  intval(date('m')-1)){
+    if($mes >  intval(date('m'))){
         $boton = 'disabled class="text-white bg-blue-400 dark:bg-blue-500 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center';
     }
     if(isset($actividad['validado']) && $actividad['validado'] == 1 ){

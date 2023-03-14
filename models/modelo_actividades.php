@@ -28,6 +28,21 @@ function Proyectos($con, $anio){
 }
 
 
+function unArea($con, $dep){
+
+    $sql = "SELECT * FROM areas a
+        INNER JOIN dependencias_generales dp ON a.id_dependencia = dp.id_dependencia
+        INNER JOIN dependencias_auxiliares da ON a.id_dependencia_aux = da.id_dependencia_auxiliar
+        INNER JOIN proyectos py ON a.id_proyecto = py.id_proyecto
+        INNER JOIN programas_presupuestarios pp ON py.id_programa = pp.id_programa
+        WHERE a.id_area = $dep";
+    $stm = $con->query($sql);
+    $areas = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $areas;
+}
+
+
+
 function areas_con($con, $dep){
     $sql = "SELECT * FROM areas a
         INNER JOIN dependencias_generales dp ON a.id_dependencia = dp.id_dependencia

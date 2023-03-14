@@ -16,18 +16,15 @@ function get_usuario($id_usuario,$con){
 
 
 function getPermisos($con, $id_usuario){
-    $stm = $con->query("SELECT * FROM permisos WHERE id_usuario = $id_usuario");
-    $permiso = $stm->fetchAll(PDO::FETCH_ASSOC);
+    $anio = date("Y");
+    $stm = $con->query("SELECT * FROM permisos WHERE id_usuario = $id_usuario AND anio = $anio");
+    $permiso = $stm->fetch(PDO::FETCH_ASSOC);
     return $permiso;
 }
 
 function VerificaAvancesActividades($con){
     $stm = $con->query("SELECT * FROM avances a
-<<<<<<< HEAD
     LEFT JOIN actividades p ON p.id_actividad = a.id_actividad
-=======
-    LEFT JOIN actividades ac ON ac.id_actividad = a.id_actividad
->>>>>>> 841b8827b18cbe727022cd8d0ec34402b5d304ec
     WHERE a.validado != 1");
     $data_avances_actividades = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $data_avances_actividades;
@@ -51,7 +48,7 @@ function VerificaReconduccionesIndicadores($con){
     return $data_avances_actividades;
 }
 
-if($_GET){
+if(isset($_GET['post'])){
     session_start();
     if ($_GET['anteproyecto']) {
         $_SESSION['anio'] = $_GET['anteproyecto'];

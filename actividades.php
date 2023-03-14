@@ -28,12 +28,23 @@ $user_anio = $_SESSION['anio'];
 
 
 
-<?php if ($_SESSION['id_permiso'] > 3):  // Primero veridicamos el permiso... EN CASO DE ENLACE?> 
+<?php if ($permisos['nivel'] > 3):  // Primero veridicamos el permiso... EN CASO DE ENLACE?> 
     <?php if ($real_anio == $user_anio): // Luego verificamos si es un anio corriente ?>
     <div class="grid grid-cols-4">
         <?php
         $all = '';
-        $areas = areas_con($con, $dep, $real_anio);
+
+        //Tenemos 2 opciones, que sea un enlace de varias areas, o que sea de una sola area
+        //En caso de que sea un enlace general. le asignamos la chave de la dependencia, y asi lo buscaremos con un metodo especial
+        if ($permisos['id_dependencia'] != ''){
+            $dep = $permisos['id_dependencia'];
+            $areas = areas_con($con, $dep, $real_anio);
+        }
+        else{ // En caso de que el permiso se encuentre en 
+            $dep = $permisos['id_area'];
+            $areas = unArea($con, $dep, $real_anio);
+        }
+
         foreach ($areas as $area): ?>
 
             <div class="items-start p-4 ml-2 mr-2 mb-4 text-center  bg-white rounded-lg border border-gray-400 shadow-md dark:bg-gray-800 dark:border-gray-700"">
