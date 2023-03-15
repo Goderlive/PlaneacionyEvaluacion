@@ -7,6 +7,14 @@ require_once 'conection.php';
     $usuario = $stm->fetch(PDO::FETCH_ASSOC);
     return $usuario;
 } */
+
+
+function traepermiso ($con, $id_usuario){
+    $resp = Fetch($con, "SELECT id_dependencia FROM  permisos WHERE permiso = $id_usuario");
+    return $resp['id_dependencia'];
+}
+
+
 function Fetch($con, $string){
     try {
         $stm = $con->query($string);

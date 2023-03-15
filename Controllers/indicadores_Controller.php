@@ -28,7 +28,7 @@ function MenuTrimestre($id_dependencia, $this_mes){
 
 
 function CreaBotones($id_indicador, $trimestre_actual, $con){
-    $mes = ceil(date('m')/3);
+    $mes = ceil(date('m')/3)+1;
     if($mes <= $trimestre_actual){
         $boton = '<button data-modal-toggle="mymodal'.$id_indicador.'" disabled class="text-white bg-blue-400 dark:bg-blue-500 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="button" >Reportar</button>';
         return $boton;
