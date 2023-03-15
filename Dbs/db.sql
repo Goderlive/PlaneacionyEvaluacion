@@ -640,50 +640,51 @@ CREATE TABLE dependencias(
   fecha_alta DATETIME DEFAULT CURRENT_TIMESTAMP(),
   active INT,
   anio VARCHAR(4),
+  id_administrador INT,
   CONSTRAINT FK_dependencia_general FOREIGN KEY (id_dependencia_gen) REFERENCES dependencias_generales(id_dependencia) ON DELETE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
-INSERT INTO dependencias (nombre_dependencia, id_dependencia_gen, active, anio) VALUES 
-("Oficina de Presidencia", 1, 1,"2023"),
-("Secretaría Técnica", 1, 1,"2023"),
-("Secretaria Particular", 1, 1,"2023"),
-("Coordinación de Giras y Logística",1, 1,"2023"),
-("Coordinación de Asesores", 1, 1,"2023"),
-("Coordinador de Asuntos Religiosos", 1, 1,"2023"),
-("Secretaria Técnica del Consejo Municipal de Seguridad Publica", 1, 1,"2023"),
-("Coordinación de Comunicación Social", 2, 1,"2023"),
-("Defensoría Municipal de los Derechos Humanos", 3, 1,"2023"),
-("Sindicatura Municipal", 5, 1,"2023"),
-("Regiduría 1", 8, 1,"2023"),
-("Regiduría 2", 9, 1,"2023"),
-("Regiduría 3", 10, 1,"2023"),
-("Regiduría 4", 11, 1,"2023"),
-("Regiduría 5", 12, 1,"2023"),
-("Regiduría 6", 13, 1,"2023"),
-("Regiduría 7", 14, 1,"2023"),
-("Regiduría 8", 15, 1,"2023"),
-("Regiduría 9", 16, 1,"2023"),
-("Secretaria del Ayuntamiento", 20, 1,"2023"),
-("Dirección de Administración", 21, 1,"2023"),
-("Dirección de Gobierno Digital y Electrónico", 23, 1,"2023"),
-("Dirección de Desarrollo Urbano y Metropolitano", 25, 1,"2023"),
-("Dirección de Obras Públicas", 25, 1,"2023"),
-("Dirección de Medio Ambiente", 27, 1,"2023"),
-("Dirección de Servicios Públicos", 28, 1,"2023"),
-("Dirección de Desarrollo Social y Asuntos Indígenas", 37, 1,"2023"),
-("Dirección de Gobernación", 33, 1,"2023"),
-("Contraloría Interna Municipal", 34, 1,"2023"),
-("Tesorería Municipal", 35, 1,"2023"),
-("Consejería Jurídica", 36, 1,"2023"),
-("Dirección de Desarrollo Económico, Turístico y Artesanal", 37, 1,"2023"),
-("Dirección de Cultura", 39, 1,"2023"),
-("Dirección de Educación", 39, 1,"2023"),
-("Dirección de Gerencia de la Ciudad", 40, 1,"2023"),
-("Dirección de Seguridad Pública", 41, 1,"2023"),
-("Dirección de Gobierno Por Resultados", 43, 1,"2023"),
-("Dirección de Transparencia y Gobierno Abierto", 43, 1,"2023"),
-("Coordinación de Protección civil y bomberos", 44, 1,"2023"),
-("Dirección de Igualdad de Género", 46, 1,"2023");
+INSERT INTO dependencias (nombre_dependencia, id_dependencia_gen, active, anio, id_administrador) VALUES 
+("Oficina de Presidencia", 1, 1,"2023",2),
+("Secretaría Técnica", 1, 1,"2023",2),
+("Secretaria Particular", 1, 1,"2023",2),
+("Coordinación de Giras y Logística",1, 1,"2023",1),
+("Coordinación de Asesores", 1, 1,"2023",2),
+("Coordinador de Asuntos Religiosos", 1, 1,"2023",2),
+("Secretaria Técnica del Consejo Municipal de Seguridad Publica", 1, 1,"2023",1),
+("Coordinación de Comunicación Social", 2, 1,"2023",1),
+("Defensoría Municipal de los Derechos Humanos", 3, 1,"2023",1),
+("Sindicatura Municipal", 5, 1,"2023",1),
+("Regiduría 1", 8, 1,"2023",2),
+("Regiduría 2", 9, 1,"2023",2),
+("Regiduría 3", 10, 1,"2023",2),
+("Regiduría 4", 11, 1,"2023",2),
+("Regiduría 5", 12, 1,"2023",2),
+("Regiduría 6", 13, 1,"2023",2),
+("Regiduría 7", 14, 1,"2023",2),
+("Regiduría 8", 15, 1,"2023",2),
+("Regiduría 9", 16, 1,"2023",2),
+("Secretaria del Ayuntamiento", 20, 1,"2023",2),
+("Dirección de Administración", 21, 1,"2023",1),
+("Dirección de Gobierno Digital y Electrónico", 23, 1,"2023",2),
+("Dirección de Desarrollo Urbano y Metropolitano", 25, 1,"2023",1),
+("Dirección de Obras Públicas", 25, 1,"2023",1),
+("Dirección de Medio Ambiente", 27, 1,"2023",1),
+("Dirección de Servicios Públicos", 28, 1,"2023",2),
+("Dirección de Desarrollo Social y Asuntos Indígenas", 37, 1,"2023",1),
+("Dirección de Gobernación", 33, 1,"2023",1),
+("Contraloría Interna Municipal", 34, 1,"2023",1),
+("Tesorería Municipal", 35, 1,"2023",2),
+("Consejería Jurídica", 36, 1,"2023",1),
+("Dirección de Desarrollo Económico, Turístico y Artesanal", 37, 1,"2023",2),
+("Dirección de Cultura", 39, 1,"2023",1),
+("Dirección de Educación", 39, 1,"2023",1),
+("Dirección de Gerencia de la Ciudad", 40, 1,"2023",2),
+("Dirección de Seguridad Pública", 41, 1,"2023",1),
+("Dirección de Gobierno Por Resultados", 43, 1,"2023",2),
+("Dirección de Transparencia y Gobierno Abierto", 43, 1,"2023",2),
+("Coordinación de Protección civil y bomberos", 44, 1,"2023",2),
+("Dirección de Igualdad de Género", 46, 1,"2023",2);
 
 
 DROP TABLE IF EXISTS areas;
@@ -958,7 +959,7 @@ INSERT INTO usuarios (nombre, apellidos, correo_electronico, tel, contrasena) VA
 
 -- Permisos:
 -- 1 > Maxima autoridad (gobierno Digital y Gobierno por resultados)
--- 2 > validacion de avances, agregar actividades e indicadores, validar reconducciones y mas
+-- 2 > Validacion de avances, agregar actividades e indicadores, validar reconducciones y mas
 -- 3 > Presidente municipal. Permite ver estadisticas de cada area, no puede editar.
 -- 4 > Director o coordinador de dependencia, puede agrar avances, evidencia, pedir reconducciones y CREAR USUARIOS. @metepec.
 -- 5 > Enlace. Permite capturar avances, pedir reconducciones, solo administra su propia cuenta.

@@ -21,6 +21,13 @@ function BuscaDependientes($con, $sentencia){
     return $dependientes;
 }
 
+function permisos($con, $id_usuario){
+    $stm = $con->query("SELECT * FROM permisos WHERE id_usuario = $id_usuario");
+    $permiso = $stm->fetch(PDO::FETCH_ASSOC);
+    return $permiso;
+}
+
+
 if(isset($_POST['nuevo'])){
     session_start();
     if($_SESSION['sistema'] != "pbrm"){

@@ -258,6 +258,8 @@ if($_SESSION['sistema'] == "pbrm"){
                                 <?= $a['justificacion'] ?>
                                 <br>
                                 Reportado por: <b> <?=  $a['nombre'].' ' . $a['apellidos']. "</b>" . dia($a['fecha_reporta']) ?>
+                                <br>
+                                Descripción de la evidencia: <?= $a['descripcion_evidencia'] ?>
                             </td>
                             <td class="py-2 px-6" colspan="3" align="center" valign="top">
                                 <form action="models/avances_modelo.php" method="post">
@@ -290,6 +292,8 @@ if($_SESSION['sistema'] == "pbrm"){
                         <div class="p-6 space-y-6">
                             <a target="_blank" href="<?= Imagenes(".".$a['path_evidenia_evidencia']) ?>">
                                 <?= imgmd(".".$a['path_evidenia_evidencia']) ?>
+                                <br>
+                                <?= $a['descripcion_evidencia'] ?>
                             </a>
                         </div>                    
                     </div>
