@@ -54,7 +54,7 @@ session_destroy();
   <div class="d-flex flex-column flex-md-row text-md-start justify-content-center py-4 px-4 px-xl-5" style="background-color: #a184bc;" >
     <!-- Copyright -->
     <div class="text-white mb-3 mb-md-0">
-      Copyright © 2022. H. Ayuntamiento Metepec 2022-2024.
+      Copyright 2023 SimontsPbRM.
     </div>
     <!-- Copyright -->
   </div>

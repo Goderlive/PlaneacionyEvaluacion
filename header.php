@@ -87,8 +87,12 @@ function item_principal($actual, $buscador, $texto, $destino){
                         ?>
                     </li>
                     <?= item_principal($actual, $inicio, "Inicio", "index.php")?>
-                    <?= item_principal($actual, $actividades, "Actividades", "actividades.php")?>
-                    <?= item_principal($actual, $indicadores, "Indicadores", "indicadores.php")?>
+                    <?= item_principal($actual, $actividades, "Actividades", "actividades.php") ?>
+                    <?php
+                    if($mi_permiso != 5){
+                        echo item_principal($actual, $indicadores, "Indicadores", "indicadores.php");
+                    }
+                        ?>
                     <button id="dropdownNavbarButton" data-dropdown-toggle="dropdownNavbar" class="flex justify-between items-center py-2 pr-4 pl-3 w-full font-medium text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-gray-400 dark:hover:text-white dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">Mas <svg class="ml-1 w-4 h-4" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg></button>
     <!-- Dropdown menu -->
                     <?php if(in_array($actual, $inicio)):?>
@@ -105,9 +109,13 @@ function item_principal($actual, $buscador, $texto, $destino){
                         <div id="dropdownNavbar" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                             <ul class="py-1 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownNavbarButton">
                                 <?= item_context("actividades.php", "Actividades por Área", array(1,2,3,4,5), $mi_permiso) ?>
-                                <?= item_context("reconduccion_actividades.php", "Nueva Reducción de Actividades", array(1,2,3,4,5), $mi_permiso) ?>
-                                <?= item_context("formatos_actividades.php", "Impresion Formatos", array(1,2,3,4,5), $mi_permiso) ?>
-                                <?= item_context("actividades_todas.php", "Todas las Actividades", array(1,2,3,4,5), $mi_permiso) ?>
+                                <?php 
+                                    if($mi_permiso != 5){
+                                        echo item_context("reconduccion_actividades.php", "Nueva Reducción de Actividades", array(1,2,3,4,5), $mi_permiso); 
+                                        echo item_context("formatos_actividades.php", "Impresion Formatos", array(1,2,3,4,5), $mi_permiso);
+                                        echo item_context("actividades_todas.php", "Todas las Actividades", array(1,2,3,4,5), $mi_permiso);
+                                    }
+                                ?>
                             </ul>
                         </div> <?php endif ?>
                                 

@@ -6,7 +6,9 @@ require_once 'conection.php';
 
 function get_usuario($id_usuario,$con){
     $stm = $con->query("SELECT * FROM usuarios u
-    LEFT JOIN dependencias ds ON u.id_dependencia = ds.id_dependencia
+    LEFT JOIN permisos p ON p.id_usuario = u.id_usuario
+    LEFT JOIN areas a ON a.id_area = p.id_area
+    LEFT JOIN dependencias d ON d.id_dependencia = a.id_dependencia OR d.id_dependencia = p.id_dependencia
     WHERE u.id_usuario = $id_usuario");
     $data_usuario = $stm->fetch(PDO::FETCH_ASSOC);
 

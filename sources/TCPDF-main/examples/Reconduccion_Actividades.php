@@ -37,8 +37,6 @@ function TraeReconduccion($con, $id_reconduccion){
 $reconduccion = TraeReconduccion($con, $id_reconduccion);
 
 
-
-
 // ============ objetivo programa ==============
 $codigo_programa = $reconduccion['programa'];
 $codigo_programa = substr($codigo_programa, 0, 8);
@@ -51,13 +49,6 @@ $objetivo_programa = $stm->fetch(PDO::FETCH_ASSOC);
 $objetivo_programa = $objetivo_programa['objetivo_pp'];
 // ============ END objetivo programa ==============
 
-
-function TraeProgramaciones($con, $id_reconduccion){
-    $stm = $con->query("SELECT * FROM programacion_reconducciones WHERE id_reconduccion = $id_reconduccion");
-    $programaciones = $stm->fetchAll(PDO::FETCH_ASSOC);
-    return $programaciones;
-}
-$programaciones = TraeProgramaciones($con, $id_reconduccion);
 
 function arregladata($data){
     $data = str_replace('"', "", $data);
@@ -84,6 +75,8 @@ function SumaAnual($data){
     return $sum;
 }
 
+
+
 function DefineReconduccion($ini, $fin){
     $Tini = SumaAnual($ini);
     $Tfin = SumaAnual($fin);
@@ -105,6 +98,42 @@ function DefineReconduccion($ini, $fin){
     }
     return "Hola";
 }
+
+
+function TraeProgramaciones($con, $id_reconduccion){
+    $stm = $con->query("SELECT * FROM programacion_reconducciones WHERE id_reconduccion = $id_reconduccion");
+    $programaciones = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $programaciones;
+}
+$programaciones = TraeProgramaciones($con, $id_reconduccion);
+
+$nprogramaciones = array();
+foreach($programaciones as $p){
+	if(DefineReconduccion($p['programacion_inicial'], $p['programacion_final']) == "Reducción"){
+		array_push($nprogramaciones, $p);
+	}
+	if(DefineReconduccion($p['programacion_inicial'], $p['programacion_final']) == "Ampliación"){
+		array_push($nprogramaciones, $p);
+	}
+	if(DefineReconduccion($p['programacion_inicial'], $p['programacion_final']) == "Recalendirización") {
+		array_push($nprogramaciones, $p);
+	}
+}
+$programaciones = $nprogramaciones;
+
+if(!(count($programaciones) > 0)){
+	$html = "No es necesario imprimir, ya que es una reconduccion interna";
+}else{
+
+
+
+
+
+
+
+
+
+
 
 $a = 0;
 $b = 0;
@@ -512,6 +541,11 @@ $firmas = $espacios .'
 
 
 $html = $membretes . $oficio_movimiento_fecha . $encabezado_gen_aux_etc . $vacio . $htmlprog . $justificacion . $firmas;
+
+} // Fin del else principal
+
+
+
 // output the HTML content
 $pdf->writeHTML($html, true, false, true, false, '');
 

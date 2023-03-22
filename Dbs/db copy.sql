@@ -370,7 +370,7 @@
         id_usuario INT,
         id_dependencia INT,
         id_area INT,
-        nivel INT 
+        nivel INT
     )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
     INSERT INTO permisos (id_usuario, nivel) VALUES (1,1);
 

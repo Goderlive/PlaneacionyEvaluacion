@@ -1,4 +1,26 @@
-<?php if($_SESSION['id_permiso'] != 5):?>
+<?php
+session_start(); // 1. Vamos a validar que sea un usuario valido
+if($_SESSION['sistema'] != "pbrm"){
+    header("Location: mi_perfil.php");
+}
+
+?>
+<!DOCTYPE html>
+<html lang="es">
+<?php 
+include 'head.php';
+include 'header.php';
+require_once 'Controllers/mi_perfil_Controller.php';
+include 'Controllers/breadcrumbs.php';
+$id_usuario = $_SESSION['id_usuario'];
+$permiso = permisos($con, $id_usuario);
+?>
+<body>
+<?php 
+
+
+?>
+<?php if($permiso['nivel'] != 5):?>
 <br>
     <ul class="pt-4 mt-4 space-y-2 border-t border-gray-200 dark:border-gray-700"></ul>
 <br>
@@ -13,7 +35,7 @@
 
 <!-- Ahora mostrara los ya registrados -->
 <?php
-if($_SESSION['id_permiso'] != 5){
+if($permiso['nivel'] != 5){
     $dependientes = BuscaDependientes($con, $sentencia);
 }
 if(isset($dependientes) && $dependientes):?>
@@ -24,6 +46,13 @@ if(isset($dependientes) && $dependientes):?>
         <div class="flow-root">
             <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
                 <?php foreach($dependientes as $dependiente):?>
+                    <?php $permisodep = permisos($con, $dependiente['id_usuario']);
+                    if($permisodep['id_dependencia'] != ""){
+                        $nombrearea = Dependencia($con, $permisodep['id_dependencia']);
+                    }
+                    if($permisodep['id_dependencia'] == ""){
+                        $nombrearea = Area($con, $permisodep['id_area']);
+                    } ?>
 
                     <li class="py-3 sm:py-4">
                         <div class="flex items-center space-x-4">
@@ -35,7 +64,7 @@ if(isset($dependientes) && $dependientes):?>
                                     <?= $dependiente['correo_electronico'] ?>
                                 </p>
                                 <p class="text-sm text-gray-500 truncate dark:text-gray-400">
-                                    <?= $dependiente['nombre_dependencia'] ?>
+                                    <?= $nombrearea[1] ?>
                                 </p>
                             </div>
                             <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
@@ -79,13 +108,13 @@ if(isset($dependientes) && $dependientes):?>
             <div class="p-6 space-y-6">
                 <form action="models/mi_perfil_Model.php" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="id_registrante" value="<?= $_SESSION['id_usuario']?>">
-                    <input type="hidden" name="id_dependencia" value="<?= $_SESSION['id_dependencia']?>">
+                    <input type="hidden" name="id_dependencia" value="<?= $permisos['id_dependencia']?>">
 
 
-                    <?php if($_SESSION['id_permiso'] == 2 ||  $_SESSION['id_permiso'] == 1): ?>
+                    <?php if($permiso['nivel'] == 2 ||  $permiso['nivel'] == 1): ?>
                         <label for="small" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Direccion</label>
                         <select name="id_dependencia" id="small" class="block p-2 mb-6 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option selected>Seleccione un Área</option>
+                            <option selected>Seleccione una Dependencia</option>
                             <?php $areas = TraeAreas($con);
                             foreach($areas as $area):?>
                                 <option value="<?= $area['id_dependencia']?>"><?=$area['nombre_dependencia'] ?></option>
@@ -94,25 +123,21 @@ if(isset($dependientes) && $dependientes):?>
                     <?php else: ?>
                         <input type="hidden" name="id_dependencia" value="<?= $_SESSION['id_dependencia']?>">
                     <?php endif ?>
+
+
+                    <?php if($permiso['nivel'] == 4): ?>
+                        <label for="area" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Área</label>
+                        <select name="id_area" id="area" class="block p-2 mb-6 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <option selected>Seleccione un Área</option>
+                            <?php $subareas = TraeSubAreas($con, $id_dependencia); 
+                            foreach ($subareas as $area): ?>
+                                <option value="<?= $area['id_area']?>"><?=$area['nombre_area'] ?></option>
+                            <?php  endforeach; ?>
+
+                    <?php endif ?>
                     
-
-                    <?php if($_SESSION['id_permiso'] <= 3): ?>
-                        <label for="small" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Nivel</label>
-                        <select id="small" name="id_permiso" class="block p-2 mb-6 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option selected value="5"> Enlace </option>
-                            <option value="4"> Dependencia </option>
-                            <?php if($_SESSION['id_permiso'] <= 2): ?>
-                                <option value="3"> Presidente </option>
-                                <option value="2"> Admin </option>
-                            <?php endif ?>
-
-                            <?php if($_SESSION['id_permiso'] == 1):?>
-                                <option value="1"> SuperAdmin </option>
-                            <?php endif ?>
-                        </select>
-                    <?php else:?>
-                    <input type="hidden" name="id_permiso" value="5">
-                    <?php endif?>
+                    
+                    <input type="hidden" name="nivel" value="4">
 
                     
                     <div class="relative"> 
@@ -121,8 +146,8 @@ if(isset($dependientes) && $dependientes):?>
                     </div>
                     <br>
                     <div class="relative"> 
-                        <input type="password" name="2contrasena" id="2contrasena" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" required />
-                        <label for="2contrasena" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-800 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Contraseña:</label>
+                        <input type="password" name="contrasena" id="contrasena" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" required />
+                        <label for="contrasena" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-800 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Contraseña:</label>
                     </div>
                     <br>
                     <div class="relative"> 
@@ -150,3 +175,19 @@ if(isset($dependientes) && $dependientes):?>
 
 </div> <!-- Este es el div principal -->
 <br>
+
+
+
+<?php include 'footer.php';?>
+</body>
+</html>
+<script>
+function ver_contrasena() {
+    var contrasena = document.getElementById('contrasena');
+    if (contrasena.type == 'password') {
+        contrasena.type = 'text';
+    } else {
+        contrasena.type = 'password';
+    }
+}
+</script>

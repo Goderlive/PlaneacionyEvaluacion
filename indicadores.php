@@ -13,9 +13,12 @@ include 'Controllers/indicadores_Controller.php';
 
 $setings = TraeConfiguracion($con);
 $id_dependencia = traepermiso ($con, $_SESSION['id_usuario']);
+
 if(!$id_dependencia){
-    header("Location: index.php");
+    print("Desde tu cuenta no puedes capturar indicadores");
+    die();
 }
+
 $year = $setings['year_report'];
 
 

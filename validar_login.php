@@ -1,55 +1,47 @@
 <?php
-/* if( isset( $_POST['g-recaptcha-response'] ) && $_POST['g-recaptcha-response'] != '' ) {
-	$secretKey = "6LfZhsceAAAAAKvH9bKZACZM9L7uG4W3wv3wXObb";
-	$curl = curl_init();
-	curl_setopt($curl, CURLOPT_URL, "https://www.google.com/recaptcha/api/siteverify?secret=" . $secretKey . "&response=" . trim( $_POST['g-recaptcha-response'] ) . "&remoteip=" . $_SERVER['REMOTE_ADDR']);
-	curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-	$recaptcha = json_decode( curl_exec($curl), true );
-	curl_close($curl); */
-	if($_POST) {
-		if( isset( $_POST['correo_electronico'] ) && $_POST['correo_electronico'] != '' && isset( $_POST['contrasena'] ) && $_POST['contrasena'] != '' ) {
-            include  'conexion.php';
-            $consulta = "SELECT * FROM usuarios WHERE correo_electronico = '" . $mysqli->real_escape_string( $_POST['correo_electronico'] ) . "' AND contrasena =  '" . $mysqli->real_escape_string( $_POST['contrasena'] ) . "'";
-            $resultado = $mysqli->query($consulta);
+include_once 'models/conection.php';
 
-            if( $resultado->num_rows > 0 ) {
-                $datos = $resultado->fetch_assoc();
 
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    $email = $_POST["correo_electronico"];
+    $password = $_POST["contrasena"];
+    
+    if (isset($email) && isset($password)) {
+        $stmt = $con->prepare("SELECT * FROM usuarios WHERE correo_electronico = ?");
+        $stmt->execute([$email]);
+        $usuario = $stmt->fetch();
+    
+        if ($usuario) {
+            // Verificar si la contraseña ingresada coincide con la contraseña almacenada en la base de datos
+            if (password_verify($password, $usuario["contrasena"])) {
+                // Iniciar sesión
                 session_start();
-                $_SESSION['id_usuario'] = $datos['id_usuario'];
-                $_SESSION['correo_electronico'] = $datos['correo_electronico'];
-                $_SESSION['sistema'] = 'pbrm';
-                $_SESSION['id_dependencia'] = $datos['id_dependencia'];
+                $_SESSION["id_usuario"] = $usuario["id_usuario"];
+                $_SESSION["sistema"] = "pbrm";
+                $_SESSION['correo_electronico'] = $usuario['correo_electronico'];
                 $_SESSION['anio'] = date('Y');
-                ?>
-                <script>window.location.href = 'index.php';</script>
-                <?php
-            } else{
-                ?>
-                <script>
-                    alert('Correo o contraseña incorrecto, por favor intenta nuevamente');
-                    window.location.href = 'login.php';
-                </script>
-                <?php
+
+    
+                // Redirigir al usuario a la página de inicio o a su perfil de usuario
+                header("Location: index.php");
+                exit();
+            } else {
+                // La contraseña ingresada es incorrecta
+                $mensajeError = "La contraseña ingresada es incorrecta";
             }
         } else {
-            ?>
-
-            <script>
-                alert('Error al verificar el Recaptcha por favor intenta nuevamente');
-                window.location.href = 'login.php';
-            </script>
-
-            <?php
+            // El correo electrónico ingresado no existe en la base de datos
+            $mensajeError = "El correo electrónico ingresado no existe en la base de datos";
         }
-    } else{
-        ?>
-        <script>
-            alert('Error de verificación captcha por favor intenta nuevamente');
-            window.location.href = 'login.php';
-        </script>
-        <?php
+    } else {
+        // El correo electrónico y/o la contraseña no fueron ingresados
+        $mensajeError = "Debes ingresar el correo electrónico y la contraseña";
     }
-/* } */
+    
+}
+
+
+
 ?>
 

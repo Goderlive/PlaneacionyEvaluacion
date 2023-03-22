@@ -6,11 +6,14 @@ if(!$_SESSION){?>
     </script>
     <?php
 }
-require_once 'Controllers/reportes_actividades_Controller.php';
-if($_SESSION['sistema'] == 'pbrm'){
+if(!$_SESSION['sistema'] == 'pbrm'):?>
+    <script>
+        alert("ya te hubiera sacado");
+        window.location.href = 'login.php';
+    </script>
 
-// Si tenemos id_dependencia lo metemos
-
+<?php endif;
+    require_once 'Controllers/reportes_actividades_Controller.php';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -18,6 +21,11 @@ if($_SESSION['sistema'] == 'pbrm'){
 <?php include 'header.php';?>
 <?php include 'Controllers/breadcrumbs.php';?>
 <body>
+
+<?php if($permisos['id_dependencia'] == NULL){
+    print "<br><h1>Tu cuenta no permite imprimir formatos</h1>";
+    die();
+} ?>
 <div class="container mx-auto"><!--Este es el contenedor principal -->
 
 <br>
@@ -26,9 +34,8 @@ if($_SESSION['sistema'] == 'pbrm'){
 
 
 
-    <?php if(!isset($_SESSION['id_dependencia']) && !$_POST):
+    <?php if($permisos['nivel'] <= 2 && !$_POST):
         $dependencias =TraeTodasDepencias($con); ?> <!-- Si no tenemos dependencia, somos admins y podemos ver todos los formatos -->
-
             <div class="grid grid-cols-4">
                 <?php foreach($dependencias as $dependencia):?>
                     
@@ -50,10 +57,10 @@ if($_SESSION['sistema'] == 'pbrm'){
     <!-- Si tenemos post y un Id_dependencia, ya tenemos de que queremos ver, mostramos las areas de las que podemos imprimir formatos  -->
 
     <?php 
-    if($_SESSION['id_dependencia'] || isset($_POST['id_dependencia'])):
+    if($permisos['id_dependencia'] || $_POST):
 
-        if(isset($_SESSION['id_dependencia'])){
-            $id_dependencia = $_SESSION['id_dependencia'];
+        if(isset($permisos['id_dependencia'])){
+            $id_dependencia = $permisos['id_dependencia'];
         }else{
             $id_dependencia =$_POST['id_dependencia'];
         }
@@ -90,13 +97,3 @@ if($_SESSION['sistema'] == 'pbrm'){
 <?php include 'footer.php';?>
 </body>
 </html>
-<?php
-}else{
-    ?>
-    <script>
-        alert("ya te hubiera sacado");
-        window.location.href = 'login.php';
-    </script>
-    <?php
-}
-?>

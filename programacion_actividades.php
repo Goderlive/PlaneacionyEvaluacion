@@ -1,12 +1,22 @@
 <?php
 session_start();
 require_once 'Controllers/prog_act_Controller.php';
-if($_SESSION['id_permiso'] == 5 || $_SESSION['id_permiso'] == 4){
-    if(!$_POST){
-        header("Location: actividades.php");
-    }else{
-        $id_area = $_POST['id_area'];
-    }
+
+if($_SESSION['sistema'] != 'pbrm'){
+
+    ?>
+    <script>
+        window.location.href = 'login.php';
+    </script>
+    <?php
+}
+
+if(!$_POST){
+    header("Location: actividades.php");
+}else{
+    $id_area = $_POST['id_area'];
+}
+
 include 'Controllers/breadcrumbs.php';
 ?>
 <!DOCTYPE html>
@@ -144,12 +154,5 @@ include 'Controllers/breadcrumbs.php';
 </div>
 </body>
 </html>
-<?php
-}else{
-    ?>
-    <script>
-        window.location.href = 'login.php';
-    </script>
-    <?php
-}
+
 ?>

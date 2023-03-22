@@ -45,6 +45,11 @@ function TraeNombreArea($con, $id_area){
     return Fetch($con, $sentencia);
 }
 
+function NombreArea($con, $id_area){
+    $sentencia = "SELECT * FROM areas WHERE id_area = $id_area";
+    return Fetch($con, $sentencia);
+}
+
 
  
 if(isset($_POST) && $_POST){
@@ -67,17 +72,12 @@ if(isset($_POST) && $_POST){
         // ** armamos el array
         foreach($programaciones as $a){
             //limpiamos la programacion inicial y la ponemos en un array
-            $prog_inicial = str_replace('"', '', $a['programacion_inicial']);
-            $prog_inicial = str_replace(' ', '', $prog_inicial);
-            $array_programacion_inicial = explode(",", $prog_inicial);
-            
-            //agregamos el id y lo demas...
-            array_push($array_programacion_inicial, $a['id_actividad'], $a['txt_creacion']);
+            $prog_inicial = $a['programacion_inicial'];
 
             //Gardamos en la tabla de cosas eliminadas
-            $sql = "INSERT INTO programaciones_eliminadas (enero,febrero,marzo,abril,mayo,junio,julio,agosto,septiembre,octubre,noviembre,diciembre,id_actividad,creacion) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            $sql = "INSERT INTO programaciones_eliminadas (programacion) VALUES (?)";
             $sqlr = $con->prepare($sql);
-            $sqlr->execute($array_programacion_inicial);
+            $sqlr->execute(array($prog_inicial));
 
             //armamos la nueva programacion
             $prog_final = str_replace('"', '', $a['programacion_final']);
@@ -147,7 +147,7 @@ if(isset($_POST) && $_POST){
           }
 
 
-        header("Location: ../reconduccion_actividades.php");
+        header("Location: ../revisa_reconducciones.php");
     }
 }
 

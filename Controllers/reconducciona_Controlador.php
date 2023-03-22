@@ -1,17 +1,6 @@
 <?php
 require_once 'models/reconducciones_modelo.php';
 
-function Existentes($con, $dep){
-    $areas = TraerAreas($con, $dep);
-    $existentes = array();
-    foreach ($areas as $a){
-        if($existe = TraeReconduccionesporvalidar($con, $a['id_area'])){
-            array_push($existentes,$existe);
-        }
-    }
-    return $existentes;
-}
-
 
 function Validadas($con, $dep){
     $areas = TraerAreas($con, $dep);
@@ -40,6 +29,7 @@ function Sumador($data){
     }
     return $sum;
 }
+
 
 
 

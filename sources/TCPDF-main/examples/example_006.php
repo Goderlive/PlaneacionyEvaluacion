@@ -50,10 +50,6 @@ $dependencia = $stm->fetch(PDO::FETCH_ASSOC);  // Dependencia (Nombre organigram
 
 
 
-
-
-
-
 // ******************************************  FIN ******************************************  
 
 
@@ -217,6 +213,7 @@ $membretes = '
 </table>
 ';
 
+
 $html = $membretes . '
 
 <table style="width:100%">
@@ -336,8 +333,6 @@ $pdf->writeHTML($html, true, false, true, false, '');
 
 
 
-
-
 // ================================================== Aqui comienza la pagina 2 ===================================
 
 $pdf->AddPage('P', 'A4');
@@ -359,6 +354,7 @@ try {
 	AND (e.mes = $mesuno OR e.mes = $mesdos OR e.mes = $mestres)
 	ORDER BY ac.codigo_actividad ASC, e.mes ASC");
 	$evidencias = $stm->fetchAll(PDO::FETCH_ASSOC);
+
 } catch (\Throwable $th) {
 	throw $th;
 }
@@ -385,76 +381,81 @@ function TablaEvidencias($evidencias){
 	 // Hasta aqui ya igualamos el tamaño de nuestro array con el de la longitud de las tablas
 
 
-	 
-	 $data = "";
-	 $contador = 0;
 
 
-	 // Recorremos el array y cada 5, armamos una fila
-	$contadorcinco = 0;
-	$decinco = array();
-	foreach($evidencias as $evidencia){
-		if($contadorcinco < 5){
-			array_push($decinco, $evidencia);
-		}
-		$contadorcinco += 1;
-		if($contadorcinco % 5 == 0){
-			$img1 = ($decinco[0]['path_evidenia_evidencia']) ? '<img src="../../'.$decinco[0]['path_evidenia_evidencia'].'" width="50px" alt="">' : ""; 
-			$img2 = ($decinco[1]['path_evidenia_evidencia']) ? '<img src="../../'.$decinco[1]['path_evidenia_evidencia'].'" width="50px" alt="">' : ""; 
-			$img3 = ($decinco[2]['path_evidenia_evidencia']) ? '<img src="../../'.$decinco[2]['path_evidenia_evidencia'].'" width="50px" alt="">' : ""; 
-			$img4 = ($decinco[3]['path_evidenia_evidencia']) ? '<img src="../../'.$decinco[3]['path_evidenia_evidencia'].'" width="50px" alt="">' : ""; 
-			$img5 = ($decinco[4]['path_evidenia_evidencia']) ? '<img src="../../'.$decinco[4]['path_evidenia_evidencia'].'" width="50px" alt="">' : ""; 
+	// foreach($evidencias as $evidencia){
 
-			$mesa1 = ($decinco[0]['mes']) ? "Mes: " . $decinco[0]['mes'] : "";
-			$mesa2 = ($decinco[1]['mes']) ? "Mes: " . $decinco[1]['mes'] : "";
-			$mesa3 = ($decinco[2]['mes']) ? "Mes: " . $decinco[2]['mes'] : "";
-			$mesa4 = ($decinco[3]['mes']) ? "Mes: " . $decinco[3]['mes'] : "";
-			$mesa5 = ($decinco[4]['mes']) ? "Mes: " . $decinco[4]['mes'] : "";
-			
+	// 	var_dump($evidencia);
+	// 	if($contadorcinco < 5){
+	// 		array_push($decinco, $evidencia);
+	// 	}
+	// }
+	$a = 0;
+	$b = 1;
+	$c = 2;
+	$d = 3;
+	$e = 4;
+	$data = "";
+	$r = $contador / 5;
+	for ($i=0; $i < $r; $i++) { 
+		$img1 = ($evidencias[$a]['path_evidenia_evidencia']) ? '<img src="../../'.$evidencias[$a]['path_evidenia_evidencia'].'" width="50px" alt="">' : ""; 
+		$img2 = ($evidencias[$b]['path_evidenia_evidencia']) ? '<img src="../../'.$evidencias[$b]['path_evidenia_evidencia'].'" width="50px" alt="">' : ""; 
+		$img3 = ($evidencias[$c]['path_evidenia_evidencia']) ? '<img src="../../'.$evidencias[$c]['path_evidenia_evidencia'].'" width="50px" alt="">' : ""; 
+		$img4 = ($evidencias[$d]['path_evidenia_evidencia']) ? '<img src="../../'.$evidencias[$d]['path_evidenia_evidencia'].'" width="50px" alt="">' : ""; 
+		$img5 = ($evidencias[$e]['path_evidenia_evidencia']) ? '<img src="../../'.$evidencias[$e]['path_evidenia_evidencia'].'" width="50px" alt="">' : ""; 
 
-			$data = '
-				<tr>
-					<td>
-						'.$decinco[0]['nombre_actividad'].' <br>
-						' . $mesa1 . '
-						<br> 
-						' . $img1 . '
-					</td>
-					<td>
-						'.$decinco[1]['nombre_actividad'].' <br>
-						' . $mesa2 . '
-						<br> 
-						' . $img2 . '
-					</td>
-					<td>
-						'.$decinco[2]['nombre_actividad'].' <br>
-						' . $mesa3 . '
-						<br> 
-						' . $img3 . '
-					</td>
-					<td>
-						'.$decinco[3]['nombre_actividad'].' <br>
-						' . $mesa4 . '
-						<br> 
-						' . $img4 . '
-					</td>
-					<td>
-						'.$decinco[4]['nombre_actividad'].' <br>
-						' . $mesa5 . '
-						<br> 
-						' . $img5 . '
-					</td>
-				</tr>
-			';
-		$decinco = array();
+		$mesa1 = ($evidencias[$a]['mes']) ? "Mes: " . $evidencias[$a]['mes'] : "";
+		$mesa2 = ($evidencias[$b]['mes']) ? "Mes: " . $evidencias[$b]['mes'] : "";
+		$mesa3 = ($evidencias[$c]['mes']) ? "Mes: " . $evidencias[$c]['mes'] : "";
+		$mesa4 = ($evidencias[$d]['mes']) ? "Mes: " . $evidencias[$d]['mes'] : "";
+		$mesa5 = ($evidencias[$e]['mes']) ? "Mes: " . $evidencias[$e]['mes'] : "";		
 
-		}
+		$data .= '
+			<tr>
+				<td>
+					'.$evidencias[$a]['nombre_actividad'].' <br>
+					' . $mesa1 . '
+					<br> 
+					' . $img1 . '
+				</td>
+				<td>
+					'.$evidencias[$b]['nombre_actividad'].' <br>
+					' . $mesa2 . '
+					<br> 
+					' . $img2 . '
+				</td>
+				<td>
+					'.$evidencias[$c]['nombre_actividad'].' <br>
+					' . $mesa3 . '
+					<br> 
+					' . $img3 . '
+				</td>
+				<td>
+					'.$evidencias[$d]['nombre_actividad'].' <br>
+					' . $mesa4 . '
+					<br> 
+					' . $img4 . '
+				</td>
+				<td>
+					'.$evidencias[$e]['nombre_actividad'].' <br>
+					' . $mesa5 . '
+					<br> 
+					' . $img5 . '
+				</td>
+			</tr>
+		';
+		$a += 5;
+		$b += 5;
+		$c += 5;
+		$d += 5;
+		$e += 5;
 	}
 
-		
+	
+	
 	return $data;	
-
 }
+
 
 $data = "";
 $data = TablaEvidencias($evidencias);
@@ -524,6 +525,7 @@ $html = '
 </table>
 
 ';
+
 
 $pdf->writeHTML($html, true, false, true, false, '');
 

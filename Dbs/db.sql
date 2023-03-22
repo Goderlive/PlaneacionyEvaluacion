@@ -1,3 +1,8 @@
+
+-- db   : holawebc_simonts
+-- user : holawebc_usersimonts
+-- pass : Goder170390??
+
 DROP DATABASE IF EXISTS planeacion_y_evaluacion;
 CREATE DATABASE planeacion_y_evaluacion;
 USE planeacion_y_evaluacion;
@@ -640,8 +645,7 @@ CREATE TABLE dependencias(
   fecha_alta DATETIME DEFAULT CURRENT_TIMESTAMP(),
   active INT,
   anio VARCHAR(4),
-  id_administrador INT,
-  CONSTRAINT FK_dependencia_general FOREIGN KEY (id_dependencia_gen) REFERENCES dependencias_generales(id_dependencia) ON DELETE CASCADE
+  id_administrador INT
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 INSERT INTO dependencias (nombre_dependencia, id_dependencia_gen, active, anio, id_administrador) VALUES 
@@ -697,11 +701,7 @@ CREATE TABLE areas(
   id_proyecto INT,
   fecha_alta DATETIME DEFAULT CURRENT_TIMESTAMP(),
   anio VARCHAR(4),
-  active INT,
-  CONSTRAINT FK_area_dependencia_general FOREIGN KEY (id_dependencia) REFERENCES dependencias(id_dependencia) ON DELETE CASCADE,
-  CONSTRAINT FK_area_clave_general FOREIGN KEY (id_dependencia_general) REFERENCES dependencias_generales(id_dependencia) ON DELETE CASCADE,
-  CONSTRAINT FK_dependencia_auxiliar FOREIGN KEY (id_dependencia_aux) REFERENCES dependencias_auxiliares(id_dependencia_auxiliar) ON DELETE CASCADE,
-  CONSTRAINT FK_proyeto FOREIGN KEY (id_proyecto) REFERENCES proyectos(id_proyecto) ON DELETE CASCADE
+  active INT
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 INSERT INTO areas (nombre_area, id_dependencia, id_dependencia_general, id_dependencia_aux, id_proyecto, anio) VALUES
@@ -946,14 +946,10 @@ CREATE TABLE usuarios(
   correo_electronico VARCHAR(255) UNIQUE,
   tel VARCHAR(255),
   contrasena VARCHAR(255),
-  id_dependencia INT,
   fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP(),
   id_registro INT,
   CONSTRAINT fk_usuarios_usuarios FOREIGN KEY (id_registro) REFERENCES usuarios (id_usuario) ON DELETE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-INSERT INTO usuarios (nombre, apellidos, correo_electronico, tel, contrasena) VALUES('German', 'Guillen', 'goder@live.com', '7224531128', '123456');
-INSERT INTO usuarios (nombre, apellidos, correo_electronico, tel, contrasena) VALUES('David', 'Dinamarca', 'contraloria@metepec.gob.mx', '7224531128', '123456');
-INSERT INTO usuarios (nombre, apellidos, correo_electronico, tel, contrasena) VALUES('David', 'Subdirector', 'subcontraloria@metepec.gob.mx', '7224531128', '123456');
 
 
 
@@ -973,9 +969,7 @@ CREATE TABLE permisos(
   nivel INT,
   anio VARCHAR(5)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-INSERT INTO permisos (id_usuario, nivel, anio) VALUES(1, 1, "2023");
-INSERT INTO permisos (id_usuario, id_dependencia, nivel, anio) VALUES (2,23,4, "2023");
-INSERT INTO permisos (id_usuario, id_area, nivel, anio) VALUES (3,56,5, "2023");
+
 
 
 
@@ -1012,10 +1006,7 @@ CREATE TABLE actividades(
   creacion DATETIME DEFAULT CURRENT_TIMESTAMP(),
   id_creacion INT,
   modificacion DATETIME, 
-  id_modifiacion INT,
-  CONSTRAINT FK_area FOREIGN KEY (id_area) REFERENCES areas(id_area) ON DELETE CASCADE,
-  CONSTRAINT FK_id_validacion FOREIGN KEY (id_validacion) REFERENCES usuarios (id_usuario) ON DELETE CASCADE,
-  CONSTRAINT FK_id_creacion FOREIGN KEY (id_creacion) REFERENCES usuarios (id_usuario) ON DELETE CASCADE
+  id_modifiacion INT
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 INSERT INTO actividades(codigo_actividad, nombre_actividad, unidad, id_unidad, programado_anual_anterior, alcanzado_anual_anterior, id_area, id_validacion, validado, id_creacion) VALUES
@@ -2931,6 +2922,7 @@ INSERT INTO programaciones( enero, febrero, marzo, abril, mayo, junio, julio, ag
 DROP TABLE IF EXISTS programaciones_eliminadas;
 CREATE TABLE programaciones_eliminadas(
   id_programacion_eliminadas INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  programacion VARCHAR(255),
   eliminacion DATETIME DEFAULT CURRENT_TIMESTAMP()
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 

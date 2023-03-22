@@ -6,15 +6,21 @@ function TraeReconduccionesporvalidar($con, $id_area){
     $stm = $con->query("SELECT * FROM reconducciones_atividades ra 
     JOIN areas ar ON ar.id_area = ra.id_area
     JOIN actividades a ON a.id_area = ra.id_area
-    WHERE ra.id_area = $id_area AND ra.validado != 1");
-    $reconduccion = $stm->fetch(PDO::FETCH_ASSOC);
+    JOIN dependencias d ON ar.id_dependencia = d.id_dependencia
+    WHERE d.id_dependencia = $id_area AND ra.validado != 1
+    GROUP BY ra.id_reconduccion_actividades");
+    $reconduccion = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $reconduccion;
 }
 
 
-function TraeReconduccionesValidadas($con, $id_area){
-    $stm = $con->query("SELECT * FROM reconducciones_atividades WHERE id_area = $id_area AND validado = 1");
-    $reconduccion = $stm->fetch(PDO::FETCH_ASSOC);
+function TraeReconduccionesValidadas($con, $id_dependencia){
+    $stm = $con->query(
+        "SELECT ra.* FROM reconducciones_atividades ra 
+        LEFT JOIN areas a ON a.id_area = ra.id_area
+        LEFT JOIN dependencias d ON d.id_dependencia = a.id_dependencia
+        WHERE d.id_dependencia = $id_dependencia AND validado = 1");
+    $reconduccion = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $reconduccion;
 }
 
@@ -181,7 +187,7 @@ if(isset($_POST) && $_POST){
             $sql = "INSERT INTO programacion_reconducciones (id_reconduccion, id_actividad, no_actividad, desc_actividad, u_medida, meta_anual_anterior, meta_anual_actual, act_realizadas_sofar, programacion_inicial, programacion_final, justificacion) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
             $sqlr = $con->prepare($sql);
             $sqlr->execute(array($last, $actividad, $no_actividad, $descripcion_actividad, $unidad_medida, $suma_old, $programacion_anual_nueva, $avance_actual, $programacion_old, $programacion_nueva, $justificacion));
-            header("Location: ../actividades.php");
+            header("Location: ../reconduccion_actividades.php");
             
         }  
     }

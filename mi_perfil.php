@@ -65,8 +65,16 @@ include 'Controllers/breadcrumbs.php';
                     
                     <?php endif?>
             </form>
+<br>
+<hr class="w-48 h-1 mx-auto my-4 bg-gray-100 border-0 rounded md:my-10 dark:bg-gray-700">
 
+<?php if($permiso['id_area'] == ""): ?>
 
+<form action="administra_usuarios.php" method="POST">    
+    <button type="submit" class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">Administrar mis Usuarios</button>
+</form>
+
+<?php endif ?>
 
         
 <?php include 'footer.php';?>
