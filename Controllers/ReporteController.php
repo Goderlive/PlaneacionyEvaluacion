@@ -256,7 +256,12 @@ function buscalineas($con, $id_actividad){
 }
 
 
-function Modales($con, $actividadesDB, $el_mes){
+function Modales($con, $actividadesDB, $el_mes, $permisos){
+    if($permisos['id_dependencia']){
+        $id_dependencia = $permisos['id_dependencia'];
+    }else{
+        $id_dependencia = traeladependencia($con,$permisos['id_area'])['id_dependencia'];
+    }
     $meses = array("1" => "enero", "2" => "febrero", "3" => "marzo", "4" => "abril", "5" => "mayo", "6" => "junio", "7" => "julio", "8" => "agosto", "9" => "septiembre", "10" => "octubre","11" => "noviembre","12" => "diciembre");
     $var = '';
     $year = date('o');
@@ -283,7 +288,7 @@ function Modales($con, $actividadesDB, $el_mes){
                         <input type="hidden" name="mes" value="'.$el_mes.'">
                         <input type="hidden" name="year" value="'.$year.'">
                         <input type="hidden" name="id_actividad" value="'.$a['id_actividad'].'">
-                        <input type="hidden" name="id_dependencia" value="'.$_SESSION['id_dependencia'].'">
+                        <input type="hidden" name="id_dependencia" value="'.$id_dependencia.'">
                         <input type="hidden" name="id_usuario" value="'.$_SESSION['id_usuario'].'">
                         <input type="hidden" name="id_area" value="'.$a['id_area'].'">
                         <input type="hidden" name="id_actividad" value="'.$a['id_actividad'].'">

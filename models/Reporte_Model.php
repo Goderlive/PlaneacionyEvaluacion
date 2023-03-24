@@ -7,6 +7,14 @@ function NombreArea($con, $id_area){
     return $area["nombre_area"];
 }
 
+function traeladependencia($con, $id_area){
+    $stm = $con->query("SELECT d.id_dependencia FROM dependencias d
+                        JOIN areas a ON a.id_dependencia = d.id_dependencia 
+                        WHERE a.id_area = $id_area");
+    $actividad = $stm->fetch(PDO::FETCH_ASSOC);
+    return $actividad;
+}
+
 
 function buscaactilistas($con, $id_actividad){
     $stm = $con->query("SELECT * FROM lineasactividades WHERE id_actividad = $id_actividad");
@@ -82,7 +90,7 @@ function AvanceFullThisMes($con, $id_actividad, $mes){
 
 if (isset($_POST['jfnkasjnkasdf34q345']) == "Enviar") {
     $data = $_POST;
-    $year = $data['year'];
+    $year = date('Y');
     $mes = $data['mes'];
     $id_actividad = $data['id_actividad'];
     $id_dependencia = $data['id_dependencia'];
@@ -92,18 +100,7 @@ if (isset($_POST['jfnkasjnkasdf34q345']) == "Enviar") {
     $beneficiarios = isset($data['beneficiarios']) ? $data['beneficiarios'] : NULL;
     $recursos = isset($data['recursos']) ? $data['recursos'] : NULL;
 
-    if(!is_dir("../archivos/actividades/$year")){
-        mkdir("../archivos/actividades/$year");
-    }
-    if(!is_dir("../archivos/actividades/$year/$mes")){
-        mkdir("../archivos/actividades/$year/$mes");
-    }
-    if(!is_dir("../archivos/actividades/$year/$mes/$id_dependencia")){
-        mkdir("../archivos/actividades/$year/$mes/$id_dependencia");
-    }
-    if(!is_dir("../archivos/actividades/$year/$mes/$id_dependencia/$id_area")){
-        mkdir("../archivos/actividades/$year/$mes/$id_dependencia/$id_area");
-    }
+
     if(!is_dir("../archivos/actividades/$year/$mes/$id_dependencia/$id_area/$id_actividad")){
         mkdir("../archivos/actividades/$year/$mes/$id_dependencia/$id_area/$id_actividad");
     }

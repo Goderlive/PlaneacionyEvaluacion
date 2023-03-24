@@ -2,7 +2,7 @@
 require_once 'conection.php';
 
 
-function TraeAreas($con){
+function TraeDependencias($con){
     $stm = $con->query("SELECT id_dependencia, nombre_dependencia FROM dependencias ORDER BY nombre_dependencia ASC");
     $areas = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $areas;
@@ -14,6 +14,32 @@ function TraeSubAreas($con, $id_dependencia){
     return $areas;
 }
 
+
+
+function buscacincos($con, $id_usuario){
+    $anio = date('Y');
+    $sql = "SELECT u.nombre, u.apellidos, u.id_usuario, u.correo_electronico, a.nombre_area FROM usuarios u
+            JOIN permisos p ON p.id_usuario = u.id_usuario
+            JOIN areas a ON a.id_area = p.id_area
+            WHERE u.id_registro = $id_usuario AND p.anio = $anio
+    ";
+    $stm = $con->query($sql);
+    $dependientes = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $dependientes;
+}
+
+
+function buscacuatros($con, $id_usuario){
+    $anio = date('Y');
+    $sql = "SELECT u.nombre, u.apellidos, u.id_usuario, u.correo_electronico, d.nombre_dependencia FROM usuarios u
+            JOIN permisos p ON p.id_usuario = u.id_usuario
+            JOIN dependencias d ON d.id_dependencia = p.id_dependencia
+            WHERE u.id_registro = $id_usuario AND p.anio = $anio
+    ";
+    $stm = $con->query($sql);
+    $dependientes = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $dependientes;
+}
 
 
 
@@ -36,27 +62,13 @@ function TraeUsuario($con, $id_usuario){ // Primero traemos el principal
 }
 
 
-function BuscaDependientes($con, $sentencia){
-    $stm = $con->query($sentencia);
-    $dependientes = $stm->fetchAll(PDO::FETCH_ASSOC);
-    return $dependientes;
-}
-
-
-function permisos($con, $id_usuario){
-    $stm = $con->query("SELECT * FROM permisos WHERE id_usuario = $id_usuario");
-    $permiso = $stm->fetch(PDO::FETCH_ASSOC);
-    return $permiso;
-}
-
-
-
 if(isset($_POST['registro'])){
     $nombre = $_POST["nombre"];    
     $apellidos = $_POST["apellidos"];    
     $email = $_POST["email"];    
     $telefono = $_POST["telefono"];
     $password = $_POST["password"];
+
     
     // Cifrar la contraseña
     $password_hash = password_hash($password, PASSWORD_DEFAULT);
@@ -71,6 +83,7 @@ if(isset($_POST['registro'])){
         $sql = "INSERT INTO permisos (id_usuario, nivel, anio) VALUES ($id_usuario, 1, '2023')";
         $con->query($sql);
         echo "Usuario registrado correctamente.";
+        header("Location: ../login.php");
         exit();
         die();
     } else {
@@ -82,29 +95,30 @@ if(isset($_POST['registro'])){
 
 if(isset($_POST['nuevo'])){
     session_start();
+
     if($_SESSION['sistema'] != "pbrm"){
         header("Location: ../login.php");
     }
 
     $nombre = $_POST['nombre'];
     $apellidos = $_POST['apellidos'];
-    $nivel = $_POST['nivel'];
     $correo_electronico = $_POST['correo_electronico'];
     $tel = $_POST['tel'];
     $contrasena = $_POST['contrasena'];
+
     $id_dependencia = isset($_POST['id_dependencia']) ? $_POST['id_dependencia'] : NULL;
     $id_area = isset($_POST['id_area']) ? $_POST['id_area'] : NULL;
     $id_registrante = $_POST['id_registrante'];
 
-    $password_hash = password_hash($password, PASSWORD_DEFAULT);
+    $password_hash = password_hash($contrasena, PASSWORD_DEFAULT);
 
     
 
     if($id_dependencia){
+        $nivel = 4;
         try {
-            $sql = "INSERT INTO usuarios (nombre, apellidos, correo_electronico, tel, contrasena, id_registro) VALUES (?,?,?,?,?,?)";
-            $sqlr = $con->prepare($sql);
-            if($sqlr->execute(array($nombre,$apellidos,$correo_electronico,$tel,$password_hash,$id_registrante))){
+            $sql = "INSERT INTO usuarios (nombre, apellidos, correo_electronico, tel, contrasena, id_registro) VALUES ('$nombre','$apellidos','$correo_electronico','$tel','$password_hash',$id_registrante)";
+            if($con->query($sql)){
                 $id_usuario = $con->lastInsertId();
     
                 $anio = date('Y');
@@ -126,10 +140,10 @@ if(isset($_POST['nuevo'])){
     }
 
     if($id_area){
+        $nivel = 5;
         try {
-            $sql = "INSERT INTO usuarios (nombre, apellidos, correo_electronico, tel, contrasena, id_registro) VALUES (?,?,?,?,?,?)";
-            $sqlr = $con->prepare($sql);
-            if($sqlr->execute(array($nombre,$apellidos,$correo_electronico,$tel,$password_hash,$id_registrante))){
+            $sql = "INSERT INTO usuarios (nombre, apellidos, correo_electronico, tel, contrasena, id_registro) VALUES ('$nombre','$apellidos','$correo_electronico','$tel','$password_hash',$id_registrante)";
+            if($con->query($sql)){
                 $id_usuario = $con->lastInsertId();
     
                 $anio = date('Y');
@@ -159,7 +173,7 @@ if(isset($_POST['nuevo'])){
 
 
 
-    header("Location: ../mi_perfil.php");
+    header("Location: ../administra_usuarios.php");
    
 }
 

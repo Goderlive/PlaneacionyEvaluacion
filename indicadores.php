@@ -6,8 +6,7 @@ if($_SESSION['sistema'] =="pbrm"){
 <!DOCTYPE html>
 <html lang="es">
 <?php include 'head.php';?>
-<?php include 'header.php';?>
-<?php include 'conexion.php';
+<?php include 'header.php';
 include 'Controllers/breadcrumbs.php';
 include 'Controllers/indicadores_Controller.php';
 
@@ -170,7 +169,7 @@ if(isset($_POST) && $_POST){
                                 Reportar Indicador
                             </h3>
                             <br>
-                            <form action="guardar_reportar_indicador.php" method="POST" enctype="multipart/form-data">  <!-- datos ocultos del formulario -->
+                            <form action="models/indicadores_Model.php" method="POST" enctype="multipart/form-data">  <!-- datos ocultos del formulario -->
                                 <input type="hidden" name="id_dependencia" value="<?= $ind['id_dependencia'] ?>">
                                 <input type="hidden" name="id_indicador" value="<?= $ind['id'] ?>">
                                 <input type="hidden" name="trimestre" value="<?= $trimestre_actual ?>">

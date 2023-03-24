@@ -1,11 +1,11 @@
 <?php
 session_start();
-require_once 'Controllers/ReporteController.php';
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <?php include 'head.php';?>
-<?php include 'header.php';?>
+<?php include 'header.php';
+require_once 'Controllers/ReporteController.php'; ?>
 <?php include 'Controllers/breadcrumbs.php';?>
 <?php if($permisos['nivel'] == 1 || $permisos['nivel'] == 4 || $permisos['nivel'] == 5){?>
 
@@ -66,7 +66,7 @@ require_once 'Controllers/ReporteController.php';
         </div>
     </div>
 
-    <?= Modales($con, $actividadesDB, $el_mes)?>
+    <?= Modales($con, $actividadesDB, $el_mes, $permisos)?>
     <br>
     <?= ModalesEvidencias($con, $actividadesDB, $el_mes)?>    
 <?php include 'footer.php';?>

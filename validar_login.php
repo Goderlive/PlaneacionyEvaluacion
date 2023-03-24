@@ -28,15 +28,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 exit();
             } else {
                 // La contraseña ingresada es incorrecta
-                $mensajeError = "La contraseña ingresada es incorrecta";
+                print $mensajeError = "La contraseña ingresada es incorrecta";
+
             }
         } else {
             // El correo electrónico ingresado no existe en la base de datos
-            $mensajeError = "El correo electrónico ingresado no existe en la base de datos";
+            print $mensajeError = "El correo electrónico ingresado no existe en la base de datos";
         }
     } else {
         // El correo electrónico y/o la contraseña no fueron ingresados
-        $mensajeError = "Debes ingresar el correo electrónico y la contraseña";
+        print $mensajeError = "Debes ingresar el correo electrónico y la contraseña";
     }
     
 }
