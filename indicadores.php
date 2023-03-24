@@ -11,12 +11,13 @@ include 'Controllers/breadcrumbs.php';
 include 'Controllers/indicadores_Controller.php';
 
 $setings = TraeConfiguracion($con);
-$id_dependencia = traepermiso ($con, $_SESSION['id_usuario']);
 
-if(!$id_dependencia){
-    print("Desde tu cuenta no puedes capturar indicadores");
-    die();
+if($permisos['id_area'] != ''){
+    $id_dependencia = traepermisoarea($con, $permisos)['id_dependencia'];
+}else{
+    $id_dependencia = $permisos['id_dependencia'];
 }
+
 
 $year = $setings['year_report'];
 
@@ -94,7 +95,7 @@ if(isset($_POST) && $_POST){
                     </thead>
                     <tbody>
                         <?php $ta = TextoTrimestre($trimestre_actual)?>
-                        <?php $indicadores = Indicadores($con, $trimestre_actual, $id_dependencia);
+                        <?php $indicadores = Indicadores($con, $trimestre_actual, $id_dependencia, $permisos);
                         //var_dump($indicadores);
                         if($indicadores): 
                             $i = 1;
@@ -128,7 +129,9 @@ if(isset($_POST) && $_POST){
                                         <?= $datos[$ta[0]] . "<br>" . $datos[$ta[1]];?>
                                     </td>
                                     <td>
-                                        
+                                        <?php 
+                                            $avance = traeavance($con,$datos['id'])
+                                        ?>
                                     </td>
                                     <td class="px-2 py-4">
                                         <?php print $datos['at1'] + $datos['at2'] + $datos['at3'] + $datos['at4'] . "<br>" . $datos['bt1'] + $datos['bt2'] + $datos['bt3'] + $datos['bt4']; 
@@ -153,7 +156,7 @@ if(isset($_POST) && $_POST){
 
 
 
-<!-- Modales -->
+<!-- Modales para REPORTAR-->
         <?php foreach($indicadores as $ind): 
             //var_dump($ind)?>
             <div id="mymodal<?= $ind['id']?>" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full">
@@ -254,7 +257,7 @@ if(isset($_POST) && $_POST){
                                 <label for="justificacion" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Justificación caso de +10% o -10% de variación:</label>
                                 <textarea id="justificacion" name="justificacion" rows="2" placeholder="En caso de variacion superior al 10%, describir una justificación de la variación" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
                                     <br>
-                                <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Reportar</button>
+                                <button type="submit" name="reportar" value="reportar" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Reportar</button>
 
                             </form>
 
@@ -264,6 +267,12 @@ if(isset($_POST) && $_POST){
             </div> 
         <?php endforeach ?>
 <br>
+
+
+<!-- Modales para revisar AVANCES-->
+
+
+
     </div>
 
     <br>

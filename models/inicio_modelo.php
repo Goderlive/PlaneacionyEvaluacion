@@ -16,7 +16,12 @@ function get_usuario($id_usuario,$con){
     return $data_usuario;
 }
 
-
+function getPermisos($con, $id_usuario){
+    $anio = date("Y");
+    $stm = $con->query("SELECT * FROM permisos WHERE id_usuario = $id_usuario AND anio = $anio");
+    $permiso = $stm->fetch(PDO::FETCH_ASSOC);
+    return $permiso;
+}
 
 
 function VerificaAvancesActividades($con){

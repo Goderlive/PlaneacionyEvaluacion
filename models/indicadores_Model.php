@@ -9,9 +9,13 @@ require_once 'conection.php';
 } */
 
 
-function traepermiso ($con, $id_usuario){
-    $resp = Fetch($con, "SELECT id_dependencia FROM  permisos WHERE permiso = $id_usuario");
-    return $resp['id_dependencia'];
+function traepermisoarea ($con, $permisos){
+    $id_area = $permisos['id_area'];
+    $resp = Fetch($con, "SELECT d.id_dependencia FROM dependencias d
+    JOIN areas a ON a.id_dependencia = d.id_dependencia
+    JOIN permisos p ON p.id_area = a.id_area
+    WHERE a.id_area = $id_area");
+    return $resp;
 }
 
 
@@ -36,23 +40,47 @@ function FetchAll($con, $string){
     }
 }
 
-function Indicadores($con, $trimestre, $id_dependencia){
-    if($trimestre == "1" || $trimestre == "3"){
-        $string = "SELECT * FROM indicadores_uso iu 
-        LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador 
-        WHERE iu.id_dependencia = $id_dependencia AND (periodicidad = 'trimestral' OR periodicidad = 'mensual')";
+function Indicadores($con, $trimestre, $id_dependencia, $permisos){
+    if($permisos['id_area'] != ''){
+        $id_area = $permisos['id_area'];
+
+
+        if($trimestre == "1" || $trimestre == "3"){
+            $thesql = "SELECT * FROM indicadores_uso iu 
+            LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador 
+            WHERE iu.id_area = $id_area AND (periodicidad = 'trimestral' OR periodicidad = 'mensual')";
+        }
+        if($trimestre == "2"){
+            $thesql = "SELECT * FROM indicadores_uso iu 
+            LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador 
+            WHERE iu.id_area = $id_area AND (periodicidad = 'trimestral' OR periodicidad = 'mensual' OR periodicidad = 'semestral')";
+        }
+        if($trimestre == "4"){
+            $thesql = "SELECT * FROM indicadores_uso iu 
+            LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador 
+            WHERE iu.id_area = $id_area AND (periodicidad = 'trimestral' OR periodicidad = 'mensual' OR periodicidad = 'semestral' OR periodicidad = 'anual')";
+        }
+    }else{
+        if($trimestre == "1" || $trimestre == "3"){
+            $thesql = "SELECT * FROM indicadores_uso iu 
+            LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador 
+            WHERE iu.id_dependencia = $id_dependencia AND (periodicidad = 'trimestral' OR periodicidad = 'mensual')";
+        }
+        if($trimestre == "2"){
+            $thesql = "SELECT * FROM indicadores_uso iu 
+            LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador 
+            WHERE iu.id_dependencia = $id_dependencia AND (periodicidad = 'trimestral' OR periodicidad = 'mensual' OR periodicidad = 'semestral')";
+        }
+        if($trimestre == "4"){
+            $thesql = "SELECT * FROM indicadores_uso iu 
+            LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador 
+            WHERE iu.id_dependencia = $id_dependencia AND (periodicidad = 'trimestral' OR periodicidad = 'mensual' OR periodicidad = 'semestral' OR periodicidad = 'anual')";
+        }
     }
-    if($trimestre == "2"){
-        $string = "SELECT * FROM indicadores_uso iu 
-        LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador 
-        WHERE iu.id_dependencia = $id_dependencia AND (periodicidad = 'trimestral' OR periodicidad = 'mensual' OR periodicidad = 'semestral')";
-    }
-    if($trimestre == "4"){
-        $string = "SELECT * FROM indicadores_uso iu 
-        LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador 
-        WHERE iu.id_dependencia = $id_dependencia AND (periodicidad = 'trimestral' OR periodicidad = 'mensual' OR periodicidad = 'semestral' OR periodicidad = 'anual')";
-    }
-    return FetchAll($con, $string);
+
+
+
+    return FetchAll($con, $thesql);
 }
 
 function TraeConfiguracion($con){
@@ -60,7 +88,7 @@ function TraeConfiguracion($con){
 }
 
 
-if($_POST){
+if(isset($_POST['reportar']) and $_POST['reportar']){
     session_start();
     if($_SESSION['sistema'] = 'pbrm'){
         $extensiones = array('image/jpg','image/jpeg','image/png');
@@ -75,18 +103,13 @@ if($_POST){
             }
             $avance_a =  $_POST['avvara'];
             $avance_b =  $_POST['avvarb'];
-            $avance_c =  $_POST['avvarc'];
-            if (isset($_POST['avvarc']) && $_POST['avvarc']){
-                $avance_c =  $_POST['avvarc'] ;
-            }else{
-                $avance_c = NULL;
-            }
+            $avance_c =  isset($_POST['avvarc']) ? $_POST['avvarc'] : NULL;
             $justificacion =  $_POST['justificacion'];
             $id_usuario_reporta = $_SESSION['id_usuario'];
             $descripcion_evidencia = $_POST['descripcion_evidencia'];
             $imagen = str_replace(array(' ', 'php','js','phtml','php3'), '_', date('Ymd_His') . '_' . $_FILES['path_evidencia']['name']);
             if( move_uploaded_file( $_FILES['path_evidencia']['tmp_name'] , $ruta_base . $imagen ) ) {
-                    $rutacompleta = $ruta_base . $imagen;
+                $rutacompleta = $ruta_base . $imagen;
                     $sql = "INSERT INTO avances_indicadores(id_indicador,year,trimestre,avance_a,avance_b,avance_c,descripcion_evidencia,justificacion,id_usuario_reporta,path_evidenia_evidencia) 
                     VALUES ($id_indicador,'$anio','$trimestre','$avance_a','$avance_b','$avance_c','$descripcion_evidencia ','$justificacion','$id_usuario_reporta','$rutacompleta')";
                     $con->query($sql);

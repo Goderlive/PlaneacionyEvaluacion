@@ -49,6 +49,12 @@ function ConsultaAvancesIndicadores($con){
 }
 
 
+function traeavance($con, $id_indicador, $trimestre){
+    $stm = $con->query("SELECT * FROM avances_indicadores WHERE id_indicador = $id_indicador AND trimestre = $trimestre");
+    $avance = $stm->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
 if($_POST){
     $tipo = '';
     $data = $_POST;

@@ -221,7 +221,7 @@ if($_SESSION['sistema'] == "pbrm"){
                                 <?php else: ?>
 
                                 <button type="button" data-modal-toggle="modal<?=$a['id_avance']?>">
-                                    <?= imgsmall(".".$a['path_evidenia_evidencia']) ?>
+                                    <?= $img12345 = imgsmall($a['path_evidenia_evidencia']) ?>
                                 </button>
                                 <?php endif ?>
                             </td>
@@ -290,8 +290,8 @@ if($_SESSION['sistema'] == "pbrm"){
                         </div>
                     <!-- Modal body -->
                         <div class="p-6 space-y-6">
-                            <a target="_blank" href="<?= Imagenes(".".$a['path_evidenia_evidencia']) ?>">
-                                <?= imgmd(".".$a['path_evidenia_evidencia']) ?>
+                            <a target="_blank" href="<?= Imagenes($a['path_evidenia_evidencia']) ?>">
+                                <?= imgmd($a['path_evidenia_evidencia']) ?>
                                 <br>
                                 <?= $a['descripcion_evidencia'] ?>
                             </a>
