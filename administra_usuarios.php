@@ -19,7 +19,7 @@ $id_dependencia = $permisos['id_dependencia'];
 
 <div class="container mx-auto">
     <br> 
-    <?= breadcrumbs(array("Inicio"=> "index.php", "Mi Perfil" => "mi_perfil.php", "Administrar Usuaris" => "administra_usuarios.php"))?>
+    <?= breadcrumbs(array("Inicio"=> "index.php", "Mi Perfil" => "mi_perfil.php", "Administrar Usuarios" => "administra_usuarios.php"))?>
     <br><br>
 
 

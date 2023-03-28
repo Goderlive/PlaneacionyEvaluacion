@@ -19,6 +19,14 @@ function traepermisoarea ($con, $permisos){
 }
 
 
+function traeavance($con, $id_indicador, $trimestre){
+    $resp = Fetch($con, "SELECT av.*, us.id_usuario, us.nombre, us.apellidos, us.correo_electronico, us.tel FROM avances_indicadores av
+    LEFT JOIN usuarios us ON av.id_usuario_reporta = us.id_usuario
+    WHERE av.id_indicador = $id_indicador AND av.trimestre = $trimestre");
+    return $resp;
+}
+
+    
 function Fetch($con, $string){
     try {
         $stm = $con->query($string);
@@ -48,33 +56,33 @@ function Indicadores($con, $trimestre, $id_dependencia, $permisos){
         if($trimestre == "1" || $trimestre == "3"){
             $thesql = "SELECT * FROM indicadores_uso iu 
             LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador 
-            WHERE iu.id_area = $id_area AND (periodicidad = 'trimestral' OR periodicidad = 'mensual')";
+            WHERE iu.id_area = $id_area AND (iu.periodicidad = 'trimestral' OR iu.periodicidad = 'mensual')";
         }
         if($trimestre == "2"){
             $thesql = "SELECT * FROM indicadores_uso iu 
             LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador 
-            WHERE iu.id_area = $id_area AND (periodicidad = 'trimestral' OR periodicidad = 'mensual' OR periodicidad = 'semestral')";
+            WHERE iu.id_area = $id_area AND (iu.periodicidad = 'trimestral' OR iu.periodicidad = 'mensual' OR iu.periodicidad = 'semestral')";
         }
         if($trimestre == "4"){
             $thesql = "SELECT * FROM indicadores_uso iu 
             LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador 
-            WHERE iu.id_area = $id_area AND (periodicidad = 'trimestral' OR periodicidad = 'mensual' OR periodicidad = 'semestral' OR periodicidad = 'anual')";
+            WHERE iu.id_area = $id_area AND (iu.periodicidad = 'trimestral' OR iu.periodicidad = 'mensual' OR iu.periodicidad = 'semestral' OR iu.periodicidad = 'anual')";
         }
     }else{
         if($trimestre == "1" || $trimestre == "3"){
             $thesql = "SELECT * FROM indicadores_uso iu 
             LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador 
-            WHERE iu.id_dependencia = $id_dependencia AND (periodicidad = 'trimestral' OR periodicidad = 'mensual')";
+            WHERE iu.id_dependencia = $id_dependencia AND (iu.periodicidad = 'trimestral' OR iu.periodicidad = 'mensual')";
         }
         if($trimestre == "2"){
             $thesql = "SELECT * FROM indicadores_uso iu 
             LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador 
-            WHERE iu.id_dependencia = $id_dependencia AND (periodicidad = 'trimestral' OR periodicidad = 'mensual' OR periodicidad = 'semestral')";
+            WHERE iu.id_dependencia = $id_dependencia AND (iu.periodicidad = 'trimestral' OR iu.periodicidad = 'mensual' OR iu.periodicidad = 'semestral')";
         }
         if($trimestre == "4"){
             $thesql = "SELECT * FROM indicadores_uso iu 
             LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador 
-            WHERE iu.id_dependencia = $id_dependencia AND (periodicidad = 'trimestral' OR periodicidad = 'mensual' OR periodicidad = 'semestral' OR periodicidad = 'anual')";
+            WHERE iu.id_dependencia = $id_dependencia AND (iu.periodicidad = 'trimestral' OR iu.periodicidad = 'mensual' OR iu.periodicidad = 'semestral' OR iu.periodicidad = 'anual')";
         }
     }
 

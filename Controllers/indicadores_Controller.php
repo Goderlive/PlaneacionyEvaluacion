@@ -26,7 +26,6 @@ function MenuTrimestre($id_dependencia, $this_mes){
     return $item;
 }
 
-
 function CreaBotones($id_indicador, $trimestre_actual, $con){
     $mes = ceil(date('m')/3)+1;
     if($mes <= $trimestre_actual){
@@ -45,6 +44,23 @@ function CreaBotones($id_indicador, $trimestre_actual, $con){
     $boton = '<button data-modal-toggle="mymodal'.$id_indicador.'" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"" type="button" >Reportar</button>';
     return $boton;
 }
+
+
+function botonavances($con, $id_indicador, $trimestre){
+    if($avance = traeavance($con, $id_indicador, $trimestre)){
+        return '
+        <button data-modal-toggle="reportamodal'.$avance['id_avance'].'" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"" type="button" >
+            Reportar
+        </button>
+
+        ';
+    }
+}
+
+
+
+
+
 
 
 function TextoTrimestre($trimestre_actual){

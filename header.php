@@ -20,7 +20,7 @@ $actual = substr($actual, 1,);
 $actual = explode('/',$actual);
 $actual = $actual[count($actual)-1];
 
-$inicio = array("index.php", "mi_perfil.php", "mis_areas.php", "mis_formatos.php", "ajustes.php", "unidades_medida.php");
+$inicio = array("index.php", "mi_perfil.php", "mis_areas.php", "mis_formatos.php", "ajustes.php", "unidades_medida.php", "administra_usuarios.php", "revisa_avances.php");
 $actividades = array("actividades.php", "reconduccion_actividades.php", "actividades_todas.php", "formatos_actividades.php", "reportes.php", "programacion_actividades.php");
 $indicadores = array("indicadores.php", "reconduccion_indicadores.php", "matrices.php");
 
