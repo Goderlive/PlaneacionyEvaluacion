@@ -1,4 +1,3 @@
-
 -- db   : holawebc_simonts
 -- user : holawebc_usersimonts
 -- pass : Goder170390??
@@ -948,7 +947,7 @@ CREATE TABLE usuarios(
   contrasena VARCHAR(255),
   fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP(),
   id_registro INT,
-  CONSTRAINT fk_usuarios_usuarios FOREIGN KEY (id_registro) REFERENCES usuarios (id_usuario) ON DELETE CASCADE
+  activo INT DEFAULT 1
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 

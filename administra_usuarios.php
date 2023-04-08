@@ -54,8 +54,47 @@ $id_dependencia = $permisos['id_dependencia'];
                                         </p>
                                     </div>
                                     <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                                        <button type="submit" name="eliminar" class="mx-1 py-2 px-3 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Eliminar</button>
-                                        <button type="submit" name="actualizar" class="py-2 px-3 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Contraseña</button>
+                                        <form action="models/mi_perfil_Model.php" method="post">
+                                            <input type="hidden" name="id_usuario" value="<?= $dependiente['id_usuario'] ?>">
+                                            <button type="submit" name="eliminar" value="eliminar" class="mx-1 py-2 px-3 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Eliminar</button>
+                                        </form>
+                                        <button data-modal-toggle="cambiarcontrasenia<?= $dependiente['id_usuario'] ?>" class="my-3 mx-2 text-xs px-3 py-2 block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button" >Cambiar Contraseña</button>
+                                        <!-- Aqui comienza el modal de contraseñas -->
+                                        <div id="cambiarcontrasenia<?= $dependiente['id_usuario'] ?>" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full">
+                                            <div class="relative w-full h-full max-w-md md:h-auto">
+                                                <!-- Modal content -->
+                                                <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                                    <button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-toggle="cambiarcontrasenia<?= $dependiente['id_usuario'] ?>">
+                                                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                                        <span class="sr-only">Cerrar modal</span>
+                                                    </button>
+                                                    <div class="py-6 px-6 lg:px-8">   <!-- Aqui comienza -->
+                                                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                                                            Cambiar la contraseña
+                                                        </h3>
+                                                        <br>
+                                                        <form action="models/mi_perfil_Model.php" id="formulario1" method="POST">
+                                                            <input type="hidden" name="id_usuario" value="<?= $dependiente['id_usuario'] ?>">
+                                                            <div>
+                                                                <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Contraseña Nueva:</label>
+                                                                <input type="password" id="contrasena" name="contrasena" required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Almenos 8 caracteres Letras y Numeros">
+                                                            </div>
+                                                            <br>
+                                                            <div>
+                                                                <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Repetir la Contraseña Nueva:</label>
+                                                                <input type="password" id="verificar_contrasena" name="verificar_contrasena" required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Repite la misma contraseña">
+                                                            </div>
+                                                            <br>
+
+                                                            <button type="submit" id="submit1" name="contrasenia" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Cambiar Contraseña</button>
+                                                            <br>
+                                                        </form>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> <!-- Aui termina el modal -->
                                     </div>
                                 </div>
                             </li>
@@ -70,7 +109,7 @@ $id_dependencia = $permisos['id_dependencia'];
 
 
 
-    <?php if($permisos['nivel'] == 1): ?>
+    <?php if($permisos['nivel'] == 1 || $permisos['nivel'] == 2): ?>
             <br> <br> <ul class="pt-4 mt-4 space-y-2 border-t border-gray-200 dark:border-gray-700"></ul><br> 
         <?php if($cuatros = buscacuatros($con, $id_usuario)): ?>
             <div class="grid grid-cols-4">
@@ -81,12 +120,54 @@ $id_dependencia = $permisos['id_dependencia'];
                             <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white"><?= $dep['nombre_dependencia'] ?></h5>
                             <span class="text-md text-gray-500 dark:text-gray-400"><?= $dep['nombre'] . " " . $dep['apellidos'] ?></span>
                             <span class="text-md text-gray-500 dark:text-gray-400"><?= $dep['correo_electronico'] ?></span>
-                            <button type="submit" name="actualizar" class="py-2 my-3 px-3 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Contraseña</button>
-                            <button type="submit" name="eliminar" class="py-2 px-3 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Eliminar</button>
-                            <div class="flex mt-4 space-x-3 md:mt-6">
-                            </div>
+                            <button data-modal-toggle="cambiarcontrasenia<?= $dep['id_usuario'] ?>" class="my-3 mx-2 text-xs px-3 py-2 block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button" >Cambiar Contraseña</button>
+                            <form action="models/mi_perfil_Model.php" method="post">
+                                <input type="hidden" name="id_usuario" value="<?= $dep['id_usuario'] ?>">
+                                <button type="submit" name="eliminar" value="eliminar" class="mx-2 py-2 px-3 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Eliminar</button>
+                            </form>
+
 
                             <br>
+
+                            <!-- Aqui comienza el modal de contraseñas -->
+                            <div id="cambiarcontrasenia<?= $dep['id_usuario'] ?>" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full">
+                                <div class="relative w-full h-full max-w-md md:h-auto">
+                                    <!-- Modal content -->
+                                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                        <button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-toggle="cambiarcontrasenia<?= $dep['id_usuario'] ?>">
+                                            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                            <span class="sr-only">Cerrar modal</span>
+                                        </button>
+                                        <div class="py-6 px-6 lg:px-8">   <!-- Aqui comienza -->
+                                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                                                Cambiar la contraseña
+                                            </h3>
+                                            <br>
+                                            <form action="models/mi_perfil_Model.php" id="formulario1" method="POST">
+                                                <input type="hidden" name="id_usuario" value="<?= $dep['id_usuario'] ?>">
+                                                <div>
+                                                    <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Contraseña Nueva:</label>
+                                                    <input type="password" id="contrasena" name="contrasena" required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Almenos 8 caracteres Letras y Numeros">
+                                                </div>
+                                                <br>
+                                                <div>
+                                                    <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Repetir la Contraseña Nueva:</label>
+                                                    <input type="password" id="verificar_contrasena" name="verificar_contrasena" required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Repite la misma contraseña">
+                                                </div>
+                                                <br>
+
+                                                <button type="submit" id="submit1" name="contrasenia" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Cambiar Contraseña</button>
+                                                <br>
+                                            </form>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+
+
+
                             <?php if($cincos = buscacincos($con, $dep['id_usuario'])): ?>
 
                                 <div class="p-4 w-full max-w-md bg-white rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700">
@@ -108,9 +189,48 @@ $id_dependencia = $permisos['id_dependencia'];
                                                             <p class="text-sm text-gray-500 truncate dark:text-gray-400">
                                                                 <?= $dependiente['nombre_area'] ?>
                                                             </p>
-                                                            <button type="submit" name="eliminar" class="my-3 mx-1 py-2 px-3 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Eliminar</button>
-                                                            <button type="submit" name="actualizar" class="my-3 py-2 px-3 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Contraseña</button>
-                                                        
+                                                            <button data-modal-toggle="cambiarcontrasenia<?= $dependiente['id_usuario'] ?>" class="my-3 mx-2 text-xs px-3 py-2 block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button" >Cambiar Contraseña</button>
+                                                            <form action="models/mi_perfil_Model.php" method="post">
+                                                                <input type="hidden" name="id_usuario" value="<?= $dependiente['id_usuario'] ?>">
+                                                                <button type="submit" name="eliminar" value="eliminar" class="mx-2 py-2 px-3 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Eliminar</button>
+                                                            </form>
+                                                            <br>
+                                                            <!-- Aqui comienza el modal de contraseñas -->
+                                                            <div id="cambiarcontrasenia<?= $dependiente['id_usuario'] ?>" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full">
+                                                                <div class="relative w-full h-full max-w-md md:h-auto">
+                                                                    <!-- Modal content -->
+                                                                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                                                        <button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-toggle="cambiarcontrasenia<?= $dependiente['id_usuario'] ?>">
+                                                                            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                                                            <span class="sr-only">Cerrar modal</span>
+                                                                        </button>
+                                                                        <div class="py-6 px-6 lg:px-8">   <!-- Aqui comienza -->
+                                                                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                                                                                Cambiar la contraseña
+                                                                            </h3>
+                                                                            <br>
+                                                                            <form action="models/mi_perfil_Model.php" id="formulario1" method="POST">
+                                                                                <input type="hidden" name="id_usuario" value="<?= $dependiente['id_usuario'] ?>">
+                                                                                <div>
+                                                                                    <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Contraseña Nueva:</label>
+                                                                                    <input type="password" id="contrasena" name="contrasena" required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Almenos 8 caracteres Letras y Numeros">
+                                                                                </div>
+                                                                                <br>
+                                                                                <div>
+                                                                                    <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Repetir la Contraseña Nueva:</label>
+                                                                                    <input type="password" id="verificar_contrasena" name="verificar_contrasena" required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Repite la misma contraseña">
+                                                                                </div>
+                                                                                <br>
+
+                                                                                <button type="submit" id="submit1" name="contrasenia" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Cambiar Contraseña</button>
+                                                                                <br>
+                                                                            </form>
+
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div> <!-- fin del modal -->
                                                         </div>
                                                         
                                                     </div>
