@@ -105,6 +105,7 @@ if(isset($_POST['reportar']) and $_POST['reportar']){
             $id_dependencia = $_POST['id_dependencia'];
             $id_indicador = $_POST['id_indicador'];
             $trimestre = $_POST['trimestre'];
+            
             $ruta_base = '../archivos/indicadores/'.$anio.'/'.$trimestre.'/'.$id_dependencia.'/'.$id_indicador.'/';
             if( !is_dir( $ruta_base ) ) {
                 mkdir($ruta_base, 0755, true);
@@ -116,6 +117,7 @@ if(isset($_POST['reportar']) and $_POST['reportar']){
             $id_usuario_reporta = $_SESSION['id_usuario'];
             $descripcion_evidencia = $_POST['descripcion_evidencia'];
             $imagen = str_replace(array(' ', 'php','js','phtml','php3'), '_', date('Ymd_His') . '_' . $_FILES['path_evidencia']['name']);
+           
             if( move_uploaded_file( $_FILES['path_evidencia']['tmp_name'] , $ruta_base . $imagen ) ) {
                 $rutacompleta = $ruta_base . $imagen;
                     $sql = "INSERT INTO avances_indicadores(id_indicador,year,trimestre,avance_a,avance_b,avance_c,descripcion_evidencia,justificacion,id_usuario_reporta,path_evidenia_evidencia) 

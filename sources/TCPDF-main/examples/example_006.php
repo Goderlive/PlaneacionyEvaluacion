@@ -73,7 +73,7 @@ $Director_gobierno_por_resultados = $stm->fetch(PDO::FETCH_ASSOC);
 function Sumador($data, $trimestre){
 	if ($trimestre != 0){
 		$meses = QueTrimestreEs($trimestre);
-		$data = array_slice($data,$meses[0]-1, $meses[1]-1);
+		$data = array_slice($data,$meses[0], $meses[1]);
 	}
 	$sum = 0;
 	foreach($data as $d){
@@ -158,7 +158,7 @@ function AgregaMetas($con, $trimestre, $id_area){
 
 	
 	foreach($actividades as $actividad){
-		$programacionAnual = array_slice($actividad, 14,-1);
+		$programacionAnual = array_slice($actividad, 15,-1);
 		$sumaAnual = Sumador($programacionAnual,0);
 		$metaTrimestral = Sumador($programacionAnual, $trimestre);
 		$alcanzadoTrimestre = BuscaAvances($con, $actividad['id_actividad'], $trimestre);
@@ -201,7 +201,7 @@ $membretes = '
     <tr>
       <td style="width: 15%" rowspan="3"><img src="images/logo_metepec.jpg" height="70"/></td>
       <td style="width: 67%; text-align: center">SISTEMA DE COORDINACION HACENDARIA DEL ESTADO DE MEXICO CON SUS MUNICIPIOS</td>
-      <td style="width: 18%;text-align: center " rowspan="3"><img src="images/metepec_logoc.jpg"/></td>
+      <td style="width: 18%;text-align: center " rowspan="3"><img src="images/metepec_logoc.jpg" width="100px"/></td>
     </tr>
     <tr>
       <td style="text-align: center">GUIA METADOLOGICA PARA EL SEGUIMIENTO Y EVALUACION DEL PLAN DE DESARROLLO MUNICIPAL VIGENTE</td>
@@ -215,6 +215,11 @@ $membretes = '
 
 
 $html = $membretes . '
+<head>
+<style>
+
+</style>
+</head>
 
 <table style="width:100%">
   <tr>
@@ -279,38 +284,38 @@ $html = $membretes . '
 
 
 
-<table style="width:100%;">
+<table style="width:100%; padding: 1px;">
 	<tr>
-		<td colspan="4" style="width:34%; text-align: left; border:1px solid gray; font-size: 8px">Principales Acciones</td>
-		<td colspan="6" style="width:33%; text-align: left; border:1px solid gray; font-size: 8px">Avance Trimestral de Metas de Actividad</td>
-		<td colspan="6" style="width:33%; text-align: left; border:1px solid gray; font-size: 8px">Avance Acumulado Anual de Metas de Actividad</td>
+		<td colspan="4" style="width:46%; text-align: center; border:1px solid gray; font-size: 8px">Principales Acciones</td>
+		<td colspan="6" style="width:27%; text-align: center; border:1px solid gray; font-size: 8px">Avance Trimestral de Metas de Actividad</td>
+		<td colspan="6" style="width:27%; text-align: center; border:1px solid gray; font-size: 8px">Avance Acumulado Anual de Metas de Actividad</td>
 	</tr>
 	<tr>
 		<td rowspan="2" style="width:2%; text-align: center; border:1px solid gray; font-size: 9px">ID</td>
-		<td rowspan="2" style="width:21%; text-align: left; border:1px solid gray; font-size: 9px">Nombre de la Meta de Actividad</td>
-		<td colspan="2" style="width:11%; text-align: center; border:1px solid gray; font-size: 8px">Prog Anual</td>
-		<td colspan="2" style="width:11%; text-align: center; border:1px solid gray; font-size: 8px">Programada</td>
-		<td colspan="2" style="width:11%; text-align: center; border:1px solid gray; font-size: 8px">Alcanzada</td>
-		<td colspan="2" style="width:11%; text-align: center; border:1px solid gray; font-size: 8px">Variación</td>
-		<td colspan="2" style="width:11%; text-align: center; border:1px solid gray; font-size: 8px">Programada</td>
-		<td colspan="2" style="width:11%; text-align: center; border:1px solid gray; font-size: 8px">Alcanzada</td>
-		<td colspan="2" style="width:11%; text-align: center; border:1px solid gray; font-size: 8px">Variación</td>
+		<td rowspan="2" style="width:35%; text-align: left; border:1px solid gray; font-size: 9px">Nombre de la Meta de Actividad</td>
+		<td colspan="2" style="width:9%; text-align: center; border:1px solid gray; font-size: 8px">Prog Anual</td>
+		<td colspan="2" style="width:9%; text-align: center; border:1px solid gray; font-size: 8px">Programada</td>
+		<td colspan="2" style="width:9%; text-align: center; border:1px solid gray; font-size: 8px">Alcanzada</td>
+		<td colspan="2" style="width:9%; text-align: center; border:1px solid gray; font-size: 8px">Variación</td>
+		<td colspan="2" style="width:9%; text-align: center; border:1px solid gray; font-size: 8px">Programada</td>
+		<td colspan="2" style="width:9%; text-align: center; border:1px solid gray; font-size: 8px">Alcanzada</td>
+		<td colspan="2" style="width:9%; text-align: center; border:1px solid gray; font-size: 8px">Variación</td>
 	</tr>
 	<tr>
-		<td style="width:7%; text-align: center; border:1px solid gray; font-size: 7px">U d M</td>
-		<td style="width:4%; text-align: center; border:1px solid gray; font-size: 7px">Prog</td>
-		<td style="width:7%; text-align: center; border:1px solid gray; font-size: 7px">Meta</td>
-		<td style="width:4%; text-align: center; border:1px solid gray; font-size: 7px">%</td>
-		<td style="width:7%; text-align: center; border:1px solid gray; font-size: 7px">Meta</td>
-		<td style="width:4%; text-align: center; border:1px solid gray; font-size: 7px">%</td>
-		<td style="width:7%; text-align: center; border:1px solid gray; font-size: 7px">Meta</td>
-		<td style="width:4%; text-align: center; border:1px solid gray; font-size: 7px">%</td>
-		<td style="width:7%; text-align: center; border:1px solid gray; font-size: 7px">Meta</td>
-		<td style="width:4%; text-align: center; border:1px solid gray; font-size: 7px">%</td>
-		<td style="width:7%; text-align: center; border:1px solid gray; font-size: 7px">Meta</td>
-		<td style="width:4%; text-align: center; border:1px solid gray; font-size: 7px">%</td>
-		<td style="width:7%; text-align: center; border:1px solid gray; font-size: 7px">Meta</td>
-		<td style="width:4%; text-align: center; border:1px solid gray; font-size: 7px">%</td>
+		<td style="width:6%; text-align: center; border:1px solid gray; font-size: 7px">U d M</td>
+		<td style="width:3%; text-align: center; border:1px solid gray; font-size: 7px">Prog</td>
+		<td style="width:6%; text-align: center; border:1px solid gray; font-size: 7px">Meta</td>
+		<td style="width:3%; text-align: center; border:1px solid gray; font-size: 7px">%</td>
+		<td style="width:6%; text-align: center; border:1px solid gray; font-size: 7px">Meta</td>
+		<td style="width:3%; text-align: center; border:1px solid gray; font-size: 7px">%</td>
+		<td style="width:6%; text-align: center; border:1px solid gray; font-size: 7px">Meta</td>
+		<td style="width:3%; text-align: center; border:1px solid gray; font-size: 7px">%</td>
+		<td style="width:6%; text-align: center; border:1px solid gray; font-size: 7px">Meta</td>
+		<td style="width:3%; text-align: center; border:1px solid gray; font-size: 7px">%</td>
+		<td style="width:6%; text-align: center; border:1px solid gray; font-size: 7px">Meta</td>
+		<td style="width:3%; text-align: center; border:1px solid gray; font-size: 7px">%</td>
+		<td style="width:6%; text-align: center; border:1px solid gray; font-size: 7px">Meta</td>
+		<td style="width:3%; text-align: center; border:1px solid gray; font-size: 7px">%</td>
 	</tr>'.
 		$cols.'
 </table>
@@ -346,128 +351,107 @@ try {
 	$mesuno = $mesdos -1;
 
 	$meses = array();
-	$stm = $con->query("SELECT * FROM avances e 
+
+
+	$sql = "SELECT * FROM avances e 
 	LEFT JOIN actividades ac ON e.id_actividad = ac.id_actividad
 	LEFT JOIN areas a ON a.id_area = ac.id_area
-	WHERE e.path_evidenia_evidencia IS NOT NULL 
-	AND a.id_area = $id_area
-	AND (e.mes = $mesuno OR e.mes = $mesdos OR e.mes = $mestres)
-	ORDER BY ac.codigo_actividad ASC, e.mes ASC");
+	WHERE e.path_evidenia_evidencia IS NOT NULL AND a.id_area = $id_area AND (e.mes = $mesuno OR e.mes = $mesdos OR e.mes = $mestres)
+	ORDER BY ac.codigo_actividad ASC, e.mes ASC";
+
+	$sql = "SELECT * FROM actividades ac
+	LEFT JOIN areas ar ON ar.id_area = ac.id_area
+	WHERE ar.id_area = $id_area
+	ORDER BY ac.codigo_actividad";
+
+
+	$stm = $con->query($sql);
 	$evidencias = $stm->fetchAll(PDO::FETCH_ASSOC);
 
 } catch (\Throwable $th) {
 	throw $th;
 }
 
+function pideevidencias($con, $id_actividad, $mes){
+	$sql = "SELECT av.* FROM avances av
+		LEFT JOIN actividades ac ON ac.id_actividad = av.id_actividad
+		WHERE av.id_actividad = $id_actividad AND av.mes = $mes";
+	$stm = $con->query($sql);
+	$evidencia = $stm->fetch(PDO::FETCH_ASSOC);
+	return $evidencia;
+} 
 
-function TablaEvidencias($evidencias){
-	$contador = count($evidencias);
 
-	$ciclos = 0;   // Primero vamos a hacer que el array tenga una longitud completa multiplo de 5
-	if(($contador % 5) != 0){
-		$array_vacio = array("id_avance"=>"","mes"=>"","avance"=>"","justificacion"=>"","path_evidenia"=>"","path_evidenia_evidencia"=>"","descripcion_evidencia"=>"","id_actividad"=>"","id_usuario_avance"=>"","validado"=>"","id_usuario_validador"=>"","fecha_avance"=>"","fecha_validador"=>"","codigo_actividad"=>"","nombre_actividad"=>"","unidad"=>"","programado_anual_anterior"=>"","alcanzado_anual_anterior"=>"","id_area"=>"","id_validacion"=>"","creacion"=>"","id_creacion"=>"","modificacion"=>"","id_modifiacion"=>"","nombre_area"=>"","id_dependencia"=>"","id_dependencia_general"=>"","id_dependencia_aux"=>"","id_proyecto"=>"","id_titular"=>"","fecha_alta"=>"");
-		$diferencia = $contador % 5;
-		$diferencia = 5 - $diferencia;
-		if($diferencia > 1){
-			for ($i=1; $i <= $diferencia; $i++) { 
-				array_push($evidencias, $array_vacio);
-			}
-		}else{
-			array_push($evidencias, $array_vacio);
-		}
+function meses($trimestre){
+	if($trimestre == "1er"){
+		return $meses = array(array("1", "2", "3"), array("Enero","Febrero","Marzo"));
 	}
+	if($trimestre == "2do"){
+		return $meses = array(array("4", "5", "6"), array("Abril","Mayo","Junio"));
+	}
+	if($trimestre == "3er"){
+		return $meses = array(array("7", "8", "9"), array("Julio","Agosto","Septiembre"));
+	}
+	if($trimestre == "4to"){
+		return $meses = array(array("10", "11", "12"), array("Octubre","Noviembre","Diciembre"));
+	}
+}
 
 
-	 // Hasta aqui ya igualamos el tamaño de nuestro array con el de la longitud de las tablas
 
+function TablaEvidencias($evidencias, $trimestre, $con){
+	$meses = meses($trimestre);
+	$data = '
+	<tr>
+		<td style="width:34%; text-align: left; font-size: 8px; border: 1px solid gray;">Actividad</td>
+		<td style="width:22%; text-align: left; font-size: 8px; border: 1px solid gray;">'.$meses[1][0].'</td>
+		<td style="width:22%; text-align: left; font-size: 8px; border: 1px solid gray;">'.$meses[1][1].'</td>
+		<td style="width:22%; text-align: left; font-size: 8px; border: 1px solid gray;">'.$meses[1][2].'</td>
+	</tr>
+	';
+	foreach($evidencias as $a){ // Aunque se llama evidencias, en realidad trae las actividades.
 
+		$mes1 = pideevidencias($con, $a['id_actividad'], $meses[0][0]);
+		$imagen1 = ($mes1['path_evidenia_evidencia'] != '' ? '<img src="../../'  . $mes1['path_evidenia_evidencia'].'" alt="" width="80px"> <br>' : '');
+		$mes2 = pideevidencias($con, $a['id_actividad'], $meses[0][1]);
+		$imagen2 = ($mes2['path_evidenia_evidencia'] != '' ? '<img src="../../'  . $mes2['path_evidenia_evidencia'].'" alt="" width="80px"> <br>' : '');
+		$mes3 = pideevidencias($con, $a['id_actividad'], $meses[0][2]);
+		$imagen3 = ($mes3['path_evidenia_evidencia'] != '' ? '<img src="../../'  . $mes3['path_evidenia_evidencia'].'" alt="" width="80px"> <br>' : '');
 
-
-	// foreach($evidencias as $evidencia){
-
-	// 	var_dump($evidencia);
-	// 	if($contadorcinco < 5){
-	// 		array_push($decinco, $evidencia);
-	// 	}
-	// }
-	$a = 0;
-	$b = 1;
-	$c = 2;
-	$d = 3;
-	$e = 4;
-	$data = "";
-	$r = $contador / 5;
-	for ($i=0; $i < $r; $i++) { 
-		$img1 = ($evidencias[$a]['path_evidenia_evidencia']) ? '<img src="../../'.$evidencias[$a]['path_evidenia_evidencia'].'" width="50px" alt="">' : ""; 
-		$img2 = ($evidencias[$b]['path_evidenia_evidencia']) ? '<img src="../../'.$evidencias[$b]['path_evidenia_evidencia'].'" width="50px" alt="">' : ""; 
-		$img3 = ($evidencias[$c]['path_evidenia_evidencia']) ? '<img src="../../'.$evidencias[$c]['path_evidenia_evidencia'].'" width="50px" alt="">' : ""; 
-		$img4 = ($evidencias[$d]['path_evidenia_evidencia']) ? '<img src="../../'.$evidencias[$d]['path_evidenia_evidencia'].'" width="50px" alt="">' : ""; 
-		$img5 = ($evidencias[$e]['path_evidenia_evidencia']) ? '<img src="../../'.$evidencias[$e]['path_evidenia_evidencia'].'" width="50px" alt="">' : ""; 
-
-		$mesa1 = ($evidencias[$a]['mes']) ? "Mes: " . $evidencias[$a]['mes'] : "";
-		$mesa2 = ($evidencias[$b]['mes']) ? "Mes: " . $evidencias[$b]['mes'] : "";
-		$mesa3 = ($evidencias[$c]['mes']) ? "Mes: " . $evidencias[$c]['mes'] : "";
-		$mesa4 = ($evidencias[$d]['mes']) ? "Mes: " . $evidencias[$d]['mes'] : "";
-		$mesa5 = ($evidencias[$e]['mes']) ? "Mes: " . $evidencias[$e]['mes'] : "";		
 
 		$data .= '
-			<tr>
-				<td>
-					'.$evidencias[$a]['nombre_actividad'].' <br>
-					' . $mesa1 . '
-					<br> 
-					' . $img1 . '
-				</td>
-				<td>
-					'.$evidencias[$b]['nombre_actividad'].' <br>
-					' . $mesa2 . '
-					<br> 
-					' . $img2 . '
-				</td>
-				<td>
-					'.$evidencias[$c]['nombre_actividad'].' <br>
-					' . $mesa3 . '
-					<br> 
-					' . $img3 . '
-				</td>
-				<td>
-					'.$evidencias[$d]['nombre_actividad'].' <br>
-					' . $mesa4 . '
-					<br> 
-					' . $img4 . '
-				</td>
-				<td>
-					'.$evidencias[$e]['nombre_actividad'].' <br>
-					' . $mesa5 . '
-					<br> 
-					' . $img5 . '
-				</td>
-			</tr>
-		';
-		$a += 5;
-		$b += 5;
-		$c += 5;
-		$d += 5;
-		$e += 5;
+		<tr> 
+			<td style="width:34%; text-align: left; font-size: 6px; border: 1px solid gray;">'. $a['codigo_actividad'] . ". ".  $a['nombre_actividad'] .'</td> 
+			<td style="width:22%; text-align: left; font-size: 6px; border: 1px solid gray;">'.$imagen1.'<br>' . substr($mes1['path_evidenia_evidencia'], 23,) .'</td> 
+			<td style="width:22%; text-align: left; font-size: 6px; border: 1px solid gray;">'.$imagen2.'<br>' . substr($mes2['path_evidenia_evidencia'], 23,) .'</td> 
+			<td style="width:22%; text-align: left; font-size: 6px; border: 1px solid gray;">'.$imagen3.'<br>' . substr($mes3['path_evidenia_evidencia'], 23,) .'</td>  
+		</tr>';
+
 	}
 
-	
+
+
 	
 	return $data;	
 }
 
 
 $data = "";
-$data = TablaEvidencias($evidencias);
+$data = TablaEvidencias($evidencias, $trimestre, $con);
 
 
 
 $html = '
+<head>
+<style>
+</style>
+</head>
+<br>
 <table class="GeneratedTable" style="width: 100%;">
   <tbody>
     <tr>
       <td style="width: 15%" rowspan="3"><img src="images/logo_metepec.jpg" height="70"/></td>
-      <td style="width: 67%; text-align: center">Reporte de Evidencias correspondiente al '. $trimestreNombre.'</td>
+      <td style="width: 67%; text-align: center"><br><br>Reporte de Evidencias correspondiente al '. $trimestreNombre.'</td>
       <td style="width: 18%;text-align: center " rowspan="3"> <img src="images/metepec_logoc.jpg"/></td>
     </tr>
   </tbody>
@@ -509,7 +493,8 @@ $html = '
 &nbsp;
 <br>
 
-<table style="width:100%;">
+<table style="width:100%; padding: 3px;">
+
 '.$data.'	
 
 </table>
@@ -535,14 +520,11 @@ $pdf->writeHTML($html, true, false, true, false, '');
 $pdf->lastPage();
 
 // ---------------------------------------------------------
-
+$nombrecito = substr($dependencia['nombre_area'], 0,12);
 //Close and output PDF document
-$pdf->Output('example_006.pdf', 'I');
+$pdf->Output($nombrecito. "_" .$dependencia['clave_dependencia'] . "-" . $dependencia['clave_dependencia_auxiliar'] . "-" . $dependencia['codigo_proyecto'] . "_". $trimestre .' trimestre.pdf', 'D');
 
 //============================================================+
 // END OF FILE
 //============================================================+
 ?>
-
-
-

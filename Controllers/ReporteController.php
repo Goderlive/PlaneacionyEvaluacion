@@ -2,8 +2,11 @@
 date_default_timezone_set('America/Mexico_City');
 require_once 'models/Reporte_Model.php';
 if (!isset($_POST['id_area'])){
-    header("Location: actividades.php");
-
+    ?>
+    <script>
+        window.location.href = 'actividades.php';
+    </script>
+    <?php
 }else{
     $id_area = $_POST['id_area'];
     $el_mes = (isset($_POST['mes'])) ? $_POST['mes'] : intval(date('m'));

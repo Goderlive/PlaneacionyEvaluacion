@@ -89,46 +89,52 @@ function AvanceFullThisMes($con, $id_actividad, $mes){
 
 
 if (isset($_POST['jfnkasjnkasdf34q345']) == "Enviar") {
-    $data = $_POST;
-    $year = date('Y');
-    $mes = $data['mes'];
-    $id_actividad = $data['id_actividad'];
-    $id_dependencia = $data['id_dependencia'];
-    $id_area = $data['id_area'];
-    $id_actividad = $data['id_actividad'];
-    $localidades = isset($data['localidades']) ? $data['localidades'] : NULL;
-    $beneficiarios = isset($data['beneficiarios']) ? $data['beneficiarios'] : NULL;
-    $recursos = isset($data['recursos']) ? $data['recursos'] : NULL;
+    session_start();
+    if($_SESSION['sistema'] = 'pbrm'){
+        $year = date('Y');
+        $mes = $_POST['mes'];
+        $id_actividad = $_POST['id_actividad'];
+        $id_dependencia = $_POST['id_dependencia'];
+        $id_area = $_POST['id_area'];
+        $localidades = isset($_POST['localidades']) ? $_POST['localidades'] : NULL;
+        $beneficiarios = isset($_POST['beneficiarios']) ? $_POST['beneficiarios'] : NULL;
+        $recursos = isset($_POST['recursos']) ? $_POST['recursos'] : NULL;
 
+        $dir = '../archivos/actividades/'.$year.'/'.$mes.'/'.$id_dependencia.'/'.$id_area.'/'.$id_actividad.'/';
 
-    if(!is_dir("../archivos/actividades/$year/$mes/$id_dependencia/$id_area/$id_actividad")){
-        mkdir("../archivos/actividades/$year/$mes/$id_dependencia/$id_area/$id_actividad");
+        if(!is_dir($dir)){
+            mkdir($dir, 0700, true);
+        }
+
+        $path_evidencia_evidencia = NULL;
+
+        if(isset($_FILES['evidencia_de_evidencia']) && $_FILES['evidencia_de_evidencia']['error'] == 0 && in_array($_FILES['evidencia_de_evidencia']['type'], array('image/jpg','image/jpeg','image/png'))){
+            if($_FILES["evidencia_de_evidencia"]["error"] == UPLOAD_ERR_OK){
+                $imagen = str_replace(array(' ', 'php','js','phtml','php3','exe'), '_', date('Ymd_His') . '_' . $_FILES['evidencia_de_evidencia']['name']);
+                $uno = rand(1,99);
+                $nombre_evidencia_de_evidencia = basename("ede".$uno.$imagen);
+                $full_evidencia_evidencia = $dir.$nombre_evidencia_de_evidencia;
+
+                if(move_uploaded_file($_FILES['evidencia_de_evidencia']['tmp_name'], $full_evidencia_evidencia)){
+                    $path_evidencia_evidencia = $full_evidencia_evidencia;
+                }
+            }
+        }
+
+        $sql = "INSERT INTO avances (mes, avance, justificacion, path_evidenia_evidencia, descripcion_evidencia, id_actividad, id_usuario_avance, localidades, beneficiarios, recursos) VALUES (?,?,?,?,?,?,?,?,?,?)";
+        $sqlr = $con->prepare($sql);
+        $sqlr->execute(array($mes, $_POST['avance'], $_POST['justificacion'], $path_evidencia_evidencia, $_POST['descripcion_evidencia'], $id_actividad, $_POST['id_usuario'], $localidades, $beneficiarios, $recursos));
+        
+        ?>
+        <form id="myForm" action="../reportes.php" method="post">
+            <input type="hidden" name="id_area" value="<?=$id_area?>">
+            <input type="hidden" name="mes" value="<?=$mes?>">
+        </form>
+        <script type="text/javascript">
+            alert("Meta Actualizada")
+            document.getElementById('myForm').submit();
+        </script>
+        <?php
     }
+}
 
-    $dir = "../archivos/actividades/$year/$mes/$id_dependencia/$id_area/$id_actividad/";
-
-    if($_FILES["evidencia_de_evidencia"]["error"] == UPLOAD_ERR_OK){
-        $uno = rand(1,99);
-        $nombre_tmp = $_FILES["evidencia_de_evidencia"]["tmp_name"];
-        $nombre_evidencia_de_evidencia = basename("evidencia_de_evidencia".$uno.$_FILES["evidencia_de_evidencia"]["name"]);
-        $full_evidencia_evidencia = $dir.$nombre_evidencia_de_evidencia;
-        move_uploaded_file($nombre_tmp, $full_evidencia_evidencia);
-    }
-    $sql = "INSERT INTO avances (mes, avance, justificacion, path_evidenia_evidencia, descripcion_evidencia, id_actividad, id_usuario_avance, localidades, beneficiarios, recursos) VALUES (?,?,?,?,?,?,?,?,?,?)";
-    $sqlr = $con->prepare($sql);
-    $sqlr->execute(array($mes, $data['avance'], $data['justificacion'], $full_evidencia_evidencia, $data['descripcion_evidencia'], $id_actividad, $data['id_usuario'], $localidades, $beneficiarios, $recursos));
-    //header("Location: ../revisa_avances.php?type=$tipo");
-    ?>
-    
-    <form id="myForm" action="../reportes.php" method="post">
-        <input type="hidden" name="id_area" value="<?=$id_area?>">
-        <input type="hidden" name="mes" value="<?=$mes?>">
-    </form>
-<script type="text/javascript">
-    alert("Meta Actualizada")
-    document.getElementById('myForm').submit();
-</script>
-    
-<?php
-
-}?>

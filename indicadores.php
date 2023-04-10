@@ -35,7 +35,8 @@ if(isset($_POST) && $_POST){
     <br>
     <div class="container mx-auto">
     <?= breadcrumbs(array("Inicio"=>"index,php", "Indicadores"=> "")); ?>
-        <br>
+<br>
+<?php if($permisos['nivel'] > 3): ?>
 
         <div class="text-center">
             <nav aria-label="Page navigation example">
@@ -58,7 +59,6 @@ if(isset($_POST) && $_POST){
         </div>
         <?php endif ?>
 
-<?php if($permisos['nivel'] > 3): ?>
         <div class="relative overflow-x-auto shadow-md sm:rounded-md">
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-center text-gray-500 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">

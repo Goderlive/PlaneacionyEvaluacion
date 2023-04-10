@@ -1,13 +1,16 @@
 <?php
 session_start();
-if($_SESSION['sistema'] == "pbrm" && $_SESSION['id_permiso'] < 3):
+if($_SESSION['sistema'] == "pbrm"):
     include 'header.php';
     include 'head.php';
     require_once 'Controllers/ajustes_controller.php';
     include 'Controllers/breadcrumbs.php';
 
     $ajustes = TraeAjustes($con);
+if($permisos['nivel'] > 3){
+    header("Location: ../index.php");
 
+}
     
     ?>
 <!DOCTYPE html>
