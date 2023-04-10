@@ -3628,7 +3628,8 @@ DROP TABLE IF EXISTS lineasactividades;
 CREATE TABLE lineasactividades(
   lineaactividad INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
   id_actividad INT,
-  id_linea INT
+  id_linea INT,
+  esprincipal INT
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 INSERT INTO lineasactividades (id_actividad, id_linea) VALUES
@@ -4528,7 +4529,7 @@ CREATE TABLE indicadores_uso(
   tipo VARCHAR(255),
   formula VARCHAR(400),
   dimension VARCHAR(50),
-  periodicidad VARCHAR(20), -- mensual, trimestral, semetral y anual
+  periodicidad VARCHAR(20), -- Mensual, Trimestral, Semestral y Anual
   factor_de_comparacion VARCHAR(255),
   desc_factor_de_comparacion VARCHAR(255),
   linea_base VARCHAR(255),
@@ -4994,7 +4995,9 @@ CREATE TABLE reconducciones_indicadores(
   programacion_modificada VARCHAR(255),
   calendario_trimestral TEXT,
   justificacion_impacto TEXT,
-  id_dependencia INT
+  id_dependencia INT,
+  validado INT,
+  id_validado INT
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 

@@ -13,7 +13,7 @@ require_once 'Controllers/ReporteController.php'; ?>
     <br>
     <div class="container mx-auto">
 <?php $area =  NombreArea($con, $actividadesDB[0]['id_area']) ?>
-<?= breadcrumbs(array("Inicio"=> "index.php", "Actividades"=> "actividades.php", "Reportar"=>"", $area => ""))?>
+<?= breadcrumbs(array("Inicio"=> "index.php", "Actividades"=> "actividades.php", "Reportar"=>"actividades.php", $area => "actividades.php"))?>
         
         <br>
         <h2 class="text-2xl font-extrabold dark:text-white"></h2>

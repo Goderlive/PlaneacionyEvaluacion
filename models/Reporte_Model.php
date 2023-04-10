@@ -126,6 +126,7 @@ if (isset($_POST['jfnkasjnkasdf34q345']) == "Enviar") {
     </form>
 <script type="text/javascript">
     alert("Meta Actualizada")
+    <?php die(); ?>
     document.getElementById('myForm').submit();
 </script>
     
