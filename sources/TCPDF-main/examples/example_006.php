@@ -18,7 +18,7 @@ $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8',
 $pdf->setCreator(PDF_CREATOR);
 $pdf->setAuthor('Dirección de Gobierno por Resultados');
 $pdf->setTitle('Formato Avances Trimestrales');
-$pdf->setSubject('Este es el mensaje del titulo');
+$pdf->setSubject('Formato Avances Trimestrales');
 $pdf->setKeywords('08c, avance, trimestral');
 
 // ---------------------------------------------------------
@@ -32,7 +32,7 @@ $pdf->AddPage();
 
 
 
-// ****************************************** Area de Dependencia General y Demas ****************************************** 
+LETTER ****************************************** Area de Dependencia General y Demas ****************************************** 
 $stm = $con->query("SELECT d.* , 
 a.*, 
 da.*,
@@ -340,7 +340,7 @@ $pdf->writeHTML($html, true, false, true, false, '');
 
 // ================================================== Aqui comienza la pagina 2 ===================================
 
-$pdf->AddPage('P', 'A4');
+$pdf->AddPage('P', 'LETTER');
 
 
 // ================== Obtenemos las evidencias ==================

@@ -21,7 +21,7 @@ function buscacincos($con, $id_usuario){
     $sql = "SELECT u.nombre, u.apellidos, u.id_usuario, u.correo_electronico, a.nombre_area FROM usuarios u
             JOIN permisos p ON p.id_usuario = u.id_usuario
             JOIN areas a ON a.id_area = p.id_area
-            WHERE u.id_registro = $id_usuario AND p.anio = $anio
+            WHERE u.id_registro = $id_usuario AND p.anio = $anio AND u.activo = 1
     ";
     $stm = $con->query($sql);
     $dependientes = $stm->fetchAll(PDO::FETCH_ASSOC);
@@ -34,7 +34,7 @@ function buscacuatros($con, $id_usuario){
     $sql = "SELECT u.nombre, u.apellidos, u.id_usuario, u.correo_electronico, d.nombre_dependencia FROM usuarios u
             JOIN permisos p ON p.id_usuario = u.id_usuario
             JOIN dependencias d ON d.id_dependencia = p.id_dependencia
-            WHERE u.id_registro = $id_usuario AND p.anio = $anio
+            WHERE u.id_registro = $id_usuario AND p.anio = $anio AND u.activo = 1
     ";
     $stm = $con->query($sql);
     $dependientes = $stm->fetchAll(PDO::FETCH_ASSOC);
@@ -59,6 +59,36 @@ function TraeUsuario($con, $id_usuario){ // Primero traemos el principal
     $stm = $con->query("SELECT * FROM usuarios WHERE id_usuario = $id_usuario");
     $usuario = $stm->fetch(PDO::FETCH_ASSOC);
     return $usuario;
+}
+
+
+
+if(isset($_POST['contrasenia'])){
+    
+    $password = $_POST["contrasena"];
+    $regex = '/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+){8,}$/';
+    if (!preg_match($regex, $password) || $_POST["contrasena"] != $_POST["verificar_contrasena"]) {
+        echo "<script>alert('Tu contraseña debe contener al menos 8 caracteres, entre ellos, una letra y un numero. Ademas deben ser iguales'); window.location.href='../administra_usuarios.php';</script>";
+        exit;
+    }
+
+    $id_usuario = $_POST['id_usuario'];
+    $password_hash = password_hash($password, PASSWORD_DEFAULT);
+    try {
+        $sql = "UPDATE usuarios SET contrasena = :password_hash WHERE id_usuario = :id_usuario";
+        $stmt = $con->prepare($sql);
+        $stmt->bindParam(':password_hash', $password_hash);
+        $stmt->bindParam(':id_usuario', $id_usuario);
+        $stmt->execute();
+      
+        $con = null;
+        header("Location: ../mi_perfil.php");
+      
+      } catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+      }
+      
+
 }
 
 
@@ -91,6 +121,20 @@ if(isset($_POST['registro'])){
     }
 }
 
+
+if(isset($_POST['eliminar'])){
+    session_start();
+    if($_SESSION['sistema'] != "pbrm"){
+        header("Location: ../login.php");
+    }
+    $id_usuario = $_POST['id_usuario'];
+    $sql = "UPDATE usuarios SET activo = 0 WHERE id_usuario = $id_usuario";
+    $sqlr = $con->prepare($sql);
+    $sqlr->execute();
+    header("Location: ../administra_usuarios.php");
+
+    
+}
 
 
 if(isset($_POST['nuevo'])){
@@ -163,18 +207,22 @@ if(isset($_POST['nuevo'])){
             }
         }
     }
-    
-
-            
-  
-    
-    
-
-
-
-
     header("Location: ../administra_usuarios.php");
    
+}
+
+if(isset($_POST['actualizar'])){
+    session_start();
+    $id_usuario = $_POST['id_usuario'];
+    $nombre = $_POST['nombre'];
+    $apellido = $_POST['apellidos'];
+    $telefono = $_POST['telefono'];
+    $correo_electronico = $_POST['correo_electronico'];
+    $sql = "UPDATE usuarios SET nombre = '$nombre', apellidos = '$apellido', tel = '$telefono', correo_electronico = '$correo_electronico' WHERE id_usuario = '$id_usuario'";
+    $sqlr = $con->prepare($sql);
+    $sqlr->execute();
+    header("Location: ../mi_perfil.php");
+
 }
 
 ?>

@@ -1,4 +1,3 @@
-
 -- db   : holawebc_simonts
 -- user : holawebc_usersimonts
 -- pass : Goder170390??
@@ -948,7 +947,7 @@ CREATE TABLE usuarios(
   contrasena VARCHAR(255),
   fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP(),
   id_registro INT,
-  CONSTRAINT fk_usuarios_usuarios FOREIGN KEY (id_registro) REFERENCES usuarios (id_usuario) ON DELETE CASCADE
+  activo INT DEFAULT 1
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 
@@ -2923,78 +2922,135 @@ CREATE TABLE programaciones_eliminadas(
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 
+DROP TABLE IF EXISTS pilaresyejes;
+CREATE TABLE pilaresyejes(
+  id_pilaroeje INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  nombre_pilaoeje VARCHAR(255),
+  descripcion VARCHAR(255),
+  denominacion VARCHAR(50),
+  numero VARCHAR(2)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+INSERT INTO pilaresyejes (nombre_pilaoeje, descripcion, denominacion, numero) VALUES 
+("Social", "Municipio socialmente responsable, solidario e incluyente.", "PT","1"),
+("Económico", "Municipio Competitivo, Productivo e Innovador.", "PT","2"),
+("Territorial", "Municipio Ordenado, Sustentable y Resiliente.", "PT","3"),
+("Seguridad", "Municipio con seguridad y justicia.", "PT","4"),
+("Igualdad de Género", NULL, "ET","1"),
+("Gobierno moderno, capaz y responsable", NULL, "ET","2"),
+("Tecnología y Coordinación para el buen gobierno", NULL, "ET","3");
+
+
+
+DROP TABLE IF EXISTS temas_pdm;
+CREATE TABLE temas_pdm(
+  id_tema INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  nombre_tema VARCHAR(500),
+  id_pilar INT 
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+INSERT INTO temas_pdm (nombre_tema, id_pilar) VALUES
+("Población y su evolución sociodemográfica", 1),
+("Población y su evolución sociodemográfica", 1),
+("Alimentación y nutrición para las familias", 1),
+("Salud y bienestar incluyente", 1),
+("Educación incluyente y de calidad", 1),
+("Vivienda digna", 1),
+("Desarrollo humano incluyente, sin discriminación y libre de violencia", 1),
+("Cultura física, deporte y recreación", 1),
+("Desarrollo económico", 2),
+("Infraestructura pública y modernización de los servicios comunales", 2),
+("Ciudades y comunidades sostenibles", 3),
+("Energía asequible y no contaminante", 3),
+("Acción por el clima", 3),
+("Vida de los ecosistemas terrestres", 3),
+("Riesgo y protección civil", 3),
+("Manejo sustentable y distribución del agua", 3),
+("Seguridad con visión ciudadana", 4),
+("Derechos humanos", 4),
+("Mediación y conciliación", 4),
+("Cultura de igualdad y prevención de la violencia contra las mujeres", 5),
+("Estructura del gobierno municipal", 6),
+("Transparencia y rendición de cuentas", 6),
+("Sistema anticorrupción del Estado de México y municipios", 6),
+("Comunicación y diálogo con la ciudadanía como elemento clave de gobernabilidad", 6),
+("Finanzas públicas sanas", 6),
+("Gestión para Resultados y evaluación del desempeño", 6),
+("Eficiencia y eficacia en el sector público", 6),
+("Coordinación institucional", 6),
+("Alianzas para el desarrollo", 7),
+("Municipio moderno en tecnologías de información y comunicaciones", 7);
+
 
 DROP TABLE IF EXISTS pdm_objetivos;
 CREATE TABLE pdm_objetivos(
   id_objetivo INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  nombre_objetivo VARCHAR(255),
-  clave_objetivo VARCHAR(4)
+  nombre_objetivo VARCHAR(500),
+  clave_objetivo VARCHAR(4),
+  id_tema INT
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-INSERT INTO pdm_objetivos (clave_objetivo, nombre_objetivo) VALUES
-("O1","Mantener actualizada la atención ciudadana y el registro de cada individuo por comunidad, así como el diagnóstico para la provisión de los servicios públicos de calidad para atender sus necesidades básicas."),
-("O2","Elevar el estado nutricional de los grupos vulnerables, promoviendo la autosuficiencia y el fomento de buenos hábitos de consumo."),
-("O3","Incluir acciones de promoción y difusión de la salud pública en la población del municipio, con especial atención en grupos vulnerables, para contribuir a la disminución de enfermedades, por medio de una cultura de prevención."),
-("O4","Contribuir a mejorar la infraestructura y los servicios de salud que proveen las instancias municipales con enfoque en grupos vulnerables."),
-("O5","Fortalecer la permanencia escolar para disminuir la deserción, atendiendo un principio de igualdad de oportunidades de aprendizaje en todos los sectores de la población."),
-("O6","Lograr una educación incluyente, de calidad y equitativa, promoviendo una igualdad de oportunidades de aprendizaje en todos los sectores de la población y fortaleciendo la permanencia escolar."),
-("O7","Mejorar la infraestructura física a través de la gestión antes instancias educativas federales y estatales para fortalecer la permanencia escolar."),
-("O8","Mejorar las viviendas del municipio y cubrir la demanda de los servicios públicos en los espacios que así lo requieran."),
-("O9","Reducir las brechas de desigualdad atendiendo a los grupos vulnerables."),
-("O10","Contribuir a que toda niña, niño, adolescente y adulto mayor del municipio gocen de sus derechos."),
-("O11","Coadyuvar a mejorar las condiciones de vida de la población indígena respetando sus derechos, usos y costumbre."),
-("O12","Atender a personas con discapacidad mediante la aplicación de programas sociales para mejorar su desarrollo."),
-("O13","Contribuir al paso seguro de los migrantes y a la defensa de sus derechos en términos de cooperación y apoyo humanitario."),
-("O14","Fomentar, promover y ampliar la cultura física entre los diversos sectores sociales, mediante acciones que permitan apoyar y fomentar la iniciación, el alto rendimiento y los talentos deportivos para el desarrollo integral de los metepequenses."),
-("O15","Impulsar el crecimiento económico en el municipio, con capacitaciones en materia fiscal y gestionando ncentivos fiscales."),
-("O16","Promover una mayor integración regional que impulse oportunidades para el desarrollo sostenible de la región, que responda a problemáticas sociales y escenarios viables para aumentar el desarrollo económico en el municipio."),
-("O17","Promover una actividad agropecuaria sostenible a través del fomento a proyectos productivos agropecuarios para la producción de alimentos agroecológica, con apoyos de capacitación y asesoría técnica, así como de infraestructura y equipo para su desarrollo."),
-("O18","Fortalecer la actividad turística en Metepec, en conjunto con los prestadores de servicios turísticos y con los metepequenses."),
-("O19","Fomentar y preservar las expresiones artesanales del Municipio, a través del impulso de la creatividad, diseño, producción y comercialización del trabajo artesanal en el mercado estatal, nacional e internacional, a fin de mejorar el nivel de vida de los artesanos."),
-("O20","Generar oportunidades de empleo e incentivar el emprendimiento."),
-("O21","Diversificar el comercio internacional del municipio por medio de empresas potenciales, así como de las iniciativas de comercializar artesanías locales, siendo así exponentes de la cultura mexicana."),
-("O22","Mejorar el mantenimiento de las vías urbanas, de este modo se evita el deterioro de los pavimentos en las calles y avenidas del municipio."),
-("O23","Mejorar la infraestructura y la modernización de los servicios que permita incrementar la productividad y competitividad del municipio."),
-("O24","Elevar la calidad de los servicios de abasto y comercio proporcionados a la población municipal mejorando las instalaciones y las condiciones de operación de los tianguis y mercados."),
-("O25","Modernizar y ampliar la cobertura de los parques y jardines en todo el municipio, con servicios de calidad y de fácil acceso para los habitantes."),
-("O26","Incrementar la eficiencia en el servicio del panteón existente, aunado a una mayor cobertura de atención con la mejor calidad posible."),
-("O27","Garantizar un ordenamiento equilibrado y sostenible de los asentamientos humanos y del territorio municipal, en concordancia con temas primordiales como medio ambiente, movilidad, desarrollo económico, entre otros."),
-("O28","Promover entre la población, la importancia de realizar los trámites correspondientes a autorizaciones en materia de uso y aprovechamiento del suelo, así como de imagen urbana en apego a la normatividad aplicable."),
-("O29","Mejorar las condiciones de desplazamiento de personas y bienes en el municipio de Metepec, con plena convivencia de todos los usuarios de la vía y espacio público: peatones, ciclistas, personas con discapacidad, usuarios del transporte público y automóviles, incidiendo además en el mejoramiento de la calidad del aire del municipio."),
-("O30","Promover y conservar el patrimonio natural y cultural de Metepec, mediante acciones de difusión y preservación de la rica herencia histórica de los metepequenses."),
-("O31","Ampliar el uso de energías renovables para mejorar el servicio de alumbrado público mediante energía asequible y no contaminante para brindar seguridad a los transeúntes con sitios mejor iluminados y visibilidad adecuada para el desarrollo de las actividades."),
-("O32","Impulsar acciones para contribuir con la mitigación y adaptación al cambio climático, desde el ámbito municipal."),
-("O33","Mejorar la cobertura del servicio de recolección de residuos sólidos en el municipio de Metepec, reduciendo los tiempos de recolección, cumpliendo todas las rutas diariamente y disminuyendo los costos de operación."),
-("O34","Fomentar la preservación y recuperación de las condiciones medioambientales en beneficio de los ecosistemas del municipio."),
-("O35","Impulsar programas y acciones que tengan por objeto la protección, conservación y restauración del medio ambiente, a las áreas naturales, a través de la cultura del cuidado al medio ambiente y la coordinación con las dependencias federales y estatales."),
-("O36","Fortalecer la protección a los recursos forestales del municipio mediante la implementación de programas y acciones de conservación y protección al medio ambiente."),
-("O37","Mejorar la imagen urbana y la conservación del medio ambiente a través de la plantación, y conservación de los recursos forestales adecuados para cada zona."),
-("O38","Mantener la cobertura del servicio de agua potable a través de mantenimiento y ampliación de las redes hidráulicas para el suministro a la población."),
-("O39","Mejorar el acceso a agua de calidad para el consumo humano en los asentamientos de tal forma que las familias, principalmente las mujeres, invierten menos tiempo, recursos y esfuerzo físico en conseguirla."),
-("O40","Mejorar el tratamiento de aguas residuales generadas en el municipio, con el objeto de evitar la contaminación de los ecosistemas y la degradación del suelo."),
-("O41","Mejorar la infraestructura del sistema de drenaje y alcantarillado, mediante el mantenimiento de éste, para evitar inundaciones en el municipio de Metepec."),
-("O42","Proteger la vida e integridad física de las personas mediante la prevención y reducción de daños por accidentes, siniestros, catástrofes y desastres, mediante el fomento de una cultura de autoprotección, prevención y auxilio."),
-("O43","Contribuir a prevenir el delito y reducir la incidencia delictiva por medio de la profesionalización y fortalecimiento de los cuerpos de seguridad pública, la coordinación con autoridades de seguridad pública y de procuración de justicia de los tres órdenes de gobierno."),
-("O44","Contribuir a promover la cultura del pleno respeto de las personas, mediante la realización de actividades de capacitación, promoción, divulgación, protección y defensa de los derechos humanos."),
-("O45","Establecer los lineamientos generales para la mediación de conflictos que se suscitan, entre los particulares, siempre y cuando no sean constitutivos de delito, ni de competencia de los órganos jurisdiccionales o de otras autoridades, así como otorgar certeza jurídica a las personas a través de los servicios registrales civiles."),
-("O46","Promover en todos los ámbitos sociales la igualdad sustantiva desde una perspectiva de género como una condición necesaria para el desarrollo integral de la sociedad, en igualdad de condiciones, oportunidades, derechos y obligaciones"),
-("O47","Implementar acciones encaminadas a disminuir las brechas de género, mediante condiciones que permitan a las mujeres acceder de forma igualitaria a servicios básicos y a los derechos laborales y económicos, que permitan mejorar las condiciones de vida de las mujeres del municipio."),
-("O48","Efectuar acciones encaminadas a disminuir las brechas de género, mediante la implementación de condiciones que permitan a las mujeres acceder de forma igualitaria a los servicios básicos de educación y salud, al igual que a los derechos laborales y económicos."),
-("O49","Mantener actualizada la Reglamentación Municipal, mediante la revisión de los ordenamientos legales con los que cuenta el municipio, a fin de otorgar atribuciones a las dependencias y organismos municipales que atiendan las necesidades de la población."),
-("O50","Proveer instrumentos de trabajo para normar y precisar las funciones y responsabilidades del personal del Ayuntamiento."),
-("O51","Cotribuir a formar instituciones cercanas, transparentes, con rendición de cuentas que fortalezcan la cnfianza de la población en el municipio a través de la atención oportuna a solicitudes de información."),
-("O52","Implementar políticas públicas municipales para el combate a la corrupción, mediante el estricto apego al marco normativo vigente en beneficio de la ciudadanía.471"),
-("O53","Fomentar la participación democrática en el proceso de planeación del desarrollo municipal, mediante el diálogo permanente e incluyente, para la adecuada toma de decisiones en beneficio de los metepequenses."),
-("O54","Contribuir a fortalecer la hacienda pública municipal, el marco de competencia tributaria mediante el incremento en la captación de ingresos propios y la efectividad en la gestión de recursos estatales, federales y privados, optimizando el gasto público para la obtención de resultados."),
-("O55","Impulsar una política hacendaria adecuada que englobe todas las decisiones sobre los gastos públicos y los posibles recursos para su financiamiento en infraestructura y servicios públicos."),
-("O56","Fortalecer la hacienda pública municipal a través de la vinculación de programas, proyectos y actividades presupuestarias mediante el incremento en la captación de ingresos propios y la efectividad en la gestión de recursos estatales, federales y privados."),
-("O57","Fortalecer el modelo financiero del municipio, a efecto de que éste mejore su capacidad de atención a la demanda social, se basa en mecanismos y procesos de descentralización, así como el impulso a sus atribuciones para que de manera integral puedan satisfacer dichas demandas a través de la integración de proyectos de inversión."),
-("O58","Evaluar políticas públicas y programas presupuestarios para identificar el efecto final de la intervención pública a partir de la aplicación de un conjunto de programas públicos, o acciones gubernamentales."),
-("O59","Planificar los recursos humanos como una función transversal al sistema que cumpla la capacidad para prever las necesidades futuras de personal, tanto en cantidad de servidores como en perfil."),
-("O60","Coadyuvar con las instituciones estatales y federales para la obtención de datos estadísticos y geográficos."),
-("O61","Fortalecer la inversión pública para contribuir sustancialmente al desarrollo del municipio de Metepec."),
-("O62","Construir políticas públicas con inclusión social desde la perspectiva de la cooperación internacional para el desarrollo, que permita fortalecer la agenda municipal la gobernabilidad para fortalecer la expansión económica."),
-("O63","Posicionar a Metepec como referente a nivel municipal, estatal y nacional en materia tecnológica, distinguiéndose por integrar una comunicación digital directa entre gobierno-ciudadano, que fomente la participación activa de los metepequenses, así como, ofrecer al ciudadano trámites y servicios a la vanguardia en materia tecnológica haciendo uso eficiente de herramientas innovadoras para el desempeño de la actividad gubernamental.");
-
+INSERT INTO pdm_objetivos (clave_objetivo, nombre_objetivo, id_tema) VALUES
+("O1","Mantener actualizada la atención ciudadana y el registro de cada individuo por comunidad, así como el diagnóstico para la provisión de los servicios públicos de calidad para atender sus necesidades básicas.", 1),
+("O2","Elevar el estado nutricional de los grupos vulnerables, promoviendo la autosuficiencia y el fomento de buenos hábitos de consumo.", 2),
+("O3","Incluir acciones de promoción y difusión de la salud pública en la población del municipio, con especial atención en grupos vulnerables, para contribuir a la disminución de enfermedades, por medio de una cultura de prevención.", 3),
+("O4","Contribuir a mejorar la infraestructura y los servicios de salud que proveen las instancias municipales con enfoque en grupos vulnerables.", 3),
+("O5","Fortalecer la permanencia escolar para disminuir la deserción, atendiendo un principio de igualdad de oportunidades de aprendizaje en todos los sectores de la población.", 4),
+("O6","Lograr una educación incluyente, de calidad y equitativa, promoviendo una igualdad de oportunidades de aprendizaje en todos los sectores de la población y fortaleciendo la permanencia escolar.", 4),
+("O7","Mejorar la infraestructura física a través de la gestión antes instancias educativas federales y estatales para fortalecer la permanencia escolar.", 4),
+("O8","Mejorar las viviendas del municipio y cubrir la demanda de los servicios públicos en los espacios que así lo requieran.", 5),
+("O9","Reducir las brechas de desigualdad atendiendo a los grupos vulnerables.", 6),
+("O10","Contribuir a que toda niña, niño, adolescente y adulto mayor del municipio gocen de sus derechos.", 6),
+("O11","Coadyuvar a mejorar las condiciones de vida de la población indígena respetando sus derechos, usos y costumbre.", 6),
+("O12","Atender a personas con discapacidad mediante la aplicación de programas sociales para mejorar su desarrollo.", 6),
+("O13","Contribuir al paso seguro de los migrantes y a la defensa de sus derechos en términos de cooperación y apoyo humanitario.", 6),
+("O14","Fomentar, promover y ampliar la cultura física entre los diversos sectores sociales, mediante acciones que permitan apoyar y fomentar la iniciación, el alto rendimiento y los talentos deportivos para el desarrollo integral de los metepequenses.", 7),
+("O15","Impulsar el crecimiento económico en el municipio, con capacitaciones en materia fiscal y gestionando ncentivos fiscales.", 8),
+("O16","Promover una mayor integración regional que impulse oportunidades para el desarrollo sostenible de la región, que responda a problemáticas sociales y escenarios viables para aumentar el desarrollo económico en el municipio.", 8),
+("O17","Promover una actividad agropecuaria sostenible a través del fomento a proyectos productivos agropecuarios para la producción de alimentos agroecológica, con apoyos de capacitación y asesoría técnica, así como de infraestructura y equipo para su desarrollo.", 8),
+("O18","Fortalecer la actividad turística en Metepec, en conjunto con los prestadores de servicios turísticos y con los metepequenses.", 8),
+("O19","Fomentar y preservar las expresiones artesanales del Municipio, a través del impulso de la creatividad, diseño, producción y comercialización del trabajo artesanal en el mercado estatal, nacional e internacional, a fin de mejorar el nivel de vida de los artesanos.", 8),
+("O20","Generar oportunidades de empleo e incentivar el emprendimiento.", 8),
+("O21","Diversificar el comercio internacional del municipio por medio de empresas potenciales, así como de las iniciativas de comercializar artesanías locales, siendo así exponentes de la cultura mexicana.", 8),
+("O22","Mejorar el mantenimiento de las vías urbanas, de este modo se evita el deterioro de los pavimentos en las calles y avenidas del municipio.", 8),
+("O23","Mejorar la infraestructura y la modernización de los servicios que permita incrementar la productividad y competitividad del municipio.", 9),
+("O24","Elevar la calidad de los servicios de abasto y comercio proporcionados a la población municipal mejorando las instalaciones y las condiciones de operación de los tianguis y mercados.", 9),
+("O25","Modernizar y ampliar la cobertura de los parques y jardines en todo el municipio, con servicios de calidad y de fácil acceso para los habitantes.", 9),
+("O26","Incrementar la eficiencia en el servicio del panteón existente, aunado a una mayor cobertura de atención con la mejor calidad posible.", 9),
+("O27","Garantizar un ordenamiento equilibrado y sostenible de los asentamientos humanos y del territorio municipal, en concordancia con temas primordiales como medio ambiente, movilidad, desarrollo económico, entre otros.", 10),
+("O28","Promover entre la población, la importancia de realizar los trámites correspondientes a autorizaciones en materia de uso y aprovechamiento del suelo, así como de imagen urbana en apego a la normatividad aplicable.", 10),
+("O29","Mejorar las condiciones de desplazamiento de personas y bienes en el municipio de Metepec, con plena convivencia de todos los usuarios de la vía y espacio público: peatones, ciclistas, personas con discapacidad, usuarios del transporte público y automóviles, incidiendo además en el mejoramiento de la calidad del aire del municipio.", 10),
+("O30","Promover y conservar el patrimonio natural y cultural de Metepec, mediante acciones de difusión y preservación de la rica herencia histórica de los metepequenses.", 10),
+("O31","Ampliar el uso de energías renovables para mejorar el servicio de alumbrado público mediante energía asequible y no contaminante para brindar seguridad a los transeúntes con sitios mejor iluminados y visibilidad adecuada para el desarrollo de las actividades.", 11),
+("O32","Impulsar acciones para contribuir con la mitigación y adaptación al cambio climático, desde el ámbito municipal.", 12),
+("O33","Mejorar la cobertura del servicio de recolección de residuos sólidos en el municipio de Metepec, reduciendo los tiempos de recolección, cumpliendo todas las rutas diariamente y disminuyendo los costos de operación.", 12),
+("O34","Fomentar la preservación y recuperación de las condiciones medioambientales en beneficio de los ecosistemas del municipio.", 13),
+("O35","Impulsar programas y acciones que tengan por objeto la protección, conservación y restauración del medio ambiente, a las áreas naturales, a través de la cultura del cuidado al medio ambiente y la coordinación con las dependencias federales y estatales.", 13),
+("O36","Fortalecer la protección a los recursos forestales del municipio mediante la implementación de programas y acciones de conservación y protección al medio ambiente.", 14),
+("O37","Mejorar la imagen urbana y la conservación del medio ambiente a través de la plantación, y conservación de los recursos forestales adecuados para cada zona.", 14),
+("O38","Mantener la cobertura del servicio de agua potable a través de mantenimiento y ampliación de las redes hidráulicas para el suministro a la población.", 15),
+("O39","Mejorar el acceso a agua de calidad para el consumo humano en los asentamientos de tal forma que las familias, principalmente las mujeres, invierten menos tiempo, recursos y esfuerzo físico en conseguirla.", 16),
+("O40","Mejorar el tratamiento de aguas residuales generadas en el municipio, con el objeto de evitar la contaminación de los ecosistemas y la degradación del suelo.", 16),
+("O41","Mejorar la infraestructura del sistema de drenaje y alcantarillado, mediante el mantenimiento de éste, para evitar inundaciones en el municipio de Metepec.", 16),
+("O42","Proteger la vida e integridad física de las personas mediante la prevención y reducción de daños por accidentes, siniestros, catástrofes y desastres, mediante el fomento de una cultura de autoprotección, prevención y auxilio.", 16),
+("O43","Contribuir a prevenir el delito y reducir la incidencia delictiva por medio de la profesionalización y fortalecimiento de los cuerpos de seguridad pública, la coordinación con autoridades de seguridad pública y de procuración de justicia de los tres órdenes de gobierno.", 17),
+("O44","Contribuir a promover la cultura del pleno respeto de las personas, mediante la realización de actividades de capacitación, promoción, divulgación, protección y defensa de los derechos humanos.", 18),
+("O45","Establecer los lineamientos generales para la mediación de conflictos que se suscitan, entre los particulares, siempre y cuando no sean constitutivos de delito, ni de competencia de los órganos jurisdiccionales o de otras autoridades, así como otorgar certeza jurídica a las personas a través de los servicios registrales civiles.", 19),
+("O46","Promover en todos los ámbitos sociales la igualdad sustantiva desde una perspectiva de género como una condición necesaria para el desarrollo integral de la sociedad, en igualdad de condiciones, oportunidades, derechos y obligaciones", 20),
+("O47","Implementar acciones encaminadas a disminuir las brechas de género, mediante condiciones que permitan a las mujeres acceder de forma igualitaria a servicios básicos y a los derechos laborales y económicos, que permitan mejorar las condiciones de vida de las mujeres del municipio.", 20),
+("O48","Efectuar acciones encaminadas a disminuir las brechas de género, mediante la implementación de condiciones que permitan a las mujeres acceder de forma igualitaria a los servicios básicos de educación y salud, al igual que a los derechos laborales y económicos.", 20),
+("O49","Mantener actualizada la Reglamentación Municipal, mediante la revisión de los ordenamientos legales con los que cuenta el municipio, a fin de otorgar atribuciones a las dependencias y organismos municipales que atiendan las necesidades de la población.", 21),
+("O50","Proveer instrumentos de trabajo para normar y precisar las funciones y responsabilidades del personal del Ayuntamiento.", 21),
+("O51","Cotribuir a formar instituciones cercanas, transparentes, con rendición de cuentas que fortalezcan la cnfianza de la población en el municipio a través de la atención oportuna a solicitudes de información.", 22),
+("O52","Implementar políticas públicas municipales para el combate a la corrupción, mediante el estricto apego al marco normativo vigente en beneficio de la ciudadanía.471", 23),
+("O53","Fomentar la participación democrática en el proceso de planeación del desarrollo municipal, mediante el diálogo permanente e incluyente, para la adecuada toma de decisiones en beneficio de los metepequenses.", 24),
+("O54","Contribuir a fortalecer la hacienda pública municipal, el marco de competencia tributaria mediante el incremento en la captación de ingresos propios y la efectividad en la gestión de recursos estatales, federales y privados, optimizando el gasto público para la obtención de resultados.", 25),
+("O55","Impulsar una política hacendaria adecuada que englobe todas las decisiones sobre los gastos públicos y los posibles recursos para su financiamiento en infraestructura y servicios públicos.", 25),
+("O56","Fortalecer la hacienda pública municipal a través de la vinculación de programas, proyectos y actividades presupuestarias mediante el incremento en la captación de ingresos propios y la efectividad en la gestión de recursos estatales, federales y privados.", 25),
+("O57","Fortalecer el modelo financiero del municipio, a efecto de que éste mejore su capacidad de atención a la demanda social, se basa en mecanismos y procesos de descentralización, así como el impulso a sus atribuciones para que de manera integral puedan satisfacer dichas demandas a través de la integración de proyectos de inversión.", 25),
+("O58","Evaluar políticas públicas y programas presupuestarios para identificar el efecto final de la intervención pública a partir de la aplicación de un conjunto de programas públicos, o acciones gubernamentales.", 26),
+("O59","Planificar los recursos humanos como una función transversal al sistema que cumpla la capacidad para prever las necesidades futuras de personal, tanto en cantidad de servidores como en perfil.", 27),
+("O60","Coadyuvar con las instituciones estatales y federales para la obtención de datos estadísticos y geográficos.", 27),
+("O61","Fortalecer la inversión pública para contribuir sustancialmente al desarrollo del municipio de Metepec.", 28),
+("O62","Construir políticas públicas con inclusión social desde la perspectiva de la cooperación internacional para el desarrollo, que permita fortalecer la agenda municipal la gobernabilidad para fortalecer la expansión económica.", 29),
+("O63","Posicionar a Metepec como referente a nivel municipal, estatal y nacional en materia tecnológica, distinguiéndose por integrar una comunicación digital directa entre gobierno-ciudadano, que fomente la participación activa de los metepequenses, así como, ofrecer al ciudadano trámites y servicios a la vanguardia en materia tecnológica haciendo uso eficiente de herramientas innovadoras para el desempeño de la actividad gubernamental.", 30);
 
 
 DROP TABLE IF EXISTS pdm_estrategias;
@@ -3564,15 +3620,12 @@ INSERT INTO pdm_lineas(id_estrategia, clave_linea, nombre_linea) VALUES
 
 
 
-
-
-
-
 DROP TABLE IF EXISTS lineasactividades;
 CREATE TABLE lineasactividades(
   lineaactividad INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
   id_actividad INT,
-  id_linea INT
+  id_linea INT,
+  esprincipal INT
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 INSERT INTO lineasactividades (id_actividad, id_linea) VALUES
@@ -4472,7 +4525,7 @@ CREATE TABLE indicadores_uso(
   tipo VARCHAR(255),
   formula VARCHAR(400),
   dimension VARCHAR(50),
-  periodicidad VARCHAR(20), -- mensual, trimestral, semetral y anual
+  periodicidad VARCHAR(20), -- Mensual, Trimestral, Semestral y Anual
   factor_de_comparacion VARCHAR(255),
   desc_factor_de_comparacion VARCHAR(255),
   linea_base VARCHAR(255),
@@ -4938,7 +4991,9 @@ CREATE TABLE reconducciones_indicadores(
   programacion_modificada VARCHAR(255),
   calendario_trimestral TEXT,
   justificacion_impacto TEXT,
-  id_dependencia INT
+  id_dependencia INT,
+  validado INT,
+  id_validado INT
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 

@@ -8,7 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST["contrasena"];
     
     if (isset($email) && isset($password)) {
-        $stmt = $con->prepare("SELECT * FROM usuarios WHERE correo_electronico = ?");
+        $stmt = $con->prepare("SELECT * FROM usuarios WHERE correo_electronico = ? AND activo = 1");
         $stmt->execute([$email]);
         $usuario = $stmt->fetch();
     
