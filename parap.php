@@ -21,7 +21,7 @@ ORDER BY ac.codigo_actividad";
 $stm = $con->query($sql);
 $programaciones = $stm->fetchAll(PDO::FETCH_ASSOC);
 
-
+?>
 
 <div id="mymodal36" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full">
                 <div class="relative w-full h-full max-w-md md:h-auto">
