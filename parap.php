@@ -10,31 +10,48 @@
 </head>
 <body>
 
-<?php 
-$id_area = 20;
 
-$sql = "SELECT * FROM actividades ac
-LEFT JOIN lineasactividades la ON la.id_actividad = ac.id_actividad
-LEFT JOIN pdm_lineas l ON l.id_linea = la.id_linea";
+<?php
+$id_area = 5;
+$sqlmag = "SELECT * FROM actividades ac
+LEFT JOIN areas ar ON ar.id_area = ac.id_area
+LEFT JOIN dependencias dp ON dp.id_dependencia = ar.id_dependencia
+LEFT JOIN lineasactividades la ON la.id_actividad = ac.id_actividad 
+LEFT JOIN pdm_lineas pl ON pl.id_linea = la.id_linea
+LEFT JOIN pdm_estrategias pe ON pe.id_estrategia = pl.id_estrategia
+LEFT JOIN pdm_objetivos po ON po.id_objetivo = pe.id_objetivo
+WHERE ar.id_area = $id_area
+ORDER BY po.clave_objetivo ASC,
+CAST(REPLACE(po.clave_objetivo, 'O', '') AS INTEGER) ASC
+";
+$stmmag = $con->query($sqlmag);
+$seguimiento = $stmmag->fetchAll(PDO::FETCH_ASSOC); ?>
 
-$sql = "SELECT * FROM lineasactividades la
-JOIN actividades ac ON la.id_actividad = ac.id_actividad
-JOIN pdm_lineas l ON l.id_linea = la.id_linea 
-ORDER BY l.clave_linea ASC";
-$stm = $con->query($sql);
-$programaciones = $stm->fetchAll(PDO::FETCH_ASSOC);
 
-print "<pre>";
-foreach($programaciones as $p){
-    foreach($p as $a){
-        print $a;
-        print "|";
-    }
-    print "<br>";
-}
+<table>
+    <thead>
+        <tr>
+            <th>Objetivo </th>
+            <th>Estrategias </th>
+            <th>Líneas de acción </th>
+            <th>Área(s) Responsable (s)</th>
+            <th>Acciones realizadas (4to trimestre)</th>
+            <th>Localidad (es) beneficiada (s)</th>
+            <th>Beneficiarios directos</th>
+            <th>Origen de los Recursos públicos aplicados</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach($seguimiento as $s): ?>
+        <tr>
+            <td><?= $s['nombre_objetivo'] ?></td>
+        </tr>
+        <?php endforeach ?>
+    </tbody>
+</table>
 
-?>
 
+<?php include 'footer.php';?>
 
 </body>
 </html>

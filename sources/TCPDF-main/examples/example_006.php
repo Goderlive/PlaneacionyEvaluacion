@@ -31,8 +31,7 @@ $pdf->setFont('helvetica', '', 10);
 $pdf->AddPage();
 
 
-
-//LETTER ****************************************** Area de Dependencia General y Demas ****************************************** 
+//****************************************** Area de Dependencia General y Demas ****************************************** 
 $stm = $con->query("SELECT d.* , 
 a.*, 
 da.*,
@@ -337,8 +336,58 @@ $pdf->writeHTML($html, true, false, true, false, '');
 
 
 
-
 // ================================================== Aqui comienza la pagina 2 ===================================
+
+
+$pdf->AddPage('L', 'LETTER');
+//Lo primero que haremos es la sentencia SQL para traer los datos.
+$sqlmag = "SELECT * FROM actividades ac
+LEFT JOIN areas ar ON ar.id_area = ac.id_area
+LEFT JOIN dependencias dp ON dp.id_dependencia = ar.id_dependencia
+LEFT JOIN lineasactividades la ON la.id_actividad = ac.id_actividad 
+LEFT JOIN pdm_lineas pl ON pl.id_linea = la.id_linea
+LEFT JOIN pdm_estrategias pe ON pe.id_estrategia = pl.id_estrategia
+LEFT JOIN pdm_objetivos po ON po.id_objetivo = pe.id_objetivo
+WHERE ar.id_area = $id_area
+ORDER BY po.clave_objetivo ASC,
+CAST(REPLACE(po.clave_objetivo, 'O', '') AS INTEGER) ASC
+";
+$stmmag = $con->query($sqlmag);
+$seguimiento = $stmmag->fetchAll(PDO::FETCH_ASSOC);
+
+$magg = "";
+
+$membretesmagg = '
+<table class="GeneratedTable" style="width: 100%;">
+  <tbody>
+    <tr>
+      <td style="width: 15%" rowspan="3"><img src="images/logo_metepec.jpg" height="70"/></td>
+      <td style="width: 67%; text-align: center"></td>
+      <td style="width: 18%;text-align: center " rowspan="3"><img src="images/metepec_logoc.jpg" width="100px"/></td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><br>Informe de Acciones y Resultados de la Ejecución del Plan de Desarrollo Municipal</td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">Descripción de acciones y metas alcanzadas en el '. $trimestre .' Trimestre </td>
+    </tr>
+  </tbody>
+</table>
+';
+
+
+$tabseg = "<table>";
+foreach($seguimiento as $s){
+	$tabseg .= "
+	";
+}
+
+
+$magg .= $membretesmagg;
+
+$pdf->writeHTML($magg, true, false, true, false, '');
+
+// ================================================== Aqui comienza la pagina 3 ===================================
 
 $pdf->AddPage('P', 'LETTER');
 
@@ -522,8 +571,9 @@ $pdf->lastPage();
 // ---------------------------------------------------------
 $nombrecito = substr($dependencia['nombre_area'], 0,12);
 //Close and output PDF document
-$pdf->Output($nombrecito. "_" .$dependencia['clave_dependencia'] . "-" . $dependencia['clave_dependencia_auxiliar'] . "-" . $dependencia['codigo_proyecto'] . "_". $trimestre .' trimestre.pdf', 'D');
 
+//$pdf->Output($nombrecito. "_" .$dependencia['clave_dependencia'] . "-" . $dependencia['clave_dependencia_auxiliar'] . "-" . $dependencia['codigo_proyecto'] . "_". $trimestre .' trimestre.pdf', 'D');
+$pdf->Output($nombrecito. "_" .$dependencia['clave_dependencia'] . "-" . $dependencia['clave_dependencia_auxiliar'] . "-" . $dependencia['codigo_proyecto'] . "_". $trimestre .' trimestre.pdf', 'I');
 //============================================================+
 // END OF FILE
 //============================================================+
