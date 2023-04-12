@@ -356,7 +356,7 @@ $thismes = ceil(date('m'));
 
 			
 			$id_indicador = $_POST['id_indicador'];
-			$data = TraeDatosIndicador($con, $id_indicador);
+			$data = TraeDatosIndicador($con, $id_indicador); // Esta es la importante
 			$id_dependencia = $data['id_dependencia'];
 			$encargados = TraeEncargados($con, $id_indicador, $id_dependencia);
 
@@ -430,17 +430,19 @@ $thismes = ceil(date('m'));
 							<input type="hidden" name="programa_p" value="<?= $data['codigo_programa'] ?>">
 							<input type="hidden" name="objetivo_pp" value="<?= $data['objetivo_pp'] ?>">
 							<input type="hidden" name="proyecto" value="<?= $data['codigo_proyecto'] ?>">
-							<input type="hidden" name="proyecto_name" value="<?= $data['codigo_proyecto'] ?>">
-							<input type="hidden" name="id_usuario" value="<?= $id_usuario ?>">
+							<input type="hidden" name="proyecto_name" value="<?= $data['nombre_proyecto'] ?>">
+							<input type="hidden" name="id_indicador" value="<?= $data['id'] ?>">
+                            <input type="hidden" name="nombre_indicador" value="<?= $data['nombre_indicador'] ?>">
+							<input type="hidden" name="id_indicador" value="<?= $data['id'] ?>">
+							<input type="hidden" name="id_reporta" value="<?= $id_usuario ?>">
+							
+							<input type="hidden" name="variable_a" value="<?= $data['variable_a'] ?>">
+							<input type="hidden" name="variable_b" value="<?= $data['variable_b'] ?>">
+							<input type="hidden" name="variable_c" value="<?= $data['variable_c'] ?>">
 						</tr>
 					</tbody>
 				</table>
 				<br> 
-<!-- Aqui imprimimos la tabla donde nos permitira visualizar la programacion y los posibles cambios -->
-                Programación Actual:
-
-                <?php print '<pre>';
-                var_dump($data); ?>
              
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -473,8 +475,7 @@ $thismes = ceil(date('m'));
                     </thead>
                     <tbody>
                         <tr>
-                            <input type="hidden" name="id_indicador" value="<?= $data['id'] ?>">
-                            <input type="hidden" name="nombre_indicador" value="<?= $data['nombre_indicador'] ?>">
+
                             <td class="px-2 py-2">
                                 <?= $data['nombre_indicador'] ?>
                             </td>
@@ -498,7 +499,7 @@ $thismes = ceil(date('m'));
                             <td class="px-2 py-2">
                                 <input type="text" name="at1" id="at1" value="<?= $data['at1'] ?>" placeholder="Variable A" required <?php echo $disable = ($data['periodicidad'] == 'Semestral' || $data['periodicidad'] == 'Anual') ? "disabled" : "" ?> class="<?php echo $disable = ($data['periodicidad'] == 'Semestral' || $data['periodicidad'] == 'Anual') ? "block cursor-not-allowed " : "" ?> bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"> <br>
                                 <input type="text" name="bt1" id="bt1" value="<?= $data['bt1'] ?>" placeholder="Variable A" required <?php echo $disable = ($data['periodicidad'] == 'Semestral' || $data['periodicidad'] == 'Anual') ? "disabled" : "" ?> class="<?php echo $disable = ($data['periodicidad'] == 'Semestral' || $data['periodicidad'] == 'Anual') ? "block cursor-not-allowed " : "" ?> bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"> <br>
-                                <?php if($data['bt1']):?>
+                                <?php if($data['tipo_op_c']):?>
                                     <input type="text" name="ct1" id="ct1" value="<?= $data['ct1'] ?>" placeholder="Variable A" required <?php echo $disable = ($data['periodicidad'] == 'Semestral' || $data['periodicidad'] == 'Anual') ? "disabled" : "" ?> class="<?php echo $disable = ($data['periodicidad'] == 'Semestral' || $data['periodicidad'] == 'Anual') ? "block cursor-not-allowed " : "" ?> bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"> <br>
                                 <?php endif?>
                             </td>
@@ -512,7 +513,7 @@ $thismes = ceil(date('m'));
                             <td class="px-2 py-2">
                                 <input type="text" name="at3" id="at3" value="<?= $data['at3'] ?>" placeholder="Variable A" required <?php echo $disable = ($data['periodicidad'] == 'Semestral' || $data['periodicidad'] == 'Anual') ? "disabled" : "" ?> class="<?php echo $disable = ($data['periodicidad'] == 'Semestral' || $data['periodicidad'] == 'Anual') ? "block cursor-not-allowed " : "" ?> bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"> <br>
                                 <input type="text" name="bt3" id="bt3" value="<?= $data['bt3'] ?>" placeholder="Variable A" required <?php echo $disable = ($data['periodicidad'] == 'Semestral' || $data['periodicidad'] == 'Anual') ? "disabled" : "" ?> class="<?php echo $disable = ($data['periodicidad'] == 'Semestral' || $data['periodicidad'] == 'Anual') ? "block cursor-not-allowed " : "" ?> bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"> <br>
-                                <?php if($data['bt3']):?>
+                                <?php if($data['tipo_op_c']):?>
                                     <input type="text" name="ct3" id="ct3" value="<?= $data['ct3'] ?>" placeholder="Variable A" required <?php echo $disable = ($data['periodicidad'] == 'Semestral' || $data['periodicidad'] == 'Anual') ? "disabled" : "" ?> class="<?php echo $disable = ($data['periodicidad'] == 'Semestral' || $data['periodicidad'] == 'Anual') ? "block cursor-not-allowed " : "" ?> bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"> <br>
                                 <?php endif?>
                             </td>
@@ -524,10 +525,15 @@ $thismes = ceil(date('m'));
                                 <?php endif?>
                             </td>
                         </tr>
-                        <tr>
-                            
-                        </tr>
-                        <br>
+						<tr>
+								<td colspan="12">
+									<br>
+									<label for="justificacion" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Justificación de la reconducción</label>
+									<textarea id="justificacion" name="justificacion" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Redacta tu justificación"></textarea>
+									<input type="hidden" name="id_dependencia" value="<?= $dep ?>">
+								</td>
+							</tr>
+							<br>
                         <br>
                     </tbody>
                 </table>

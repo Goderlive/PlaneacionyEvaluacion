@@ -32,7 +32,7 @@ $pdf->AddPage();
 
 
 
-LETTER ****************************************** Area de Dependencia General y Demas ****************************************** 
+//LETTER ****************************************** Area de Dependencia General y Demas ****************************************** 
 $stm = $con->query("SELECT d.* , 
 a.*, 
 da.*,
