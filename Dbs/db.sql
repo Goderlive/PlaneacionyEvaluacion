@@ -3010,7 +3010,7 @@ INSERT INTO programaciones( enero, febrero, marzo, abril, mayo, junio, julio, ag
 ("6","8","0","0","0","0","0","0","0","0","0","0","918"),
 ("0","0","0","0","1","0","0","0","0","1","0","0","919"),
 ("0","0","0","0","0","0","0","0","0","0","0","1","920"),
-("25","25","25","25","25","25","25","25","25","25","25","25","921"),
+("25","25","25","0","0","0","15","15","15","10","10","10","921"),
 ("0","0","1","0","0","0","0","0","0","0","0","0","922"),
 ("0","0","1","0","0","0","1","0","0","1","0","0","923"),
 ("0","1","1","1","0","1","0","0","1","0","0","0","924"),
@@ -3029,7 +3029,7 @@ INSERT INTO programaciones( enero, febrero, marzo, abril, mayo, junio, julio, ag
 ("8","8","9","8","9","8","8","8","9","8","8","9","937"),
 ("0","0","1","1","0","0","0","0","0","1","0","0","938"),
 ("0","0","1","1","0","0","0","0","0","1","0","0","939"),
-("1","1","1","1","1","1","1","1","1","1","1","1","940");
+("60","83","257","0","0","0","75","75","100","75","75","100","940");
 
 
 
@@ -3247,7 +3247,7 @@ INSERT INTO pdm_estrategias (clave_estrategia, nombre_estrategia, id_objetivo) V
 ("E29.2","Generar propuestas de bajo costo y alto impacto en materia de movilidad.",65),
 ("E30.1","Innovar los mecanismos de difusión y promoción de la cultura de Metepec, a través de la implementación de tecnología y medios digitales.",66),
 ("E30.2","Contribuir a la conservación del acervo y de los monumentos históricos que forman parte de la cultura de Metepec.",67),
-("E30.3","Fomentar acciones para la preservación del patrimonio natural del municipio.335",68),
+("E30.3","Fomentar acciones para la preservación del patrimonio natural del municipio.",68),
 ("E31.1","Identificar las principales problemáticas que se presentan en el servicio de alumbrado público.E31.2 Impulsar el uso de energía no contaminante.",69),
 ("E32.1","Promover acciones entre la ciudadanía para reducir emisiones a través del aprovechamiento de energías limpias.",70),
 ("E32.2","Realizar estudios de impacto ambiental en el ámbito de competencia que fomenten la protección al aire garantizando la conservación del medio ambiente.",71),
@@ -3259,7 +3259,7 @@ INSERT INTO pdm_estrategias (clave_estrategia, nombre_estrategia, id_objetivo) V
 ("E35.1","Implementar acciones de concientización y participación ciudadana para el cuidado y preservación del medio ambiente y sus recursos naturales.",77),
 ("E35.2","Realizar acciones preventivas para la protección y conservación del medio ambiente que promuevan un desarrollo sustentable para las generaciones presentes.",78),
 ("E35.3","Aplicar los instrumentos de política ambiental previstos en el Código para la Biodiversidad del Estado de México, así como la preservación y restauración del equilibrio ecológico y la protección al ambiente en bienes y zonas de jurisdicción municipal.",79),
-("E36.1","Restaurar, proteger y conservar las áreas forestales con las que cuenta el municipio. E36.2 Ejecutar en coordinación con dependencias gubernamentales federales y estatales la implementación de programas que fomenten el desarrollo forestal.",80),
+("E36.1","Restaurar, proteger y conservar las áreas forestales con las que cuenta el municipio.",80),
 ("E37.1","Implementar acciones de plantación de árboles y plantas para mejorar la imagen urbana y contribuir al mejoramiento del medio ambiente.",81),
 ("E37.2","Gestionar ante las dependencias gubernamentales federales y estatales la donación de los recursos forestales que permitan incrementar el arbolado en zonas verdes.",82),
 ("E38.1","Impulsar la creación de infraestructura de abastecimiento de agua potable.",83),

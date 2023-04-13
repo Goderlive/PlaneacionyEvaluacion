@@ -12,6 +12,9 @@
 
 
 <?php
+
+
+
 $id_area = 5;
 $sqlmag = "SELECT * FROM actividades ac
 LEFT JOIN areas ar ON ar.id_area = ac.id_area
@@ -28,6 +31,12 @@ $stmmag = $con->query($sqlmag);
 $seguimiento = $stmmag->fetchAll(PDO::FETCH_ASSOC); ?>
 
 
+<?php 
+print '<pre>';
+var_dump($seguimiento);
+die();
+?>
+
 <table>
     <thead>
         <tr>
@@ -35,7 +44,7 @@ $seguimiento = $stmmag->fetchAll(PDO::FETCH_ASSOC); ?>
             <th>Estrategias </th>
             <th>Líneas de acción </th>
             <th>Área(s) Responsable (s)</th>
-            <th>Acciones realizadas (4to trimestre)</th>
+            <th>Acciones realizadas</th>
             <th>Localidad (es) beneficiada (s)</th>
             <th>Beneficiarios directos</th>
             <th>Origen de los Recursos públicos aplicados</th>
@@ -43,8 +52,14 @@ $seguimiento = $stmmag->fetchAll(PDO::FETCH_ASSOC); ?>
     </thead>
     <tbody>
         <?php foreach($seguimiento as $s): ?>
+            <?php traeavance() ?>
         <tr>
             <td><?= $s['nombre_objetivo'] ?></td>
+            <td><?= $s['nombre_estrategia'] ?></td>
+            <td><?= $s['nombre_linea'] ?></td>
+            <td><?= $s['nombre_dependencia'] ?></td>
+            <td><?= $s[''] ?></td> Programacion del avance
+            <td><?= $s['nombre_dependencia'] ?></td>
         </tr>
         <?php endforeach ?>
     </tbody>

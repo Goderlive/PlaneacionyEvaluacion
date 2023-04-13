@@ -339,21 +339,27 @@ $pdf->writeHTML($html, true, false, true, false, '');
 // ================================================== Aqui comienza la pagina 2 ===================================
 
 
-$pdf->AddPage('L', 'LETTER');
 //Lo primero que haremos es la sentencia SQL para traer los datos.
 $sqlmag = "SELECT * FROM actividades ac
-LEFT JOIN areas ar ON ar.id_area = ac.id_area
-LEFT JOIN dependencias dp ON dp.id_dependencia = ar.id_dependencia
-LEFT JOIN lineasactividades la ON la.id_actividad = ac.id_actividad 
+JOIN lineasactividades la ON la.id_actividad = ac.id_actividad 
 LEFT JOIN pdm_lineas pl ON pl.id_linea = la.id_linea
 LEFT JOIN pdm_estrategias pe ON pe.id_estrategia = pl.id_estrategia
 LEFT JOIN pdm_objetivos po ON po.id_objetivo = pe.id_objetivo
+LEFT JOIN areas ar ON ar.id_area = ac.id_area
+LEFT JOIN dependencias dp ON dp.id_dependencia = ar.id_dependencia
 WHERE ar.id_area = $id_area
 ORDER BY po.clave_objetivo ASC,
 CAST(REPLACE(po.clave_objetivo, 'O', '') AS INTEGER) ASC
 ";
 $stmmag = $con->query($sqlmag);
 $seguimiento = $stmmag->fetchAll(PDO::FETCH_ASSOC);
+
+var_dump($seguimiento);
+
+if($seguimiento): // Condicion de cumplimiento lineas de acción.
+$pdf->AddPage('L', 'LETTER');
+
+
 
 $magg = "";
 
@@ -374,18 +380,49 @@ $membretesmagg = '
   </tbody>
 </table>
 ';
+$magg .= $membretesmagg;
+        
+    
+$tabseg = '
+<table>
+    <thead>
+        <tr>
+            <th style="width:15%; text-align: center; border:1px solid gray; font-size: 8px" >Objetivo </th>
+            <th style="width:15%; text-align: center; border:1px solid gray; font-size: 8px" >Estrategias </th>
+            <th style="width:15%; text-align: center; border:1px solid gray; font-size: 8px" >Líneas de acción </th>
+            <th style="width:15%; text-align: center; border:1px solid gray; font-size: 8px" >Área(s) Responsable (s)</th>
+            <th style="width:15%; text-align: center; border:1px solid gray; font-size: 8px" >Acciones realizadas</th>
+            <th style="width:15%; text-align: center; border:1px solid gray; font-size: 8px" >Localidad (es) beneficiada (s)</th>
+            <th style="width:5%; text-align: center; border:1px solid gray; font-size: 8px" >Beneficiarios directos</th>
+            <th style="width:5%; text-align: center; border:1px solid gray; font-size: 8px" >Origen de los Recursos públicos aplicados</th>
+        </tr>
+    </thead>
+    <tbody>';
 
-
-$tabseg = "<table>";
 foreach($seguimiento as $s){
-	$tabseg .= "
-	";
+	var_dump($s['nombre_objetivo']);
+
+	$tabseg .= '
+	<tr>
+		<td style="width:15%; text-align: center; border:1px solid gray; font-size: 8px">'.$s['nombre_objetivo'].'</td>
+		<td style="width:15%; text-align: center; border:1px solid gray; font-size: 8px">'.$s['nombre_estrategia'].'</td>
+		<td style="width:15%; text-align: center; border:1px solid gray; font-size: 8px">'.$s['nombre_linea'].'</td>
+		<td style="width:15%; text-align: center; border:1px solid gray; font-size: 8px">'.$s['nombre_dependencia'].'</td>
+		<td style="width:15%; text-align: center; border:1px solid gray; font-size: 8px">'.$s['nombre_actividad'].'</td>
+		<td style="width:15%; text-align: center; border:1px solid gray; font-size: 8px">'.$s['nombre_actividad'].'</td>
+		<td style="width:5%; text-align: center; border:1px solid gray; font-size: 8px">'.$s['nombre_actividad'].'</td>
+		<td style="width:5%; text-align: center; border:1px solid gray; font-size: 8px">'.$s['nombre_actividad'].'</td>
+	</tr>
+	';
 }
 
+$tabseg .= "</tbody>
+</table>";
 
-$magg .= $membretesmagg;
+$magg .= $tabseg;
 
 $pdf->writeHTML($magg, true, false, true, false, '');
+endif;
 
 // ================================================== Aqui comienza la pagina 3 ===================================
 
