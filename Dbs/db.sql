@@ -3326,8 +3326,8 @@ INSERT INTO pdm_estrategias (clave_estrategia, nombre_estrategia, id_objetivo) V
 DROP TABLE IF EXISTS pdm_lineas;
 CREATE TABLE pdm_lineas(
   id_linea INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  nombre_linea VARCHAR(50),
-  clave_linea VARCHAR(255),
+  nombre_linea VARCHAR(550),
+  clave_linea VARCHAR(15),
   id_estrategia INT,
   FOREIGN KEY (id_estrategia) REFERENCES pdm_estrategias(id_estrategia)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;

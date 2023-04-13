@@ -326,7 +326,7 @@ $html = $membretes . '
 		<td style="font-size: 8px; width: 25%; border: 1px solid gray;"> ELABORÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $titular_area['nombre'] . " " . $titular_area['apellidos'] . "<br>" . $titular_area['cargo']. '</td>
 		<td style="font-size: 8px; width: 25%; border: 1px solid gray;"> REVISÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $titular_dependencia['nombre'] . " " . $titular_dependencia['apellidos'] . "<br>" . $titular_dependencia['cargo']. '</td>
 		<td style="font-size: 8px; width: 25%; border: 1px solid gray;"> AUTORIZÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $Director_gobierno_por_resultados['nombre'] . " " . $Director_gobierno_por_resultados['apellidos'] . "<br>" . $Director_gobierno_por_resultados['cargo']. '</td>
-		<td style="font-size: 8px; width: 25%;"> Aqui va un codigo QR </td>
+		<td style="font-size: 8px; width: 25%;"> </td>
 	</tr>	
 </table>
 ';
@@ -354,10 +354,51 @@ CAST(REPLACE(po.clave_objetivo, 'O', '') AS INTEGER) ASC
 $stmmag = $con->query($sqlmag);
 $seguimiento = $stmmag->fetchAll(PDO::FETCH_ASSOC);
 
-var_dump($seguimiento);
 
 if($seguimiento): // Condicion de cumplimiento lineas de acción.
 $pdf->AddPage('L', 'LETTER');
+
+
+
+function QueTrimestreEs2($trimestre){
+	if($trimestre == "1er" || $trimestre == "1"){
+		$inicio = 1;
+		$fin = 3;
+	}
+	if($trimestre == "2do" || $trimestre == "2"){
+		$inicio = 4;
+		$fin = 6;
+	}
+	if($trimestre == "3er" || $trimestre == "3"){
+		$inicio = 7;
+		$fin = 9;
+	}
+	if($trimestre == "4to" || $trimestre == "4"){
+		$inicio = 10;
+		$fin = 12;
+	}
+	$data = array($inicio, $fin);
+	return $data;
+}
+
+function BuscaAvances2($con, $actividad, $trimestre){
+	$trimestre = QueTrimestreEs($trimestre);
+	$stm = $con->query("SELECT * FROM avances  
+	WHERE id_actividad = $actividad AND mes > $trimestre[0] - 1 AND mes < $trimestre[1]+ 1 AND validado = 1");
+	$avances = $stm->fetchAll(PDO::FETCH_ASSOC);
+	$todasLocalidades = "";
+	$todosbeneficiarios = 0;
+	$todosrecursos = "";
+	foreach($avances as $a){
+		$todasLocalidades .= $a['localidades'] . " ";
+		$todosbeneficiarios += intval($a['beneficiarios']);
+		$todosrecursos .= $a['recursos'] . " ";
+	}
+	$arrmag = array();
+	array_push($arrmag, $todasLocalidades,$todosbeneficiarios,$todosrecursos);
+	return $arrmag;
+}
+
 
 
 
@@ -387,31 +428,31 @@ $tabseg = '
 <table>
     <thead>
         <tr>
-            <th style="width:15%; text-align: center; border:1px solid gray; font-size: 8px" >Objetivo </th>
-            <th style="width:15%; text-align: center; border:1px solid gray; font-size: 8px" >Estrategias </th>
-            <th style="width:15%; text-align: center; border:1px solid gray; font-size: 8px" >Líneas de acción </th>
-            <th style="width:15%; text-align: center; border:1px solid gray; font-size: 8px" >Área(s) Responsable (s)</th>
-            <th style="width:15%; text-align: center; border:1px solid gray; font-size: 8px" >Acciones realizadas</th>
-            <th style="width:15%; text-align: center; border:1px solid gray; font-size: 8px" >Localidad (es) beneficiada (s)</th>
-            <th style="width:5%; text-align: center; border:1px solid gray; font-size: 8px" >Beneficiarios directos</th>
-            <th style="width:5%; text-align: center; border:1px solid gray; font-size: 8px" >Origen de los Recursos públicos aplicados</th>
+            <th style="width:12%; text-align: center; border:1px solid gray; font-size: 8px"><b>Objetivo </b></th>
+            <th style="width:12%; text-align: center; border:1px solid gray; font-size: 8px"><b>Estrategias </b></th>
+            <th style="width:12%; text-align: center; border:1px solid gray; font-size: 8px"><b>Líneas de acción </b></th>
+            <th style="width:12%; text-align: center; border:1px solid gray; font-size: 8px"><b>Área(s) Responsable (s)</b></th>
+            <th style="width:12%; text-align: center; border:1px solid gray; font-size: 8px"><b>Acciones realizadas</b></th>
+            <th style="width:12%; text-align: center; border:1px solid gray; font-size: 8px"><b>Localidad (es) beneficiada (s)</b></th>
+            <th style="width:12%; text-align: center; border:1px solid gray; font-size: 8px"><b>Beneficiarios directos</b></th>
+            <th style="width:12%; text-align: center; border:1px solid gray; font-size: 8px"><b>Origen de los Recursos públicos aplicados</b></th>
         </tr>
     </thead>
     <tbody>';
 
 foreach($seguimiento as $s){
-	var_dump($s['nombre_objetivo']);
+	$avance = BuscaAvances2($con, $s['id_actividad'], $trimestre);
 
 	$tabseg .= '
 	<tr>
-		<td style="width:15%; text-align: center; border:1px solid gray; font-size: 8px">'.$s['nombre_objetivo'].'</td>
-		<td style="width:15%; text-align: center; border:1px solid gray; font-size: 8px">'.$s['nombre_estrategia'].'</td>
-		<td style="width:15%; text-align: center; border:1px solid gray; font-size: 8px">'.$s['nombre_linea'].'</td>
-		<td style="width:15%; text-align: center; border:1px solid gray; font-size: 8px">'.$s['nombre_dependencia'].'</td>
-		<td style="width:15%; text-align: center; border:1px solid gray; font-size: 8px">'.$s['nombre_actividad'].'</td>
-		<td style="width:15%; text-align: center; border:1px solid gray; font-size: 8px">'.$s['nombre_actividad'].'</td>
-		<td style="width:5%; text-align: center; border:1px solid gray; font-size: 8px">'.$s['nombre_actividad'].'</td>
-		<td style="width:5%; text-align: center; border:1px solid gray; font-size: 8px">'.$s['nombre_actividad'].'</td>
+		<td style="width:12%; text-align: center; border:1px solid gray; font-size: 7px">'.$s['nombre_objetivo'].'</td>
+		<td style="width:12%; text-align: center; border:1px solid gray; font-size: 7px">'.$s['nombre_estrategia'].'</td>
+		<td style="width:12%; text-align: center; border:1px solid gray; font-size: 7px">'.$s['nombre_linea'].'</td>
+		<td style="width:12%; text-align: center; border:1px solid gray; font-size: 7px">'.$s['nombre_dependencia'].'</td>
+		<td style="width:12%; text-align: center; border:1px solid gray; font-size: 7px">'.$s['nombre_actividad'].'</td>
+		<td style="width:12%; text-align: center; border:1px solid gray; font-size: 7px">'.$avance[0].'</td>
+		<td style="width:12%; text-align: center; border:1px solid gray; font-size: 7px">'.$avance[1].'</td>
+		<td style="width:12%; text-align: center; border:1px solid gray; font-size: 7px">'.$avance[2].'</td>
 	</tr>
 	';
 }
@@ -591,7 +632,7 @@ $html = '
 	<tr>
 		<td style="font-size: 8px; width: 34%; border: 1px solid gray;"> ELABORÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $titular_area['nombre'] . " " . $titular_area['apellidos'] . "<br>" . $titular_area['cargo']. '</td>
 		<td style="font-size: 8px; width: 34%; border: 1px solid gray;"> REVISÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $titular_dependencia['nombre'] . " " . $titular_dependencia['apellidos'] . "<br>" . $titular_dependencia['cargo']. '</td>
-		<td style="font-size: 8px; width: 32%;"> Aqui va un codigo QR </td>
+		<td style="font-size: 8px; width: 32%;"> </td>
 	</tr>	
 </table>
 
