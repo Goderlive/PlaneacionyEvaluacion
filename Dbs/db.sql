@@ -3742,7 +3742,7 @@ INSERT INTO pdm_lineas(clave_linea, nombre_linea, id_estrategia) VALUES
 ("L63.1.6", "Implementar la Actualización de Sistemas: Se realizarán acciones automatizadas y sistematizadas para llevar a cabo la actividad gubernamental del municipio, que incluyen la actualización y creación de páginas web para consulta del ciudadano, así como, sistemas operativos para el desarrollo óptimo de las actividades internas del ayuntamiento.", 138),
 ("L63.1.7", "Desarrollar el sistema de Georreferenciación: Con el propósito de obtener información que permita identificar las principales actividades económicas del municipio, se llevará a cabo la actualización constante del mapa interactivo de Metepec.", 138),
 ("L63.2.1", "Promover la celebración de convenios de colaboración y coordinación para fortalecer los mecanismos de intercambio en materia de tecnologías de la información.", 139),
-("L63.2.2", "Organizar y difundir eventos en materia de ciencia y tecnología, dirigidos a los habitantes del municipio.", 139),
+("L63.2.2", "Organizar y difundir eventos en materia de ciencia y tecnología, dirigidos a los habitantes del municipio.", 139);
 
 
 
