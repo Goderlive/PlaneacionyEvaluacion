@@ -95,8 +95,8 @@ function item_principal($actual, $buscador, $texto, $destino){
                         <div id="dropdownNavbar" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                             <ul class="py-1 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownNavbarButton">
                                 <?= item_context("mi_perfil.php", "Mi Perfil", array(1,2,3,4,5), $mi_permiso) ?>
-                                <?= item_context("mis_areas.php", "Mis Areas", array(1,2,3,4,5), $mi_permiso) ?>
-                                <?= item_context("mis_formatos.php", "Mis Formatos", array(1,2,3,4,5), $mi_permiso) ?>
+                                <?= item_context("mis_areas.php", "Mis Areas", array(1,2,3,4), $mi_permiso) ?>
+                                <?= item_context("mis_formatos.php", "Mis Formatos", array(1,2,3,4), $mi_permiso) ?>
                                 <?= item_context("ajustes.php", "Ajustes", array(1,2), $mi_permiso)?>
                                 <?= item_context("unidades_medida.php", "Unidades de Medida", array(1,2), $mi_permiso)?>
                             </ul>
@@ -119,9 +119,9 @@ function item_principal($actual, $buscador, $texto, $destino){
                         <div id="dropdownNavbar" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                             <ul class="py-1 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownNavbarButton">
                                 <?= item_context("indicadores.php", "Reportar Indicadores", array(1,2,3,4,5), $mi_permiso) ?>
-                                <?= item_context("matrices.php", "Mis Matries", array(1,2,3,4,5), $mi_permiso) ?>
-                                <?= item_context("reconduccion_indicadores.php", "Nueva Reconducción de Indicadores", array(1,2,3,4,5), $mi_permiso)?>
-                                <?= item_context("indicadores_todos.php", "Todos los Indicadores", array(1,2,3,4,5), $mi_permiso)?>
+                                <?= item_context("matrices.php", "Mis Matries", array(1,2,3,4), $mi_permiso) ?>
+                                <?= item_context("reconduccion_indicadores.php", "Nueva Reconducción de Indicadores", array(1,2,3,4), $mi_permiso)?>
+                                <?= item_context("indicadores_todos.php", "Todos los Indicadores", array(1,2,3,4), $mi_permiso)?>
                             </ul>
                         </div> <?php endif ?>
                         <a href="login.php"><svg class="w-6 h-6 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg></a>
