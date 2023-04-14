@@ -463,7 +463,7 @@ $tabseg .= "</tbody>
 $magg .= $tabseg;
 
 $pdf->writeHTML($magg, true, false, true, false, '');
-endif;
+endif; // If de seguimiento
 
 // ================================================== Aqui comienza la pagina 3 ===================================
 
