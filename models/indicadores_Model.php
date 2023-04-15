@@ -124,9 +124,13 @@ if(isset($_POST['reportar']) and $_POST['reportar']){
                     VALUES ($id_indicador,'$anio','$trimestre','$avance_a','$avance_b','$avance_c','$descripcion_evidencia ','$justificacion','$id_usuario_reporta','$rutacompleta')";
                     $con->query($sql);
                     ?>
-                    <script>
-                        alert('Registro exitoso');
-                        window.location.href = '../indicadores.php';
+                    <form id="myForm" action="../indicadores.php" method="post">
+                        <input type="hidden" name="id_dependencia" value="<?=$id_dependencia?>">
+                        <input type="hidden" name="trimestre" value="<?=$trimestre?>">
+                    </form>
+                    <script type="text/javascript">
+                        alert("Indicador Actualizado")
+                        document.getElementById('myForm').submit();
                     </script>
                     <?php
                 } else {

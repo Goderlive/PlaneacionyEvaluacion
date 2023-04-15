@@ -22,7 +22,7 @@ $actual = $actual[count($actual)-1];
 
 $inicio = array("index.php", "mi_perfil.php", "mis_areas.php", "mis_formatos.php", "ajustes.php", "unidades_medida.php", "administra_usuarios.php", "revisa_avances.php");
 $actividades = array("actividades.php", "reconduccion_actividades.php", "actividades_todas.php", "formatos_actividades.php", "reportes.php", "programacion_actividades.php");
-$indicadores = array("indicadores.php", "reconduccion_indicadores.php", "matrices.php");
+$indicadores = array("indicadores.php", "reconduccion_indicadores.php", "matrices.php", "formatos_indicadores.php");
 
 
 if(in_array($actual, $inicio)){
@@ -121,6 +121,7 @@ function item_principal($actual, $buscador, $texto, $destino){
                                 <?= item_context("indicadores.php", "Reportar Indicadores", array(1,2,3,4,5), $mi_permiso) ?>
                                 <?= item_context("matrices.php", "Mis Matries", array(1,2,3,4), $mi_permiso) ?>
                                 <?= item_context("reconduccion_indicadores.php", "Nueva Reconducción de Indicadores", array(1,2,3,4), $mi_permiso)?>
+                                <?= item_context("formatos_indicadores.php", "Imprime Formatos", array(1,2,3,4), $mi_permiso)?>
                                 <?= item_context("indicadores_todos.php", "Todos los Indicadores", array(1,2,3,4), $mi_permiso)?>
                             </ul>
                         </div> <?php endif ?>

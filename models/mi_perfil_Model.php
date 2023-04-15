@@ -64,13 +64,17 @@ function TraeUsuario($con, $id_usuario){ // Primero traemos el principal
 
 
 if(isset($_POST['contrasenia'])){
-    
     $password = $_POST["contrasena"];
-    $regex = '/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+){8,}$/';
-    if (!preg_match($regex, $password) || $_POST["contrasena"] != $_POST["verificar_contrasena"]) {
-        echo "<script>alert('Tu contraseña debe contener al menos 8 caracteres, entre ellos, una letra y un numero. Ademas deben ser iguales'); window.location.href='../administra_usuarios.php';</script>";
-        exit;
+    if($_POST["contrasena"] != $_POST["verificar_contrasena"]){
+        echo "<script>alert('Tu contraseña deben ser iguales en ambos campos'); window.location.href='../administra_usuarios.php';</script>";
+        die();
+    }else{
+        if (!preg_match('/[a-zA-Z]/', $password) || !preg_match('/\d/', $password) || !strlen($password) >= 8) {
+            echo "<script>alert('Tu contraseña debe contener al menos 8 caracteres, entre ellos, una letra y un numero. Ademas deben ser iguales'); window.location.href='../administra_usuarios.php';</script>";
+            die();
+        }
     }
+
 
     $id_usuario = $_POST['id_usuario'];
     $password_hash = password_hash($password, PASSWORD_DEFAULT);
@@ -82,7 +86,7 @@ if(isset($_POST['contrasenia'])){
         $stmt->execute();
       
         $con = null;
-        header("Location: ../mi_perfil.php");
+        header("Location: ../index.php");
       
       } catch(PDOException $e) {
         echo "Error: " . $e->getMessage();
@@ -213,6 +217,10 @@ if(isset($_POST['nuevo'])){
 
 if(isset($_POST['actualizar'])){
     session_start();
+    if($_SESSION['sistema'] != "pbrm"){
+        header("Location: ../login.php");
+    }
+
     $id_usuario = $_POST['id_usuario'];
     $nombre = $_POST['nombre'];
     $apellido = $_POST['apellidos'];
