@@ -21,14 +21,13 @@ if($_SESSION['sistema'] == "pbrm" || $_SESSION['id_permiso'] != 1){
 <?= breadcrumbs(array("Inicio"=> "index.php", "Revisar Reconducciones"=>""))?>
 <br>
         <!-- Aqui comienza el area de las reconducciones de Actividades -->
-        <?php if($tipo == "actividades"){
+<?php if($tipo == "actividades"):
         //primero vamos a llamar las reconducciones
         $reconducciones = TraeTodasReconduccionesActividades($con);
 
         foreach ($reconducciones as $reconduccion):?> <!-- Tenemos una vista de cada reconduccion -->
             <form action="models/revisa_reconducciones_Model.php" method="post">
 
-                    <?php //var_dump($reconduccion) ?>
             <div role="status" class="p-4 max-w-xl rounded border border-gray-200 shadow animate-pulse md:p-6 dark:border-gray-700">
                 <div class=" justify-center mb-4 bg-gray-100 rounded dark:bg-gray-100">
                     <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white"> <?= $reconduccion['nombre_dependencia'] . " -> " . $reconduccion['nombre_area']?></h5>
@@ -50,9 +49,9 @@ if($_SESSION['sistema'] == "pbrm" || $_SESSION['id_permiso'] != 1){
                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 '.$bg_table.'">
                             <thead class="text-xs text-gray-700 uppercase dark:text-gray-400 ' . $bg_table. '">
                                 <tr>
-                                    <th scope="col" colspan = "12" class="py-3 px-6 bg-gray-50 dark:bg-gray-800">
+                                    <td scope="col" colspan = "12" class="py-3 px-6 bg-gray-50 dark:bg-gray-800">
                                         <?= $dataActividad['codigo_actividad'] . " - " . $dataActividad['nombre_actividad'] . " - " . $dataActividad['unidad'] ?>
-                                    </th> 
+                                    </td> 
                                 </tr>
 
                                 <tr>
@@ -84,15 +83,142 @@ if($_SESSION['sistema'] == "pbrm" || $_SESSION['id_permiso'] != 1){
             </div><br>
             </form>
         <?php endforeach?>
-    </div>
+    <?php endif ?>
+
+    <?php if($tipo == "indicadores"): // Aqui comienza en caso de revisar reconducciones de INDICADORES?>
+        <?php $reconducciones = TraeTodasReconduccionesIndicadores($con); ?>
+            <?php foreach ($reconducciones as $reconduccion):?>
+                <?php $oldprogramacion = explode("|" ,$reconduccion['programacion_inicial_a']);
+                $oldprogramacionanual = intval($oldprogramacion[0]) + intval($oldprogramacion[1]) + intval($oldprogramacion[2]) + intval($oldprogramacion[3]);  ?>
+
+                <?php $nuevaprogramacion = explode("|" ,$reconduccion['programacion_modificada_a']);
+                $nuevaprogramacionanual = intval($nuevaprogramacion[0]) + intval($nuevaprogramacion[1]) + intval($nuevaprogramacion[2]) + intval($nuevaprogramacion[3]);  ?>
+
+                <?php $originalindicador = TraeOriginalIndicador($con, $reconduccion['id_indicador']) ?>
+                <div role="status" class="p-4 max-w-xl rounded border border-gray-200 shadow animate-pulse md:p-6 dark:border-gray-700 my-4">
+                    <div class=" justify-center mb-4 rounded">
+                        <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white"> <?= $reconduccion['nombre_dependencia']?></h5>
+                        <p><?= "Oficio: " . $reconduccion['no_oficio'] . " Fecha: " . $reconduccion['fecha'] . " <br>Dep. Gen: " . $reconduccion['dep_general'] . " -- Dep. Aux: " . $reconduccion['dep_aux'] . " -- Programa: " . $reconduccion['programa_p']?></p>
+                        <p>Reporta: <?= $reconduccion['nombre'] . ' ' . $reconduccion['apellidos']  ?></p>
+                    </div>
+                    <div class="relative overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                            <thead class="text-sm text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                <tr>
+                                    <td colspan="13" scope="col" class="px-6 py-3"> Nombre Indicador: <?= $reconduccion['nombre_indicador'] ?></td>
+                                </tr>
+                                <tr>
+                                    <td scope="col" class="px-3 py-3">
+                                        Variables
+                                    </td>
+                                    <td scope="col" class="px-3 py-3">
+                                        Orig U. de M.
+                                    </td>
+                                    <td scope="col" class="px-3 py-3">
+                                        Nueva U. de M.
+                                    </td>
+                                    <td scope="col" class="px-3 py-3">
+                                        Orig Tipo Op.
+                                    </td>
+                                    <td scope="col" class="px-3 py-3">
+                                        Nueva Tipo Op.
+                                    </td>
+                                    <td scope="col" class="px-2 py-3">
+                                        Orig 1t
+                                    </td>
+                                    <td scope="col" class="px-2 py-3">
+                                        Orig 2t
+                                    </td>
+                                    <td scope="col" class="px-2 py-3">
+                                        Orig 3t
+                                    </td>
+                                    <td scope="col" class="px-2 py-3">
+                                        Orig 4t
+                                    </td>
+                                    <td scope="col" class="px-2 py-3">
+                                        Total Original
+                                    </td>
+                                    <td scope="col" class="px-2 py-3">
+                                        Nueva 1t
+                                    </td>
+                                    <td scope="col" class="px-2 py-3">
+                                        Nueva 2t
+                                    </td>
+                                    <td scope="col" class="px-2 py-3">
+                                        Nueva 3t
+                                    </td>
+                                    <td scope="col" class="px-2 py-3">
+                                        Nueva 4t
+                                    </td>
+                                    <td scope="col" class="px-2 py-3">
+                                        Total Nueva
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                    <td class="px-6 py-4">
+                                        A <?= $reconduccion['variable_a'] ?>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <?= $originalindicador['umedida_a'] ?>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <?= $reconduccion['umedida_a'] ?>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <?= $originalindicador['tipo_op_a'] ?>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <?= $reconduccion['tipo_op_a'] ?>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <?= $oldprogramacion[0] ?>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <?= $oldprogramacion[1] ?>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <?= $oldprogramacion[2] ?>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <?= $oldprogramacion[3] ?>
+                                    </td>
+                                    <td class="px-6 py-4 bg-blue-50">
+                                        <?= $oldprogramacionanual ?>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <?= $nuevaprogramacion[0] ?>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <?= $nuevaprogramacion[1] ?>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <?= $nuevaprogramacion[2] ?>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <?= $nuevaprogramacion[3] ?>
+                                    </td>
+                                    <td class="px-6 py-4 bg-blue-50">
+                                        <?= $nuevaprogramacionanual ?>
+                                    </td>
+                                </tr>
+                                <form action="models/revisa_reconducciones_Model.php" method="post">
+                                    <input type="hidden" name="id_reconduccion" value="<?= $reconduccion['id_reconduccion_indicadores'] ?>">
+                                    <tr>
+                                        <td> &nbsp;</td>
+                                        <td> <button type="submit" name="reconduccionindicadores" class="my-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Validar</button></td>
+                                        <td> <button type="submit" name="cancelarreconduccionindicadores" class="my-4 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Cancelar</button></td>
+                                    </tr>
+                                </form>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            <?php endforeach ?>
+    <?php endif ?>
+</div>
 <?php include 'footer.php';?>
 </body>
 </html>
-<?php 
-}else{?>
-    <script>
-    window.location.href = 'login.php';
-    </script>
-<?php
-}
-?>

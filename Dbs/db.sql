@@ -5410,7 +5410,7 @@ CREATE TABLE reconducciones_indicadores(
   programacion_modificada_c VARCHAR(255),
   justificacion_impacto TEXT,
   id_dependencia INT,
-  validado INT,
+  validado INT DEFAULT 0,
   id_validado INT
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 

@@ -23,7 +23,7 @@ if(isset($_SESSION) && isset($_SESSION['sistema']) && $_SESSION['sistema'] == "p
 			print AlertaAvancesActividades($con);
 			print AlertaAvancesIndicadores($con);
             print AlertaReconduccionActividades($con);
-            //AlertaReconduccionIndicadores($con);
+            print AlertaReconduccionIndicadores($con);
 		}
         ?>
         <br>

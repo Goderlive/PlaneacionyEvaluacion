@@ -1,9 +1,6 @@
 <?php
 require_once 'conection.php';
-if($_SESSION['sistema'] != "pbrm"){
-    header("Location: ../login.php");
-    die();
-}
+
 
 function FetchAll($con, $string){
     try {
@@ -73,6 +70,11 @@ function TraeEncargados($con, $id_area, $id_dependencia){
 
 
 if(isset($_POST['reconduccionindicadores'])){
+    session_start();
+    if($_SESSION['sistema'] != "pbrm"){
+        header("Location: ../login.php");
+        die();
+    }
     $no_oficio = $_POST['no_oficio'];
     $dep_general = $_POST['dep_general'];
     $dep_aux = $_POST['dep_aux'];
@@ -92,19 +94,18 @@ if(isset($_POST['reconduccionindicadores'])){
     $umedida_a = isset($_POST['umedida_a']) ? $_POST['umedida_a'] : NULL;
     $umedida_b = isset($_POST['umedida_b']) ? $_POST['umedida_b'] : NULL;
     $umedida_c = isset($_POST['umedida_c']) ? $_POST['umedida_c'] : NULL;
-    $programacion_modificada_a = isset($_POST['at1']) . "|" . isset($_POST['at2']) . "|" . isset($_POST['at3']) . "|" . isset($_POST['at4']);
-    $programacion_modificada_b = isset($_POST['bt1']) . "|" . isset($_POST['bt2']) . "|" . isset($_POST['bt3']) . "|" . isset($_POST['bt4']); 
-    $programacion_modificada_c = isset($_POST['ct1']) . "|" . isset($_POST['ct2']) . "|" . isset($_POST['ct3']) . "|" . isset($_POST['ct4']); 
+    $programacion_modificada_a = $_POST['at1'] . "|" . $_POST['at2'] . "|" . $_POST['at3'] . "|" . $_POST['at4'];
+    $programacion_modificada_b = $_POST['bt1'] . "|" . $_POST['bt2'] . "|" . $_POST['bt3'] . "|" . $_POST['bt4']; 
+    $programacion_modificada_c = $_POST['ct1'] . "|" . $_POST['ct2'] . "|" . $_POST['ct3'] . "|" . $_POST['ct4']; 
     $justificacion_impacto = $_POST['justificacion'];
     $id_dependencia = $_POST['id_dependencia'];
 
     $sqlold = "SELECT * FROM indicadores_uso WHERE id = $id_indicador";
     $oldprog = Fetch($con, $sqlold);
     
-    $programacion_inicial_a = isset($oldprog['at1']) . "|" . isset($oldprog['at2']) . "|" . isset($oldprog['at3']) . "|" . isset($oldprog['at4']);
-    $programacion_inicial_b = isset($oldprog['bt1']) . "|" . isset($oldprog['bt2']) . "|" . isset($oldprog['bt3']) . "|" . isset($oldprog['bt4']);
-    $programacion_inicial_c = isset($oldprog['ct1']) . "|" . isset($oldprog['ct2']) . "|" . isset($oldprog['ct3']) . "|" . isset($oldprog['ct4']);
-    var_dump($programacion_inicial_c);
+    $programacion_inicial_a = $oldprog['at1'] . "|" . $oldprog['at2'] . "|" . $oldprog['at3'] . "|" . $oldprog['at4'];
+    $programacion_inicial_b = $oldprog['bt1'] . "|" . $oldprog['bt2'] . "|" . $oldprog['bt3'] . "|" . $oldprog['bt4'];
+    $programacion_inicial_c = $oldprog['ct1'] . "|" . $oldprog['ct2'] . "|" . $oldprog['ct3'] . "|" . $oldprog['ct4'];
     
 
     $sqlav = "SELECT * FROM avances_indicadores WHERE id_indicador = $id_indicador";
@@ -127,13 +128,6 @@ if(isset($_POST['reconduccionindicadores'])){
         $avance_c = 0;
     }
 
-
-    print '<pre>';
-    print "- " . $oldprog['ct1'];
-    print "- " . $oldprog['ct2'];
-    print "- " . $oldprog['ct3'];
-    print "- " . $oldprog['ct4'];
-    die();
     $tipo_movimiento = "Reconduccion de indicadores";
 
 
@@ -142,7 +136,7 @@ if(isset($_POST['reconduccionindicadores'])){
         (no_oficio, tipo_movimiento, dep_general, dep_aux, programa_p, objetivo, proyecto, proyecto_name, id_indicador, nombre_indicador, id_reporta, variable_a, variable_b, variable_c, tipo_op_a, tipo_op_b, tipo_op_c, umedida_a, umedida_b, umedida_c, programacion_inicial_a, programacion_inicial_b, programacion_inicial_c, avance_a, avance_b, avance_c, programacion_modificada_a, programacion_modificada_b, programacion_modificada_c, justificacion_impacto, id_dependencia) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         $sqlr = $con->prepare($sql);
         $sqlr->execute(array($no_oficio, $tipo_movimiento, $dep_general, $dep_aux, $programa_p, $objetivo, $proyecto, $proyecto_name, $id_indicador, $nombre_indicador, $id_reporta, $variable_a, $variable_b, $variable_c, $tipo_op_a, $tipo_op_b, $tipo_op_c, $umedida_a, $umedida_b, $umedida_c, $programacion_inicial_a, $programacion_inicial_b, $programacion_inicial_c, $avance_a, $avance_b, $avance_c, $programacion_modificada_a, $programacion_modificada_b, $programacion_modificada_c, $justificacion_impacto, $id_dependencia));
-        header("Location: ../indicadores.php");
+        header("Location: ../reconduccion_indicadores.php");
       } catch (Exception $e) {
         // Manejo de la excepción, por ejemplo:
         echo "Error al ejecutar la consulta: " . $e->getMessage();

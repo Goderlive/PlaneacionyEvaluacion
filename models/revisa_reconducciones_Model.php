@@ -51,110 +51,127 @@ function NombreArea($con, $id_area){
 }
 
 
- 
-if(isset($_POST) && $_POST){
-    session_start();
-    if (isset($_POST['valida_reconduccion_act'])) {
-        //vamos haciendo anotaciones o no nos sale
-        
-        
-        //Buscamos la reconduccion a sacar
-        $id_reconduccion = $_POST['reconduccion'];
 
-        $reconduccion = Fetch($con, "SELECT * FROM reconducciones_atividades WHERE id_reconduccion_actividades");
-        // Ya que tenemos la reconduccion, vamos a cambiarla a activa.
-       
-        // Traemos las programaciones afectadas por la reconduccion
-        $programaciones = FetchAll($con, "SELECT * FROM programacion_reconducciones WHERE id_reconduccion = $id_reconduccion");
-        
+function TraeTodasReconduccionesIndicadores($con){
+    $sql = "SELECT * FROM reconducciones_indicadores ri
+        LEFT JOIN dependencias dp ON dp.id_dependencia = ri.id_dependencia
+        LEFT JOIN usuarios us ON us.id_usuario = ri.id_reporta
+        WHERE ri.validado != 1";
+    $stm = $con->query($sql);
+    $reconducciones_indicadores = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $reconducciones_indicadores;
+}
 
-        // ******* lo primero que hay que hacer es respaldar los datos que vamos a eliminar
-        // ** armamos el array
-        foreach($programaciones as $a){
-            //limpiamos la programacion inicial y la ponemos en un array
-            $prog_inicial = $a['programacion_inicial'];
-
-            //Gardamos en la tabla de cosas eliminadas
-            $sql = "INSERT INTO programaciones_eliminadas (programacion) VALUES (?)";
-            $sqlr = $con->prepare($sql);
-            $sqlr->execute(array($prog_inicial));
-
-            //armamos la nueva programacion
-            $prog_final = str_replace('"', '', $a['programacion_final']);
-            $prog_final = str_replace(' ', '', $prog_final);
-            $array_programacion_final = explode(",", $prog_final);
-
-
-            //Ahora Guardamos la nueva programación 
-            $ene_fin = $array_programacion_final[0];
-            $feb_fin = $array_programacion_final[1];
-            $mar_fin = $array_programacion_final[2];
-            $abr_fin = $array_programacion_final[3];
-            $may_fin = $array_programacion_final[4];
-            $jun_fin = $array_programacion_final[5];
-            $jul_fin = $array_programacion_final[6];
-            $ago_fin = $array_programacion_final[7];
-            $sep_fin = $array_programacion_final[8];
-            $oct_fin = $array_programacion_final[9];
-            $nov_fin = $array_programacion_final[10];
-            $dic_fin = $array_programacion_final[11];
-
-            try {
-                $id_actividad = $a['id_actividad'];
-                $sql = "UPDATE programaciones SET 
-                enero = $ene_fin,
-                febrero = $feb_fin,
-                marzo = $mar_fin,
-                abril = $abr_fin,
-                mayo = $may_fin,
-                junio = $jun_fin,
-                julio = $jul_fin,
-                agosto = $ago_fin,
-                septiembre = $sep_fin,
-                octubre = $oct_fin,
-                noviembre = $nov_fin,
-                diciembre = $dic_fin
-                WHERE id_actividad = $id_actividad";
-              
-                // Prepare statement
-                $stmt = $con->prepare($sql);
-              
-                // execute the query
-                $stmt->execute();
-              
-                // echo a message to say the UPDATE succeeded
-                echo $stmt->rowCount() . " Se actualizo la reconduccion nueva";
-              } catch(PDOException $e) {
-                echo $sql . "<br>" . $e->getMessage();
-              }
-      
-        }
-            // Por ultimo, actualizamos la reconduccion con los datos como VALIDADA
-        try {
-            $id_usuario = $_SESSION['id_usuario'];
-            $sql = "UPDATE reconducciones_atividades SET validado = 1, id_validador = $id_usuario, fecha_validacion = NOW() WHERE id_reconduccion_actividades = $id_reconduccion";
-          
-            // Prepare statement
-            $stmt = $con->prepare($sql);
-          
-            // execute the query
-            $stmt->execute();
-          
-            // echo a message to say the UPDATE succeeded
-            echo $stmt->rowCount() . " Se Actualizo el status de la reconduccion";
-          } catch(PDOException $e) {
-            echo $sql . "<br>" . $e->getMessage();
-          }
-
-
-        header("Location: ../revisa_reconducciones.php");
-    }
+function TraeOriginalIndicador($con, $id_indicador){
+    $sql = "SELECT * FROM indicadores_uso  WHERE id = $id_indicador ";
+    $stm = $con->query($sql);
+    $indicador_original = $stm->fetch(PDO::FETCH_ASSOC);
+    return $indicador_original;
 }
 
 
 
 
 
+
+ 
+if(isset($_POST['valida_reconduccion_act']) && ($_POST['valida_reconduccion_act'])){
+    session_start();
+    if($_SESSION['sistema'] != "pbrm"){
+        header("Location: ../login.php");
+        die();
+    }
+    //Buscamos la reconduccion a sacar
+    $id_reconduccion = $_POST['reconduccion'];
+
+    $reconduccion = Fetch($con, "SELECT * FROM reconducciones_atividades WHERE id_reconduccion_actividades");
+    // Ya que tenemos la reconduccion, vamos a cambiarla a activa.
+    
+    // Traemos las programaciones afectadas por la reconduccion
+    $programaciones = FetchAll($con, "SELECT * FROM programacion_reconducciones WHERE id_reconduccion = $id_reconduccion");
+    
+
+    // ******* lo primero que hay que hacer es respaldar los datos que vamos a eliminar
+    // ** armamos el array
+    foreach($programaciones as $a){
+        //limpiamos la programacion inicial y la ponemos en un array
+        $prog_inicial = $a['programacion_inicial'];
+
+        //Gardamos en la tabla de cosas eliminadas
+        $sql = "INSERT INTO programaciones_eliminadas (programacion) VALUES (?)";
+        $sqlr = $con->prepare($sql);
+        $sqlr->execute(array($prog_inicial));
+
+        //armamos la nueva programacion
+        $prog_final = str_replace('"', '', $a['programacion_final']);
+        $prog_final = str_replace(' ', '', $prog_final);
+        $array_programacion_final = explode(",", $prog_final);
+
+
+        //Ahora Guardamos la nueva programación 
+        $ene_fin = $array_programacion_final[0];
+        $feb_fin = $array_programacion_final[1];
+        $mar_fin = $array_programacion_final[2];
+        $abr_fin = $array_programacion_final[3];
+        $may_fin = $array_programacion_final[4];
+        $jun_fin = $array_programacion_final[5];
+        $jul_fin = $array_programacion_final[6];
+        $ago_fin = $array_programacion_final[7];
+        $sep_fin = $array_programacion_final[8];
+        $oct_fin = $array_programacion_final[9];
+        $nov_fin = $array_programacion_final[10];
+        $dic_fin = $array_programacion_final[11];
+
+        try {
+            $id_actividad = $a['id_actividad'];
+            $sql = "UPDATE programaciones SET 
+            enero = $ene_fin,
+            febrero = $feb_fin,
+            marzo = $mar_fin,
+            abril = $abr_fin,
+            mayo = $may_fin,
+            junio = $jun_fin,
+            julio = $jul_fin,
+            agosto = $ago_fin,
+            septiembre = $sep_fin,
+            octubre = $oct_fin,
+            noviembre = $nov_fin,
+            diciembre = $dic_fin
+            WHERE id_actividad = $id_actividad";
+            
+            // Prepare statement
+            $stmt = $con->prepare($sql);
+            
+            // execute the query
+            $stmt->execute();
+            
+            // echo a message to say the UPDATE succeeded
+            echo $stmt->rowCount() . " Se actualizo la reconduccion nueva";
+            } catch(PDOException $e) {
+            echo $sql . "<br>" . $e->getMessage();
+            }
+    
+    }
+        // Por ultimo, actualizamos la reconduccion con los datos como VALIDADA
+    try {
+        $id_usuario = $_SESSION['id_usuario'];
+        $sql = "UPDATE reconducciones_atividades SET validado = 1, id_validador = $id_usuario, fecha_validacion = NOW() WHERE id_reconduccion_actividades = $id_reconduccion";
+        
+        // Prepare statement
+        $stmt = $con->prepare($sql);
+        
+        // execute the query
+        $stmt->execute();
+        
+        // echo a message to say the UPDATE succeeded
+        echo $stmt->rowCount() . " Se Actualizo el status de la reconduccion";
+        } catch(PDOException $e) {
+        echo $sql . "<br>" . $e->getMessage();
+        }
+
+
+    header("Location: ../revisa_reconducciones.php");
+}
 
 
 ?>
