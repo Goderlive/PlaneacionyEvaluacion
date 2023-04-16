@@ -71,6 +71,63 @@ function TraeOriginalIndicador($con, $id_indicador){
 
 
 
+if(isset($_POST['cancela_reconduccion_act']) && $_POST['cancela_reconduccion_act'] == "cancelar"){
+    session_start();
+    if($_SESSION['sistema'] != "pbrm"){
+        header("Location: ../login.php");
+        die();
+    }
+    if (isset($_POST['id_reconduccion'])) {
+        $id_reconduccion = filter_var($_POST['id_reconduccion'], FILTER_SANITIZE_NUMBER_INT);
+        if ($id_reconduccion === false) {
+            echo "El ID proporcionado no es válido.";
+            exit;
+        }
+    } else {
+        echo "No se proporcionó ningún ID.";
+        exit;
+    }
+
+    $consulta = $con->prepare("DELETE FROM reconducciones_atividades WHERE id_reconduccion_actividades = :id_reconduccion");
+
+    // Enlazar el valor a los marcadores de posición
+    $consulta->bindParam(':id_reconduccion', $id_reconduccion);
+    
+    // Ejecutar la sentencia de eliminación
+    $consulta->execute();
+    header("Location: ../revisa_reconducciones.php?type=actividades");
+
+}
+
+
+
+if(isset($_POST['cancelarreconduccionindicadores']) && $_POST['cancelarreconduccionindicadores'] == "cancelar"){
+    session_start();
+    if($_SESSION['sistema'] != "pbrm"){
+        header("Location: ../login.php");
+        die();
+    }
+    if (isset($_POST['id_reconduccion'])) {
+        $id_reconduccion = filter_var($_POST['id_reconduccion'], FILTER_SANITIZE_NUMBER_INT);
+        if ($id_reconduccion === false) {
+            echo "El ID proporcionado no es válido.";
+            exit;
+        }
+    } else {
+        echo "No se proporcionó ningún ID.";
+        exit;
+    }
+
+    $consulta = $con->prepare("DELETE FROM reconducciones_indicadores WHERE id_reconduccion_indicadores = :id_reconduccion");
+
+    // Enlazar el valor a los marcadores de posición
+    $consulta->bindParam(':id_reconduccion', $id_reconduccion);
+    
+    // Ejecutar la sentencia de eliminación
+    $consulta->execute();
+    header("Location: ../revisa_reconducciones.php?type=indicadores");
+
+}
 
 
 
@@ -81,8 +138,8 @@ if(isset($_POST['valida_reconduccion_act']) && ($_POST['valida_reconduccion_act'
         header("Location: ../login.php");
         die();
     }
-    //Buscamos la reconduccion a sacar
-    $id_reconduccion = $_POST['reconduccion'];
+
+    $id_reconduccion = $_POST['id_reconduccion'];
 
     $reconduccion = Fetch($con, "SELECT * FROM reconducciones_atividades WHERE id_reconduccion_actividades");
     // Ya que tenemos la reconduccion, vamos a cambiarla a activa.
@@ -171,6 +228,117 @@ if(isset($_POST['valida_reconduccion_act']) && ($_POST['valida_reconduccion_act'
 
 
     header("Location: ../revisa_reconducciones.php");
+}
+
+
+
+
+if(isset($_POST['validareconduccionindicadores']) && $_POST['validareconduccionindicadores'] == "validar"){
+    session_start();
+    if($_SESSION['sistema'] != "pbrm"){
+        header("Location: ../login.php");
+        die();
+    }
+    if (isset($_POST['id_reconduccion'])) {
+        $id_reconduccion = filter_var($_POST['id_reconduccion'], FILTER_SANITIZE_NUMBER_INT);
+        if ($id_reconduccion === false) {
+            echo "El ID proporcionado no es válido.";
+            exit;
+        }
+    } else {
+        echo "No se proporcionó ningún ID.";
+        exit;
+    }
+
+    try {
+        // Preparar la sentencia de actualización
+        $consulta = $con->prepare("UPDATE reconducciones_indicadores SET validado = :valor1 WHERE id_reconduccion_indicadores = :id_reconduccion_indicadores");
+        
+        $true = 1;
+        // Enlazar los valores a los marcadores de posición
+        $consulta->bindParam(':valor1', $true);
+        $consulta->bindParam(':id_reconduccion_indicadores', $id_reconduccion);
+        
+        if ($consulta->execute()) {
+            $id_indicador = intval(filter_var($_POST['id_indicador'], FILTER_SANITIZE_NUMBER_INT));
+
+            var_dump($id_indicador);
+            $programacion_modificada_a = $_POST['programacion_modificada_a'];
+            $programacion_modificada_b = $_POST['programacion_modificada_b'];
+            $programacion_modificada_c = $_POST['programacion_modificada_c'];
+            $programacion_modificada_a = explode("|", $programacion_modificada_a);
+            $programacion_modificada_b = explode("|", $programacion_modificada_b);
+            $programacion_modificada_c = explode("|", $programacion_modificada_c);
+            $tipo_op_a = $_POST['tipo_op_a'];
+            $tipo_op_b = $_POST['tipo_op_b'];
+            $tipo_op_c = $_POST['tipo_op_c'];
+            $umedida_a = $_POST['umedida_a'];
+            $umedida_b = $_POST['umedida_b'];
+            $umedida_c = $_POST['umedida_c'];
+
+
+
+            try {        
+                $consulta = $con->prepare("UPDATE indicadores_uso SET at1 = :at1, at2 = :at2, at3 = :at3, at4 = :at4, bt1 = :bt1, bt2 = :bt2, bt3 = :bt3, bt4 = :bt4, ct1 = :ct1, ct2 = :ct2, ct3 = :ct3, ct4 = :ct4, tipo_op_a = :tipo_op_a, tipo_op_b = :tipo_op_b, tipo_op_c = :tipo_op_c, umedida_a = :umedida_a, umedida_b = :umedida_b, umedida_c = :umedida_c WHERE id = $id_indicador");
+
+                // Enlazar los valores a los marcadores de posición
+                $consulta->bindParam(':at1', $programacion_modificada_a[0]);
+                $consulta->bindParam(':at2', $programacion_modificada_a[1]);
+                $consulta->bindParam(':at3', $programacion_modificada_a[2]);
+                $consulta->bindParam(':at4', $programacion_modificada_a[3]);
+                $consulta->bindParam(':bt1', $programacion_modificada_b[0]);
+                $consulta->bindParam(':bt2', $programacion_modificada_b[1]);
+                $consulta->bindParam(':bt3', $programacion_modificada_b[2]);
+                $consulta->bindParam(':bt4', $programacion_modificada_b[3]);
+                $consulta->bindParam(':ct1', $programacion_modificada_c[0]);
+                $consulta->bindParam(':ct2', $programacion_modificada_c[1]);
+                $consulta->bindParam(':ct3', $programacion_modificada_c[2]);
+                $consulta->bindParam(':ct4', $programacion_modificada_c[3]);
+                $consulta->bindParam(':tipo_op_a', $tipo_op_a);
+                $consulta->bindParam(':tipo_op_b', $tipo_op_b);
+                $consulta->bindParam(':tipo_op_c', $tipo_op_c);
+                $consulta->bindParam(':umedida_a', $umedida_a);
+                $consulta->bindParam(':umedida_b', $umedida_b);
+                $consulta->bindParam(':umedida_c', $umedida_c);
+                //$consulta->bindParam(':id_indicador', $id_indicador);
+
+
+
+                if($consulta->execute()){
+                    header("Location: ../revisa_reconducciones.php?type=indicadores");
+                }else {
+                    // Mostrar el error de PDO
+                    echo "La actualización falló en la actualizacion del indicador: " . $consulta->errorInfo()[2];
+                }
+                
+
+            } catch (\Throwable $th) {
+                echo "La actualización falló desde el armado de la consulta para la actualizacion del indicador: " . $th->getMessage();
+            }
+
+
+        } else {
+            // Mostrar el error de PDO
+            echo "La actualización falló desde la validacion de la reconduccion, previa a la programacion: " . $consulta->errorInfo()[2];
+        }
+        
+    } catch (PDOException $e) {
+        echo "La actualización falló en la integracion para la consulta de la actualizacion de la reconudccion: " . $e->getMessage();
+    }
+
+    
+    
+    
+
+
+
+
+
+
+    
+    
+
+
 }
 
 

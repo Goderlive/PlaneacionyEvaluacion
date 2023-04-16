@@ -75,9 +75,9 @@ if($_SESSION['sistema'] == "pbrm" || $_SESSION['id_permiso'] != 1){
                         <br>
                 <?php endforeach?>
                 <div class="flex items-center mt-4 space-x-3">
-                        <input type="hidden" name="reconduccion" value="<?= $reconduccion['id_reconduccion_actividades']?>">
-                        <button type="submit" name="valida_reconduccion_act" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Validar</button>
-                        <button type="submit" name="cancela_reconduccion_act" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Rechazar</button>
+                        <input type="hidden" name="id_reconduccion" value="<?= $reconduccion['id_reconduccion_actividades']?>">
+                        <button type="submit" name="valida_reconduccion_act" value="validar" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Validar</button>
+                        <button type="submit" name="cancela_reconduccion_act" value="cancelar" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Rechazar</button>
 
                 </div>
             </div><br>
@@ -205,10 +205,20 @@ if($_SESSION['sistema'] == "pbrm" || $_SESSION['id_permiso'] != 1){
                                 </tr>
                                 <form action="models/revisa_reconducciones_Model.php" method="post">
                                     <input type="hidden" name="id_reconduccion" value="<?= $reconduccion['id_reconduccion_indicadores'] ?>">
+                                    <input type="hidden" name="programacion_modificada_a" value="<?= $reconduccion['programacion_modificada_a'] ?>">
+                                    <input type="hidden" name="programacion_modificada_b" value="<?= $reconduccion['programacion_modificada_b'] ?>">
+                                    <input type="hidden" name="programacion_modificada_c" value="<?= $reconduccion['programacion_modificada_c'] ?>">
+                                    <input type="hidden" name="tipo_op_a" value="<?= $reconduccion['tipo_op_a'] ?>">
+                                    <input type="hidden" name="tipo_op_b" value="<?= $reconduccion['tipo_op_b'] ?>">
+                                    <input type="hidden" name="tipo_op_c" value="<?= $reconduccion['tipo_op_c'] ?>">
+                                    <input type="hidden" name="umedida_a" value="<?= $reconduccion['umedida_a'] ?>">
+                                    <input type="hidden" name="umedida_b" value="<?= $reconduccion['umedida_b'] ?>">
+                                    <input type="hidden" name="umedida_c" value="<?= $reconduccion['umedida_c'] ?>">
+                                    <input type="hidden" name="id_indicador" value="<?= $originalindicador['id'] ?>">
                                     <tr>
                                         <td> &nbsp;</td>
-                                        <td> <button type="submit" name="reconduccionindicadores" class="my-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Validar</button></td>
-                                        <td> <button type="submit" name="cancelarreconduccionindicadores" class="my-4 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Cancelar</button></td>
+                                        <td> <button type="submit" name="validareconduccionindicadores"  value="validar" class="my-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Validar</button></td>
+                                        <td> <button type="submit" name="cancelarreconduccionindicadores" value="cancelar" class="my-4 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Cancelar</button></td>
                                     </tr>
                                 </form>
                             </tbody>
