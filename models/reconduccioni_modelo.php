@@ -1,6 +1,5 @@
 <?php
 require_once 'conection.php';
-session_start();
 if($_SESSION['sistema'] != "pbrm"){
     header("Location: ../login.php");
     die();

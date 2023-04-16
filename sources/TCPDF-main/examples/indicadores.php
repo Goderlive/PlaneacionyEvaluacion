@@ -152,7 +152,6 @@ foreach($indicadores as $indica): // Aqui deberia comenzar el foreach //////////
 // add a page
 $pdf->AddPage();
 
-
 $metaAnual_a = intval($indica['at1']) + intval($indica['at2']) + intval($indica['at3']) + intval($indica['at4']); 
 $metaAnual_b = intval($indica['bt1']) + intval($indica['bt2']) + intval($indica['bt3']) + intval($indica['bt4']); 
 
@@ -170,7 +169,6 @@ $membretes = '
 ';
 
 $membretestrimestre = '
-&nbsp;<br>
 <table class="GeneratedTable" style="width: 100%; padding: 2px;">
   <tbody>
     <tr>
@@ -252,6 +250,7 @@ $estructura = '
     </tr>
   </tbody>
 </table>
+&nbsp;<br>&nbsp;
 ';
 
 $id_indicador = $indica['id'];
@@ -268,11 +267,9 @@ $total_acumulado_b = ($num_trimestre == 1) ? intval($indica['bt1']) : (($num_tri
 $alcanzadoAcumulado = BuscaAvancesAcumulados($con, $id_indicador, $num_trimestre);
 
 $comportamiento = '
-&nbsp;<br>
-&nbsp;<br>
 <table style="width: 100%; text-align: center; padding: 2px;">
 	<tr>
-		<td style="width:100%; text-align: center; font-size: 8px">COMPORTAMIENTO DE LAS VARIABLES DURANTE EL CUARTO TRIMESTRE <br>&nbsp;</td>
+		<td style="width:100%; text-align: center; font-size: 8px">COMPORTAMIENTO DE LAS VARIABLES DURANTE EL '. $trimestreNombre.'</td>
 	</tr>
 	<tr>
 		<td rowspan="2" style="width:10%; text-align: center; border:1px solid gray; font-size: 8px">VARIABLES</td>
@@ -322,14 +319,67 @@ $comportamiento = '
 	</tr>	
 </table>
 &nbsp;<br>
-&nbsp;<br>
+';
+
+$eficienciatrimetral = substr(substr(($programacion_trimestre_a / $programacion_trimestre_b) *100, 0, 5) / substr(($avance['avance_a'] / $avance['avance_b']) *100, 0, 5) *100,0,5);
+if(($eficienciatrimetral > 90) && ($eficienciatrimetral < 110)){
+	$color = "color:green;";
+	$semaforotrimestral = "Aceptable";
+}else{
+	$color = "color:red;";
+	$semaforotrimestral = "Critico";
+}
+
+$eficienciaanual = substr(substr(($total_acumulado_a / $total_acumulado_b)*100, 0, 5) / substr(($alcanzadoAcumulado[0] / $alcanzadoAcumulado[1]) *100, 0, 5)*100, 0,5);
+if(($eficienciaanual > 90) && ($eficienciaanual < 110)){
+	$colora = "color:green;";
+	$semaforoanual = "Aceptable";
+}else{
+	$colora = "color:red;";
+	$semaforoanual = "Critico";
+}
+
+
+
+$porcentajes = '
+<table style="width: 100%; text-align: center; padding: 2px;">
+	<tr>
+		<td style="width:100%; text-align: center; font-size: 8px">DESCRIPCION DE LA META ANUAL:</td>
+	</tr>
+	<tr>
+		<td rowspan="2" style="width:10%; text-align: center; border:1px solid gray; font-size: 8px">META ANUAL</td>
+		<td style="width:45%; text-align: center; border:1px solid gray; font-size: 8px">AVANCE TRIMESTRAL</td>
+		<td style="width:45%; text-align: center; border:1px solid gray; font-size: 8px">AVANCE ACUMULADO</td>
+	</tr>	
+	<tr>
+		<td style="width:11.25%; text-align: center; border:1px solid gray; font-size: 8px">PROG.</td>
+		<td style="width:11.25%; text-align: center; border:1px solid gray; font-size: 8px">ALC.</td>
+		<td style="width:11.25%; text-align: center; border:1px solid gray; font-size: 8px">EF%</td>
+		<td style="width:11.25%; text-align: center; border:1px solid gray; font-size: 8px">SEMAFORO</td>
+		<td style="width:11.25%; text-align: center; border:1px solid gray; font-size: 8px">PROG.</td>
+		<td style="width:11.25%; text-align: center; border:1px solid gray; font-size: 8px">ALC.</td>
+		<td style="width:11.25%; text-align: center; border:1px solid gray; font-size: 8px">EF%</td>
+		<td style="width:11.25%; text-align: center; border:1px solid gray; font-size: 8px">SEMAFORO</td>
+	</tr>	
+	<tr>
+		<td rowspan="2" style="width:10%; text-align: center; border:1px solid gray; font-size: 8px">'. substr(($metaAnual_a / $metaAnual_b) *100, 0, 5) .'</td>
+		<td rowspan="2" style="width:11.25%; text-align: center; border:1px solid gray; font-size: 8px">'. substr(($programacion_trimestre_a / $programacion_trimestre_b) *100, 0, 5) .'</td>
+		<td rowspan="2" style="width:11.25%; text-align: center; border:1px solid gray; font-size: 8px">'. substr(($avance['avance_a'] / $avance['avance_b']) *100, 0, 5) .'</td>
+		<td rowspan="2" style="width:11.25%; text-align: center; border:1px solid gray; font-size: 8px">' . $eficienciatrimetral .'</td>
+		<td rowspan="2" style="width:11.25%; text-align: center; border:1px solid gray; font-size: 8px; '.$color.'">' . $semaforotrimestral .'</td>
+		<td rowspan="2" style="width:11.25%; text-align: center; border:1px solid gray; font-size: 8px">' . substr(($total_acumulado_a / $total_acumulado_b)*100, 0, 5) .'</td>
+		<td rowspan="2" style="width:11.25%; text-align: center; border:1px solid gray; font-size: 8px">' . substr(($alcanzadoAcumulado[0] / $alcanzadoAcumulado[1]) *100, 0, 5) .'</td>
+		<td rowspan="2" style="width:11.25%; text-align: center; border:1px solid gray; font-size: 8px">' . $eficienciaanual .'</td>
+		<td rowspan="2" style="width:11.25%; text-align: center; border:1px solid gray; font-size: 8px; '.$colora.'">' . $semaforoanual .'</td>
+	</tr>	
+</table>
+<br>&nbsp;<br>
+
 ';
 
 
-
-
 $firmas = '
-<table style="width: 100%; text-align: center; border-spacing: 3px; ">
+<table style="width: 100%; text-align: center; border-spacing: 10px; ">
 	<tr>
 		<td style="font-size: 8px; width: 50%; border: 1px solid gray;"> ELABORÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $titular_dependencia['nombre'] . " " . $titular_dependencia['apellidos'] . "<br>" . $titular_dependencia['cargo']. '</td>
 		<td style="font-size: 8px; width: 50%; border: 1px solid gray;"> VALIDÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $Director_gobierno_por_resultados['nombre'] . " " . $Director_gobierno_por_resultados['apellidos'] . "<br>" . $Director_gobierno_por_resultados['cargo']. '</td>
@@ -337,7 +387,7 @@ $firmas = '
 </table>
 ';
 
-$html = $membretes . $membretestrimestre . $dataindicador . $estructura . $comportamiento . $firmas;
+$html = $membretes . $membretestrimestre . $dataindicador . $estructura . $comportamiento . $porcentajes . $firmas;
 // output the HTML content
 $pdf->writeHTML($html, true, false, true, false, '');
 
@@ -350,7 +400,7 @@ $pdf->lastPage();
 //Close and output PDF document
 
 //$pdf->Output($nombrecito. "_" .$dependencia['clave_dependencia'] . "-" . $dependencia['clave_dependencia_auxiliar'] . "-" . $dependencia['codigo_proyecto'] . "_". $trimestre .' trimestre.pdf', 'D');
-$pdf->Output('08b-' . $indica['clave_dependencia'] . $trimestreNombre .  '.pdf', 'D');
+$pdf->Output('08b-' . $indica['clave_dependencia'] . $trimestreNombre .  '.pdf', 'I');
 //============================================================+
 // END OF FILE
 //============================================================+

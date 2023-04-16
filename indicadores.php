@@ -128,7 +128,7 @@ if(isset($_POST) && $_POST){
                                     <td class="px-2 py-4">
                                         <?= $datos[$ta[0]] . "<br>" . $datos[$ta[1]];?>
                                     </td>
-                                    <td>
+                                    <td align="center">
                                         <?= botonavances($con, $datos['id'], $trimestre_actual); ?>
 
                                     </td>
@@ -206,7 +206,7 @@ if(isset($_POST) && $_POST){
                                                 </td>
 
                                                 <td class="py-4 px-5">
-                                                    <input type="number" required name="avvara" id="avvara" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                    <input type="number" required name="avvara" id="avvara" placeholder="Prog. A: <?= $ind[$ta[0]] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                                 </td>
                                             </tr>
                                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
@@ -220,7 +220,8 @@ if(isset($_POST) && $_POST){
                                                 <?= $ind['umedida_b'] ?>
                                                 </td>
                                                 <td class="py-4 px-5">
-                                                    <input type="number" required name="avvarb" id="avvarb" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                    <?php  ?>
+                                                    <input type="number" required name="avvarb" id="avvarb" placeholder="Prog. B: <?= $ind[$ta[1]] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                                 </td>
                                             </tr>
                                             <?php if($ind['variable_c']): ?>
@@ -235,7 +236,7 @@ if(isset($_POST) && $_POST){
                                                         <?= $ind['umedida_c'] ?>
                                                     </td>
                                                     <td class="py-4 px-5">
-                                                        <input type="number" required name="avvarc" id="avvarc" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                        <input type="number" required name="avvarc" id="avvarc" placeholder="Prog. B: <?= $ind[$ta[3]] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                                     </td>
                                                 </tr>
                                             <?php endif ?>
@@ -292,7 +293,7 @@ if(isset($_POST) && $_POST){
                         <div class="py-6 px-6 lg:px-8">   <!-- Aqui comienza -->
                             <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
                                 <?= $indica['nombre_indicador'] ?>
-                                <?php var_dump($indica) ?>
+                                <p>Reportado el dia <?= $indica['fecha_reporta'] ?></p>
                                 <?php $img = substr($indica['path_evidenia_evidencia'], 3);?>
                                 <img src="<?= $img ?>" alt="imagen">
                             </h3>

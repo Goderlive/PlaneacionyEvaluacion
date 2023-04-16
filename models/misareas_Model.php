@@ -40,7 +40,7 @@ function TraeTitularEspecifico($con, $id_titular){
 
 if(isset($_POST['registrar'])){
     $data = $_POST;
-    $sql = "INSERT INTO titulares (nombre, apellidos, cargo, gradoa, id_area, id_registrante) VALUES (?,?,?,?,?)";
+    $sql = "INSERT INTO titulares (nombre, apellidos, cargo, gradoa, id_area, id_registrante) VALUES (?,?,?,?,?,?)";
     $sqlr = $con->prepare($sql);
     $sqlr->execute(array($data['nombre'],$data['apellidos'],$data['cargo'],$data['gradoa'],$data['id_area'],$data['id_registrante'])); 
     header("Location: ../mis_areas.php");
@@ -48,7 +48,7 @@ if(isset($_POST['registrar'])){
 
 if(isset($_POST['registrarDirector'])){
     $data = $_POST;
-    $sql = "INSERT INTO titulares (nombre, apellidos, cargo, gradoa, id_registrante, id_dependencia) VALUES (?,?,?,?,?)";
+    $sql = "INSERT INTO titulares (nombre, apellidos, cargo, gradoa, id_registrante, id_dependencia) VALUES (?,?,?,?,?,?)";
     $sqlr = $con->prepare($sql);
     $sqlr->execute(array($data['nombre'],$data['apellidos'],$data['cargo'],$data['gradoa'],$data['id_registrante'],$data['id_dependencia'])); 
     header("Location: ../mis_areas.php");
@@ -64,8 +64,6 @@ if(isset($_POST['eliminar'])){
     $sqlr->execute(array($titular['nombre'],$titular['apellidos'],$titular['cargo'],$titular['id_area'],$titular['id_dependencia'],$titular['id_registrante'], $data['id_eliminante'], $titular['fecha_alta']));
     $nrows = $con->exec("DELETE FROM titulares WHERE id_titular = $id_titular");
     
-
     header("Location: ../mis_areas.php");
-
 }
 ?>
