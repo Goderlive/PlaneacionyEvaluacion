@@ -21,7 +21,7 @@ $actual = explode('/',$actual);
 $actual = $actual[count($actual)-1];
 
 $inicio = array("index.php", "mi_perfil.php", "mis_areas.php", "mis_formatos.php", "ajustes.php", "unidades_medida.php", "administra_usuarios.php", "revisa_avances.php");
-$actividades = array("actividades.php", "reconduccion_actividades.php", "actividades_todas.php", "formatos_actividades.php", "reportes.php", "programacion_actividades.php");
+$actividades = array("actividades.php", "reconduccion_actividades.php", "actividades_todas.php", "formatos_actividades.php", "reportes.php", "programacion_actividades.php", "mis_reconducciones_actividades.php");
 $indicadores = array("indicadores.php", "reconduccion_indicadores.php", "matrices.php", "formatos_indicadores.php");
 
 
@@ -107,7 +107,7 @@ function item_principal($actual, $buscador, $texto, $destino){
                                 <?= item_context("actividades.php", "Actividades por Área", array(1,2,3,4,5), $mi_permiso) ?>
                                 <?php 
                                     if($mi_permiso != 5){
-                                        echo item_context("reconduccion_actividades.php", "Nueva Reducción de Actividades", array(1,2,3,4,5), $mi_permiso); 
+                                        echo item_context("reconduccion_actividades.php", "Reducción de Actividades", array(1,2,3,4,5), $mi_permiso); 
                                         echo item_context("formatos_actividades.php", "Impresion Formatos", array(1,2,3,4,5), $mi_permiso);
                                         echo item_context("actividades_todas.php", "Todas las Actividades", array(1,2,3,4,5), $mi_permiso);
                                     }
@@ -120,7 +120,7 @@ function item_principal($actual, $buscador, $texto, $destino){
                             <ul class="py-1 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownNavbarButton">
                                 <?= item_context("indicadores.php", "Reportar Indicadores", array(1,2,3,4,5), $mi_permiso) ?>
                                 <?= item_context("matrices.php", "Mis Matries", array(1,2,3,4), $mi_permiso) ?>
-                                <?= item_context("reconduccion_indicadores.php", "Nueva Reconducción de Indicadores", array(1,2,3,4), $mi_permiso)?>
+                                <?= item_context("reconduccion_indicadores.php", "Reconducción de Indicadores", array(1,2,3,4), $mi_permiso)?>
                                 <?= item_context("formatos_indicadores.php", "Imprime Formatos", array(1,2,3,4), $mi_permiso)?>
                                 <?= item_context("indicadores_todos.php", "Todos los Indicadores", array(1,2,3,4), $mi_permiso)?>
                             </ul>

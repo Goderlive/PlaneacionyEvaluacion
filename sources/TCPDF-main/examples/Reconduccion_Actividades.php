@@ -558,7 +558,7 @@ $pdf->lastPage();
 // ---------------------------------------------------------
 
 //Close and output PDF document
-$pdf->Output('example_006.pdf', 'I');
+$pdf->Output('Reconduccion de Actividades.pdf', 'D');
 
 //============================================================+
 // END OF FILE

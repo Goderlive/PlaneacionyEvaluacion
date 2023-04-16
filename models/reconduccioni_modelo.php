@@ -1,6 +1,16 @@
 <?php
 require_once 'conection.php';
 
+function TraeReconduccionesporvalidarInd($con, $id_area){ // Modificar mas adelante para Indicadores, borrar esto.
+    $stm = $con->query("SELECT * FROM reconducciones_atividades ra 
+    JOIN areas ar ON ar.id_area = ra.id_area
+    JOIN actividades a ON a.id_area = ra.id_area
+    JOIN dependencias d ON ar.id_dependencia = d.id_dependencia
+    WHERE d.id_dependencia = $id_area AND ra.validado != 1
+    GROUP BY ra.id_reconduccion_actividades");
+    $reconduccion = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $reconduccion;
+}
 
 function FetchAll($con, $string){
     try {

@@ -1,7 +1,51 @@
 <?php
+session_start();
+
+if(!$_SESSION['sistema'] == "pbrm"){    
+    header("Location: login.php");
+    die();
+}else{
+    include 'header.php';
+    include 'head.php';
+    require_once 'Controllers/reconducciona_Controlador.php';
+    include 'Controllers/breadcrumbs.php';
+}
+if($permisos['id_dependencia'] != NULL){
+	$dep = $permisos['id_dependencia'];
+}else{
+	print" Tu cuenta no permite realizar esta acción";
+	die();
+}
+
+$id_usuario = $_SESSION['id_usuario'];
+$trimestre = ceil(date('m')/4);
+
+
+// Nos permite saber el trimestre
+$thismes = ceil(date('m'));
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reconducción de Indiadores</title>
+</head>
+<body>
+<div class="container mx-auto">
+
+<br>
+<?= breadcrumbs(array("Inicio"=> "index.php", "Mis Reconducciones Actividades" => "mis_reconducciones_actividades.php"))?>
+<br>
+
+
+
+
+<?php
 if(!$_POST): ?>
     <?php if(($rec_pendientes = TraeReconduccionesporvalidar($con, $dep)) || ($rec_validadas = TraeReconduccionesValidadas($con, $dep))):?>
-
         <div id="accordion-collapse" data-accordion="collapse" class="my-2">
             <h2 id="accordion-collapse-heading-1">
                 <button type="button" class="flex items-center justify-between w-full p-5 font-medium text-left text-gray-500 border border-b-0 border-gray-200 rounded-t-xl focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800" data-accordion-target="#accordion-collapse-body-1" aria-expanded="true" aria-controls="accordion-collapse-body-1">
@@ -212,3 +256,10 @@ if(!$_POST): ?>
 
     <?php endif ?>
 <?php endif ?>  <!-- Aqui terminamos el area de reconducciones realizadas -->
+
+
+
+</div>
+<?php include 'footer.php';?>
+</body>
+</html>
