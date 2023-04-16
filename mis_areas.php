@@ -50,6 +50,9 @@ if($_SESSION['sistema'] == "pbrm"){
                 <form class="space-y-6" action="models/misareas_Model.php" method="POST">
                     <h3 class="font-normal text-gray-900 dark:text-white">Registra al director o equivalente</h3>
                     <div>
+                        <input type="text" required name="gradoa" id="gradoa" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="Grado Academuico (Abreviado)" required="">
+                    </div>
+                    <div>
                         <input type="text" required name="nombre" id="nombre" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="Nombres" required="">
                     </div>
                     <div>
@@ -74,7 +77,7 @@ if($_SESSION['sistema'] == "pbrm"){
                     <input type="hidden" name="id_eliminante" value="<?= $id_usuario ?>">
                     <input type="hidden" name="id_titular" value="<?= $director['id_titular'] ?>">
                     <br>
-                    <input  value="Eliminar" value="Eliminar" class="py-2 px-3 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                    <input type="submit" name="eliminar" value="Eliminar" class="py-2 px-3 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
 
                 </form>
             </div>
@@ -87,9 +90,12 @@ if($_SESSION['sistema'] == "pbrm"){
         $id_area = $area['id_area'];
         $titular = TraeTitular($con, $id_area);
         if(!$titular):?>
-        <div class="p-4 mx-2 mt-2 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+        <div class="p-4 mx-2 my-4 mt-2 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700">
             <form class="space-y-6" action="models/misareas_Model.php" method="POST">
                 <h3 class="font-normal text-gray-900 dark:text-white"><strong><?= $area['nombre_area']?> </strong> no tiene registrado titular</h3>
+                <div>
+                    <input type="text" required name="gradoa" id="gradoa" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="Grado Academuico (Abreviado)" required="">
+                </div>
                 <div>
                     <input type="text" required name="nombre" id="nombre" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="Nombres" required="">
                 </div>

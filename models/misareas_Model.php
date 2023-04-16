@@ -40,17 +40,17 @@ function TraeTitularEspecifico($con, $id_titular){
 
 if(isset($_POST['registrar'])){
     $data = $_POST;
-    $sql = "INSERT INTO titulares (nombre, apellidos, cargo, id_area, id_registrante) VALUES (?,?,?,?,?)";
+    $sql = "INSERT INTO titulares (nombre, apellidos, cargo, gradoa, id_area, id_registrante) VALUES (?,?,?,?,?)";
     $sqlr = $con->prepare($sql);
-    $sqlr->execute(array($data['nombre'],$data['apellidos'],$data['cargo'],$data['id_area'],$data['id_registrante'])); 
+    $sqlr->execute(array($data['nombre'],$data['apellidos'],$data['cargo'],$data['gradoa'],$data['id_area'],$data['id_registrante'])); 
     header("Location: ../mis_areas.php");
 }
 
 if(isset($_POST['registrarDirector'])){
     $data = $_POST;
-    $sql = "INSERT INTO titulares (nombre, apellidos, cargo, id_registrante, id_dependencia) VALUES (?,?,?,?,?)";
+    $sql = "INSERT INTO titulares (nombre, apellidos, cargo, gradoa, id_registrante, id_dependencia) VALUES (?,?,?,?,?)";
     $sqlr = $con->prepare($sql);
-    $sqlr->execute(array($data['nombre'],$data['apellidos'],$data['cargo'],$data['id_registrante'],$data['id_dependencia'])); 
+    $sqlr->execute(array($data['nombre'],$data['apellidos'],$data['cargo'],$data['gradoa'],$data['id_registrante'],$data['id_dependencia'])); 
     header("Location: ../mis_areas.php");
 }
 

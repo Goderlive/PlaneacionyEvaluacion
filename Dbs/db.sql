@@ -12,6 +12,7 @@ CREATE TABLE titulares(
   nombre VARCHAR(255) NOT NULL, 
   apellidos VARCHAR(255) NOT NULL,
   cargo VARCHAR(255) NOT NULL,
+  gradoa VARCHAR(100) NOT NULL,
   id_area VARCHAR(3),
   id_registrante INT,
   fecha_alta DATETIME DEFAULT CURRENT_TIMESTAMP(),
