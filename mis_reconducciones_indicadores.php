@@ -7,7 +7,7 @@ if(!$_SESSION['sistema'] == "pbrm"){
 }else{
     include 'header.php';
     include 'head.php';
-    require_once 'Controllers/reconducciona_Controlador.php';
+    require_once 'Controllers/reconduccioni_Controlador.php';
     include 'Controllers/breadcrumbs.php';
 }
 if($permisos['id_dependencia'] != NULL){
@@ -42,12 +42,12 @@ $thismes = ceil(date('m'));
 
 
 <br>
-<h3 class="mb-2 center text-2xl font-bold text-gray-900 dark:text-white">Reconducciones de <b>Actividades</b></h3>
+<h3 class="mb-2 center text-2xl font-bold text-gray-900 dark:text-white">Reconducciones de <b>Indicadores</b></h3>
 <br>
 
 <?php
 if(!$_POST): ?>
-    <?php if(($rec_pendientes = TraeReconduccionesporvalidar($con, $dep)) || ($rec_validadas = TraeReconduccionesValidadas($con, $dep))):?>
+    <?php if(($rec_pendientes = TraeReconduccionesporvalidarInd($con, $dep)) || ($rec_validadas = TraeReconduccionesValidadasInd($con, $dep))):?>
         <div id="accordion-collapse" data-accordion="collapse" class="my-2">
             <h2 id="accordion-collapse-heading-1">
                 <button type="button" class="flex items-center justify-between w-full p-5 font-medium text-left text-gray-500 border border-b-0 border-gray-200 rounded-t-xl focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800" data-accordion-target="#accordion-collapse-body-1" aria-expanded="true" aria-controls="accordion-collapse-body-1">
@@ -57,16 +57,11 @@ if(!$_POST): ?>
             </h2>
             <div id="accordion-collapse-body-1" class="hidden" aria-labelledby="accordion-collapse-heading-1">
                 <div class="p-5 font-light border border-b-0 border-gray-200 dark:border-gray-700 dark:bg-gray-900">
-                <?php foreach($rec_pendientes as $p):?>	
-
-
+                <?php foreach($rec_pendientes as $p):?>
                     <div class="overflow-x-auto relative">
                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
-                                    <th scope="col" class="py-3 px-6">
-                                        Area
-                                    </th>
                                     <th scope="col" class="py-3 px-6">
                                         No. Oficio
                                     </th>
@@ -79,9 +74,6 @@ if(!$_POST): ?>
                                 </tr>
                             </thead>
                                 <tr>
-                                    <th scope="col" class="py-3 px-6 bg-gray-50">
-                                        <?= NombreArea($con, $p['id_area'])?>
-                                    </th>
                                     <th scope="col" class="py-3 px-6">
                                         <?= $p['no_oficio']?>
                                     </th>
@@ -95,52 +87,6 @@ if(!$_POST): ?>
                             </tbody>
                         </table>
                         <br>
-                        <table>
-
-                        <?php $programacion = TraeProgramaciones($con, $p['id_reconduccion_actividades'])?>
-
-                            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                        <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            Nombre Actividad
-                                        </th>
-                                        <td class="py-4 px-6">
-                                            Unidad de Medida
-                                        </td>
-                                        <td class="py-4 px-6">
-                                            Prog Anual Inicial
-                                        </td>
-                                        <td class="py-4 px-6">
-                                            Prog Anual Final											
-                                        </td>
-                                        <td class="py-4 px-6">
-                                            Tipo											
-                                        </td>
-                                    </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach($programacion as $q):?>
-                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                    <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        <?= $q['desc_actividad'] ?>
-                                    </th>
-                                    <td class="py-4 px-6">
-                                        <?= $q['u_medida'] ?>
-                                    </td>
-                                    <td class="py-4 px-6">
-                                        <?= SumaAnual($q['programacion_inicial']) ?>
-                                    </td>
-                                    <td class="py-4 px-6">
-                                        <?= SumaAnual($q['programacion_final']) ?>
-                                    </td>
-                                    <td class="py-4 px-6">
-                                        <?= DefineReconduccion($q['programacion_inicial'], $q['programacion_final'])?>
-                                    </td>
-                                </tr>
-                                <?php endforeach?>
-                            </tbody>
-                        </table>
                     </div>
                     <br>
                     <?php endforeach?>	
@@ -156,15 +102,12 @@ if(!$_POST): ?>
             </h2>
             <div id="accordion-collapse-body-2" class="hidden" aria-labelledby="accordion-collapse-heading-2">
                 <div class="my-2 p-5 font-light border border-b-0 border-gray-200 dark:border-gray-700">
-                    <?php $rec_validadas = TraeReconduccionesValidadas($con, $dep)?>
+                    <?php $rec_validadas = TraeReconduccionesValidadasInd($con, $dep) ?>
                     <?php foreach($rec_validadas as $v):?>
                         <div class="overflow-x-auto relative">
                             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                     <tr>
-                                        <th scope="col" class="py-3 px-6">
-                                            Area
-                                        </th>
                                         <th scope="col" class="py-3 px-6">
                                             No. Oficio
                                         </th>
@@ -180,9 +123,7 @@ if(!$_POST): ?>
                                     </tr>
                                 </thead>
                                     <tr>
-                                        <th scope="col" class="py-3 px-6">
-                                            <?= NombreArea($con, $v['id_area'])?>
-                                        </th>
+
                                         <th scope="col" class="py-3 px-6">
                                             <?= $v['no_oficio']?>
                                         </th>
@@ -193,8 +134,8 @@ if(!$_POST): ?>
                                             Validada
                                         </th>
                                         <th scope="col" class="py-3 px-6">
-                                            <form action="sources/TCPDF-main/examples/Reconduccion_Actividades.php" method="POST">
-                                                <input type="hidden" name="id_reconduccion" value="<?= $v['id_reconduccion_actividades']?>">
+                                            <form action="sources/TCPDF-main/examples/Reconduccion_Indicadores.php" method="POST">
+                                                <input type="hidden" name="id_reconduccion" value="<?= $v['id_reconduccion_indicadores']?>">
                                                 <input type="submit" formtarget="_blank" value="Imprimir" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                                             </form>
                                         </th>
@@ -203,52 +144,6 @@ if(!$_POST): ?>
                             </table>
                             <br>
                             <table>
-
-                            <?php $programacion = TraeProgramaciones($con, $v['id_reconduccion_actividades'])?>
-                                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                        <?php //var_dump($q)?>
-                                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                            <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                Nombre Actividad
-                                            </th>
-                                            <td class="py-4 px-6">
-                                                Unidad de Medida
-                                            </td>
-                                            <td class="py-4 px-6">
-                                                Prog Anual Inicial
-                                            </td>
-                                            <td class="py-4 px-6">
-                                                Prog Anual Final											
-                                            </td>
-                                            <td class="py-4 px-6">
-                                                Tipo											
-                                            </td>
-                                        </tr>
-                                </thead>
-                                <tbody>
-                                <?php foreach($programacion as $q):?>
-
-                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                        <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            <?= $q['desc_actividad'] ?>
-                                        </th>
-                                        <td class="py-4 px-6">
-                                            <?= $q['u_medida'] ?>
-                                        </td>
-                                        <td class="py-4 px-6">
-                                            <?= SumaAnual($q['programacion_inicial']) ?>
-                                        </td>
-                                        <td class="py-4 px-6">
-                                            <?= SumaAnual($q['programacion_final']) ?>
-                                        </td>
-                                        <td class="py-4 px-6">
-                                            <?= DefineReconduccion($q['programacion_inicial'], $q['programacion_final'])?>
-                                        </td>
-                                    </tr>
-                                    <?php endforeach?>
-                                </tbody>
-                            </table>
                         </div>
                         <br>
                     <?php endforeach?>

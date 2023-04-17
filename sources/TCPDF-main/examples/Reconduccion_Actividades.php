@@ -15,9 +15,9 @@ $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8',
 // set document information
 $pdf->setCreator(PDF_CREATOR);
 $pdf->setAuthor('Dirección de Gobierno por Resultados');
-$pdf->setTitle('Formato Avances Trimestrales');
-$pdf->setSubject('Este es el mensaje del titulo');
-$pdf->setKeywords('08c, avance, trimestral');
+$pdf->setTitle('Formato de Reconducción de Indicadores');
+$pdf->setSubject('Formato de Reconducción de Actividades');
+$pdf->setKeywords('Reconduccion, Actividades');
 
 // ---------------------------------------------------------
 $pdf->SetPrintHeader(false);
