@@ -186,24 +186,24 @@ $membretestrimestre = '
 </table>
 ';
 
-$dataindicador = ' &nbsp;<br>
+$dataindicador = '
 <table class="GeneratedTable" style="width: 100%; padding: 2px;">
   <tbody>
     <tr>
-		<td style="width:25%; text-align: left; font-size: 8px">PILAR TEMATICO / EJE TRANSVERSAL:</td>
-		<td style="width:25%; text-align: left; font-size: 8px">' . $indica['pilar_o_eje'] . '</td>
-		<td style="width:15%; text-align: left; font-size: 8px">TEMA DE DESARROLLO:</td>
-		<td style="width:55%; text-align: left; font-size: 8px">' . $indica['tema_desarrollo'] . '</td>
+		<td style="width:22%; text-align: left; font-size: 8px">PILAR TEMATICO / EJE TRANSVERSAL:</td>
+		<td style="width:28%; text-align: left; font-size: 8px">' . $indica['pilar_o_eje'] . '</td>
+		<td style="width:14%; text-align: left; font-size: 8px">TEMA DE DESARROLLO:</td>
+		<td style="width:56%; text-align: left; font-size: 8px">' . $indica['tema_desarrollo'] . '</td>
     </tr>
     <tr>
-		<td style="width:25%; text-align: left; font-size: 8px">PROGRAMA PRESUPUESTARIO:</td>
-		<td style="width:25%; text-align: left; font-size: 8px">' . $indica['codigo_programa'] . " " . $indica['nombre_programa'] . '</td>
-		<td style="width:10%; text-align: left; font-size: 8px">PROYECTO:</td>
-		<td style="width:40%; text-align: left; font-size: 8px">' . $indica['codigo_proyecto'] . " " . $indica['nombre_proyecto'] . '</td>
+		<td style="width:18%; text-align: left; font-size: 8px">PROGRAMA PRESUPUESTARIO:</td>
+		<td style="width:32%; text-align: left; font-size: 8px">' . $indica['codigo_programa'] . " " . $indica['nombre_programa'] . '</td>
+		<td style="width:7%; text-align: left; font-size: 8px">PROYECTO:</td>
+		<td style="width:43%; text-align: left; font-size: 8px">' . $indica['codigo_proyecto'] . " " . $indica['nombre_proyecto'] . '</td>
     </tr>
     <tr>
-		<td style="width:18%; text-align: left; font-size: 8px">OBJETIVO DEL PROGRAMA PRESUPUESTARIO:</td>
-		<td style="width:82%; text-align: left; font-size: 8px">' . $indica['objetivo_pp'] . '</td>
+		<td style="width:16%; text-align: left; font-size: 8px">OBJETIVO DEL PROGRAMA PRESUPUESTARIO:</td>
+		<td style="width:84%; text-align: left; font-size: 8px">' . $indica['objetivo_pp'] . '</td>
     </tr>
     <tr>
 		<td style="width:25%; text-align: rigth; font-size: 8px">DEPENDENCIA GENERAL:</td>
@@ -213,7 +213,6 @@ $dataindicador = ' &nbsp;<br>
     </tr>
   </tbody>
 </table>
-&nbsp;<br>&nbsp;
 ';
 
 
@@ -225,28 +224,28 @@ $estructura = '
 		<td style="width:100%; text-align: center; font-size: 8px">ESTRUCTURA DEL INDICADOR</td>
     </tr>
     <tr>
-		<td style="width:20%; text-align: left; font-size: 8px">NOMBRE DEL INDICADOR</td>
-		<td style="width:80%; text-align: left; font-size: 8px">' . $indica['nombre_indicador'] . '</td>
+		<td style="width:18%; text-align: left; font-size: 8px">NOMBRE DEL INDICADOR</td>
+		<td style="width:82%; text-align: left; font-size: 8px">' . $indica['nombre_indicador'] . '</td>
     </tr>
     <tr>
-		<td style="width:20%; text-align: left; font-size: 8px">FORMULA DE CALCULO:</td>
-		<td style="width:80%; text-align: left; font-size: 8px">' . $indica['formula'] . '</td>
+		<td style="width:18%; text-align: left; font-size: 8px">FORMULA DE CALCULO:</td>
+		<td style="width:82%; text-align: left; font-size: 8px">' . $indica['formula'] . '</td>
     </tr>
     <tr>
-		<td style="width:20%; text-align: left; font-size: 8px">INTERPRETACION:</td>
-		<td style="width:80%; text-align: left; font-size: 8px">' . $indica['interpretacion'] . '</td>
+		<td style="width:18%; text-align: left; font-size: 8px">INTERPRETACION:</td>
+		<td style="width:82%; text-align: left; font-size: 8px">' . $indica['interpretacion'] . '</td>
     </tr>
     <tr>
-		<td style="width:20%; text-align: left; font-size: 8px">DIMENCION QUE ATIENDE:</td>
-		<td style="width:30%; text-align: left; font-size: 8px">' . $indica['dimension'] . '</td>
-		<td style="width:20%; text-align: left; font-size: 8px">FRECUENCIA DE MEDICION:</td>
-		<td style="width:30%; text-align: left; font-size: 8px">' . $indica['periodicidad'] . '</td>
+		<td style="width:18%; text-align: left; font-size: 8px">DIMENCION QUE ATIENDE:</td>
+		<td style="width:32%; text-align: left; font-size: 8px">' . $indica['dimension'] . '</td>
+		<td style="width:18%; text-align: left; font-size: 8px">FRECUENCIA DE MEDICION:</td>
+		<td style="width:32%; text-align: left; font-size: 8px">' . $indica['periodicidad'] . '</td>
     </tr>
     <tr>
-		<td style="width:20%; text-align: left; font-size: 8px">FACTOR DE COMPARACION:</td>
-		<td style="width:30%; text-align: left; font-size: 8px">' . $indica['factor_de_comparacion'] . '</td>
-		<td style="width:20%; text-align: left; font-size: 8px">DESCRIPCION DEL FACTOR DE COMPARACION:</td>
-		<td style="width:30%; text-align: left; font-size: 8px">' . $indica['desc_factor_de_comparacion'] . '</td>
+		<td style="width:18%; text-align: left; font-size: 8px">FACTOR DE COMPARACION:</td>
+		<td style="width:32%; text-align: left; font-size: 8px">' . $indica['factor_de_comparacion'] . '</td>
+		<td style="width:18%; text-align: left; font-size: 8px">DESCRIPCION DEL FACTOR DE COMPARACION:</td>
+		<td style="width:32%; text-align: left; font-size: 8px">' . $indica['desc_factor_de_comparacion'] . '</td>
     </tr>
   </tbody>
 </table>
@@ -321,7 +320,12 @@ $comportamiento = '
 &nbsp;<br>
 ';
 
-$eficienciatrimetral = substr(substr(($programacion_trimestre_a / $programacion_trimestre_b) *100, 0, 5) / substr(($avance['avance_a'] / $avance['avance_b']) *100, 0, 5) *100,0,5);
+
+if ($programacion_trimestre_b != 0 && $avance['avance_b'] != 0) {
+    $eficienciatrimetral = substr(substr(($programacion_trimestre_a / $programacion_trimestre_b) *100, 0, 5) / substr(($avance['avance_a'] / $avance['avance_b']) *100, 0, 5) *100,0,5);
+} else {
+    $eficienciatrimetral = "N/A";
+}
 if(($eficienciatrimetral > 90) && ($eficienciatrimetral < 110)){
 	$color = "color:green;";
 	$semaforotrimestral = "Aceptable";
@@ -330,7 +334,11 @@ if(($eficienciatrimetral > 90) && ($eficienciatrimetral < 110)){
 	$semaforotrimestral = "Critico";
 }
 
-$eficienciaanual = substr(substr(($total_acumulado_a / $total_acumulado_b)*100, 0, 5) / substr(($alcanzadoAcumulado[0] / $alcanzadoAcumulado[1]) *100, 0, 5)*100, 0,5);
+if ($total_acumulado_b != 0 && $alcanzadoAcumulado[1] != 0 && $total_acumulado_a != 0) {
+    $eficienciaanual = substr(substr(($total_acumulado_a / $total_acumulado_b)*100, 0, 5) / substr(($alcanzadoAcumulado[0] / $alcanzadoAcumulado[1]) *100, 0, 5)*100, 0,5);
+} else {
+    $eficienciaanual = "N/A";
+}
 if(($eficienciaanual > 90) && ($eficienciaanual < 110)){
 	$colora = "color:green;";
 	$semaforoanual = "Aceptable";
@@ -340,6 +348,18 @@ if(($eficienciaanual > 90) && ($eficienciaanual < 110)){
 }
 
 
+
+if ($avance['avance_b'] != 0) {
+    $eficienciatrimetral_alcanzada = substr(substr(($programacion_trimestre_a / $programacion_trimestre_b) *100, 0, 5) / substr(($avance['avance_a'] / $avance['avance_b']) *100, 0, 5) *100,0,5);
+} else {
+    $eficienciatrimetral_alcanzada = "N/A";
+}
+if ($total_acumulado_b != 0 && $alcanzadoAcumulado[1] != 0) {
+    $eficienciaacumulado = substr(($total_acumulado_a / $total_acumulado_b)*100, 0, 5) / substr(($alcanzadoAcumulado[0] / $alcanzadoAcumulado[1]) *100, 0, 5)*100;
+} else {
+    $eficienciaacumulado = 0;
+}
+$totalalcanzadoacumulado = is_numeric($alcanzadoAcumulado[0]) && is_numeric($alcanzadoAcumulado[1]) && $alcanzadoAcumulado[1] > 0 ? substr(($alcanzadoAcumulado[0] / $alcanzadoAcumulado[1]) * 100, 0, 5) : 'N/A';
 
 $porcentajes = '
 <table style="width: 100%; text-align: center; padding: 2px;">
@@ -364,11 +384,11 @@ $porcentajes = '
 	<tr>
 		<td rowspan="2" style="width:10%; text-align: center; border:1px solid gray; font-size: 8px">'. substr(($metaAnual_a / $metaAnual_b) *100, 0, 5) .'</td>
 		<td rowspan="2" style="width:11.25%; text-align: center; border:1px solid gray; font-size: 8px">'. substr(($programacion_trimestre_a / $programacion_trimestre_b) *100, 0, 5) .'</td>
-		<td rowspan="2" style="width:11.25%; text-align: center; border:1px solid gray; font-size: 8px">'. substr(($avance['avance_a'] / $avance['avance_b']) *100, 0, 5) .'</td>
+		<td rowspan="2" style="width:11.25%; text-align: center; border:1px solid gray; font-size: 8px">'. $eficienciatrimetral_alcanzada .'</td>
 		<td rowspan="2" style="width:11.25%; text-align: center; border:1px solid gray; font-size: 8px">' . $eficienciatrimetral .'</td>
 		<td rowspan="2" style="width:11.25%; text-align: center; border:1px solid gray; font-size: 8px; '.$color.'">' . $semaforotrimestral .'</td>
-		<td rowspan="2" style="width:11.25%; text-align: center; border:1px solid gray; font-size: 8px">' . substr(($total_acumulado_a / $total_acumulado_b)*100, 0, 5) .'</td>
-		<td rowspan="2" style="width:11.25%; text-align: center; border:1px solid gray; font-size: 8px">' . substr(($alcanzadoAcumulado[0] / $alcanzadoAcumulado[1]) *100, 0, 5) .'</td>
+		<td rowspan="2" style="width:11.25%; text-align: center; border:1px solid gray; font-size: 8px">' . $eficienciaacumulado .'</td>
+		<td rowspan="2" style="width:11.25%; text-align: center; border:1px solid gray; font-size: 8px">' . $totalalcanzadoacumulado .'</td>
 		<td rowspan="2" style="width:11.25%; text-align: center; border:1px solid gray; font-size: 8px">' . $eficienciaanual .'</td>
 		<td rowspan="2" style="width:11.25%; text-align: center; border:1px solid gray; font-size: 8px; '.$colora.'">' . $semaforoanual .'</td>
 	</tr>	
@@ -400,7 +420,7 @@ $pdf->lastPage();
 //Close and output PDF document
 
 //$pdf->Output($nombrecito. "_" .$dependencia['clave_dependencia'] . "-" . $dependencia['clave_dependencia_auxiliar'] . "-" . $dependencia['codigo_proyecto'] . "_". $trimestre .' trimestre.pdf', 'D');
-$pdf->Output('08b-' . $indica['clave_dependencia'] . $trimestreNombre .  '.pdf', 'I');
+$pdf->Output('08b-' . $indica['clave_dependencia'] . $trimestreNombre .  '.pdf', 'D');
 //============================================================+
 // END OF FILE
 //============================================================+

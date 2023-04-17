@@ -240,9 +240,8 @@ $infoReconduccion = '
 
 $justificacion = '&nbsp;
 <br>
-&nbsp;
-<br>
-<table style="width: 100%; padding: 4px;">
+
+<table style="width: 100%; padding: 2px;">
 	<tr>
 		<td style="border: 1px solid black; border-collapse: collapse;">Justificación: '.$reconduccion['justificacion_impacto'].'</td>
 	</tr>

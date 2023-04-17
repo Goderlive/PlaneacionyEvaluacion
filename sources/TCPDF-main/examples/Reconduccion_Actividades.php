@@ -358,9 +358,9 @@ function traeavances($con, $id_actividad){
 function Trimestres($data){
 	$trimestral = array();
 	$data = arregladata($data);
-	$per = Sumador(array_slice($data, 2,3));
-	$sdo = Sumador(array_slice($data, 5,3));
-	$tro = Sumador(array_slice($data, 7,3));
+	$per = Sumador(array_slice($data, 0,3));
+	$sdo = Sumador(array_slice($data, 3,3));
+	$tro = Sumador(array_slice($data, 6,3));
 	$cto = Sumador(array_slice($data, 9,3));
 	array_push($trimestral, $per, $sdo, $tro, $cto);
 	return $trimestral;
@@ -375,6 +375,7 @@ function CreaTabla($data, $con){
 		$totalold = SumaAnual($d['programacion_inicial']);
 		$totalnew = SumaAnual($d['programacion_final']);
 		$trimestral = Trimestres($d['programacion_final']);
+
 		$temp.= '
 		<tr>
 			<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">'.$d['no_actividad'].'</td>

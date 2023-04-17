@@ -349,8 +349,9 @@ LEFT JOIN areas ar ON ar.id_area = ac.id_area
 LEFT JOIN dependencias dp ON dp.id_dependencia = ar.id_dependencia
 WHERE ar.id_area = $id_area
 ORDER BY po.clave_objetivo ASC,
-CAST(REPLACE(po.clave_objetivo, 'O', '') AS INTEGER) ASC
+CAST(REPLACE(po.clave_objetivo, 'O', '') AS SIGNED) ASC
 ";
+
 $stmmag = $con->query($sqlmag);
 $seguimiento = $stmmag->fetchAll(PDO::FETCH_ASSOC);
 
