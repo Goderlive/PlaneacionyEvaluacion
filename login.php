@@ -22,7 +22,7 @@ session_destroy();
       <img src="./img/logo_ayuntamiento.png" class="img-fluid" alt="">
       </div>
       <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-      <h3 class="text-center">Sistema de Monitoreo Tablero de Control y Seguimiento del PBRM</h3>
+      <h3 class="text-center">Sistema de Monitoreo Tablero de Control y Seguimiento del PBRM <br><b>(SIMONTS)</b></h3>
       <br>
         <form action="validar_login.php" method="POST" autocomplete="off">
           <!-- Email input -->
