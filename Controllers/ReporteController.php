@@ -224,8 +224,26 @@ function Actividades($con, $mes, $id_area, $meses, $actividadesDB){
     return $resp;
 }
 
+function lista_localidades($con){
+    $localidades = traelocalidades($con);
+    $options = '<option selected disabled>Seleccione las Localidades</option>
+    ';
+    foreach($localidades as $l){
+        $options .= '<option value="'.$l['id_localidad'].'">'.$l['nombre_localidad'].'</option>
+        ';
+    }
+    return '
+    <label for="localidades" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione multiples opciones<b title="Usa el boton "Ctrl" en tu teclado mas "Click" del mouse"> ?</b></label> 
+    <select multiple id="localidades" name="localidades[]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        '.$options.'
+    </select>
+    ';
+
+}
+
 function buscalineas($con, $id_actividad){
     if ($lineadeaccion = buscaactilistas($con, $id_actividad)){
+            $localidades = lista_localidades($con);
         return '
             <br>
 
@@ -245,8 +263,7 @@ function buscalineas($con, $id_actividad){
                 </tr>
                 <tr>
                     <th style="width: 23%";>
-                        <label for="localidades" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Localidades Beneficiadas</label>
-                        <input type="text" id="localidades" name="localidades" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        '.$localidades.'                        
                     </th>
                     <th style="width: 2%";>
                     </th>
@@ -258,19 +275,19 @@ function buscalineas($con, $id_actividad){
                     </th>
                     <th style="width: 10%";>
                         <label for="recursos" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Recurso Federal</label>
-                        <input type="number" id="recursos" placeholder="                %"  name="recursos" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <input type="number" id="recursos_federales" placeholder="                %"  name="recursos_federales" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     </th>
                     <th style="width: 2%";>
                     </th>
                     <th style="width: 10%";>
                         <label for="recursos" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Recurso Estatal</label>
-                        <input type="number" id="recursos" placeholder="                %"  name="recursos" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <input type="number" id="recursos_estatales" placeholder="                %"  name="recursos_estatales" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     </th>
                     <th style="width: 2%";>
                     </th>
                     <th style="width: 10%";>
                         <label for="recursos" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Recurso Propio</label>
-                        <input type="number" id="recursos" placeholder="                %"  name="recursos" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <input type="number" id="recursos_propios" placeholder="                %"  name="recursos_propios" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     </th>
                 </tr>
             </table>  
@@ -279,6 +296,8 @@ function buscalineas($con, $id_actividad){
         return "";
     }
 }
+
+
 
 
 function Modales($con, $actividadesDB, $el_mes, $permisos){
@@ -310,13 +329,13 @@ function Modales($con, $actividadesDB, $el_mes, $permisos){
                     <!-- Modal body -->
                     <div class="p-6 space-y-6">
                         <form action="models/Reporte_Model.php" method="POST" enctype="multipart/form-data">
-                        <input type="hidden" name="mes" value="'.$el_mes.'">
-                        <input type="hidden" name="year" value="'.$year.'">
-                        <input type="hidden" name="id_actividad" value="'.$a['id_actividad'].'">
-                        <input type="hidden" name="id_dependencia" value="'.$id_dependencia.'">
-                        <input type="hidden" name="id_usuario" value="'.$_SESSION['id_usuario'].'">
-                        <input type="hidden" name="id_area" value="'.$a['id_area'].'">
-                        <input type="hidden" name="id_actividad" value="'.$a['id_actividad'].'">
+                            <input type="hidden" name="mes" value="'.$el_mes.'">
+                            <input type="hidden" name="year" value="'.$year.'">
+                            <input type="hidden" name="id_actividad" value="'.$a['id_actividad'].'">
+                            <input type="hidden" name="id_dependencia" value="'.$id_dependencia.'">
+                            <input type="hidden" name="id_usuario" value="'.$_SESSION['id_usuario'].'">
+                            <input type="hidden" name="id_area" value="'.$a['id_area'].'">
+                            <input type="hidden" name="id_actividad" value="'.$a['id_actividad'].'">
 
                             <div class="relative"> 
                                 <label for="avance" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-800 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Alcanzado Mes</label>
@@ -332,13 +351,13 @@ function Modales($con, $actividadesDB, $el_mes, $permisos){
                                 <tr>
                                     <th style="width: 42%";>
                                         <label for="descripcion_evidencia" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Descripción de la Evidencia:</label>
-                                        <textarea id="descripcion_evidencia" name="descripcion_evidencia" rows="2" placeholder="Fecha, lugar y descripción breve de la actividad" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                        <textarea id="descripcion_evidencia" name="descripcion_evidencia" rows="1" placeholder="Fecha, lugar y descripción breve de la actividad" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
                                     </th>
                                     <th style="width: 6%";>
                                     </th>
                                     <th style="width: 42%";>
                                         <label for="justificacion" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Justificación caso de +10% o -10% de variación:</label>
-                                        <textarea id="justificacion" name="justificacion" rows="2" placeholder="En caso de variacion superior al 10%, describir una justificación de la variación" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>        
+                                        <textarea id="justificacion" name="justificacion" rows="1" placeholder="En caso de variacion superior al 10%, describir una justificación de la variación" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>        
                                     </th>
                                 </tr>
                             </table>              

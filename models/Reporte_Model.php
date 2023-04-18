@@ -16,6 +16,13 @@ function traeladependencia($con, $id_area){
 }
 
 
+function traelocalidades($con){
+    $stm = $con->query("SELECT * FROM localidades");
+    $localidades = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $localidades;
+}
+
+
 function buscaactilistas($con, $id_actividad){
     $stm = $con->query("SELECT * FROM lineasactividades WHERE id_actividad = $id_actividad");
     $actividad = $stm->fetch(PDO::FETCH_ASSOC);
@@ -96,10 +103,16 @@ if (isset($_POST['jfnkasjnkasdf34q345']) == "Enviar") {
         $id_actividad = $_POST['id_actividad'];
         $id_dependencia = $_POST['id_dependencia'];
         $id_area = $_POST['id_area'];
-        $localidades = isset($_POST['localidades']) ? $_POST['localidades'] : NULL;
-        $beneficiarios = isset($_POST['beneficiarios']) ? $_POST['beneficiarios'] : NULL;
-        $recursos = isset($_POST['recursos']) ? $_POST['recursos'] : NULL;
-
+        $localidades = isset($_POST['localidades']) ? implode(",", $_POST['localidades']) : NULL;
+        $beneficiarios = (isset($_POST['beneficiarios']) && $_POST['beneficiarios'] != "" ) ? $_POST['beneficiarios'] : NULL;
+        $recursos_federales = isset($_POST['recursos_federales']) ? $_POST['recursos_federales'] : NULL;
+        $recursos_estatales = isset($_POST['recursos_estatales']) ? $_POST['recursos_estatales'] : NULL;
+        $recursos_propios = isset($_POST['recursos_propios']) ? $_POST['recursos_propios'] : NULL;
+        if($recursos_federales || $recursos_estatales || $recursos_propios){
+            $recursos = "R F: " .$recursos_federales . "% - R E: " . $recursos_estatales . "% - R P: " . $recursos_propios . "%";
+        }else{
+            $recursos = NULL;
+        }
         $dir = '../archivos/actividades/'.$year.'/'.$mes.'/'.$id_dependencia.'/'.$id_area.'/'.$id_actividad.'/';
 
         if(!is_dir($dir)){

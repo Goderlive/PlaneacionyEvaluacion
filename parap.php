@@ -13,27 +13,5 @@
 </head>
 <body>
 
-<label for="frutas">Elige o agrega tus frutas favoritas:</label>
-<input type="text" id="frutas" name="frutas" list="frutas-list">
-<datalist id="frutas-list">
-  <option value="Manzana">
-  <option value="Banana">
-  <option value="Naranja">
-  <option value="Pera">
-  <option value="Piña">
-</datalist>
-
-<script>
-    const datalist = document.querySelector('#frutas-list');
-
-// Crear una nueva opción
-const nuevaOpcion = document.createElement('option');
-nuevaOpcion.value = 'Mango';
-
-// Agregar la nueva opción al datalist
-datalist.appendChild(nuevaOpcion);
-
-</script>
-
 </body>
 </html>

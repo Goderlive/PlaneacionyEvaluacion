@@ -63,6 +63,9 @@ $stm = $con->query("SELECT * FROM titulares WHERE id_area = $id_area ");
 $titular_area = $stm->fetch(PDO::FETCH_ASSOC);
 
 
+$stm = $con->query("SELECT * FROM localidades");
+$localidades = $stm->fetchAll();
+
 $stm = $con->query("SELECT * FROM setings a
 JOIN titulares t ON t.id_titular = a.id_uippe");
 $Director_gobierno_por_resultados = $stm->fetch(PDO::FETCH_ASSOC);
@@ -147,49 +150,47 @@ function SumadorAcumulado($programacion, $trimestre){
 }
 
 
-function AgregaMetas($con, $trimestre, $id_area){
-	$cols = '';
-	$stm = $con->query("SELECT * FROM actividades a 
-	LEFT JOIN programaciones p ON p.id_actividad = a.id_actividad
-	WHERE id_area = $id_area ");
-	$actividades = $stm->fetchAll(PDO::FETCH_ASSOC);
+
+$cols = '';
+$stm = $con->query("SELECT * FROM actividades a 
+LEFT JOIN programaciones p ON p.id_actividad = a.id_actividad
+WHERE id_area = $id_area ");
+$actividades = $stm->fetchAll(PDO::FETCH_ASSOC);
 
 
-	
-	foreach($actividades as $actividad){
-		$programacionAnual = array_slice($actividad, 15,-1);
-		$sumaAnual = Sumador($programacionAnual,0);
-		$metaTrimestral = Sumador($programacionAnual, $trimestre);
-		$alcanzadoTrimestre = BuscaAvances($con, $actividad['id_actividad'], $trimestre);
-		$programadoAcomulado = SumadorAcumulado($programacionAnual, $trimestre);
-		$acumuladoAvances = BuscaAvancesAcumulados($con, $actividad, $trimestre);
 
-		$cols .= 
-			'<tr>
-				<td style="text-align: center; border:1px solid gray; font-size: 6px">'.$actividad['codigo_actividad'].'</td>
-				<td style="text-align: left; border:1px solid gray; font-size: 6px">'.$actividad['nombre_actividad'].'</td>
-				<td style="text-align: left; border:1px solid gray; font-size: 6px">'.$actividad['unidad'].'</td>
-				<td style="text-align: center; border:1px solid gray; font-size: 6px">'.$sumaAnual.'</td>
-				<td style="text-align: center; border:1px solid gray; font-size: 6px">'.$metaTrimestral.'</td>
-				<td style="text-align: center; border:1px solid gray; font-size: 6px">'.intval(($metaTrimestral / $sumaAnual) * 100).'</td>
-				<td style="text-align: center; border:1px solid gray; font-size: 6px">'.$alcanzadoTrimestre.'</td>
-				<td style="text-align: center; border:1px solid gray; font-size: 6px">'.intval(($alcanzadoTrimestre / $sumaAnual) * 100).'</td>
-				<td style="text-align: center; border:1px solid gray; font-size: 6px">'.intval($alcanzadoTrimestre - $metaTrimestral).'</td>
-				<td style="text-align: center; border:1px solid gray; font-size: 6px">'.intval((($alcanzadoTrimestre - $metaTrimestral)/$sumaAnual) *100 ).'</td>
-				<td style="text-align: center; border:1px solid gray; font-size: 6px">'. $programadoAcomulado .'</td>
-				<td style="text-align: center; border:1px solid gray; font-size: 6px">'. intval(($programadoAcomulado / $sumaAnual) *100) .'</td>
-				<td style="text-align: center; border:1px solid gray; font-size: 6px">'. $acumuladoAvances .'</td>
-				<td style="text-align: center; border:1px solid gray; font-size: 6px">'. intval(($acumuladoAvances / $sumaAnual) *100) .'</td>
-				<td style="text-align: center; border:1px solid gray; font-size: 6px">'. ($acumuladoAvances - $programadoAcomulado) .'</td>
-				<td style="text-align: center; border:1px solid gray; font-size: 6px">'. (($acumuladoAvances - $programadoAcomulado) / $sumaAnual) *100 .'</td>
-			</tr>
-		';
-	}
-	return $cols;
+foreach($actividades as $actividad){
+	$programacionAnual = array_slice($actividad, 15,-1);
+	$sumaAnual = Sumador($programacionAnual,0);
+	$metaTrimestral = Sumador($programacionAnual, $trimestre);
+	$alcanzadoTrimestre = BuscaAvances($con, $actividad['id_actividad'], $trimestre);
+	$programadoAcomulado = SumadorAcumulado($programacionAnual, $trimestre);
+	$acumuladoAvances = BuscaAvancesAcumulados($con, $actividad, $trimestre);
+
+	$cols .= 
+		'<tr>
+			<td style="text-align: center; border:1px solid gray; font-size: 6px">'.$actividad['codigo_actividad'].'</td>
+			<td style="text-align: left; border:1px solid gray; font-size: 6px">'.$actividad['nombre_actividad'].'</td>
+			<td style="text-align: left; border:1px solid gray; font-size: 6px">'.$actividad['unidad'].'</td>
+			<td style="text-align: center; border:1px solid gray; font-size: 6px">'.$sumaAnual.'</td>
+			<td style="text-align: center; border:1px solid gray; font-size: 6px">'.$metaTrimestral.'</td>
+			<td style="text-align: center; border:1px solid gray; font-size: 6px">'.intval(($metaTrimestral / $sumaAnual) * 100).'</td>
+			<td style="text-align: center; border:1px solid gray; font-size: 6px">'.$alcanzadoTrimestre.'</td>
+			<td style="text-align: center; border:1px solid gray; font-size: 6px">'.intval(($alcanzadoTrimestre / $sumaAnual) * 100).'</td>
+			<td style="text-align: center; border:1px solid gray; font-size: 6px">'.intval($alcanzadoTrimestre - $metaTrimestral).'</td>
+			<td style="text-align: center; border:1px solid gray; font-size: 6px">'.intval((($alcanzadoTrimestre - $metaTrimestral)/$sumaAnual) *100 ).'</td>
+			<td style="text-align: center; border:1px solid gray; font-size: 6px">'. $programadoAcomulado .'</td>
+			<td style="text-align: center; border:1px solid gray; font-size: 6px">'. intval(($programadoAcomulado / $sumaAnual) *100) .'</td>
+			<td style="text-align: center; border:1px solid gray; font-size: 6px">'. $acumuladoAvances .'</td>
+			<td style="text-align: center; border:1px solid gray; font-size: 6px">'. intval(($acumuladoAvances / $sumaAnual) *100) .'</td>
+			<td style="text-align: center; border:1px solid gray; font-size: 6px">'. ($acumuladoAvances - $programadoAcomulado) .'</td>
+			<td style="text-align: center; border:1px solid gray; font-size: 6px">'. (($acumuladoAvances - $programadoAcomulado) / $sumaAnual) *100 .'</td>
+		</tr>
+	';
 }
 
 
-$cols = AgregaMetas($con, $trimestre, $id_area);
+
 
 
 $trimestreNombre = TrimestreNombreCompleto($trimestre);
@@ -341,6 +342,7 @@ LEFT JOIN pdm_estrategias pe ON pe.id_estrategia = pl.id_estrategia
 LEFT JOIN pdm_objetivos po ON po.id_objetivo = pe.id_objetivo
 LEFT JOIN areas ar ON ar.id_area = ac.id_area
 LEFT JOIN dependencias dp ON dp.id_dependencia = ar.id_dependencia
+LEFT JOIN programaciones pg ON pg.id_actividad = ac.id_actividad
 WHERE ar.id_area = $id_area
 ORDER BY po.clave_objetivo ASC,
 CAST(REPLACE(po.clave_objetivo, 'O', '') AS SIGNED) ASC
@@ -376,21 +378,33 @@ function QueTrimestreEs2($trimestre){
 	return $data;
 }
 
-function BuscaAvances2($con, $actividad, $trimestre){
+
+function BuscaAvances2($con, $actividad, $trimestre, $localidades){
 	$trimestre = QueTrimestreEs($trimestre);
 	$stm = $con->query("SELECT * FROM avances  
 	WHERE id_actividad = $actividad AND mes > $trimestre[0] - 1 AND mes < $trimestre[1]+ 1 AND validado = 1");
 	$avances = $stm->fetchAll(PDO::FETCH_ASSOC);
 	$todasLocalidades = "";
-	$todosbeneficiarios = 0;
+	$todosbeneficiarios = "";
 	$todosrecursos = "";
+	$porcentaje = 0;
+	$i= 0;
 	foreach($avances as $a){
-		$todasLocalidades .= $a['localidades'] . " ";
-		$todosbeneficiarios += intval($a['beneficiarios']);
-		$todosrecursos .= $a['recursos'] . " ";
+		$i += 1;
+		if($a['localidades']){
+			$thislocalidades = explode("," ,$a['localidades']);
+			$local = "Mes " . $i . ": ";
+			foreach($thislocalidades as $tl){
+				$local .= $localidades[$tl]['nombre_localidad'] . ", ";
+			}
+		}
+		$todasLocalidades .= $local . "<br>";
+		$todosbeneficiarios .= $a['beneficiarios']. "<br>";
+		$todosrecursos .= $a['recursos'] . "<br>";
+		$porcentaje += $a['avance'];
 	}
 	$arrmag = array();
-	array_push($arrmag, $todasLocalidades,$todosbeneficiarios,$todosrecursos);
+	array_push($arrmag, $todasLocalidades,$todosbeneficiarios,$todosrecursos, $porcentaje);
 	return $arrmag;
 }
 
@@ -480,31 +494,55 @@ $tabseg = '
 <table style="width:100%;">
     <thead>
         <tr>
-            <th style="width:12%; text-align: center; border:1px solid gray; font-size: 8px"><b>Objetivo </b></th>
-            <th style="width:12%; text-align: center; border:1px solid gray; font-size: 8px"><b>Estrategias </b></th>
-            <th style="width:12%; text-align: center; border:1px solid gray; font-size: 8px"><b>Líneas de acción </b></th>
-            <th style="width:12%; text-align: center; border:1px solid gray; font-size: 8px"><b>Área(s) Responsable (s)</b></th>
-            <th style="width:12%; text-align: center; border:1px solid gray; font-size: 8px"><b>Acciones realizadas</b></th>
-            <th style="width:12%; text-align: center; border:1px solid gray; font-size: 8px"><b>Localidad (es) beneficiada (s)</b></th>
-            <th style="width:12%; text-align: center; border:1px solid gray; font-size: 8px"><b>Beneficiarios directos</b></th>
-            <th style="width:12%; text-align: center; border:1px solid gray; font-size: 8px"><b>Origen de los Recursos públicos aplicados</b></th>
+            <th style="width:4%; text-align: center; border:1px solid gray; font-size: 8px"><b>Obj. </b></th>
+            <th style="width:4%; text-align: center; border:1px solid gray; font-size: 8px"><b>Estr. </b></th>
+            <th style="width:16%; text-align: center; border:1px solid gray; font-size: 8px"><b>Líneas de acción </b></th>
+            <th style="width:7%; text-align: center; border:1px solid gray; font-size: 8px"><b>Área(s) Responsable (s)</b></th>
+            <th style="width:16%; text-align: center; border:1px solid gray; font-size: 8px"><b>Acciones realizadas</b></th>
+            <th style="width:5%; text-align: center; border:1px solid gray; font-size: 8px"><b>Prog.</b></th>
+            <th style="width:5%; text-align: center; border:1px solid gray; font-size: 8px"><b>Alc.</b></th>
+            <th style="width:5%; text-align: center; border:1px solid gray; font-size: 8px"><b>%</b></th>
+            <th style="width:16%; text-align: center; border:1px solid gray; font-size: 8px"><b>Localidad (es) beneficiada (s)</b></th>
+            <th style="width:11%; text-align: center; border:1px solid gray; font-size: 8px"><b>Beneficiarios directos</b></th>
+            <th style="width:11%; text-align: center; border:1px solid gray; font-size: 8px"><b>Origen de los Recursos públicos aplicados</b></th>
         </tr>
     </thead>
     <tbody>';
 
 foreach($seguimiento as $s){
-	$avance = BuscaAvances2($con, $s['id_actividad'], $trimestre);
+	$avance = BuscaAvances2($con, $s['id_actividad'], $trimestre, $localidades);
+	$thistrimestre = QueTrimestreEs($trimestre);
+	$proganual = $s['enero'] + $s['febrero'] + $s['marzo'] + $s['abril'] + $s['mayo'] + $s['junio'] + $s['julio'] + $s['agosto'] + $s['septiembre'] + $s['octubre'] + $s['noviembre'] + $s['diciembre'];
+
+	if($thistrimestre = 1){
+		$progtrimestral = $s['enero'] + $s['febrero'] + $s['marzo'];
+	} 
+	if($thistrimestre = 2){
+		$progtrimestral = $s['abril'] + $s['mayo'] + $s['junio'];
+	} 
+	if($thistrimestre = 3){
+		$progtrimestral = $s['julio'] + $s['agosto'] + $s['septiembre'];
+	} 
+	if($thistrimestre = 4){
+		$progtrimestral = $s['octubre'] + $s['noviembre'] + $s['diciembre'];
+	} 
+	if($avance[3] != 0){
+		$porcentajecumplimiento = substr(($avance['3'] / $proganual) *100, 0,5) . "%";
+	}
 
 	$tabseg .= '
 	<tr>
-		<td style="width:12%; text-align: center; border:1px solid gray; font-size: 7px">'.$s['clave_objetivo'].'</td>
-		<td style="width:12%; text-align: center; border:1px solid gray; font-size: 7px">'.$s['clave_estrategia'].'</td>
-		<td style="width:12%; text-align: center; border:1px solid gray; font-size: 7px">'.$s['clave_linea'].'</td>
-		<td style="width:12%; text-align: center; border:1px solid gray; font-size: 7px">'.$s['nombre_dependencia'].'</td>
-		<td style="width:12%; text-align: center; border:1px solid gray; font-size: 7px">'.$s['nombre_actividad'].'</td>
-		<td style="width:12%; text-align: center; border:1px solid gray; font-size: 7px">'.$avance[0].'</td>
-		<td style="width:12%; text-align: center; border:1px solid gray; font-size: 7px">'.$avance[1].'</td>
-		<td style="width:12%; text-align: center; border:1px solid gray; font-size: 7px">'.$avance[2].'</td>
+		<td style="width:4%; text-align: center; border:1px solid gray; font-size: 7px">'.$s['clave_objetivo'].'</td>
+		<td style="width:4%; text-align: center; border:1px solid gray; font-size: 7px">'.$s['clave_estrategia'].'</td>
+		<td style="width:16%; text-align: center; border:1px solid gray; font-size: 7px">'. $s['clave_linea']. " " .$s['nombre_linea'].'</td>
+		<td style="width:7%; text-align: center; border:1px solid gray; font-size: 7px">'.$s['nombre_dependencia'].'</td>
+		<td style="width:16%; text-align: center; border:1px solid gray; font-size: 7px">'.$s['nombre_actividad'].'</td>
+		<td style="width:5%; text-align: center; border:1px solid gray; font-size: 7px">'.$progtrimestral.'</td>
+		<td style="width:5%; text-align: center; border:1px solid gray; font-size: 7px">'.$alcanzadoTrimestre.'</td>
+		<td style="width:5%; text-align: center; border:1px solid gray; font-size: 7px">'.$porcentajecumplimiento.'</td>
+		<td style="width:16%; text-align: center; border:1px solid gray; font-size: 7px">'.$avance[0].'</td>
+		<td style="width:11%; text-align: center; border:1px solid gray; font-size: 7px">'.$avance[1].'</td>
+		<td style="width:11%; text-align: center; border:1px solid gray; font-size: 7px">'.$avance[2].'</td>
 	</tr>
 	';
 }
