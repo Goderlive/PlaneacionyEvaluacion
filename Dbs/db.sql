@@ -6239,6 +6239,69 @@ CREATE TABLE unidades_medida_eliminadas(
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 
+
+DROP TABLE IF EXISTS localidades;
+CREATE TABLE localidades(
+  id_localidad INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  nombre_localidad VARCHAR(255)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+INSERT INTO localidades (nombre_localidad) VALUES
+("Todo el Municipio"),
+("Administración Municipal"),
+("Barrio de Coaxustenco"),
+("Barrio de San Mateo"),
+("Barrio de San Miguel"),
+("Barrio de Santa Cruz"),
+("Barrio de Santa Cruz Ocotitlán"),
+("Barrio de Santiaguito"),
+("Barrio del Espíritu Santo"),
+("Colonia Agrícola Álvaro Obregón"),
+("Colonia Agrícola Bellavista"),
+("Colonia Agrícola Francisco I. Madero"),
+("Colonia Agrícola Lázaro Cárdenas"),
+("Colonia Doctor Jorge Jiménez Cantú"),
+("Colonia El Hípico"),
+("Colonia La Michoacana"),
+("Colonia La Providencia"),
+("Colonia Luisa Isabel Campos de Jiménez Cantú"),
+("Colonia Municipal"),
+("Colonia Unión"),
+("Condominio Agripín García Estrada"),
+("Fraccionamiento Casa Blanca"),
+("Fraccionamiento Fuentes de San Gabriel"),
+("Fraccionamiento Izcalli Cuauhtémoc I"),
+("Fraccionamiento Izcalli Cuauhtémoc II"),
+("Fraccionamiento Izcalli Cuauhtémoc III"),
+("Fraccionamiento Izcalli Cuauhtémoc IV"),
+("Fraccionamiento Izcalli Cuauhtémoc V"),
+("Fraccionamiento Izcalli Cuauhtémoc VI"),
+("Fraccionamiento Jesús Jiménez Gallardo"),
+("Fraccionamiento Las Haciendas"),
+("Fraccionamiento Las Margaritas"),
+("Fraccionamiento Las Marinas"),
+("Fraccionamiento Licenciado Juan Fernández Albarrán"),
+("Fraccionamiento Los Pilares"),
+("Fraccionamiento Rancho San Francisco"),
+("Fraccionamiento Rancho San Lucas"),
+("Fraccionamiento San Javier"),
+("Fraccionamiento San José La Pilita"),
+("Fraccionamiento Xinantécatl"),
+("Pueblo de San Bartolomé Tlaltelulco"),
+("Pueblo de San Francisco Coaxusco"),
+("Pueblo de San Gaspar Tlahuelilpan"),
+("Pueblo de San Jerónimo Chicahualco"),
+("Pueblo de San Jorge Pueblo Nuevo"),
+("Pueblo de San Lorenzo Coacalco"),
+("Pueblo de San Lucas Tunco"),
+("Pueblo de San Miguel Totocuitlapilco"),
+("Pueblo de San Salvador Tizatlalli"),
+("Pueblo de San Sebastián"),
+("Pueblo de Santa María Magdalena Ocotitlán"),
+("Unidad Habitacional Andrés Molina Enríquez"),
+("Unidad Habitacional Lázaro Cárdenas"),
+("Unidad Habitacional Tollocan II");
+
+
 DROP TABLE IF EXISTS setings;
 CREATE TABLE setings(
     id_setings INT NOT NULL PRIMARY KEY AUTO_INCREMENT,

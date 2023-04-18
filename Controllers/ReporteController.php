@@ -228,27 +228,49 @@ function buscalineas($con, $id_actividad){
     if ($lineadeaccion = buscaactilistas($con, $id_actividad)){
         return '
             <br>
+
             <table style="width: 100%";>
                 <tr>
-                    <th style="width: 32%";>
+                    <th style="width: 23%";>
+                    </th>
+                    <th style="width: 2%";>
+                    </th>
+                    <th style="width: 23%";>
+                    </th>
+                    <th style="width: 2%";>
+                    </th>
+                    <th colspan="5" style="width: 64%; text-align: center;";>
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"> Origen de los recursos Públicos Aplicados</label>
+                    </th>
+                </tr>
+                <tr>
+                    <th style="width: 23%";>
                         <label for="localidades" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Localidades Beneficiadas</label>
                         <input type="text" id="localidades" name="localidades" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     </th>
-                    
                     <th style="width: 2%";>
                     </th>
-                    
-                    <th style="width: 32%";>
+                    <th style="width: 23%";>
                         <label for="beneficiarios" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Beneficiarios Directos</label>
                         <input type="text" id="beneficiarios" name="beneficiarios" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     </th>
-                    
                     <th style="width: 2%";>
                     </th>
-
-                    <th style="width: 32%";>
-                        <label for="recursos" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Origen de los Recursos Aplicados</label>
-                        <input type="text" id="recursos" name="recursos" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <th style="width: 10%";>
+                        <label for="recursos" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Recurso Federal</label>
+                        <input type="number" id="recursos" placeholder="                %"  name="recursos" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    </th>
+                    <th style="width: 2%";>
+                    </th>
+                    <th style="width: 10%";>
+                        <label for="recursos" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Recurso Estatal</label>
+                        <input type="number" id="recursos" placeholder="                %"  name="recursos" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    </th>
+                    <th style="width: 2%";>
+                    </th>
+                    <th style="width: 10%";>
+                        <label for="recursos" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Recurso Propio</label>
+                        <input type="number" id="recursos" placeholder="                %"  name="recursos" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     </th>
                 </tr>
             </table>  

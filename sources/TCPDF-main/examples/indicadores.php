@@ -265,6 +265,16 @@ $total_acumulado_b = ($num_trimestre == 1) ? intval($indica['bt1']) : (($num_tri
 
 $alcanzadoAcumulado = BuscaAvancesAcumulados($con, $id_indicador, $num_trimestre);
 
+$porcentajeAvance = $metaAnual_a != 0 ? substr(($programacion_trimestre_a / $metaAnual_a) *100, 0, 5) : "N/A";
+$porcentajealcanzado = $programacion_trimestre_a != 0 ? substr(($avance['avance_a'] / $programacion_trimestre_a) *100 , 0, 5) : "N/A";
+$porcentajeacumulado = $metaAnual_a !=0 ? substr(($total_acumulado_a / $metaAnual_a) * 100, 0,5) : "N/A";
+$porcentajetotalAcumulado = $total_acumulado_a != 0 ? substr(($alcanzadoAcumulado[0] / $total_acumulado_a) *100, 0,5) : 'N/A';
+
+$porcentajeAvance2 = $metaAnual_b != 0 ? substr(($programacion_trimestre_b / $metaAnual_b) *100, 0, 5) : "N/A";
+$porcentajealcanzado2 = $programacion_trimestre_b != 0 ? substr(($avance['avance_b'] / $programacion_trimestre_b) *100 , 0, 5) : "N/A";
+$porcentajeacumulado2 = $metaAnual_b != 0 ? substr(($total_acumulado_b / $metaAnual_b) * 100, 0,5) : "N/A";
+$porcentajetotalAcumulado2 = $total_acumulado_b != 0 ? substr(($alcanzadoAcumulado[1] / $total_acumulado_b) *100, 0,5) : "N/A";
+
 $comportamiento = '
 <table style="width: 100%; text-align: center; padding: 2px;">
 	<tr>
@@ -294,13 +304,13 @@ $comportamiento = '
 		<td style="width:15%;text-align: center; border:1px solid gray; font-size: 8px">'. $indica['tipo_op_a'] .'</td>
 		<td style="width:10%;text-align: center; border:1px solid gray; font-size: 8px">'. $metaAnual_a .'</td>
 		<td style="width:6.25%;text-align: center; border:1px solid gray; font-size: 8px">'. $programacion_trimestre_a .'</td>
-		<td style="width:6.25%;text-align: center; border:1px solid gray; font-size: 8px">'. substr(($programacion_trimestre_a / $metaAnual_a) *100, 0, 5) .'</td>
+		<td style="width:6.25%;text-align: center; border:1px solid gray; font-size: 8px">'. $porcentajeAvance .'</td>
 		<td style="width:6.25%;text-align: center; border:1px solid gray; font-size: 8px">'. $avance['avance_a'] .'</td>
-		<td style="width:6.25%;text-align: center; border:1px solid gray; font-size: 8px">'. substr(($avance['avance_a'] / $programacion_trimestre_a) *100 , 0, 5) .'</td>
+		<td style="width:6.25%;text-align: center; border:1px solid gray; font-size: 8px">'. $porcentajealcanzado .'</td>
 		<td style="width:6.25%;text-align: center; border:1px solid gray; font-size: 8px">'. $total_acumulado_a .'</td>
-		<td style="width:6.25%;text-align: center; border:1px solid gray; font-size: 8px">'. substr(($total_acumulado_a / $metaAnual_a) * 100, 0,5) .'</td>
+		<td style="width:6.25%;text-align: center; border:1px solid gray; font-size: 8px">'. $porcentajeacumulado .'</td>
 		<td style="width:6.25%;text-align: center; border:1px solid gray; font-size: 8px">'. $alcanzadoAcumulado[0] .'</td>
-		<td style="width:6.25%;text-align: center; border:1px solid gray; font-size: 8px">'. substr(($alcanzadoAcumulado[0] / $total_acumulado_a) *100, 0,5) .'</td>
+		<td style="width:6.25%;text-align: center; border:1px solid gray; font-size: 8px">'. $porcentajetotalAcumulado .'</td>
 		</tr>	
 	<tr>
 		<td style="width:10%;text-align: center; border:1px solid gray; font-size: 8px">B</td>
@@ -308,13 +318,13 @@ $comportamiento = '
 		<td style="width:15%;text-align: center; border:1px solid gray; font-size: 8px">'. $indica['tipo_op_b'] .'</td>
 		<td style="width:10%;text-align: center; border:1px solid gray; font-size: 8px">'. $metaAnual_b .'</td>
 		<td style="width:6.25%;text-align: center; border:1px solid gray; font-size: 8px">'. $programacion_trimestre_b .'</td>
-		<td style="width:6.25%;text-align: center; border:1px solid gray; font-size: 8px">'. substr(($programacion_trimestre_b / $metaAnual_b) *100, 0, 5) .'</td>
+		<td style="width:6.25%;text-align: center; border:1px solid gray; font-size: 8px">'. $porcentajeAvance2 .'</td>
 		<td style="width:6.25%;text-align: center; border:1px solid gray; font-size: 8px">'. $avance['avance_b'] .'</td>
-		<td style="width:6.25%;text-align: center; border:1px solid gray; font-size: 8px">'. substr(($avance['avance_b'] / $programacion_trimestre_b) *100 , 0, 5) .'</td>
+		<td style="width:6.25%;text-align: center; border:1px solid gray; font-size: 8px">'. $porcentajealcanzado2 .'</td>
 		<td style="width:6.25%;text-align: center; border:1px solid gray; font-size: 8px">'. $total_acumulado_b .'</td>
-		<td style="width:6.25%;text-align: center; border:1px solid gray; font-size: 8px">'. substr(($total_acumulado_b / $metaAnual_b) * 100, 0,5) .'</td>
+		<td style="width:6.25%;text-align: center; border:1px solid gray; font-size: 8px">'. $porcentajeacumulado2 .'</td>
 		<td style="width:6.25%;text-align: center; border:1px solid gray; font-size: 8px">'. $alcanzadoAcumulado[1] .'</td>
-		<td style="width:6.25%;text-align: center; border:1px solid gray; font-size: 8px">'. substr(($alcanzadoAcumulado[1] / $total_acumulado_b) *100, 0,5) .'</td>
+		<td style="width:6.25%;text-align: center; border:1px solid gray; font-size: 8px">'. $porcentajetotalAcumulado2 .'</td>
 	</tr>	
 </table>
 &nbsp;<br>
@@ -361,6 +371,9 @@ if ($total_acumulado_b != 0 && $alcanzadoAcumulado[1] != 0) {
 }
 $totalalcanzadoacumulado = is_numeric($alcanzadoAcumulado[0]) && is_numeric($alcanzadoAcumulado[1]) && $alcanzadoAcumulado[1] > 0 ? substr(($alcanzadoAcumulado[0] / $alcanzadoAcumulado[1]) * 100, 0, 5) : 'N/A';
 
+$programacion_trimestre_b = $programacion_trimestre_b ? substr(($programacion_trimestre_a / $programacion_trimestre_b) *100, 0, 5) : "N/A";
+
+
 $porcentajes = '
 <table style="width: 100%; text-align: center; padding: 2px;">
 	<tr>
@@ -383,7 +396,7 @@ $porcentajes = '
 	</tr>	
 	<tr>
 		<td rowspan="2" style="width:10%; text-align: center; border:1px solid gray; font-size: 8px">'. substr(($metaAnual_a / $metaAnual_b) *100, 0, 5) .'</td>
-		<td rowspan="2" style="width:11.25%; text-align: center; border:1px solid gray; font-size: 8px">'. substr(($programacion_trimestre_a / $programacion_trimestre_b) *100, 0, 5) .'</td>
+		<td rowspan="2" style="width:11.25%; text-align: center; border:1px solid gray; font-size: 8px">'. $programacion_trimestre_b .'</td>
 		<td rowspan="2" style="width:11.25%; text-align: center; border:1px solid gray; font-size: 8px">'. $eficienciatrimetral_alcanzada .'</td>
 		<td rowspan="2" style="width:11.25%; text-align: center; border:1px solid gray; font-size: 8px">' . $eficienciatrimetral .'</td>
 		<td rowspan="2" style="width:11.25%; text-align: center; border:1px solid gray; font-size: 8px; '.$color.'">' . $semaforotrimestral .'</td>

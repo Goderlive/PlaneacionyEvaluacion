@@ -214,12 +214,6 @@ $membretes = '
 
 
 $html = $membretes . '
-<head>
-<style>
-
-</style>
-</head>
-
 <table style="width:100%">
   <tr>
     <td style="width:40%">
@@ -421,12 +415,69 @@ $membretesmagg = '
     </tr>
   </tbody>
 </table>
+<table style="width:100%">
+  <tr>
+    <td style="width:40%">
+		&nbsp;<br>
+		<table style="width:100%; border:1px solid gray;">
+			<tr>
+				<td style="width:40%; text-align: center; border:1px solid gray; font-size: 8px">&nbsp; <br> PbRM 08c</td>
+				<td style="width:60%; text-align: center; font-size: 8px">AVANCE TRIMESTRAL DE METAS DE ACCION POR PROYECTO</td>
+			</tr>
+			<tr>
+				<td colspan="2" style="text-align: center; border:1px solid gray; font-size: 8px"> '. $trimestreNombre.' </td> 
+			</tr>
+			<tr>
+				<td style="text-align: center; border:1px solid gray; font-size: 8px">ENTE PUBLICO: METEPEC </td> 
+				<td style="text-align: center; border:1px solid gray; font-size: 8px">No.: 0103</td> 
+			</tr>
+		</table>
+	
+	</td>
+	<td style="width:60%">
+		<table style="width:100%;">
+			<tr>
+				<td style="width:30%; text-align: right; font-size: 8px">Dependencia </td>
+				<td style="width:20%; text-align: center; border:1px solid gray; font-size: 8px">'.$dependencia['id_dependencia'].'</td>
+				<td style="width:50%; text-align: left; border:1px solid gray; font-size: 8px">'. $dependencia['nombre_dependencia'].'</td>
+			</tr>
+			<tr>
+				<td style="width:30%; text-align: right; font-size: 8px">Área</td>
+				<td style="width:20%; text-align: center; border:1px solid gray; font-size: 8px">'. $dependencia['id_area'].'</td>
+				<td style="width:50%; text-align: left; border:1px solid gray; font-size: 8px">'. $dependencia['nombre_area'].'</td>
+			</tr>
+			<tr>
+				<td style="width:30%; text-align: right; font-size: 8px">Dependencia General</td>
+				<td style="width:20%; text-align: center; border:1px solid gray; font-size: 8px">'. $dependencia['clave_dependencia'].'</td>
+				<td style="width:50%; text-align: left; border:1px solid gray; font-size: 8px">'. $dependencia['nombre_dependencia_general'].'</td>
+			</tr>
+			<tr>
+				<td style="width:30%; text-align: right; font-size: 8px">Dependencia Auxiliar</td>
+				<td style="width:20%; text-align: center; border:1px solid gray; font-size: 8px">'. $dependencia['clave_dependencia_auxiliar'].'</td>
+				<td style="width:50%; text-align: left; border:1px solid gray; font-size: 8px">'. $dependencia['nombre_dependencia_auxiliar'].'</td>
+			</tr>
+			<tr>
+				<td style="width:30%; text-align: right; font-size: 8px">Programa</td>
+				<td style="width:20%; text-align: center; border:1px solid gray; font-size: 8px">'. $dependencia['codigo_programa'].'</td>
+				<td style="width:50%; text-align: left; border:1px solid gray; font-size: 8px">'. $dependencia['nombre_programa'].'</td>
+			</tr>
+			<tr>
+				<td style="width:30%; text-align: right; font-size: 8px">Proyecto</td>
+				<td style="width:20%; text-align: center; border:1px solid gray; font-size: 8px">'. $dependencia['codigo_proyecto'].'</td>
+				<td style="width:50%; text-align: left; border:1px solid gray; font-size: 8px">'. $dependencia['nombre_proyecto'].'</td>
+			</tr>
+		</table>
+	</td>
+  </tr>
+</table>
+&nbsp; <br>
+
 ';
 $magg .= $membretesmagg;
         
     
 $tabseg = '
-<table>
+<table style="width:100%;">
     <thead>
         <tr>
             <th style="width:12%; text-align: center; border:1px solid gray; font-size: 8px"><b>Objetivo </b></th>
@@ -446,9 +497,9 @@ foreach($seguimiento as $s){
 
 	$tabseg .= '
 	<tr>
-		<td style="width:12%; text-align: center; border:1px solid gray; font-size: 7px">'.$s['nombre_objetivo'].'</td>
-		<td style="width:12%; text-align: center; border:1px solid gray; font-size: 7px">'.$s['nombre_estrategia'].'</td>
-		<td style="width:12%; text-align: center; border:1px solid gray; font-size: 7px">'.$s['nombre_linea'].'</td>
+		<td style="width:12%; text-align: center; border:1px solid gray; font-size: 7px">'.$s['clave_objetivo'].'</td>
+		<td style="width:12%; text-align: center; border:1px solid gray; font-size: 7px">'.$s['clave_estrategia'].'</td>
+		<td style="width:12%; text-align: center; border:1px solid gray; font-size: 7px">'.$s['clave_linea'].'</td>
 		<td style="width:12%; text-align: center; border:1px solid gray; font-size: 7px">'.$s['nombre_dependencia'].'</td>
 		<td style="width:12%; text-align: center; border:1px solid gray; font-size: 7px">'.$s['nombre_actividad'].'</td>
 		<td style="width:12%; text-align: center; border:1px solid gray; font-size: 7px">'.$avance[0].'</td>
@@ -458,10 +509,22 @@ foreach($seguimiento as $s){
 	';
 }
 
+$firmas = '
+&nbsp;
+<br>
+<table style="width: 100%; text-align: center; border-spacing: 3px; ">
+	<tr>
+		<td style="font-size: 8px; width: 34%; border: 1px solid gray;"> ELABORÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $titular_area['nombre'] . " " . $titular_area['apellidos'] . "<br>" . $titular_area['cargo']. '</td>
+		<td style="font-size: 8px; width: 34%; border: 1px solid gray;"> REVISÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $titular_dependencia['nombre'] . " " . $titular_dependencia['apellidos'] . "<br>" . $titular_dependencia['cargo']. '</td>
+		<td style="font-size: 8px; width: 32%;"> </td>
+	</tr>	
+</table>
+';
+
 $tabseg .= "</tbody>
 </table>";
 
-$magg .= $tabseg;
+$magg .= $tabseg . $firmas;
 
 $pdf->writeHTML($magg, true, false, true, false, '');
 endif; // If de seguimiento
