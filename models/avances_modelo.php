@@ -13,8 +13,9 @@ function ConsultaAvancesActividades($con){
     dpa.clave_dependencia_auxiliar,
     py.codigo_proyecto,
     pr.*,
-    us1.nombre as nombre1, us1.apellidos as apellidos2,
-    us2.nombre as nombre2, us2.apellidos as apellidos2
+    us1.nombre as nombre1, us1.apellidos as apellidos1,
+    us2.nombre as nombre2, us2.apellidos as apellidos2,
+    la.lineaactividad
     FROM avances a
     LEFT JOIN lineasactividades la ON la.id_actividad = a.id_actividad
     LEFT JOIN pdm_lineas pdml ON pdml.clave_linea = la.id_linea
@@ -66,6 +67,7 @@ function traeavance($con, $id_indicador, $trimestre){
 if($_POST){
     $tipo = '';
     $data = $_POST;
+
     if(isset($_POST['valida_actividad'])){
         if($_POST['valida_actividad'] == 1){
             $sql = "UPDATE avances SET validado = 1, id_usuario_validador = ?, fecha_validador = NOW() WHERE id_avance = ?";
@@ -75,6 +77,13 @@ if($_POST){
         }
         $sqlr = $con->prepare($sql);
         $sqlr->execute(array($data['usuario'], $data['id_avance']));
+        $tipo = "actividades";
+    }
+
+    if(isset($_POST['pbrm'])){
+        $sql = "UPDATE avances SET validado = 1, validado_2 = 1, id_usuario_validador = ?, id_usuario_validador_2 = ?, fecha_validador = NOW() WHERE id_avance = ?";
+        $sqlr = $con->prepare($sql);
+        $sqlr->execute(array($data['usuario'], $data['usuario'], $data['id_avance']));
         $tipo = "actividades";
     }
 
