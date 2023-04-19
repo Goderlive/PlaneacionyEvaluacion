@@ -112,15 +112,6 @@ if($_SESSION['sistema'] == "pbrm"){
                             <td colspan="2" scope="row" class="py-2 px-6" valign="top">
                                 Descripcion de la Evidencia <?= $a['descripcion_evidencia'] ?>
                             </td>
-                            <td class="py-2 px-6" colspan="2" align="center" valign="top">
-                                <?php if($a['localidades']): ?>
-                                    Localidades:
-                                    <?php $locas = explode(",", $a['localidades']);
-                                        foreach ($locas as $a):
-                                            print $localidades[$locas['id_localidad']];
-                                        endforeach ?>
-                                <?php endif ?>
-                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -141,9 +132,30 @@ if($_SESSION['sistema'] == "pbrm"){
                         </thead>
                         <tbody>
                             <tr class="bg-white dark:bg-gray-800">
-                                <th scope="row" class="py-2 px-6" align="center" valign="top">
-                                    <?= $a['nombre_actividad'] ?>
-                                </th>
+                                <td scope="row" class="py-2 px-6" align="center" valign="top">
+                                    <?php if($a['localidades']): ?>
+                                        <?php $locas = explode(",", $a['localidades']);
+                                            foreach ($locas as $loca):
+                                                print $localidades[$loca]['nombre_localidad'] . "<br>";
+                                            endforeach ?>
+                                    <?php else: ?>
+                                        <b> No selecciono Localidades </b>
+                                    <?php endif ?>         
+                               </td>
+                                <td scope="row" class="py-2 px-6" align="center" valign="top">
+                                    <?php if($a['beneficiarios']): 
+                                        print $a['beneficiarios'];?>
+                                    <?php else: ?>
+                                        <b> No selecciono beneficiarios </b>
+                                    <?php endif ?>         
+                               </td>
+                                <td scope="row" class="py-2 px-6" align="center" valign="top">
+                                    <?php if($a['recursos']): 
+                                        print $a['recursos'];?>
+                                    <?php else: ?>
+                                        <b> No selecciono recursos </b>
+                                    <?php endif ?>         
+                               </td>
                             </tr>
                         </tbody>
                     </table>

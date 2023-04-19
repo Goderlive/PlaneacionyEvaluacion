@@ -167,6 +167,23 @@ foreach($actividades as $actividad){
 	$programadoAcomulado = SumadorAcumulado($programacionAnual, $trimestre);
 	$acumuladoAvances = BuscaAvancesAcumulados($con, $actividad, $trimestre);
 
+	// condiciones de ceros
+	function calcularPorcentaje($numerador, $denominador) {
+		if ($denominador != 0) {
+		  return intval(($numerador / $denominador) * 100);
+		} else {
+		  return "N/A";
+		}
+	  }
+	  
+	  $porcentajetrimestral = calcularPorcentaje($metaTrimestral, $sumaAnual);
+	  $avancetromestreprocentaje = calcularPorcentaje($alcanzadoTrimestre, $sumaAnual);
+	  $porcentajediferenciatrimestral = calcularPorcentaje($alcanzadoTrimestre - $metaTrimestral, $sumaAnual);
+	  $porcentajealcanzadoacumuladotrimestral = calcularPorcentaje($programadoAcomulado, $sumaAnual);
+	  $porcentajealcanzadoacumuladoanual = calcularPorcentaje($acumuladoAvances, $sumaAnual);
+	  $porcentajealcanzadoacumuladoanualdiferencia = calcularPorcentaje($acumuladoAvances - $programadoAcomulado, $sumaAnual);
+	  
+
 	$cols .= 
 		'<tr>
 			<td style="text-align: center; border:1px solid gray; font-size: 6px">'.$actividad['codigo_actividad'].'</td>
@@ -174,17 +191,17 @@ foreach($actividades as $actividad){
 			<td style="text-align: left; border:1px solid gray; font-size: 6px">'.$actividad['unidad'].'</td>
 			<td style="text-align: center; border:1px solid gray; font-size: 6px">'.$sumaAnual.'</td>
 			<td style="text-align: center; border:1px solid gray; font-size: 6px">'.$metaTrimestral.'</td>
-			<td style="text-align: center; border:1px solid gray; font-size: 6px">'.intval(($metaTrimestral / $sumaAnual) * 100).'</td>
+			<td style="text-align: center; border:1px solid gray; font-size: 6px">'. $porcentajetrimestral .'</td>
 			<td style="text-align: center; border:1px solid gray; font-size: 6px">'.$alcanzadoTrimestre.'</td>
-			<td style="text-align: center; border:1px solid gray; font-size: 6px">'.intval(($alcanzadoTrimestre / $sumaAnual) * 100).'</td>
+			<td style="text-align: center; border:1px solid gray; font-size: 6px">'.$avancetromestreprocentaje.'</td>
 			<td style="text-align: center; border:1px solid gray; font-size: 6px">'.intval($alcanzadoTrimestre - $metaTrimestral).'</td>
-			<td style="text-align: center; border:1px solid gray; font-size: 6px">'.intval((($alcanzadoTrimestre - $metaTrimestral)/$sumaAnual) *100 ).'</td>
+			<td style="text-align: center; border:1px solid gray; font-size: 6px">'. $porcentajediferenciatrimestral.'</td>
 			<td style="text-align: center; border:1px solid gray; font-size: 6px">'. $programadoAcomulado .'</td>
-			<td style="text-align: center; border:1px solid gray; font-size: 6px">'. intval(($programadoAcomulado / $sumaAnual) *100) .'</td>
+			<td style="text-align: center; border:1px solid gray; font-size: 6px">'. $porcentajealcanzadoacumuladotrimestral .'</td>
 			<td style="text-align: center; border:1px solid gray; font-size: 6px">'. $acumuladoAvances .'</td>
-			<td style="text-align: center; border:1px solid gray; font-size: 6px">'. intval(($acumuladoAvances / $sumaAnual) *100) .'</td>
+			<td style="text-align: center; border:1px solid gray; font-size: 6px">'. $porcentajealcanzadoacumuladoanual .'</td>
 			<td style="text-align: center; border:1px solid gray; font-size: 6px">'. ($acumuladoAvances - $programadoAcomulado) .'</td>
-			<td style="text-align: center; border:1px solid gray; font-size: 6px">'. (($acumuladoAvances - $programadoAcomulado) / $sumaAnual) *100 .'</td>
+			<td style="text-align: center; border:1px solid gray; font-size: 6px">'. $porcentajealcanzadoacumuladoanualdiferencia .'</td>
 		</tr>
 	';
 }
@@ -397,6 +414,8 @@ function BuscaAvances2($con, $actividad, $trimestre, $localidades){
 			foreach($thislocalidades as $tl){
 				$local .= $localidades[$tl]['nombre_localidad'] . ", ";
 			}
+		}else{
+			$local = "";
 		}
 		$todasLocalidades .= $local . "<br>";
 		$todosbeneficiarios .= $a['beneficiarios']. "<br>";
