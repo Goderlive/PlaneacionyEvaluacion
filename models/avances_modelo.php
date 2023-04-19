@@ -3,7 +3,7 @@ require_once 'conection.php';
 
 function ConsultaAvancesActividades($con){
 
-    $stm = $con->query("SELECT a.id_avance, a.mes, a.avance, a.justificacion, a.path_evidenia_evidencia, a.descripcion_evidencia, a.fecha_avance, a.validado, a.validado_2, a.id_usuario_validador, a.id_usuario_validador_2,
+    $stm = $con->query("SELECT a.id_avance, a.mes, a.avance, a.justificacion, a.path_evidenia_evidencia, a.descripcion_evidencia, a.fecha_avance, a.validado, a.validado_2, a.id_usuario_validador, a.id_usuario_validador_2, a.localidades,
     u.nombre, u.apellidos, u.correo_electronico, u.tel,
     ac.nombre_actividad, ac.unidad,
     ar.nombre_area,
@@ -56,6 +56,10 @@ function ConsultaAvancesIndicadores($con){
     return $data_avances_actividades;
 }
 
+function TraeLocalidades($con){
+    $stm = $con->query("SELECT * FROM localidades");
+    return $localidades = $stm->fetchAll(PDO::FETCH_ASSOC);
+}
 
 function traeavance($con, $id_indicador, $trimestre){
     $stm = $con->query("SELECT * FROM avances_indicadores WHERE id_indicador = $id_indicador AND trimestre = $trimestre");

@@ -6,6 +6,7 @@ if($_SESSION['sistema'] == "pbrm"){
     require_once 'Controllers/avances_controlador.php';
     include 'Controllers/breadcrumbs.php';
     $tipo = $_GET['type'];
+    $localidades = TraeLocalidades($con);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -24,7 +25,6 @@ if($_SESSION['sistema'] == "pbrm"){
             if(!$Avances){
                 print "No Tienes Avances Pendientes Por Revisión";
             }
-
             foreach($Avances as $a): 
                 if($permisos['rol'] ==1 && $permisos['id_usuario'] != $a['id_administrador']){
                     continue;
@@ -92,21 +92,30 @@ if($_SESSION['sistema'] == "pbrm"){
                             <td class="py-2 px-6" align="center" valign="top">
                                 <?= intval($a['avance']) - $prog_mes ?>
                             </td>
-                            <td rowspan=2 class="py-2 px-6" align="center">
+                            <td class="py-2 px-6" align="center">
                                 <button type="button" data-modal-toggle="modal<?=$a['id_avance']?>">
                                     <?= imgsmall($a['path_evidenia_evidencia']) ?>
                                 </button>
+                                <br>
                             </td>
                         </tr>
                         <tr class="bg-white dark:bg-gray-800">
-                            <td colspan="4" scope="row" class="py-2 px-6" valign="top">
-                                Justificación por variación:
-                                <?= $a['justificacion'] ?>
+                            <td colspan="2" scope="row" class="py-2 px-6" valign="top">
+                                Justificación por variación: <?= $a['justificacion'] ?>
                                 <br>
-                                Reportado por:<b> <?= $a['justificacion'] . "<br>" . $a['nombre'].' ' . $a['apellidos']. "</b>" . dia($a['fecha_avance']) ?>
+                                Reportado por:<b> <?= $a['nombre'].' ' . $a['apellidos']. "</b> El " . dia($a['fecha_avance']) ?>
                             </td>
-                            <td class="py-2 px-6" colspan="3" align="center" valign="top">
-                                
+                            <td colspan="2" scope="row" class="py-2 px-6" valign="top">
+                                Descripcion de la Evidencia <?= $a['descripcion_evidencia'] ?>
+                            </td>
+                            <td class="py-2 px-6" colspan="2" align="center" valign="top">
+                                <?php if($a['localidades']): ?>
+                                    Localidades:
+                                    <?php $locas = explode(",", $a['localidades']);
+                                        foreach ($locas as $a):
+                                            print $localidades[$locas['id_localidad']];
+                                        endforeach ?>
+                                <?php endif ?>
                             </td>
                         </tr>
                     </tbody>
