@@ -1080,6 +1080,19 @@ CREATE TABLE usuarios(
 -- 4 > Director o coordinador de dependencia, puede agrar avances, evidencia, pedir reconducciones y CREAR USUARIOS. @metepec.
 -- 5 > Enlace. Permite capturar avances, pedir reconducciones, solo administra su propia cuenta.
 
+-- Roles:
+
+-- 1 > PBRM
+-- 2 > PDM  
+-- 3 > Calidad 
+-- 4 > Mejora
+-- etc
+
+-- Desccentralizados:
+-- 1 > OPDAPAS
+-- 2 > DIF
+-- 3 > IMCUFIDEM
+
 DROP TABLE IF EXISTS permisos;
 CREATE TABLE permisos(
   permiso INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -1087,6 +1100,8 @@ CREATE TABLE permisos(
   id_dependencia INT,
   id_area INT,
   nivel INT,
+  rol INT,
+  descentralizados INT,
   anio VARCHAR(5)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
@@ -5278,6 +5293,8 @@ CREATE TABLE avances(
   id_usuario_avance INT,
   validado INT DEFAULT 0,
   id_usuario_validador INT,
+  validado_2 INT DEFAULT 0,
+  id_usuario_validador_2 INT,
   fecha_avance TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   fecha_validador TIMESTAMP NULL,
   CONSTRAINT FK_avane_actividad FOREIGN KEY (id_actividad) REFERENCES actividades (id_actividad) ON DELETE CASCADE,

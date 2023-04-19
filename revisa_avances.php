@@ -19,12 +19,18 @@ if($_SESSION['sistema'] == "pbrm"){
     <?php
 //  -------------------------------------------- PRIMERO SI ES DE ACTIVIDADES -----------------------
         if($tipo == "actividades"):        
-            $Avances = ConsultaAvancesActividades($con);
+            $Avances = ConsultaAvancesActividades($con, $permisos);
 
             if(!$Avances){
                 print "No Tienes Avances Pendientes Por Revisión";
             }
-            foreach($Avances as $a): ?>
+
+            foreach($Avances as $a): 
+                if($permisos['rol'] ==1 && $permisos['id_usuario'] != $a['id_administrador']){
+                    continue;
+                }
+            ?>
+
 
             <div class="p-6 w-full bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
                 
@@ -100,15 +106,50 @@ if($_SESSION['sistema'] == "pbrm"){
                                 Reportado por:<b> <?= $a['justificacion'] . "<br>" . $a['nombre'].' ' . $a['apellidos']. "</b>" . dia($a['fecha_avance']) ?>
                             </td>
                             <td class="py-2 px-6" colspan="3" align="center" valign="top">
+                                
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-900 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="py-3 px-6" align="center"> 
+                                Validacion PbRM                            
+                            </th>
+                            <th scope="col" class="py-3 px-6" align="center">
+                                Validacion PDM
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align:center;">
                                 <form action="models/avances_modelo.php" method="post">
                                     <input type="hidden" name="id_avance" value="<?= $a['id_avance']?>">
                                     <input type="hidden" name="usuario" value="<?= $_SESSION['id_usuario'] ?>">
-                                    <button type="submit" name="valida_actividad" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Validar</button>
-                                    <button type="submit" name="cancela_actividad" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Rechazar</button>
+                                    <?php if($a['validado'] == 0): ?>
+                                        <button type="submit" name="valida_actividad" value="1" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Validar</button>
+                                        <button type="submit" name="cancela_actividad1" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Rechazar</button>
+                                    <?php endif ?>
+                                    <?php if($a['validado'] == 1): ?>
+                                        Validado por: <?= $a['nombre1'] . " " . $a['apellidos'] ?>
+                                    <?php endif ?>
+                                </form>
+                            </td>
+
+                            <td style="text-align:center;">
+                                <form action="models/avances_modelo.php" method="post">
+                                    <input type="hidden" name="id_avance" value="<?= $a['id_avance']?>">
+                                    <input type="hidden" name="usuario" value="<?= $_SESSION['id_usuario'] ?>">
+                                    <button type="submit" name="valida_actividad" value="2" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Validar</button>
+                                    <button type="submit" name="cancela_actividad2" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Rechazar</button>
                                 </form>
                             </td>
                         </tr>
                     </tbody>
+                    
                 </table>
             </div>
 <br>

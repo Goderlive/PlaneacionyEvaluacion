@@ -3,16 +3,21 @@ require_once 'conection.php';
 
 function ConsultaAvancesActividades($con){
 
-    $stm = $con->query("SELECT a.id_avance, a.mes, a.avance, a.justificacion, a.path_evidenia_evidencia, a.descripcion_evidencia, a.fecha_avance,
+    $stm = $con->query("SELECT a.id_avance, a.mes, a.avance, a.justificacion, a.path_evidenia_evidencia, a.descripcion_evidencia, a.fecha_avance, a.validado, a.validado_2, a.id_usuario_validador, a.id_usuario_validador_2,
     u.nombre, u.apellidos, u.correo_electronico, u.tel,
     ac.nombre_actividad, ac.unidad,
     ar.nombre_area,
+    dp.id_administrador,
     dp.nombre_dependencia,
     dpg.clave_dependencia,
     dpa.clave_dependencia_auxiliar,
     py.codigo_proyecto,
-    pr.*
+    pr.*,
+    us1.nombre as nombre1, us1.apellidos as apellidos2,
+    us2.nombre as nombre2, us2.apellidos as apellidos2
     FROM avances a
+    LEFT JOIN lineasactividades la ON la.id_actividad = a.id_actividad
+    LEFT JOIN pdm_lineas pdml ON pdml.clave_linea = la.id_linea
     LEFT JOIN usuarios u ON u.id_usuario = a.id_usuario_avance
     LEFT JOIN actividades ac ON ac.id_actividad = a.id_actividad
     LEFT JOIN areas ar ON ar.id_area = ac.id_area
@@ -21,7 +26,10 @@ function ConsultaAvancesActividades($con){
     LEFT JOIN dependencias_auxiliares dpa ON dpa.id_dependencia_auxiliar = ar.id_dependencia_aux
     LEFT JOIN proyectos py ON py.id_proyecto = ar.id_proyecto
     LEFT JOIN programaciones pr ON pr.id_actividad = ac.id_actividad
-    WHERE a.validado != 1");
+    LEFT JOIN usuarios us1 ON us1.id_usuario = a.id_usuario_validador
+    LEFT JOIN usuarios us2 ON us2.id_usuario = a.id_usuario_validador
+    WHERE a.validado != 1 OR a.validado_2 != 1
+    GROUP BY a.id_actividad");
     $data_avances_actividades = $stm->fetchAll(PDO::FETCH_ASSOC);
     //var_dump($data_avances_actividades);
     return $data_avances_actividades;
@@ -59,7 +67,12 @@ if($_POST){
     $tipo = '';
     $data = $_POST;
     if(isset($_POST['valida_actividad'])){
-        $sql = "UPDATE avances SET validado = 1, id_usuario_validador = ?, fecha_validador = NOW() WHERE id_avance = ?";
+        if($_POST['valida_actividad'] == 1){
+            $sql = "UPDATE avances SET validado = 1, id_usuario_validador = ?, fecha_validador = NOW() WHERE id_avance = ?";
+        }
+        if($_POST['valida_actividad'] == 2){
+            $sql = "UPDATE avances SET validado_2 = 1, id_usuario_validador = ?, fecha_validador = NOW() WHERE id_avance = ?";
+        }
         $sqlr = $con->prepare($sql);
         $sqlr->execute(array($data['usuario'], $data['id_avance']));
         $tipo = "actividades";
