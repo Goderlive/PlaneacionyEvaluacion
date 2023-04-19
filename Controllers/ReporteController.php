@@ -327,7 +327,7 @@ function Modales($con, $actividadesDB, $el_mes, $permisos){
                     </div>
                     
                     <!-- Modal body -->
-                    <div class="p-6 space-y-6">
+                    <div class="p-4 space-y-4">
                         <form action="models/Reporte_Model.php" method="POST" enctype="multipart/form-data">
                             <input type="hidden" name="mes" value="'.$el_mes.'">
                             <input type="hidden" name="year" value="'.$year.'">
