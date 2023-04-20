@@ -11,7 +11,18 @@ session_destroy();
     <link rel="stylesheet" href="./css/styles.css">
     <!-- MDB -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.0.0/mdb.min.css" rel="stylesheet"/>
-	  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=6LcZfqElAAAAADzerIJUYxVVssVh6IMposVwupF2"></script>
+    <script>
+      function onClick(e) {
+        e.preventDefault();
+        grecaptcha.ready(function() {
+          grecaptcha.execute('reCAPTCHA_site_key', {action: 'submit'}).then(function(token) {
+              // Add your logic to submit to your backend server here.
+          });
+        });
+      }
+  </script>
+</script>
     <title>Iniciar Sesión</title>
 </head>
 <body>
@@ -24,7 +35,7 @@ session_destroy();
       <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
       <h3 class="text-center">Sistema de Monitoreo Tablero de Control y Seguimiento del PBRM <br><b>(SIMONTS)</b></h3>
       <br>
-        <form action="validar_login.php" method="POST" autocomplete="off">
+        <form action="validar_login.php" id="loginsimonts" method="POST" autocomplete="off">
           <!-- Email input -->
           <div class="form-outline mb-4">
             <input autofocus type="email" name="correo_electronico" class="form-control form-control-lg" placeholder="Ingresa tu correo electrónico" required />
@@ -40,10 +51,6 @@ session_destroy();
             <input class="form-check-input" onclick="ver_contrasena()" type="checkbox" value="" id=""/>
             <label class="form-check-label" for="">Mostrar Contraseña</label>
           </div>
-          <div class="d-flex justify-content-center pt-2">
-		        <div class="g-recaptcha" data-sitekey="6LfZhsceAAAAAGaNBKstStjuyOLk6eO2iB1ZRSf0"></div>
-          </div>
-
           <div class="text-center text-lg-center mt-4 pt-2">
             <button type="submit" class="btn text-white btn-lg" style="padding-left: 1.5rem; padding-right: 1.5rem; background-color:#a184bc;">Ingresar</button>
           </div>

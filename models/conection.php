@@ -1,9 +1,19 @@
 <?php
 date_default_timezone_set('America/Mexico_City');
 
-$conect = 'mysql:host=localhost;dbname=planeacion_y_evaluacion;charset=utf8';
-$username = 'root';
-$dbpass = '';
+// local
+// $conect = 'mysql:host=localhost;dbname=planeacion_y_evaluacion;charset=utf8';
+// $username = 'root';
+// $dbpass = '';
+
+
+// metepec.simontspbrm.com
+$conect = 'mysql:host=localhost;dbname=holawebc_simonts;charset=utf8';
+$username = 'holawebc_usersimonts';
+$dbpass = 'SirmStokes170390??';
+
+
+
 
 try {
 	$con = new PDO($conect, $username , $dbpass);

@@ -35,12 +35,14 @@ if($_SESSION['sistema'] == "pbrm"){
 <h2 class="mb-4 text-2xl font-extrabold tracking-tight leading-none text-gray-800 md:text-5xl lg:text-6xl dark:text-white">Esta Sección permite administrar lo referente a las Areas</h2>
 <br>
 
-        
+<?php if($permisos['nivel'] == 5): ?>
+    Tu cuenta no permite imprimir estos formatos, por favor, ponte en contacto con tu enlace.
+<?php endif ?>
         
 
 <!-- Esta primer Area permite agregar el nombre de un director pero solo esta disponible para enlaces y enlaces de enlaces, no para administradores -->
 <!-- Por o que debemos meter una condicion. -->
-<?php if($permisos['nivel'] >= 4): ?>
+<?php if($permisos['nivel'] == 4): ?>
 <div class="grid grid-cols-4">
     <?php 
         $director = TraeDirector($con, $id_dependencia);

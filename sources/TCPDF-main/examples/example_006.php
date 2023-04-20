@@ -74,8 +74,27 @@ $Director_gobierno_por_resultados = $stm->fetch(PDO::FETCH_ASSOC);
 
 function Sumador($data, $trimestre){
 	if ($trimestre != 0){
-		$meses = QueTrimestreEs($trimestre);
-		$data = array_slice($data,$meses[0], $meses[1]);
+		$thismes = substr($trimestre, 0,1);
+		if($thismes == 1){
+			$narray = array();
+			array_push($narray, $data['enero'], $data['febrero'], $data['marzo']); 
+			$data = $narray;
+		}
+		if($thismes == 2){
+			$narray = array();
+			array_push($narray, $data['abril'], $data['mayo'], $data['junio']);
+			$data = $narray;
+		}
+		if($thismes == 3){
+			$narray = array();
+			array_push($narray, $data['julio'], $data['agosto'], $data['septiembre']); 
+			$data = $narray;
+		}
+		if($thismes == 4){
+			$narray = array();
+			array_push($narray,  $data['octubre'], $data['noviembre'], $data['diciembre']); 
+			$data = $narray;
+		}
 	}
 	$sum = 0;
 	foreach($data as $d){
@@ -158,7 +177,13 @@ WHERE id_area = $id_area ");
 $actividades = $stm->fetchAll(PDO::FETCH_ASSOC);
 
 
-
+function calcularPorcentaje($numerador, $denominador) {
+	if ($denominador != 0) {
+	  return intval(($numerador / $denominador) * 100);
+	} else {
+	  return "N/A";
+	}
+  }
 foreach($actividades as $actividad){
 	$programacionAnual = array_slice($actividad, 15,-1);
 	$sumaAnual = Sumador($programacionAnual,0);
@@ -168,13 +193,7 @@ foreach($actividades as $actividad){
 	$acumuladoAvances = BuscaAvancesAcumulados($con, $actividad, $trimestre);
 
 	// condiciones de ceros
-	function calcularPorcentaje($numerador, $denominador) {
-		if ($denominador != 0) {
-		  return intval(($numerador / $denominador) * 100);
-		} else {
-		  return "N/A";
-		}
-	  }
+	
 	  
 	  $porcentajetrimestral = calcularPorcentaje($metaTrimestral, $sumaAnual);
 	  $avancetromestreprocentaje = calcularPorcentaje($alcanzadoTrimestre, $sumaAnual);
@@ -547,6 +566,8 @@ foreach($seguimiento as $s){
 	} 
 	if($avance[3] != 0){
 		$porcentajecumplimiento = substr(($avance['3'] / $proganual) *100, 0,5) . "%";
+	}else{
+		$porcentajecumplimiento = "N/A";
 	}
 
 	$tabseg .= '
@@ -771,8 +792,8 @@ $pdf->lastPage();
 $nombrecito = substr($dependencia['nombre_area'], 0,12);
 //Close and output PDF document
 
-$pdf->Output($nombrecito. "_" .$dependencia['clave_dependencia'] . "-" . $dependencia['clave_dependencia_auxiliar'] . "-" . $dependencia['codigo_proyecto'] . "_". $trimestre .' trimestre.pdf', 'D');
-//$pdf->Output($nombrecito. "_" .$dependencia['clave_dependencia'] . "-" . $dependencia['clave_dependencia_auxiliar'] . "-" . $dependencia['codigo_proyecto'] . "_". $trimestre .' trimestre.pdf', 'I');
+//$pdf->Output($nombrecito. "_" .$dependencia['clave_dependencia'] . "-" . $dependencia['clave_dependencia_auxiliar'] . "-" . $dependencia['codigo_proyecto'] . "_". $trimestre .' trimestre.pdf', 'D');
+$pdf->Output($nombrecito. "_" .$dependencia['clave_dependencia'] . "-" . $dependencia['clave_dependencia_auxiliar'] . "-" . $dependencia['codigo_proyecto'] . "_". $trimestre .' trimestre.pdf', 'I');
 //============================================================+
 // END OF FILE
 //============================================================+
