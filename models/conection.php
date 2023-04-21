@@ -2,15 +2,15 @@
 date_default_timezone_set('America/Mexico_City');
 
 // local
-// $conect = 'mysql:host=localhost;dbname=planeacion_y_evaluacion;charset=utf8';
-// $username = 'root';
-// $dbpass = '';
+$conect = 'mysql:host=localhost;dbname=planeacion_y_evaluacion;charset=utf8';
+$username = 'root';
+$dbpass = '';
 
 
 // metepec.simontspbrm.com
-$conect = 'mysql:host=localhost;dbname=holawebc_simonts;charset=utf8';
-$username = 'holawebc_usersimonts';
-$dbpass = 'SirmStokes170390??';
+// $conect = 'mysql:host=localhost;dbname=holawebc_simonts;charset=utf8';
+// $username = 'holawebc_usersimonts';
+// $dbpass = 'SirmStokes170390??';
 
 
 

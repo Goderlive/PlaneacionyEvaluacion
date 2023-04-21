@@ -136,7 +136,7 @@ if($_SESSION['sistema'] == "pbrm"){
                                     <?php if($a['localidades']): ?>
                                         <?php $locas = explode(",", $a['localidades']);
                                             foreach ($locas as $loca):
-                                                print $localidades[$loca]['nombre_localidad'] . "<br>";
+                                                print $localidades[$loca-1]['nombre_localidad'] . "<br>";
                                             endforeach ?>
                                     <?php else: ?>
                                         <b> No selecciono Localidades </b>

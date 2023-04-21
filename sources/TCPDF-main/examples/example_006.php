@@ -66,6 +66,7 @@ $titular_area = $stm->fetch(PDO::FETCH_ASSOC);
 $stm = $con->query("SELECT * FROM localidades");
 $localidades = $stm->fetchAll();
 
+
 $stm = $con->query("SELECT * FROM setings a
 JOIN titulares t ON t.id_titular = a.id_uippe");
 $Director_gobierno_por_resultados = $stm->fetch(PDO::FETCH_ASSOC);
@@ -431,7 +432,7 @@ function BuscaAvances2($con, $actividad, $trimestre, $localidades){
 			$thislocalidades = explode("," ,$a['localidades']);
 			$local = "Mes " . $i . ": ";
 			foreach($thislocalidades as $tl){
-				$local .= $localidades[$tl]['nombre_localidad'] . ", ";
+				$local .= $localidades[$tl -1]['nombre_localidad'] . ", ";
 			}
 		}else{
 			$local = "";
@@ -578,7 +579,7 @@ foreach($seguimiento as $s){
 		<td style="width:7%; text-align: center; border:1px solid gray; font-size: 7px">'.$s['nombre_dependencia'].'</td>
 		<td style="width:16%; text-align: center; border:1px solid gray; font-size: 7px">'.$s['nombre_actividad'].'</td>
 		<td style="width:5%; text-align: center; border:1px solid gray; font-size: 7px">'.$progtrimestral.'</td>
-		<td style="width:5%; text-align: center; border:1px solid gray; font-size: 7px">'.$alcanzadoTrimestre.'</td>
+		<td style="width:5%; text-align: center; border:1px solid gray; font-size: 7px">'. $avance[3].'</td>
 		<td style="width:5%; text-align: center; border:1px solid gray; font-size: 7px">'.$porcentajecumplimiento.'</td>
 		<td style="width:16%; text-align: center; border:1px solid gray; font-size: 7px">'.$avance[0].'</td>
 		<td style="width:11%; text-align: center; border:1px solid gray; font-size: 7px">'.$avance[1].'</td>
@@ -772,8 +773,9 @@ $html = '
 <br>
 <table style="width: 100%; text-align: center; border-spacing: 3px; ">
 	<tr>
-		<td style="font-size: 8px; width: 34%; border: 1px solid gray;"> ELABORÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $titular_area['nombre'] . " " . $titular_area['apellidos'] . "<br>" . $titular_area['cargo']. '</td>
-		<td style="font-size: 8px; width: 34%; border: 1px solid gray;"> REVISÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $titular_dependencia['nombre'] . " " . $titular_dependencia['apellidos'] . "<br>" . $titular_dependencia['cargo']. '</td>
+		<td style="font-size: 8px; width: 34%; border: 1px solid gray;"> ELABORÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $titular_area['gradoa'] . " " . $titular_area['nombre'] . " " . $titular_area['apellidos'] . "<br>" . $titular_area['cargo']. '</td>
+		<td style="font-size: 8px; width: 34%; border: 1px solid gray;"> REVISÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $titular_dependencia['gradoa'] . " " . $titular_dependencia['nombre'] . " " . $titular_dependencia['apellidos'] . "<br>" . $titular_dependencia['cargo']. '</td>
+		<td style="font-size: 8px; width: 34%; border: 1px solid gray;"> VALIDÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $Director_gobierno_por_resultados['gradoa'] . " " . $Director_gobierno_por_resultados['nombre'] . " " . $Director_gobierno_por_resultados['apellidos'] . "<br>" . $Director_gobierno_por_resultados['cargo']. '</td>
 		<td style="font-size: 8px; width: 32%;"> </td>
 	</tr>	
 </table>
