@@ -11,8 +11,6 @@ function get_usuario($id_usuario,$con){
     LEFT JOIN dependencias d ON d.id_dependencia = a.id_dependencia OR d.id_dependencia = p.id_dependencia
     WHERE u.id_usuario = $id_usuario");
     $data_usuario = $stm->fetch(PDO::FETCH_ASSOC);
-
-    //var_dump($data_usuario);
     return $data_usuario;
 }
 

@@ -13,7 +13,7 @@ if(isset($_SESSION) && isset($_SESSION['sistema']) && $_SESSION['sistema'] == "p
 
   <div class="container text-center mx-auto">
         <br>
-        <h3 class="font-bold text-4xl text-gray-800 border-b-3 border-gray-100 p-2 mb-2">Bienvenido <?= $user['nombre'] . " ". $user['apellidos'] ?></h3>
+        <h3 class="font-bold text-4xl text-gray-800 border-b-3 border-gray-100 p-2 mb-2">Bienvenido(a) <?= $user['nombre'] . " ". $user['apellidos'] ?></h3>
         <br>
 
 

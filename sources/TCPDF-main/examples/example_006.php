@@ -241,7 +241,7 @@ $membretes = '
       <td style="width: 18%;text-align: center " rowspan="3"><img src="images/metepec_logoc.jpg" width="100px"/></td>
     </tr>
     <tr>
-      <td style="text-align: center">GUIA METADOLOGICA PARA EL SEGUIMIENTO Y EVALUACION DEL PLAN DE DESARROLLO MUNICIPAL VIGENTE</td>
+      <td style="text-align: center">GUIA METODOLOGICA PARA EL SEGUIMIENTO Y EVALUACIÓN DEL PLAN DE DESARROLLO MUNICIPAL VIGENTE</td>
     </tr>
     <tr>
       <td style="text-align: center;">&nbsp; <br> Presupuesto Basado en Resultados Municipal</td>
@@ -254,7 +254,7 @@ $membretes = '
 $html = $membretes . '
 <table style="width:100%">
   <tr>
-    <td style="width:40%">
+    <td style="width:35%">
 		&nbsp;<br>
 		<table style="width:100%; border:1px solid gray;">
 			<tr>
@@ -271,7 +271,7 @@ $html = $membretes . '
 		</table>
 	
 	</td>
-	<td style="width:60%">
+	<td style="width:65%">
 		<table style="width:100%;">
 			<tr>
 				<td style="width:30%; text-align: right; font-size: 8px">Dependencia </td>
@@ -353,7 +353,7 @@ $html = $membretes . '
 
 &nbsp; <br>
 
-<table style="width: 100%; text-align: center; border-spacing: 3px; ">
+<table style="width: 100%; text-align: center; border-spacing: 3px; keep-together:always;" nobr="true">
 	<tr>
 		<td style="font-size: 8px; width: 25%; border: 1px solid gray;"> ELABORÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $titular_area['nombre'] . " " . $titular_area['apellidos'] . "<br>" . $titular_area['cargo']. '</td>
 		<td style="font-size: 8px; width: 25%; border: 1px solid gray;"> REVISÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $titular_dependencia['nombre'] . " " . $titular_dependencia['apellidos'] . "<br>" . $titular_dependencia['cargo']. '</td>
@@ -396,30 +396,25 @@ $pdf->AddPage('L', 'LETTER');
 
 function QueTrimestreEs2($trimestre){
 	if($trimestre == "1er" || $trimestre == "1"){
-		$inicio = 1;
-		$fin = 3;
+		return 1;
 	}
 	if($trimestre == "2do" || $trimestre == "2"){
-		$inicio = 4;
-		$fin = 6;
+		return 1;
 	}
 	if($trimestre == "3er" || $trimestre == "3"){
-		$inicio = 7;
-		$fin = 9;
+		return 1;
 	}
 	if($trimestre == "4to" || $trimestre == "4"){
-		$inicio = 10;
-		$fin = 12;
+		return 1;
 	}
-	$data = array($inicio, $fin);
-	return $data;
 }
 
 
 function BuscaAvances2($con, $actividad, $trimestre, $localidades){
 	$trimestre = QueTrimestreEs($trimestre);
 	$stm = $con->query("SELECT * FROM avances  
-	WHERE id_actividad = $actividad AND mes > $trimestre[0] - 1 AND mes < $trimestre[1]+ 1 AND validado = 1");
+	WHERE id_actividad = $actividad AND mes > $trimestre[0] - 1 AND mes < $trimestre[1]+ 1 AND validado = 1
+	ORDER BY mes");
 	$avances = $stm->fetchAll(PDO::FETCH_ASSOC);
 	$todasLocalidades = "";
 	$todosbeneficiarios = "";
@@ -468,60 +463,34 @@ $membretesmagg = '
     </tr>
   </tbody>
 </table>
-<table style="width:100%">
-  <tr>
-    <td style="width:40%">
-		&nbsp;<br>
-		<table style="width:100%; border:1px solid gray;">
-			<tr>
-				<td style="width:40%; text-align: center; border:1px solid gray; font-size: 8px">&nbsp; <br> PbRM 08c</td>
-				<td style="width:60%; text-align: center; font-size: 8px">AVANCE TRIMESTRAL DE METAS DE ACCION POR PROYECTO</td>
-			</tr>
-			<tr>
-				<td colspan="2" style="text-align: center; border:1px solid gray; font-size: 8px"> '. $trimestreNombre.' </td> 
-			</tr>
-			<tr>
-				<td style="text-align: center; border:1px solid gray; font-size: 8px">ENTE PUBLICO: METEPEC </td> 
-				<td style="text-align: center; border:1px solid gray; font-size: 8px">No.: 0103</td> 
-			</tr>
-		</table>
-	
-	</td>
-	<td style="width:60%">
-		<table style="width:100%;">
-			<tr>
-				<td style="width:30%; text-align: right; font-size: 8px">Dependencia </td>
-				<td style="width:20%; text-align: center; border:1px solid gray; font-size: 8px">'.$dependencia['id_dependencia'].'</td>
-				<td style="width:50%; text-align: left; border:1px solid gray; font-size: 8px">'. $dependencia['nombre_dependencia'].'</td>
-			</tr>
-			<tr>
-				<td style="width:30%; text-align: right; font-size: 8px">Área</td>
-				<td style="width:20%; text-align: center; border:1px solid gray; font-size: 8px">'. $dependencia['id_area'].'</td>
-				<td style="width:50%; text-align: left; border:1px solid gray; font-size: 8px">'. $dependencia['nombre_area'].'</td>
-			</tr>
-			<tr>
-				<td style="width:30%; text-align: right; font-size: 8px">Dependencia General</td>
-				<td style="width:20%; text-align: center; border:1px solid gray; font-size: 8px">'. $dependencia['clave_dependencia'].'</td>
-				<td style="width:50%; text-align: left; border:1px solid gray; font-size: 8px">'. $dependencia['nombre_dependencia_general'].'</td>
-			</tr>
-			<tr>
-				<td style="width:30%; text-align: right; font-size: 8px">Dependencia Auxiliar</td>
-				<td style="width:20%; text-align: center; border:1px solid gray; font-size: 8px">'. $dependencia['clave_dependencia_auxiliar'].'</td>
-				<td style="width:50%; text-align: left; border:1px solid gray; font-size: 8px">'. $dependencia['nombre_dependencia_auxiliar'].'</td>
-			</tr>
-			<tr>
-				<td style="width:30%; text-align: right; font-size: 8px">Programa</td>
-				<td style="width:20%; text-align: center; border:1px solid gray; font-size: 8px">'. $dependencia['codigo_programa'].'</td>
-				<td style="width:50%; text-align: left; border:1px solid gray; font-size: 8px">'. $dependencia['nombre_programa'].'</td>
-			</tr>
-			<tr>
-				<td style="width:30%; text-align: right; font-size: 8px">Proyecto</td>
-				<td style="width:20%; text-align: center; border:1px solid gray; font-size: 8px">'. $dependencia['codigo_proyecto'].'</td>
-				<td style="width:50%; text-align: left; border:1px solid gray; font-size: 8px">'. $dependencia['nombre_proyecto'].'</td>
-			</tr>
-		</table>
-	</td>
-  </tr>
+<table style="width:100%; padding: 2px;">
+		<tr>
+			<td style="width:12%; text-align: right; font-size: 8px">Dependencia </td>
+			<td style="width:10%; text-align: center; border:1px solid gray; font-size: 8px">'.$dependencia['id_dependencia'].'</td>
+			<td style="width:28%; text-align: left; border:1px solid gray; font-size: 8px">'. $dependencia['nombre_dependencia'].'</td>
+
+			<td style="width:12%; text-align: right; font-size: 8px">Área</td>
+			<td style="width:10%; text-align: center; border:1px solid gray; font-size: 8px">'. $dependencia['id_area'].'</td>
+			<td style="width:28%; text-align: left; border:1px solid gray; font-size: 8px">'. $dependencia['nombre_area'].'</td>
+		</tr>
+		<tr>
+			<td style="width:12%; text-align: right; font-size: 8px">Dependencia General</td>
+			<td style="width:10%; text-align: center; border:1px solid gray; font-size: 8px">'. $dependencia['clave_dependencia'].'</td>
+			<td style="width:28%; text-align: left; border:1px solid gray; font-size: 8px">'. $dependencia['nombre_dependencia_general'].'</td>
+
+			<td style="width:12%; text-align: right; font-size: 8px">Dependencia Auxiliar</td>
+			<td style="width:10%; text-align: center; border:1px solid gray; font-size: 8px">'. $dependencia['clave_dependencia_auxiliar'].'</td>
+			<td style="width:28%; text-align: left; border:1px solid gray; font-size: 8px">'. $dependencia['nombre_dependencia_auxiliar'].'</td>
+		</tr>
+		<tr>
+			<td style="width:12%; text-align: right; font-size: 8px">Programa</td>
+			<td style="width:10%; text-align: center; border:1px solid gray; font-size: 8px">'. $dependencia['codigo_programa'].'</td>
+			<td style="width:28%; text-align: left; border:1px solid gray; font-size: 8px">'. $dependencia['nombre_programa'].'</td>
+
+			<td style="width:12%; text-align: right; font-size: 8px">Proyecto</td>
+			<td style="width:10%; text-align: center; border:1px solid gray; font-size: 8px">'. $dependencia['codigo_proyecto'].'</td>
+			<td style="width:28%; text-align: left; border:1px solid gray; font-size: 8px">'. $dependencia['nombre_proyecto'].'</td>
+		</tr>
 </table>
 &nbsp; <br>
 
@@ -550,20 +519,19 @@ $tabseg = '
 
 foreach($seguimiento as $s){
 	$avance = BuscaAvances2($con, $s['id_actividad'], $trimestre, $localidades);
-	$thistrimestre = QueTrimestreEs($trimestre);
+	$thistrimestre = QueTrimestreEs2($trimestre);
 	$proganual = $s['enero'] + $s['febrero'] + $s['marzo'] + $s['abril'] + $s['mayo'] + $s['junio'] + $s['julio'] + $s['agosto'] + $s['septiembre'] + $s['octubre'] + $s['noviembre'] + $s['diciembre'];
-
-	if($thistrimestre = 1){
-		$progtrimestral = $s['enero'] + $s['febrero'] + $s['marzo'];
+	if($thistrimestre == 1){
+		$progtrimestral = intval($s['enero']) + intval($s['febrero']) + intval($s['marzo']);
 	} 
-	if($thistrimestre = 2){
-		$progtrimestral = $s['abril'] + $s['mayo'] + $s['junio'];
+	if($thistrimestre == 2){
+		$progtrimestral = intval($s['abril']) + intval($s['mayo']) + intval($s['junio']);
 	} 
-	if($thistrimestre = 3){
-		$progtrimestral = $s['julio'] + $s['agosto'] + $s['septiembre'];
+	if($thistrimestre == 3){
+		$progtrimestral = intval($s['julio']) + intval($s['agosto']) + intval($s['septiembre']);
 	} 
-	if($thistrimestre = 4){
-		$progtrimestral = $s['octubre'] + $s['noviembre'] + $s['diciembre'];
+	if($thistrimestre == 4){
+		$progtrimestral = intval($s['octubre']) + intval($s['noviembre']) + intval($s['diciembre']);
 	} 
 	if($avance[3] != 0){
 		$porcentajecumplimiento = substr(($avance['3'] / $proganual) *100, 0,5) . "%";
@@ -591,7 +559,7 @@ foreach($seguimiento as $s){
 $firmas = '
 &nbsp;
 <br>
-<table style="width: 100%; text-align: center; border-spacing: 3px; ">
+<table style="width: 100%; text-align: center; border-spacing: 3px; keep-together:always;" nobr="true">
 	<tr>
 		<td style="font-size: 8px; width: 34%; border: 1px solid gray;"> ELABORÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $titular_area['nombre'] . " " . $titular_area['apellidos'] . "<br>" . $titular_area['cargo']. '</td>
 		<td style="font-size: 8px; width: 34%; border: 1px solid gray;"> REVISÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $titular_dependencia['nombre'] . " " . $titular_dependencia['apellidos'] . "<br>" . $titular_dependencia['cargo']. '</td>
@@ -771,7 +739,7 @@ $html = '
 
 &nbsp;
 <br>
-<table style="width: 100%; text-align: center; border-spacing: 3px; ">
+<table style="width: 100%; text-align: center; border-spacing: 3px; keep-together:always;" nobr="true">
 	<tr>
 		<td style="font-size: 8px; width: 34%; border: 1px solid gray;"> ELABORÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $titular_area['gradoa'] . " " . $titular_area['nombre'] . " " . $titular_area['apellidos'] . "<br>" . $titular_area['cargo']. '</td>
 		<td style="font-size: 8px; width: 34%; border: 1px solid gray;"> REVISÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $titular_dependencia['gradoa'] . " " . $titular_dependencia['nombre'] . " " . $titular_dependencia['apellidos'] . "<br>" . $titular_dependencia['cargo']. '</td>
@@ -794,8 +762,8 @@ $pdf->lastPage();
 $nombrecito = substr($dependencia['nombre_area'], 0,12);
 //Close and output PDF document
 
-//$pdf->Output($nombrecito. "_" .$dependencia['clave_dependencia'] . "-" . $dependencia['clave_dependencia_auxiliar'] . "-" . $dependencia['codigo_proyecto'] . "_". $trimestre .' trimestre.pdf', 'D');
-$pdf->Output($nombrecito. "_" .$dependencia['clave_dependencia'] . "-" . $dependencia['clave_dependencia_auxiliar'] . "-" . $dependencia['codigo_proyecto'] . "_". $trimestre .' trimestre.pdf', 'I');
+$pdf->Output($nombrecito. "_" .$dependencia['clave_dependencia'] . "-" . $dependencia['clave_dependencia_auxiliar'] . "-" . $dependencia['codigo_proyecto'] . "_". $trimestre .' trimestre.pdf', 'D');
+//$pdf->Output($nombrecito. "_" .$dependencia['clave_dependencia'] . "-" . $dependencia['clave_dependencia_auxiliar'] . "-" . $dependencia['codigo_proyecto'] . "_". $trimestre .' trimestre.pdf', 'I');
 //============================================================+
 // END OF FILE
 //============================================================+

@@ -32,6 +32,9 @@ if($_SESSION['sistema'] == "pbrm"){
                 if($permisos['rol'] == 2 && !$a['lineaactividad']){
                     continue;
                 }
+                if((($permisos['id_usuario'] == $a['id_administrador']) && $permisos['rol'] == 1) && $a['validado'] == 1 ){
+                    continue;
+                }
                 
             ?>
 
@@ -183,29 +186,29 @@ if($_SESSION['sistema'] == "pbrm"){
                                         <button type="submit" name="valida_actividad" value="1" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Validar</button>
                                         <button type="submit" name="cancela_actividad" value="1" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Rechazar</button>
                                     </form>
-                                    <?php else: ?>
-                                        <?php if($permisos['rol'] == 1): ?>
-                                            <?php if($a['validado'] == 0): ?>
-                                                <form action="models/avances_modelo.php" method="post">
-                                                    <input type="hidden" name="id_avance" value="<?= $a['id_avance']?>">
-                                                    <input type="hidden" name="usuario" value="<?= $_SESSION['id_usuario'] ?>">
-                                                    <button type="submit" name="valida_actividad" value="1" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Validar</button>
-                                                    <button type="submit" name="cancela_actividad" value="1" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Rechazar</button>
-                                                </form>
+                                <?php else: ?>
+                                    <?php if($permisos['rol'] == 1): ?>
+                                        <?php if($a['validado'] == 0): ?>
+                                            <form action="models/avances_modelo.php" method="post">
+                                                <input type="hidden" name="id_avance" value="<?= $a['id_avance']?>">
+                                                <input type="hidden" name="usuario" value="<?= $_SESSION['id_usuario'] ?>">
+                                                <button type="submit" name="valida_actividad" value="1" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Validar</button>
+                                                <button type="submit" name="cancela_actividad" value="1" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Rechazar</button>
+                                            </form>
                                         <?php endif ?>
                                         <?php if($a['validado'] == 1): ?>
                                             <b>Validado</b> por: <?= $a['nombre1'] . " " . $a['apellidos1'] ?>
                                         <?php endif ?>
+                                    <?php endif ?>
+                                    <?php if($permisos['rol'] != 1): ?>
+                                        <?php if($a['validado'] == 0): ?>
+                                            <b> Pendiente </b> de validacion por el área de PbRM
                                         <?php endif ?>
-                                        <?php if($permisos['rol'] != 1): ?>
-                                            <?php if($a['validado'] == 0): ?>
-                                                <b> Pendiente </b> de validacion por el área de PbRM
-                                            <?php endif ?>
-                                            <?php if($a['validado'] == 1): ?>
-                                                Validado por: <?= $a['nombre1'] . " " . $a['apellidos1'] ?>
-                                            <?php endif ?>
+                                        <?php if($a['validado'] == 1): ?>
+                                            Validado por: <?= $a['nombre1'] . " " . $a['apellidos1'] ?>
                                         <?php endif ?>
                                     <?php endif ?>
+                                <?php endif ?>
                                     
                             </td>
 

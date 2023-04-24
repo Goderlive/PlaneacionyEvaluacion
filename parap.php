@@ -13,5 +13,23 @@
 </head>
 <body>
 
+  <?php require_once 'models/conection.php' ?>
+  
+  <?php 
+  $sql = "SELECT * FROM lineasactividades la
+    INNER JOIN actividades a ON a.id_actividad = la.id_actividad
+    INNER JOIN pdm_lineas li ON la.id_linea = li.id_linea
+    ORDER BY la.id_linea, la.id_actividad";
+$stm = $con->query($sql);
+$lineas = $stm->fetchAll(PDO::FETCH_ASSOC);
+?>
+
+
+<?php foreach($lineas as $l): ?>
+
+  <p><?= $l['clave_linea'] . "|" . $l['codigo_actividad'] . " " . $l['nombre_actividad'] ?></p>
+
+<?php endforeach ?>
+
 </body>
 </html>
