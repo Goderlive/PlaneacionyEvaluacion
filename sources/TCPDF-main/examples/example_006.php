@@ -355,9 +355,9 @@ $html = $membretes . '
 
 <table style="width: 100%; text-align: center; border-spacing: 3px; keep-together:always;" nobr="true">
 	<tr>
-		<td style="font-size: 8px; width: 25%; border: 1px solid gray;"> ELABORÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $titular_area['nombre'] . " " . $titular_area['apellidos'] . "<br>" . $titular_area['cargo']. '</td>
-		<td style="font-size: 8px; width: 25%; border: 1px solid gray;"> REVISÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $titular_dependencia['nombre'] . " " . $titular_dependencia['apellidos'] . "<br>" . $titular_dependencia['cargo']. '</td>
-		<td style="font-size: 8px; width: 25%; border: 1px solid gray;"> AUTORIZÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $Director_gobierno_por_resultados['nombre'] . " " . $Director_gobierno_por_resultados['apellidos'] . "<br>" . $Director_gobierno_por_resultados['cargo']. '</td>
+		<td style="font-size: 8px; width: 25%; border: 1px solid gray;"> ELABORÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;' . strtoupper($titular_area['gradoa']) . " " . strtoupper($titular_area['nombre']) . " " . strtoupper($titular_area['apellidos']) . "<br>" . strtoupper($titular_area['cargo']) . '</td>
+		<td style="font-size: 8px; width: 25%; border: 1px solid gray;"> REVISÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;' . strtoupper($titular_dependencia['gradoa']) . " " . strtoupper($titular_dependencia['nombre']) . " " . strtoupper($titular_dependencia['apellidos']) . "<br>" . strtoupper($titular_dependencia['cargo']) . '</td>
+		<td style="font-size: 8px; width: 25%; border: 1px solid gray;"> AUTORIZÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;' . strtoupper($Director_gobierno_por_resultados['gradoa']) . " " .strtoupper($Director_gobierno_por_resultados['nombre']) . " " . strtoupper($Director_gobierno_por_resultados['apellidos']) . "<br>" . strtoupper($Director_gobierno_por_resultados['cargo']) . '</td>
 		<td style="font-size: 8px; width: 25%;"> </td>
 	</tr>	
 </table>
@@ -561,8 +561,8 @@ $firmas = '
 <br>
 <table style="width: 100%; text-align: center; border-spacing: 3px; keep-together:always;" nobr="true">
 	<tr>
-		<td style="font-size: 8px; width: 34%; border: 1px solid gray;"> ELABORÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $titular_area['nombre'] . " " . $titular_area['apellidos'] . "<br>" . $titular_area['cargo']. '</td>
-		<td style="font-size: 8px; width: 34%; border: 1px solid gray;"> REVISÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $titular_dependencia['nombre'] . " " . $titular_dependencia['apellidos'] . "<br>" . $titular_dependencia['cargo']. '</td>
+		<td style="font-size: 8px; width: 34%; border: 1px solid gray;"> ELABORÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. strtoupper($titular_area['gradoa']) . " " . strtoupper($titular_area['nombre']) . " " . strtoupper($titular_area['apellidos']) . "<br>" . strtoupper($titular_area['cargo']) . '</td>
+		<td style="font-size: 8px; width: 34%; border: 1px solid gray;"> REVISÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. strtoupper($titular_dependencia['gradoa']) . " " . strtoupper($titular_dependencia['nombre']) . " " . strtoupper($titular_dependencia['apellidos']) . "<br>" . strtoupper($titular_dependencia['cargo']) . '</td>
 		<td style="font-size: 8px; width: 32%;"> </td>
 	</tr>	
 </table>
@@ -741,9 +741,9 @@ $html = '
 <br>
 <table style="width: 100%; text-align: center; border-spacing: 3px; keep-together:always;" nobr="true">
 	<tr>
-		<td style="font-size: 8px; width: 34%; border: 1px solid gray;"> ELABORÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $titular_area['gradoa'] . " " . $titular_area['nombre'] . " " . $titular_area['apellidos'] . "<br>" . $titular_area['cargo']. '</td>
-		<td style="font-size: 8px; width: 34%; border: 1px solid gray;"> REVISÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $titular_dependencia['gradoa'] . " " . $titular_dependencia['nombre'] . " " . $titular_dependencia['apellidos'] . "<br>" . $titular_dependencia['cargo']. '</td>
-		<td style="font-size: 8px; width: 34%; border: 1px solid gray;"> VALIDÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $Director_gobierno_por_resultados['gradoa'] . " " . $Director_gobierno_por_resultados['nombre'] . " " . $Director_gobierno_por_resultados['apellidos'] . "<br>" . $Director_gobierno_por_resultados['cargo']. '</td>
+		<td style="font-size: 8px; width: 34%; border: 1px solid gray;"> ELABORÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. strtoupper($titular_area['gradoa']) . " " . strtoupper($titular_area['nombre']) . " " . strtoupper($titular_area['apellidos']) . "<br>" . strtoupper($titular_area['cargo']) . '</td>
+		<td style="font-size: 8px; width: 34%; border: 1px solid gray;"> REVISÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. strtoupper($titular_dependencia['gradoa']) . " " . strtoupper($titular_dependencia['nombre']) . " " . strtoupper($titular_dependencia['apellidos']) . "<br>" . strtoupper($titular_dependencia['cargo']) . '</td> 
+		<td style="font-size: 8px; width: 34%; border: 1px solid gray;"> VALIDÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. strtoupper($Director_gobierno_por_resultados['gradoa']) . " " . strtoupper($Director_gobierno_por_resultados['nombre']) . " " . strtoupper($Director_gobierno_por_resultados['apellidos']) . "<br>" . strtoupper($Director_gobierno_por_resultados['cargo']) . '</td>
 		<td style="font-size: 8px; width: 32%;"> </td>
 	</tr>	
 </table>

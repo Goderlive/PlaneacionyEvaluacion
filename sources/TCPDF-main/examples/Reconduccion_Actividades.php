@@ -500,7 +500,7 @@ $justificacion = '&nbsp;
 
 $id_area = $reconduccion['id_area'];
 
-$stm = $con->query("SELECT t.nombre, t.apellidos, t.cargo 
+$stm = $con->query("SELECT *
 FROM reconducciones_atividades pr
 JOIN areas a ON a.id_area = pr.id_area
 JOIN titulares t ON t.id_area = a.id_area  
@@ -528,15 +528,21 @@ $stm = $con->query("SELECT * FROM setings a
 JOIN titulares t ON t.id_titular = a.id_uippe");
 $Director_gobierno_por_resultados = $stm->fetch(PDO::FETCH_ASSOC);
 
+
+$stm = $con->query("SELECT * FROM setings a
+JOIN titulares t ON t.id_titular = a.id_tesoreria");
+$tesorero = $stm->fetch(PDO::FETCH_ASSOC);
+
+
 $espacios = Espacios($contadorProgramaciones);
 $firmas = $espacios .'
 <table style="width: 100%; text-align: center; border-spacing: 3px; ">
 	<tr>
-		<td style="font-size: 8px; width: 32%; border: 1px solid gray;"> ELABORÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $titular_area['nombre'] . " " . $titular_area['apellidos'] . "<br>" . $titular_area['cargo']. '</td>
+		<td style="font-size: 8px; width: 32%; border: 1px solid gray;"> ELABORÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. strtoupper($titular_area['gradoa']) . " " . strtoupper($titular_area['nombre']) . " " . strtoupper($titular_area['apellidos']) . "<br>" . strtoupper($titular_area['cargo']) . '</td>
 		<td style="width: 2%;"> &nbsp; </td> 
-		<td style="font-size: 8px; width: 32%; border: 1px solid gray;"> REVISÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $titular_dependencia['nombre'] . " " . $titular_dependencia['apellidos'] . "<br>" . $titular_dependencia['cargo']. '</td>
+		<td style="font-size: 8px; width: 32%; border: 1px solid gray;"> Vo. Bo.<br>&nbsp;<br>&nbsp;<br>&nbsp;'. strtoupper($tesorero['gradoa']) . " " . strtoupper($tesorero['nombre']) . " " . strtoupper($tesorero['apellidos']) . "<br>" . strtoupper($tesorero['cargo']) . '</td>
 		<td style="width: 2%;"> &nbsp; </td> 
-		<td style="font-size: 8px; width: 32%; border: 1px solid gray;"> AUTORIZÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $Director_gobierno_por_resultados['nombre'] . " " . $Director_gobierno_por_resultados['apellidos'] . "<br>" . $Director_gobierno_por_resultados['cargo']. '</td>
+		<td style="font-size: 8px; width: 32%; border: 1px solid gray;"> AUTORIZÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. strtoupper($Director_gobierno_por_resultados['gradoa']) . " " . strtoupper($Director_gobierno_por_resultados['nombre']) . " " . strtoupper($Director_gobierno_por_resultados['apellidos']) . "<br>" . strtoupper($Director_gobierno_por_resultados['cargo']) . '</td>
 	</tr>	
 </table>';
 

@@ -202,7 +202,7 @@ if(isset($_POST) && $_POST){
                                                     <?= $ind['variable_a'] ?>
                                                 </th>
                                                 <td class="py-4 px-5">
-                                                    <?= $ind['umedida_b'] ?>
+                                                    <?= $ind['umedida_a'] ?>
                                                 </td>
 
                                                 <td class="py-4 px-5">

@@ -107,7 +107,7 @@ function item_principal($actual, $buscador, $texto, $destino){
                                 <?= item_context("actividades.php", "Actividades por Área", array(1,2,3,4,5), $mi_permiso) ?>
                                 <?php 
                                     if($mi_permiso != 5){
-                                        echo item_context("reconduccion_actividades.php", "Reducción de Actividades", array(1,2,3,4,5), $mi_permiso); 
+                                        echo item_context("reconduccion_actividades.php", "Reconducción de Actividades", array(1,2,3,4,5), $mi_permiso); 
                                         echo item_context("formatos_actividades.php", "Impresion Formatos", array(1,2,3,4,5), $mi_permiso);
                                         echo item_context("actividades_todas.php", "Todas las Actividades", array(1,2,3,4,5), $mi_permiso);
                                     }

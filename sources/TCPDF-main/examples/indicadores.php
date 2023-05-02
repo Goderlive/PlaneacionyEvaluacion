@@ -145,9 +145,6 @@ function SumadorAcumulado($programacion, $trimestre){
 
 $trimestreNombre = TrimestreNombreCompleto($trimestre);
 
-
-
-
 foreach($indicadores as $indica): // Aqui deberia comenzar el foreach /////////////////////////////////////////////////////////
 // add a page
 $pdf->AddPage();
@@ -180,7 +177,7 @@ $membretestrimestre = '
     </tr>
     <tr>
       <td style="width:10%; text-align: center; border:1px solid gray; font-size: 8px">PbRM-08b</td>
-      <td style="width:90%; text-align: center; border:1px solid gray; font-size: 8px">FICHA TECNICA DE SEGUIMIENTO DE INDICADORES 2021 ESTRATEGICOS O DE GESTION</td>
+      <td style="width:90%; text-align: center; border:1px solid gray; font-size: 8px">FICHA TECNICA DE SEGUIMIENTO DE INDICADORES ' . $indica['anio'] . ' ESTRATEGICOS O DE GESTION</td>
     </tr>
   </tbody>
 </table>
@@ -360,15 +357,21 @@ if(($eficienciaanual > 90) && ($eficienciaanual < 110)){
 
 
 if ($avance['avance_b'] != 0) {
-    $eficienciatrimetral_alcanzada = substr(substr(($programacion_trimestre_a / $programacion_trimestre_b) *100, 0, 5) / substr(($avance['avance_a'] / $avance['avance_b']) *100, 0, 5) *100,0,5);
+    $division_a = ($programacion_trimestre_b != 0) ? ($programacion_trimestre_a / $programacion_trimestre_b) : 0;
+    $division_b = ($avance['avance_b'] != 0) ? ($avance['avance_a'] / $avance['avance_b']) : 0;
+    $eficienciatrimetral_alcanzada = substr(substr(($division_a * 100), 0, 5) / substr(($division_b * 100), 0, 5) * 100, 0, 5);
 } else {
     $eficienciatrimetral_alcanzada = "N/A";
 }
+
 if ($total_acumulado_b != 0 && $alcanzadoAcumulado[1] != 0) {
-    $eficienciaacumulado = substr(($total_acumulado_a / $total_acumulado_b)*100, 0, 5) / substr(($alcanzadoAcumulado[0] / $alcanzadoAcumulado[1]) *100, 0, 5)*100;
+    $division_c = ($total_acumulado_b != 0) ? ($total_acumulado_a / $total_acumulado_b) : 0;
+    $division_d = ($alcanzadoAcumulado[1] != 0) ? ($alcanzadoAcumulado[0] / $alcanzadoAcumulado[1]) : 0;
+    $eficienciaacumulado = substr(($division_c * 100), 0, 5) / substr(($division_d * 100), 0, 5) * 100;
 } else {
     $eficienciaacumulado = 0;
 }
+
 $totalalcanzadoacumulado = is_numeric($alcanzadoAcumulado[0]) && is_numeric($alcanzadoAcumulado[1]) && $alcanzadoAcumulado[1] > 0 ? substr(($alcanzadoAcumulado[0] / $alcanzadoAcumulado[1]) * 100, 0, 5) : 'N/A';
 
 $programacion_trimestre_b = $programacion_trimestre_b ? substr(($programacion_trimestre_a / $programacion_trimestre_b) *100, 0, 5) : "N/A";
@@ -414,8 +417,8 @@ $porcentajes = '
 $firmas = '
 <table style="width: 100%; text-align: center; border-spacing: 10px; ">
 	<tr>
-		<td style="font-size: 8px; width: 50%; border: 1px solid gray;"> ELABORÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $titular_dependencia['nombre'] . " " . $titular_dependencia['apellidos'] . "<br>" . $titular_dependencia['cargo']. '</td>
-		<td style="font-size: 8px; width: 50%; border: 1px solid gray;"> VALIDÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $Director_gobierno_por_resultados['nombre'] . " " . $Director_gobierno_por_resultados['apellidos'] . "<br>" . $Director_gobierno_por_resultados['cargo']. '</td>
+		<td style="font-size: 8px; width: 50%; border: 1px solid gray;"> ELABORÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. strtoupper($titular_dependencia['gradoa']) . " " . strtoupper($titular_dependencia['nombre']) . " " . strtoupper($titular_dependencia['apellidos']) . "<br>" . strtoupper($titular_dependencia['cargo']) . '</td>
+		<td style="font-size: 8px; width: 50%; border: 1px solid gray;"> VALIDÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. strtoupper($Director_gobierno_por_resultados['gradoa']) . " " . strtoupper($Director_gobierno_por_resultados['nombre']) . " " . strtoupper($Director_gobierno_por_resultados['apellidos']) . "<br>" . strtoupper($Director_gobierno_por_resultados['cargo']) . '</td>
 	</tr>	
 </table>
 ';

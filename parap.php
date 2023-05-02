@@ -16,19 +16,18 @@
   <?php require_once 'models/conection.php' ?>
   
   <?php 
-  $sql = "SELECT * FROM lineasactividades la
-    INNER JOIN actividades a ON a.id_actividad = la.id_actividad
-    INNER JOIN pdm_lineas li ON la.id_linea = li.id_linea
-    ORDER BY la.id_linea, la.id_actividad";
+  $sql = "SELECT actividades.id_actividad, actividades.nombre_actividad FROM actividades 
+  LEFT JOIN areas ON areas.id_area = actividades.id_area
+  LEFT JOIN dependencias ON dependencias.id_dependencia = areas.id_dependencia
+  WHERE dependencias.id_dependencia = 41 OR dependencias.id_dependencia = 42 OR dependencias.id_dependencia = 43 
+  GROUP BY actividades.id_actividad   ORDER BY actividades.id_actividad";
 $stm = $con->query($sql);
 $lineas = $stm->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 
 <?php foreach($lineas as $l): ?>
-
-  <p><?= $l['clave_linea'] . "|" . $l['codigo_actividad'] . " " . $l['nombre_actividad'] ?></p>
-
+["<?= $l['id_actividad']?>", "<?= $l['nombre_actividad'] ?>"], <br>
 <?php endforeach ?>
 
 </body>

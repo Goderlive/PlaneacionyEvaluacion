@@ -1,5 +1,7 @@
 RewriteEngine On
 RewriteCond %{HTTP_REFERER} !^$
+RewriteCond %{HTTPS} off
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 #RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?metepec.simontspbrm.com [NC]
 #RewriteRule \.(jpg|jpeg|png|gif)$ - [NC,F,L]
 
@@ -7,4 +9,7 @@ RewriteCond %{HTTP_REFERER} !^$
 	AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/x-javascript application/javascript
 </IfModule>
 
-ErrorDocument 404 /planeacionyevaluacion/404.html
+ErrorDocument 404 /404.html
+php_value upload_max_filesize 50M
+php_value post_max_size 50M
+

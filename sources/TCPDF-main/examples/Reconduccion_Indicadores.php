@@ -81,7 +81,7 @@ $oficio_movimiento_fecha = '&nbsp;
 	<table class="GeneratedTable" style="width: 100%;">
 		<tbody>
 		<tr>
-			<td style="width: 100%; text-align: left">Tipo de Movimiento: Reconucción Programatica</td>
+			<td style="width: 100%; text-align: left">Tipo de Movimiento: Reconducción Programatica</td>
 		</tr>
 		<tr>
 			<td style="width: 100%; text-align: left">N. Oficio: '.$reconduccion['no_oficio'].'</td>
@@ -284,9 +284,9 @@ $Director_gobierno_por_resultados = $stm->fetch(PDO::FETCH_ASSOC);
 $firmas = '
 <table style="width: 100%; text-align: center; border-spacing: 4px; ">
 	<tr>
-		<td style="font-size: 8px; width: 32%; border: 1px solid gray;"> REVISÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $titular_dependencia['nombre'] . " " . $titular_dependencia['apellidos'] . "<br>" . $titular_dependencia['cargo']. '</td>
+		<td style="font-size: 8px; width: 32%; border: 1px solid gray;"> REVISÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;' . strtoupper($titular_dependencia['gradoa']) . " " . strtoupper($titular_dependencia['nombre']) . " " . strtoupper($titular_dependencia['apellidos']) . "<br>" . strtoupper($titular_dependencia['cargo']) . '</td>
 		<td style="width: 2%;"> &nbsp; </td> 
-		<td style="font-size: 8px; width: 32%; border: 1px solid gray;"> AUTORIZÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. $Director_gobierno_por_resultados['nombre'] . " " . $Director_gobierno_por_resultados['apellidos'] . "<br>" . $Director_gobierno_por_resultados['cargo']. '</td>
+		<td style="font-size: 8px; width: 32%; border: 1px solid gray;"> AUTORIZÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;' . strtoupper($Director_gobierno_por_resultados['gradoa']) . " " . strtoupper($Director_gobierno_por_resultados['nombre']) . " " . strtoupper($Director_gobierno_por_resultados['apellidos']) . "<br>" . strtoupper($Director_gobierno_por_resultados['cargo']) . '</td>
 	</tr>	
 </table>';
 
@@ -308,7 +308,7 @@ $pdf->lastPage();
 // ---------------------------------------------------------
 
 //Close and output PDF document
-$pdf->Output('Reconduccion de Actividades.pdf', 'D');
+$pdf->Output('Reconduccion de Indicadores.pdf', 'D');
 
 //============================================================+
 // END OF FILE
