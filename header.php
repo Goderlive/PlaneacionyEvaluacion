@@ -20,7 +20,7 @@ $actual = substr($actual, 1,);
 $actual = explode('/',$actual);
 $actual = $actual[count($actual)-1];
 
-$inicio = array("index.php", "mi_perfil.php", "mis_areas.php", "mis_formatos.php", "ajustes.php", "unidades_medida.php", "administra_usuarios.php", "revisa_avances.php");
+$inicio = array("index.php", "mi_perfil.php", "mis_areas.php", "mis_formatos.php", "ajustes.php", "unidades_medida.php", "administra_usuarios.php", "revisa_avances.php", "captura_trimestral.php");
 $actividades = array("actividades.php", "reconduccion_actividades.php", "actividades_todas.php", "formatos_actividades.php", "reportes.php", "programacion_actividades.php", "mis_reconducciones_actividades.php");
 $indicadores = array("indicadores.php", "reconduccion_indicadores.php", "matrices.php", "formatos_indicadores.php");
 
@@ -99,6 +99,7 @@ function item_principal($actual, $buscador, $texto, $destino){
                                 <?= item_context("mis_formatos.php", "Mis Formatos", array(1,2,3,4), $mi_permiso) ?>
                                 <?= item_context("ajustes.php", "Ajustes", array(1,2), $mi_permiso)?>
                                 <?= item_context("unidades_medida.php", "Unidades de Medida", array(1,2), $mi_permiso)?>
+                                <?= item_context("captura_trimestral.php", "Formatos para Captura Trimestral", array(1,2), $mi_permiso) ?>
                             </ul>
                         </div> <?php endif ?>
                     <?php if(in_array($actual, $actividades)):?>

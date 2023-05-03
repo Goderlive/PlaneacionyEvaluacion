@@ -24,7 +24,8 @@ function TraeAjustes($con){
 
 
 function TraeDirectores($con){
-    $stm = $con->query("SELECT * FROM titulares");
+    $stm = $con->query("SELECT * FROM titulares
+    WHERE id_dependencia != ''");
     $titulares = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $titulares;
 }

@@ -14,6 +14,15 @@ function get_usuario($id_usuario,$con){
     return $data_usuario;
 }
 
+function traeinconsistencias($con){
+    $stm = $con->query("SELECT id_actividad, mes, COUNT(*) as cantidad
+    FROM avances
+    GROUP BY id_actividad, mes
+    HAVING COUNT(*) > 1");
+    $inconsistencias = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $inconsistencias;
+}
+
 function getPermisos($con, $id_usuario){
     $anio = date("Y");
     $stm = $con->query("SELECT * FROM permisos WHERE id_usuario = $id_usuario AND anio = $anio");

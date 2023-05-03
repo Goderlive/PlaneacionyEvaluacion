@@ -329,10 +329,17 @@ $comportamiento = '
 
 
 if ($programacion_trimestre_b != 0 && $avance['avance_b'] != 0) {
-    $eficienciatrimetral = substr(substr(($programacion_trimestre_a / $programacion_trimestre_b) *100, 0, 5) / substr(($avance['avance_a'] / $avance['avance_b']) *100, 0, 5) *100,0,5);
+    $eficienciatrimetral_a = ($programacion_trimestre_a / $programacion_trimestre_b) * 100;
+    $eficienciatrimetral_b = ($avance['avance_a'] / $avance['avance_b']) * 100;
+    if ($eficienciatrimetral_b != 0) {
+        $eficienciatrimetral = substr(substr(($eficienciatrimetral_a / $eficienciatrimetral_b) * 100, 0, 5), 0, 5);
+    } else {
+        $eficienciatrimetral = "N/A";
+    }
 } else {
     $eficienciatrimetral = "N/A";
 }
+
 if(($eficienciatrimetral > 90) && ($eficienciatrimetral < 110)){
 	$color = "color:green;";
 	$semaforotrimestral = "Aceptable";
@@ -348,7 +355,7 @@ if ($total_acumulado_b != 0 && $alcanzadoAcumulado[1] != 0 && $total_acumulado_a
 }
 if(($eficienciaanual > 90) && ($eficienciaanual < 110)){
 	$colora = "color:green;";
-	$semaforoanual = "Aceptable";
+	$semaforoanual = "Aceptable";	
 }else{
 	$colora = "color:red;";
 	$semaforoanual = "Critico";
@@ -359,17 +366,26 @@ if(($eficienciaanual > 90) && ($eficienciaanual < 110)){
 if ($avance['avance_b'] != 0) {
     $division_a = ($programacion_trimestre_b != 0) ? ($programacion_trimestre_a / $programacion_trimestre_b) : 0;
     $division_b = ($avance['avance_b'] != 0) ? ($avance['avance_a'] / $avance['avance_b']) : 0;
-    $eficienciatrimetral_alcanzada = substr(substr(($division_a * 100), 0, 5) / substr(($division_b * 100), 0, 5) * 100, 0, 5);
+    if ($division_b != 0) {
+        $eficienciatrimetral_alcanzada = substr(($division_a / $division_b) * 100, 0, 5);
+    } else {
+        $eficienciatrimetral_alcanzada = "N/A";
+    }
 } else {
     $eficienciatrimetral_alcanzada = "N/A";
 }
 
+
 if ($total_acumulado_b != 0 && $alcanzadoAcumulado[1] != 0) {
     $division_c = ($total_acumulado_b != 0) ? ($total_acumulado_a / $total_acumulado_b) : 0;
     $division_d = ($alcanzadoAcumulado[1] != 0) ? ($alcanzadoAcumulado[0] / $alcanzadoAcumulado[1]) : 0;
-    $eficienciaacumulado = substr(($division_c * 100), 0, 5) / substr(($division_d * 100), 0, 5) * 100;
+    if ($division_d != 0) {
+        $eficienciaacumulado = substr(($division_c / $division_d) * 100, 0, 5);
+    } else {
+        $eficienciaacumulado = "N/A";
+    }
 } else {
-    $eficienciaacumulado = 0;
+    $eficienciaacumulado = "N/A";
 }
 
 $totalalcanzadoacumulado = is_numeric($alcanzadoAcumulado[0]) && is_numeric($alcanzadoAcumulado[1]) && $alcanzadoAcumulado[1] > 0 ? substr(($alcanzadoAcumulado[0] / $alcanzadoAcumulado[1]) * 100, 0, 5) : 'N/A';

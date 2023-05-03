@@ -538,7 +538,7 @@ $espacios = Espacios($contadorProgramaciones);
 $firmas = $espacios .'
 <table style="width: 100%; text-align: center; border-spacing: 3px; ">
 	<tr>
-		<td style="font-size: 8px; width: 32%; border: 1px solid gray;"> ELABORÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. strtoupper($titular_area['gradoa']) . " " . strtoupper($titular_area['nombre']) . " " . strtoupper($titular_area['apellidos']) . "<br>" . strtoupper($titular_area['cargo']) . '</td>
+		<td style="font-size: 8px; width: 32%; border: 1px solid gray;"> ELABORÓ <br>&nbsp;<br>&nbsp;<br>&nbsp;'. strtoupper($titular_dependencia['gradoa']) . " " . strtoupper($titular_dependencia['nombre']) . " " . strtoupper($titular_dependencia['apellidos']) . "<br>" . strtoupper($titular_dependencia['cargo']) . '</td>
 		<td style="width: 2%;"> &nbsp; </td> 
 		<td style="font-size: 8px; width: 32%; border: 1px solid gray;"> Vo. Bo.<br>&nbsp;<br>&nbsp;<br>&nbsp;'. strtoupper($tesorero['gradoa']) . " " . strtoupper($tesorero['nombre']) . " " . strtoupper($tesorero['apellidos']) . "<br>" . strtoupper($tesorero['cargo']) . '</td>
 		<td style="width: 2%;"> &nbsp; </td> 

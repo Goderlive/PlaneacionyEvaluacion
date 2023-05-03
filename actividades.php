@@ -63,7 +63,10 @@ $user_anio = $_SESSION['anio'];
 
 
                     <a href="#">
-                        <span class="inline-block bg-red-600 text-white rounded-full px-3 py-1 text-sm font-semibold text-white-700 mr-2 mb-2">¡Importante!</span>
+                        <?php $lineas = buscalineas($con, $area['id_area']) ?>
+                        <?php if($lineas): ?>
+                            <span class="inline-block bg-red-600 text-white rounded-full px-3 py-1 text-sm font-semibold text-white-700 mr-2 mb-2">Esta area tiene Actividades vinculadas al PDM</span>
+                        <?php endif ?>
                     </a>
                 </div>
             </div>
