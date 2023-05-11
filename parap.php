@@ -13,22 +13,34 @@
 </head>
 <body>
 
-  <?php require_once 'models/conection.php' ?>
-  
-  <?php 
-  $sql = "SELECT actividades.id_actividad, actividades.nombre_actividad FROM actividades 
-  LEFT JOIN areas ON areas.id_area = actividades.id_area
-  LEFT JOIN dependencias ON dependencias.id_dependencia = areas.id_dependencia
-  WHERE dependencias.id_dependencia = 41 OR dependencias.id_dependencia = 42 OR dependencias.id_dependencia = 43 
-  GROUP BY actividades.id_actividad   ORDER BY actividades.id_actividad";
+<?php 
+$sql = " SELECT * FROM indicadores_uso iu
+LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador
+LEFT JOIN dependencias dp ON iu.id_dependencia = dp.id_dependencia 
+LEFT JOIN dependencias_generales dg ON iu.id_dep_general = dg.id_dependencia
+LEFT JOIN dependencias_auxiliares da ON da.id_dependencia_auxiliar = iu.id_dep_aux
+LEFT JOIN proyectos py ON py.id_proyecto = iu.id_proyecto
+ORDER BY dg.clave_dependencia, da.clave_dependencia_auxiliar, py.codigo_proyecto
+";
 $stm = $con->query($sql);
-$lineas = $stm->fetchAll(PDO::FETCH_ASSOC);
-?>
+$indicadores_avances = $stm->fetchAll(PDO::FETCH_ASSOC);?>
 
 
-<?php foreach($lineas as $l): ?>
-["<?= $l['id_actividad']?>", "<?= $l['nombre_actividad'] ?>"], <br>
-<?php endforeach ?>
+
+
+Muestra los avances de indicadores <br>
+<table>
+    
+    <?php foreach($indicadores_avances as $indica): ?>
+        <?php if($indica['id_avance'] ): ?>
+            <?= '["' . $indica['clave_dependencia'] . " | " . $indica['clave_dependencia_auxiliar'] . " | " . $indica['codigo_proyecto'] . " | " . $indica['nombre_indicador'] . " | " . $indica['at1'] . " | " . $indica['avance_a'] . "</td>". "</tr>" ?>
+            <?= '["' . $indica['clave_dependencia'] . " | " . $indica['clave_dependencia_auxiliar'] . " | " . $indica['codigo_proyecto'] . " | " . $indica['nombre_indicador'] . " | " . $indica['bt1'] . " | " . $indica['avance_b'] . "</td>". "</tr>" ?>
+        <?php endif ?>
+    <?php endforeach ?>
+            <br>
+            <br>
+</table>
+
 
 </body>
 </html>

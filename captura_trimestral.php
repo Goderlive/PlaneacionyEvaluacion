@@ -13,6 +13,30 @@ if(isset($_SESSION) && isset($_SESSION['sistema']) && $_SESSION['sistema'] == "p
 <body>
 
 
+
+
+
+NOS DICE LAS LINEAS DE ACCION QUE NO TIENEN ACTIVIDAD VINCULADA
+<?php 
+$sqlpdm = "SELECT * FROM pdm_lineas 
+WHERE id_linea NOT IN (SELECT id_linea FROM lineasactividades)
+";
+$stm = $con->query($sqlpdm);
+$verificavinculacion = $stm->fetchAll(PDO::FETCH_ASSOC);?>
+
+
+<?php foreach($verificavinculacion as $uno): ?>
+    <?= $uno['clave_linea'] . ' ' . $uno['nombre_linea'] ?>
+    <br>
+<?php endforeach ?>
+
+
+
+
+
+
+
+
 <?php 
 $sql = " SELECT * FROM indicadores_uso iu
 LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador
@@ -67,7 +91,38 @@ WHERE ac.id_actividad < 941
 $stm = $con->query($sql);
 $actividadesyavances = $stm->fetchAll(PDO::FETCH_ASSOC);?>
 
-Nos imprime las actividades listas para capturar
+
+
+<?php 
+$sqlpdm = " SELECT * FROM lineasactividades la
+LEFT JOIN actividades ac ON ac.id_actividad = la.id_actividad
+LEFT JOIN pdm_lineas pl ON pl.id_linea = la.id_linea
+LEFT JOIN pdm_estrategias es ON es.id_estrategia = pl.id_estrategia
+LEFT JOIN pdm_objetivos ob ON ob.id_objetivo = es.id_objetivo
+LEFT JOIN temas_pdm tm ON tm.id_tema = ob.id_tema
+LEFT JOIN pilaresyejes pe ON pe.id_pilaroeje = tm.id_pilar
+LEFT JOIN programaciones pr ON pr.id_actividad = ac.id_actividad 
+LEFT JOIN areas ar ON ar.id_area = ac.id_area
+LEFT JOIN dependencias dp ON dp.id_dependencia = ar.id_dependencia
+LEFT JOIN avances av ON av.id_actividad = ac.id_actividad
+ORDER BY dp.nombre_dependencia ASC
+";
+$stm = $con->query($sqlpdm);
+$actividadesyavancespdm = $stm->fetchAll(PDO::FETCH_ASSOC);?>
+
+
+<h1> nos dice las actividades faltantes de reportar PDM</h1>
+
+<?php foreach($actividadesyavancespdm as $faltamagi): ?>
+    <?php if(isset($faltamagi['id_linea'])): ?>
+        <?php if(!$faltamagi['id_avance']): ?>
+            <?= $faltamagi['nombre_dependencia'] . " /// " .  $faltamagi['nombre_actividad'] ?> <br>
+        <?php endif ?>
+    <?php endif ?>
+<?php endforeach ?>
+
+<br><br><br>
+<h2>Nos imprime las actividades listas para capturar</h2>
 
 <?php 
 function revisaavances($con, $id_actividad, $mes1, $mes3){
@@ -88,28 +143,11 @@ foreach($actividadesyavances as $a):
             $metatrimav += $v['avance'];            
         }
         $metatrimpro = $a['enero'] + $a['febrero'] + $a['marzo'];
-        if($metatrimav != $metatrimpro){
-        print '<tr style="background-color: #FFFF00;">';
-            print "<td>" . $a['clave_dependencia'] ." </td>";
-            print "<td>" . $a['clave_dependencia_auxiliar'] ." </td>";
-            print "<td>" . $a['codigo_proyecto'] ." </td>";
-            print "<td>" . $a['codigo_actividad'] ." </td>";
-            print "<td>" . $a['nombre_actividad'] ." </td>";
-            print "<td>" . $metatrimpro ." </td>";
-            print "<td>" . $metatrimav ." </td>";
-        print "</tr>";
-            $contador +=1;
-        }else{
-            print '<tr>';
-            print "<td>" . $a['clave_dependencia'] ." </td>";
-            print "<td>" . $a['clave_dependencia_auxiliar'] ." </td>";
-            print "<td>" . $a['codigo_proyecto'] ." </td>";
-            print "<td>" . $a['codigo_actividad'] ." </td>";
-            print "<td>" . $a['nombre_actividad'] ." </td>";
-            print "<td>" . $metatrimpro ." </td>";
-            print "<td>" . $metatrimav ." </td>";
-        print "</tr>";
-        }
+        $metaanual = $a['enero'] + $a['febrero'] + $a['marzo'] + $a['abril'] + $a['mayo'] + $a['junio'] + $a['julio'] + $a['agosto'] + $a['septiembre'] + $a['octubre'] + $a['noviembre'] + $a['diciembre'];
+        print '["' . $a['clave_dependencia'] . '","' . $a['clave_dependencia_auxiliar'] . '","' . $a['codigo_proyecto'] . '","' . $a['codigo_actividad'] . '","' . $a['nombre_actividad'] . '","' . $metaanual . '","' . $metatrimpro . '","' . $metatrimav . '"],';
+        print "<br>";
+        $contador +=1;
+
     
     }
 ?>
@@ -117,7 +155,7 @@ foreach($actividadesyavances as $a):
 <?php endforeach ?>
 </table>
 
-Nos dice las dependencias que faltan de capturar actividades
+Nos dice las dependencias que faltan de capturar actividades <br>
 <?php 
 $sql = " SELECT * FROM actividades ac
 LEFT JOIN programaciones pr ON pr.id_actividad = ac.id_actividad

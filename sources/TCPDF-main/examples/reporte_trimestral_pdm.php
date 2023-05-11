@@ -12,7 +12,7 @@ class MYPDF extends TCPDF {
 		$image_file = K_PATH_IMAGES.'metepec_logoc.jpg';
 		$this->Image($image_file, 10, 10, 15, '', 'JPG', '', 'T', false, 300, '', false, false, 0, false, false, false);
 		// Set font
-		$this->setFont('helvetica', 'B', 20);
+		$this->setFont('helvetica', 'B', 15);
 		// Title
 		$this->Cell(0, 15, 'Reporte de maggy', 0, false, 'C', 0, '', 0, false, 'M', 'M');
 	}
@@ -68,69 +68,95 @@ if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
 // ---------------------------------------------------------
 
 // set font
-$pdf->setFont('times', 'BI', 12);
+$pdf->setFont('helvetica', 'BI', 9);
 
 // add a page
 $pdf->AddPage('L', 'LETTER');
-
+$txt = "";
 // set some text to print
 
-$sql = " SELECT * FROM lineasactividades la
-JOIN actividades ac ON ac.id_actividad = la.id_actividad
-JOIN pdm_lineas pl ON pl.id_linea = la.id_linea
-LEFT JOIN programaciones pr ON pr.id_actividad = ac.id_actividad
-LEFT JOIN avances av ON av.id_actividad = ac.id_actividad
-LEFT JOIN areas ar ON ar.id_area = ac.id_area 
-LEFT JOIN dependencias dp ON ar.id_dependencia = dp.id_dependencia 
-LEFT JOIN dependencias_generales dg ON ar.id_dependencia_general = dg.id_dependencia
-LEFT JOIN dependencias_auxiliares da ON da.id_dependencia_auxiliar = ar.id_dependencia_aux
-LEFT JOIN proyectos py ON py.id_proyecto = ar.id_proyecto
-LEFT JOIN pdm_estrategias pe ON pe.id_estrategia = pl.id_estrategia = pe.id_estrategia 
-LEFT JOIN pdm_objetivos po ON po.id_objetivo = pe.id_objetivo
-LEFT JOIN temas_pdm tp ON tp.id_tema = po.id_tema
-LEFT JOIN pilaresyejes pye ON pye.id_pilaroeje = tp.id_pilar
-ORDER BY po.nombre_objetivo, pe.clave_estrategia, pl.clave_linea, ac.codigo_actividad
-";
+//primero imprimimos los pilares y ejes y luego los recorremos con los temas.
+$sql = " SELECT * FROM pilaresyejes";
 $stm = $con->query($sql);
-$actividades = $stm->fetchAll(PDO::FETCH_ASSOC);
+$pilaresyejes = $stm->fetchAll(PDO::FETCH_ASSOC);
+
+function traeobjetivos($con, $id_tema){
+	$sql = " SELECT * FROM pdm_objetivos WHERE id_tema = $id_tema";
+	$stm = $con->query($sql);
+	$objetivos = $stm->fetchAll(PDO::FETCH_ASSOC);
+	return $objetivos;
+}
+
+function traetemas($con, $id_pilar){
+	$sql = " SELECT * FROM temas_pdm WHERE id_pilar = $id_pilar";
+	$stm = $con->query($sql);
+	$temas = $stm->fetchAll(PDO::FETCH_ASSOC);
+	return $temas;
+}
+
+function traeestrategias($con, $id_objetivo){
+	$sql = " SELECT * FROM pdm_estrategias WHERE id_objetivo = $id_objetivo";
+	$stm = $con->query($sql);
+	$estrategias = $stm->fetchAll(PDO::FETCH_ASSOC);
+	return $estrategias;
+}
+
+
+$trhead = '
+	<thead>
+		<tr>
+			<th style="width:4%; text-align: center; border:1px solid gray; font-size: 8px"><b>Obj. </b></th>
+			<th style="width:4%; text-align: center; border:1px solid gray; font-size: 8px"><b>Estr. </b></th>
+			<th style="width:16%; text-align: center; border:1px solid gray; font-size: 8px"><b>Líneas de acción </b></th>
+			<th style="width:7%; text-align: center; border:1px solid gray; font-size: 8px"><b>Área(s) Responsable (s)</b></th>
+			<th style="width:10%; text-align: center; border:1px solid gray; font-size: 8px"><b>Acciones realizadas</b></th>
+			<th style="width:6%; text-align: center; border:1px solid gray; font-size: 8px"><b>Unidad de Medida</b></th>
+			<th style="width:5%; text-align: center; border:1px solid gray; font-size: 8px"><b>Prog.</b></th>
+			<th style="width:5%; text-align: center; border:1px solid gray; font-size: 8px"><b>Alc.</b></th>
+			<th style="width:5%; text-align: center; border:1px solid gray; font-size: 8px"><b>%</b></th>
+			<th style="width:14%; text-align: center; border:1px solid gray; font-size: 8px"><b>Localidad (es) beneficiada (s)</b></th>
+			<th style="width:12%; text-align: center; border:1px solid gray; font-size: 8px"><b>Beneficiarios directos</b></th>
+			<th style="width:12%; text-align: center; border:1px solid gray; font-size: 8px"><b>Origen de los Recursos públicos aplicados</b></th>
+		</tr>
+	</thead>
+';
+
+
+
+foreach($pilaresyejes as $pil):
+	$txt .= "<h4>" . $pil['nombre_pilaoeje'] . " " . $pil['descripcion'] . "</h4>";
+	$temas = traetemas($con, $pil['id_pilaroeje']);
+	foreach($temas as $t): 
+		$txt .= '<table bgcolor="pink" style="width: 100%;border:1px solid gray;"> <tr><td>' . $t['nombre_tema'] . '</td></tr></table>';
+		$objetivos = traeobjetivos($con, $t['id_tema']);
+		$txt .= "<table>";
+		$txt .= $trhead;
+		$txt .= "<tbody>";
+		foreach($objetivos as $o):
+			$estrategias = traeestrategias($con, $o['id_objetivo']);
+			$altoobjetivos = count($estrategias);
+			$txt .= '<tr>';
+			$txt .= '<td rowspan='.$altoobjetivos.' style="font-size: 7px; border:1px solid gray;">' . $o['clave_objetivo'] . " - " . $o['nombre_objetivo'] . '</td>';
+			foreach($estrategias as $es):
+				$txt .= '<td style="font-size: 7px; border:1px solid gray;">' . $es['clave_estrategia'] . " - " . $es['nombre_estrategia'] . '</td>';
+			endforeach;// end estrategias
+			$txt .= '</tr>';
+		endforeach; // end objetivos
+		$txt .= "</tbody>";
+		$txt .= "</table>";
+	endforeach; //end de temas
+endforeach; //end de pilares
 
 
 $iniciotable = '<table>';
 
 
-print '<pre>';
-var_dump($actividades);
-die();
-foreach($actividades as $a){
-
-    print $a['nombre_pilaoeje'];
-
-}
-
-
-$trhead = '
-        <tr>
-            <th style="width:4%; text-align: center; border:1px solid gray; font-size: 8px"><b>Obj. </b></th>
-            <th style="width:4%; text-align: center; border:1px solid gray; font-size: 8px"><b>Estr. </b></th>
-            <th style="width:16%; text-align: center; border:1px solid gray; font-size: 8px"><b>Líneas de acción </b></th>
-            <th style="width:7%; text-align: center; border:1px solid gray; font-size: 8px"><b>Área(s) Responsable (s)</b></th>
-            <th style="width:10%; text-align: center; border:1px solid gray; font-size: 8px"><b>Acciones realizadas</b></th>
-            <th style="width:6%; text-align: center; border:1px solid gray; font-size: 8px"><b>Unidad de Medida</b></th>
-            <th style="width:5%; text-align: center; border:1px solid gray; font-size: 8px"><b>Prog.</b></th>
-            <th style="width:5%; text-align: center; border:1px solid gray; font-size: 8px"><b>Alc.</b></th>
-            <th style="width:5%; text-align: center; border:1px solid gray; font-size: 8px"><b>%</b></th>
-            <th style="width:14%; text-align: center; border:1px solid gray; font-size: 8px"><b>Localidad (es) beneficiada (s)</b></th>
-            <th style="width:12%; text-align: center; border:1px solid gray; font-size: 8px"><b>Beneficiarios directos</b></th>
-            <th style="width:12%; text-align: center; border:1px solid gray; font-size: 8px"><b>Origen de los Recursos públicos aplicados</b></th>
-        </tr>
-';
 
 
 
 $fintable = '</table>'; 
 
 
-$txt = $iniciotable . $trhead . $fintable;
 
 // print a block of text using Write()
 $pdf->writeHTML($txt, true, false, true, false, '');
