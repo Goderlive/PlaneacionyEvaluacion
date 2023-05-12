@@ -116,7 +116,7 @@ if (isset($_POST['jfnkasjnkasdf34q345']) == "Enviar") {
         $dir = '../archivos/actividades/'.$year.'/'.$mes.'/'.$id_dependencia.'/'.$id_area.'/'.$id_actividad.'/';
 
         if(!is_dir($dir)){
-            mkdir($dir, 755, true);
+            mkdir($dir, 0741, true);
         }
 
         $path_evidencia_evidencia = NULL;

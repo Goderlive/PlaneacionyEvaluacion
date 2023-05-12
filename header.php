@@ -22,7 +22,9 @@ $actual = $actual[count($actual)-1];
 
 $inicio = array("index.php", "mi_perfil.php", "mis_areas.php", "mis_formatos.php", "ajustes.php", "unidades_medida.php", "administra_usuarios.php", "revisa_avances.php", "captura_trimestral.php");
 $actividades = array("actividades.php", "reconduccion_actividades.php", "actividades_todas.php", "formatos_actividades.php", "reportes.php", "programacion_actividades.php", "mis_reconducciones_actividades.php");
+$valida_actividades = array("actividades.php", "reconduccion_actividades.php", "actividades_todas.php", "formatos_actividades.php", "reportes.php", "programacion_actividades.php", "mis_reconducciones_actividades.php");
 $indicadores = array("indicadores.php", "reconduccion_indicadores.php", "matrices.php", "formatos_indicadores.php");
+$valida_indicadores = array("indicadores.php", "reconduccion_indicadores.php", "matrices.php", "formatos_indicadores.php");
 
 
 if(in_array($actual, $inicio)){
@@ -43,12 +45,16 @@ function item_context($destino, $texto, $permisos, $mi_permiso){
     }
     
 }
-function item_principal($actual, $buscador, $texto, $destino){
-    $tipo = (in_array($actual, $buscador)) ? 'class="py-6 pr-4 pl-3 text-white bg-gray-200 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white"' : 'class="py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"' ;
-    return '<li><a href="'. $destino .'"'.$tipo.'>'.$texto.'</a></li>';
-}
+function item_principal($actual, $buscador, $texto, $destino, $permisos, $mi_permiso){
+    if(in_array($mi_permiso, $permisos)){
+        $tipo = (in_array($actual, $buscador)) ? 'class="py-6 pr-4 pl-3 text-white bg-gray-200 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white"' : 'class="py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"' ;
+        return '<li><a href="'. $destino .'"'.$tipo.'>'.$texto.'</a></li>';
+    }
+}?>
 
-?>
+
+
+
 <header>
     <nav class="bg-gray-100 border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-800">
         <div class="container flex flex-wrap justify-between items-center mx-auto">
@@ -86,9 +92,11 @@ function item_principal($actual, $buscador, $texto, $destino){
                         // }
                         ?>
                     </li>
-                    <?= item_principal($actual, $inicio, "Inicio", "index.php")?>
-                    <?= item_principal($actual, $actividades, "Actividades", "actividades.php") ?>
-                    <?= item_principal($actual, $indicadores, "Indicadores", "indicadores.php"); ?>
+                    <?= item_principal($actual, $inicio, "Inicio", "index.php", array(1,2,3,4,5), $mi_permiso) ?>
+                    <?= item_principal($actual, $actividades, "Actividades", "actividades.php", array(3,4,5), $mi_permiso) ?>
+                    <?= item_principal($actual, $valida_actividades, "Valida Actividades", "actividades_avances.php", array(1,2), $mi_permiso) ?>
+                    <?= item_principal($actual, $indicadores, "Indicadores", "indicadores.php", array(3,4,5), $mi_permiso) ?>
+                    <?= item_principal($actual, $valida_indicadores, "Valida Indicadores", "indicadores_avance.php", array(1,2), $mi_permiso) ?>
                     <button id="dropdownNavbarButton" data-dropdown-toggle="dropdownNavbar" class="flex justify-between items-center py-2 pr-4 pl-3 w-full font-medium text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-gray-400 dark:hover:text-white dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">Mas <svg class="ml-1 w-4 h-4" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg></button>
     <!-- Dropdown menu -->
                     <?php if(in_array($actual, $inicio)):?>

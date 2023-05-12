@@ -8,9 +8,9 @@ $dbpass = '';
 
 
 // metepec.simontspbrm.com
-$conect = 'mysql:host=localhost;dbname=holawebc_simonts;charset=utf8';
-//$username = 'holawebc_usersimonts';
-//$dbpass = 'SirmStokes170390??';
+$conect = 'mysql:host=localhost;dbname=simontsp_metepec;charset=utf8';
+//$username = 'simontsp_supermetepec';
+//$dbpass = 'Stokes170390??';
 
 
 

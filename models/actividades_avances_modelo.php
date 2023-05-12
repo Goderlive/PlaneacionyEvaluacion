@@ -2,20 +2,48 @@
 require_once 'conection.php';
 
 function TraeDependencias($con, $id_usuario){
-    $stm = $con->query("SELECT * dependencias dp 
-    LEFT JOIN usuarios u ON u.id_usuario = dp.id_administrador
-    WHERE dp.id_administrador = $id_usuario");
+    $stm = $con->query("SELECT * FROM dependencias dp 
+    WHERE id_administrador = $id_usuario");
+    $dependencias = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $dependencias;
+}
+
+function TraeTodasDependencias($con){
+    $stm = $con->query("SELECT * FROM dependencias dp ");
     $dependencias = $stm->fetchAll(PDO::FETCH_ASSOC);
     //var_dump($dependencias);
     return $dependencias;
 }
-function TraeTodasDependencias($con, $id_usuario){
-    $stm = $con->query("SELECT * dependencias dp 
-    LEFT JOIN usuarios u ON u.id_usuario = dp.id_administrador");
-    $dependencias = $stm->fetchAll(PDO::FETCH_ASSOC);
-    //var_dump($dependencias);
-    return $dependencias;
+
+function TraerAreas($con, $id_dependencia){
+    $stm = $con->query("SELECT * FROM areas 
+    WHERE id_dependencia = $id_dependencia");
+    $areas = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $areas;
 }
+
+function Actividades_DB($con, $id_area){
+    $sql = "SELECT * FROM actividades a
+    LEFT JOIN programaciones p ON p.id_actividad = a.id_actividad
+    LEFT JOIN lineasactividades la ON la.id_actividad = a.id_actividad
+    LEFT JOIN pdm_lineas li ON li.id_linea = la.id_linea 
+    WHERE a.id_area = $id_area";
+    $stm = $con->query($sql);
+    $actividades = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $actividades;
+}
+
+function AvanceMes($con, $actividad, $mes){
+    $sqlav = "SELECT * FROM avances a
+    LEFT JOIN lineasactividades la ON la.id_actividad = a.id_actividad
+    LEFT JOIN pdm_lineas li ON li.id_linea = la.id_linea 
+    LEFT JOIN usuarios u ON u.id_usuario = a.id_usuario_avance
+    WHERE a.mes = $mes AND a.id_actividad = $actividad";
+    $stma = $con->query($sqlav);
+    $actividades = $stma->fetch(PDO::FETCH_ASSOC);
+    return $actividades;
+}
+
 
 function TraeAvances($con, $id_usuario, $nivel){ // Debemos revisar esto
     $stm = $con->query("SELECT *,

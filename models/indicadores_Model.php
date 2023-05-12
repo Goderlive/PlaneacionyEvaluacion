@@ -99,7 +99,7 @@ if(isset($_POST['reportar']) and $_POST['reportar']){
         
         $ruta_base = '../archivos/indicadores/'.$anio.'/'.$trimestre.'/'.$id_dependencia.'/'.$id_indicador.'/';
         if( !is_dir( $ruta_base ) ) {
-            mkdir($ruta_base, 755, true);
+            mkdir($ruta_base, 0741, true);
         }
         $avance_a =  $_POST['avvara'];
         $avance_b =  $_POST['avvarb'];
