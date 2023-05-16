@@ -23,7 +23,7 @@ function TraerAreas($con, $id_dependencia){
 }
 
 function Actividades_DB($con, $id_area){
-    $sql = "SELECT * FROM actividades a
+    $sql = "SELECT a.*, p.*, li.* FROM actividades a
     LEFT JOIN programaciones p ON p.id_actividad = a.id_actividad
     LEFT JOIN lineasactividades la ON la.id_actividad = a.id_actividad
     LEFT JOIN pdm_lineas li ON li.id_linea = la.id_linea 
@@ -36,13 +36,21 @@ function Actividades_DB($con, $id_area){
 function AvanceMes($con, $actividad, $mes){
     $sqlav = "SELECT * FROM avances a
     LEFT JOIN lineasactividades la ON la.id_actividad = a.id_actividad
-    LEFT JOIN pdm_lineas li ON li.id_linea = la.id_linea 
+    LEFT JOIN pdm_lineas li ON li.id_linea = la.id_linea
     LEFT JOIN usuarios u ON u.id_usuario = a.id_usuario_avance
     WHERE a.mes = $mes AND a.id_actividad = $actividad";
     $stma = $con->query($sqlav);
-    $actividades = $stma->fetch(PDO::FETCH_ASSOC);
-    return $actividades;
+    $avance = $stma->fetch(PDO::FETCH_ASSOC);
+
+    return $avance;
 }
+
+
+function TraeLocalidades($con){
+    $stm = $con->query("SELECT * FROM localidades");
+    return $localidades = $stm->fetchAll(PDO::FETCH_ASSOC);
+}
+
 
 
 function TraeAvances($con, $id_usuario, $nivel){ // Debemos revisar esto

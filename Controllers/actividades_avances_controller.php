@@ -86,3 +86,115 @@ function Actividades($con, $mes, $id_area, $meses, $actividadesDB){
     }
     return $resp;
 }
+
+function Botonavance($avanceMensual, $permisos){
+    $clase = '';
+    if(isset($avanceMensual['id_linea'])){ // validamos si tiene linea de accion
+    
+        if($avanceMensual['validado'] == 1 && $avanceMensual['validado_2'] == 1) : //Si todo esta SUPER VALIDADO 
+            $clase = 'focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800';
+        endif; 
+
+        if(($avanceMensual['validado'] == 1 && $avanceMensual['validado_2'] != 1) || ($avanceMensual['validado'] != 1 && $avanceMensual['validado_2'] == 1)) : //Si FALTA validar PBRM o  PDM    
+            if($permisos['rol'] == 1 && $avanceMensual['validado'] == 1){
+                $clase = "focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900";
+            }
+            if($permisos['rol'] == 1 && $avanceMensual['validado'] != 1){
+                $clase = "focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900";
+            }
+            if($permisos['rol'] == 2 && $avanceMensual['validado_2'] == 1){
+                $clase = "focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900";
+            }
+            if($permisos['rol'] == 2 && $avanceMensual['validado_2'] != 1){
+                $clase = "focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900";
+            }
+        endif; 
+
+        if($avanceMensual['validado'] != 1 && $avanceMensual['validado_2'] != 1) : //Si FALTA ambos  
+            $clase =  'focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900';   
+        endif; 
+        
+        
+        return '<button data-modal-target="evidenciasModal'.$avanceMensual['id_actividad'].'" data-modal-toggle="evidenciasModal'.$avanceMensual['id_actividad'].'" class="'.$clase.'" type="button">'.
+                $avanceMensual['avance']
+            .'</button>';
+    }else{ // fin de validacion de linea de accion 
+    
+        if($avanceMensual['validado'] == 1) : //Si YA esta VADIDADO     
+            return 'validado no tiene linea';
+        endif; 
+
+        if($avanceMensual['validado'] != 1) : //Si FALTA validarlo     
+            return 'falta validacion unica de PBRM';
+        endif; 
+    } 
+}
+
+
+function localidades($locasa, $localidades){
+    $locas = explode(",", $locasa);
+        foreach ($locas as $loca){
+            print $localidades[$loca-1]['nombre_localidad'] . "<br>";
+        }
+}
+
+
+function nombremes($mes){
+        $meses = array("Sin Mes", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");
+        return $meses[$mes];
+}
+
+
+function tiempos($dato_timestamp){
+    $hora_actual = date('Y-m-d H:i:s');
+    $timestamp_bd = strtotime($dato_timestamp);
+    $diferencia = time() - $timestamp_bd;
+    $dias_diferencia = floor($diferencia / (60 * 60 * 24));
+    $horas_diferencia = floor(($diferencia % (60 * 60 * 24)) / 3600);
+    $minutos_diferencia = floor(($diferencia % 3600) / 60);
+
+    // Imprime el resultado
+    echo "Reportado hace:\n";
+    if($dias_diferencia != 0){
+        if($dias_diferencia > 1){
+            echo $dias_diferencia . ' días, ';
+        }else{
+            echo $dias_diferencia . ' día, ';
+        }
+    }
+    if($horas_diferencia != 0){
+        if($horas_diferencia > 1){
+            echo $horas_diferencia . ' horas, ';
+        }else{
+            echo $horas_diferencia . ' hora, ';
+        }
+    }
+    echo $minutos_diferencia . " minutos";
+}
+
+
+
+function Imagenes($a){
+    $img = substr($a, 3);
+    if($img){
+        return $img;
+    }
+}
+
+function imgsmall($data){
+    $img = Imagenes($data);
+    if($img){
+        return '<img src="' . $img . '" alt="evidencia" width="150" height="150">';
+    }else{
+        return "Sin Evidencia";
+    }
+}
+
+function imgmd($data){
+    $img = Imagenes($data);
+    if($img){
+        return '<img src="' . $img . '" alt="evidencia" style="max-width: 150px; max-height: 150px;">';
+    }
+}
+
+?>

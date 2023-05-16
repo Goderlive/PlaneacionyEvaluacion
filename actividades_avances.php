@@ -72,6 +72,7 @@ if(!$_SESSION || $_SESSION['sistema'] != 'pbrm'){
 
 
     <?php if(isset($_POST['id_area'])): // Aqui mostramos las actividades?>
+        <?php $localidades = TraeLocalidades($con); ?>
         <?php $meses = array("Sin Mes", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");?>
         <?php $id_area = $_POST['id_area'] ?>
         <?php $actividadesDB = Actividades_DB($con, $id_area); ?>
@@ -137,105 +138,157 @@ if(!$_SESSION || $_SESSION['sistema'] != 'pbrm'){
                                     <?= $a[$mesi] ?>
                                 </td>
                                 <td class="px-6 py-4 text-center"> 
-                                    <?php if(!$avanceMensual):?>
-                                        Sin Avance
-                                    <?php endif ?>
-
-                                    <?php print '<pre>';
-                                    var_dump($avanceMensual);?>
-                                    <?php if($permisos['rol'] == 1): // Cuando es Perteneciente a PBRMS ?>
-                                        <?php if((((isset($avanceMensual['validado']) && $avanceMensual['validado'] == 1) && !$avanceMensual['id_linea']))      ||     (((isset($avanceMensual['validado']) && $avanceMensual['validado'] == 1)) && (isset($avanceMensual['validado_2']) && $avanceMensual['validado_2'] == 1))) : //Si todo esta SUPER VALIDADO ?>    
-                                            <button class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" type="button" data-modal-toggle="evidenciasModal<?= $a['id_actividad'] ?>">
-                                                <?= $avanceMensual['avance'] ?>
-                                            </button>
-                                        <?php endif ?>
-                                        
-                                        <?php if((isset($avanceMensual['validado']) && $avanceMensual['validado'] != 1) && (isset($avanceMensual['validado_2']) && $avanceMensual['validado_2'] != 1)) : //FALTA VALIDAR por NOSOTROS y por PDM?>    
-                                            <button class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900" type="button" data-modal-toggle="validamodal<?= $a['id_actividad'] ?>">
-                                                <?= $avanceMensual['avance'] ?>
-                                            </button>
-                                        <?php endif ?>
-
-
-                                        <?php if((isset($avanceMensual['validado']) && $avanceMensual['validado'] != 1) && !$avanceMensual['lineaactividad']) : //YA valido PDM y faltamos de validar NOSOTROS?>    
-                                            
-                                        <?php endif ?>
-                                        
-                                        <?php if((isset($avanceMensual['validado']) && $avanceMensual['validado'] != 1) && !$avanceMensual['lineaactividad']) : //FALTA VALIDAR por NOSOTROS y NO valida PDM?>    
-                                            
-                                        <?php endif ?>
-
-
-
-
-                                    <?php endif ?>
-
-                                    <?php if($permisos['rol'] == 2): // Cuando es Perteneciente a PLAN DE DESARROLLO ?>
-
-                                    <?php endif ?>
+                                    <?php if($avanceMensual){
+                                    echo Botonavance($avanceMensual, $permisos);
+                                    }else{
+                                        print "Sin Avance";
+                                    }?>
                                 </td>
 
                             </tr>
-                            
-                            <?php if ($avanceMensual): ?>
-                                <div id="evidenciasModal<?= $a['id_actividad']?>" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full">
-                                    <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
-                                        <!-- Modal content -->
-                                        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                                            <!-- Modal header -->
-                                            <div class="flex justify-between items-start p-4 rounded-t border-b dark:border-gray-600">
-                                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                                                    Evidencia
-                                                </h3>
-                                                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="evidenciasModal<?= $a['id_actividad']?>">
-                                                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                                                    <span class="sr-only">Close modal</span>
-                                                </button>
-                                            </div>
-                                            <!-- Modal body -->
-                                            <div class="p-6 space-y-6">
-                                                Evidencia Capturada por: <?= $avanceMensual['nombre'] . " " . $avanceMensual['apellidos'] ?>
-                                                <br>
-                                                <?= $avanceMensual['fecha_avance'] ?>
-                                                <img src="'. $img .'" alt="alt" width="300">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php endif ?>
-
-                            <?php if ($avanceMensual): ?>
-                                <div id="validamodal<?= $a['id_actividad'] ?>" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full">
-                                    <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
-                                        <!-- Modal content -->
-                                        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                                            <!-- Modal header -->
-                                            <div class="flex justify-between items-start p-4 rounded-t border-b dark:border-gray-600">
-                                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                                                    Evidencia
-                                                </h3>
-                                                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="validamodal<?= $a['id_actividad'] ?>">
-                                                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                                                    <span class="sr-only">Close modal</span>
-                                                </button>
-                                            </div>
-                                            <!-- Modal body -->
-                                            <div class="p-6 space-y-6">
-                                                Evidencia Capturada por: <?= $avanceMensual['nombre'] . " " . $avanceMensual['apellidos'] ?>
-                                                <br>
-                                                <?= $avanceMensual['fecha_avance'] ?>
-                                                <img src="'. $img .'" alt="alt" width="300">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php endif ?>
-
-
                         <?php endforeach ?>
                     </tbody>
             </table>
         </div>
+
+        <?php foreach($actividadesDB as $m): ?>
+            <?php $avanceMensual = AvanceMes($con, $m['id_actividad'], $el_mes);?>
+            <?php $anual = $m['enero'] + $m['febrero'] + $m['marzo'] + $m['abril'] + $m['mayo'] + $m['junio'] + $m['julio'] + $m['agosto'] + $m['septiembre'] + $m['octubre'] + $m['noviembre'] + $m['diciembre'] ?>
+            <?php if ($avanceMensual):  // Comienza el area de modales   ?>
+                <div id="evidenciasModal<?= $avanceMensual['id_actividad'] ?>" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                    <div class="relative w-full max-w-7xl max-h-full">
+                        <!-- Modal content -->
+                        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                            <!-- Modal header -->
+                            <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">
+                                <h3 class="text-xl font-medium text-gray-900 dark:text-white">
+                                    <?= $m['nombre_actividad'] ?>
+                                </h3>
+                                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="evidenciasModal<?= $avanceMensual['id_actividad'] ?>">
+                                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                    <span class="sr-only">Cerrar</span>
+                                </button>
+                            </div>
+                            <!-- Modal body -->
+                            <div class="p-6 space-y-6"> 
+                                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                    <tr>
+                                        <th scope="col" class="py-3 px-6" align="center"> 
+                                            Nombre de la Meta de Actividad
+                                        </th>
+                                        <th scope="col" class="py-3 px-6" align="center">
+                                            U d M
+                                        </th>
+                                        <th scope="col" class="py-3 px-6" align="center">
+                                            Prog. Anual
+                                        </th>
+                                        <th scope="col" class="py-3 px-6" align="center">
+                                            Mes
+                                        </th>
+                                        <th scope="col" class="py-3 px-6" align="center">
+                                            Prog Mes
+                                        </th>
+                                        <th scope="col" class="py-3 px-6" align="center">
+                                            Alcanzada
+                                        </th>
+                                        <th scope="col" class="py-3 px-6" align="center">
+                                            Variacion
+                                        </th>
+                                        <th scope="col" class="py-3 px-6" align="center">
+                                            Evidencia
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row" class="py-2 px-6" align="center" valign="top">
+                                            <?= $m['nombre_actividad'] ?>
+                                        </th>
+                                        <td class="py-2 px-6" align="center" valign="top">
+                                            <?= $m['unidad'] ?>
+                                        </td>
+                                        <td class="py-2 px-6" align="center" valign="top">
+                                            <?= $anual ?>
+                                        </td>
+                                        <td class="py-2 px-6" align="center" valign="top">
+                                            <?= nombremes($avanceMensual['mes']) ?>
+                                        </td>
+                                        <td class="py-2 px-6" align="center" valign="top">
+                                            <?= $m[$mesi] ?>
+                                        </td>
+                                        <td class="py-2 px-6" align="center" valign="top">
+                                            <?= "<b>" . $avanceMensual['avance'] . "<b>"?>
+                                        </td>
+                                        <td class="py-2 px-6" align="center" valign="top">
+                                            <?= intval($avanceMensual['avance']) - $m[$mesi] ?>
+                                        </td>
+                                        <td class="py-2 px-6" align="center">
+                                            <?php if(isset($avanceMensual['path_evidenia_evidencia'])): ?>
+                                                <a target="_blank" onclick="abrirVentana()" href="<?= Imagenes($avanceMensual['path_evidenia_evidencia']) ?>">
+                                                    <?= imgmd($avanceMensual['path_evidenia_evidencia']) ?>
+                                                </a>
+                                            <?php else: ?>
+                                                Sin Evidencia
+                                            <?php endif ?>
+                                        </td>
+                                    </tr>
+                                </table>
+                            
+                                
+                                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">    
+                                    <tbody>
+                                        <tr class="bg-white dark:bg-gray-800">
+                                            <td scope="row" class="py-2 px-6" align="center" valign="top">
+                                                <?php 
+                                                if(isset($avanceMensual['localidades'])){
+                                                    echo localidades($avanceMensual['localidades'], $localidades);
+                                                }else{
+                                                    echo 'No se seleccionaron localidades';
+                                                } ?>    
+                                            </td>
+                                            <td scope="row" class="py-2 px-6" align="center" valign="top">
+                                                <?php if($avanceMensual['beneficiarios']): 
+                                                    print $avanceMensual['beneficiarios'];?>
+                                                <?php else: ?>
+                                                    <b> No selecciono beneficiarios </b>
+                                                <?php endif ?>         
+                                            </td>
+                                            <td scope="row" class="py-2 px-6" align="center" valign="top">
+                                                <?php if($avanceMensual['recursos']): 
+                                                    print $avanceMensual['recursos'];?>
+                                                <?php else: ?>
+                                                    <b> No selecciono recursos </b>
+                                                <?php endif ?>         
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                    <tr>
+                                        <td>
+                                            Descripcion de la Evidencia: <?= $avanceMensual['descripcion_evidencia'] ?> <br>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Justificación por variación: <?= $avanceMensual['justificacion'] ?> <br>
+                                        </td>
+                                    <tr>
+                                        <td>
+                                            Reportado por:<b> <?= $avanceMensual['nombre'].' ' . $avanceMensual['apellidos']. "</b> <br>" ?> <br>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            
+                                                <?= tiempos($avanceMensual['fecha_avance']) ?>
+                                        </td>
+                                    </tr>
+                                </table>                                         
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endif ?>
+        <?php endforeach ?>
     <?php endif ?>
 
 <?php endif //Termina el IF de los permisos de los validadores ?> 
@@ -250,8 +303,12 @@ if(!$_SESSION || $_SESSION['sistema'] != 'pbrm'){
 
 
 
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+<script>
+function abrirVentana() {
+    window.open('tu_pagina.php', '_blank', 'width=1000,height=700');
+}
+</script>
 </div>
-<?php include 'footer.php';?>
 </body>
 </html>
