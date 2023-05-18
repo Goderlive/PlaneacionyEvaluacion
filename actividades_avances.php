@@ -30,7 +30,95 @@ if(!$_SESSION || $_SESSION['sistema'] != 'pbrm'){
     <?php endif ?>
     <div class="container mx-auto">
     <br>
-    <?= breadcrumbs(array("Inicio" => "index.php", "Valida Avances de Actividades" => ""))?>
+
+
+
+    <?php if(!$_POST): ?>
+<!-- Breadcrumb -->
+        <nav class="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700" aria-label="Breadcrumb">
+        <ol class="inline-flex items-center space-x-1 md:space-x-3">
+            <li class="inline-flex items-center">
+            <a href="index.php" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                <svg aria-hidden="true" class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+                Inicio
+            </a>
+            </li>
+            <li aria-current="page">
+            <div class="flex items-center">
+                <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Valida Actividades (Dependencias)</span>
+            </div>
+            </li>
+        </ol>
+        </nav>
+    <?php endif ?>
+    
+    
+    <?php if(isset($_POST['id_dependencia'])): 
+        $nombre_dependencia = TraeNombredependencia($con, $_POST['id_dependencia'])?>
+    
+        <!-- Breadcrumb -->
+        <nav class="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700" aria-label="Breadcrumb">
+        <ol class="inline-flex items-center space-x-1 md:space-x-3">
+            <li class="inline-flex items-center">
+            <a href="index.php" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                <svg aria-hidden="true" class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+                Inicio
+            </a>
+            </li>
+            <li>
+            <div class="flex items-center">
+                <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                <a href="actividades_avances.php" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">Dependencias</a>
+            </div>
+            </li>
+            <li aria-current="page">
+            <div class="flex items-center">
+                <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400"><?= $nombre_dependencia ?></span>
+            </div>
+            </li>
+        </ol>
+        </nav>
+    <?php endif ?>
+
+    <?php if(isset($_POST['id_area'])): 
+        $nombres = NombreArea($con, $_POST['id_area'])?>
+    
+        <!-- Breadcrumb -->
+        <nav class="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700" aria-label="Breadcrumb">
+        <ol class="inline-flex items-center space-x-1 md:space-x-3">
+            <li class="inline-flex items-center">
+            <a href="index.php" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                <svg aria-hidden="true" class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+                Inicio
+            </a>
+            </li>
+            <li>
+            <div class="flex items-center">
+                <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                <a href="actividades_avances.php" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">Dependencias</a>
+            </div>
+            </li>
+            <li>
+            <div class="flex items-center">
+                <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                <form action="" method="post">
+                    <input type="hidden" name="id_dependencia" value="<?= $nombres[2] ?>">    
+                    <button type="submit" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white"><?= $nombres[0] ?></button>
+                </form>
+            </div>
+            </li>
+            <li aria-current="page">
+            <div class="flex items-center">
+                <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400"><?= $nombres[1] ?></span>
+            </div>
+            </li>
+        </ol>
+        </nav>
+    <?php endif ?>
+
     <br>
 
 
@@ -42,11 +130,28 @@ if(!$_SESSION || $_SESSION['sistema'] != 'pbrm'){
         <?php foreach($dependencias as $dp): ?>
                 <div class="items-start p-4 ml-2 mr-2 mb-4 text-center  bg-white rounded-lg border border-gray-400 shadow-md dark:bg-gray-800 dark:border-gray-700">
                     <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"> <?= $dp['nombre_dependencia'] ?> </h5>
+                    <?php $pendientespbrm = Pendientespbrm($con, $dp['id_dependencia']) ?>
+                    <?php $pendientespdm = Pendientespdm($con, $dp['id_dependencia']) ?>
+                    <?php if($pendientespbrm['total_resultados'] != 0): ?>
+                    <p class="font-normal text-gray-700 dark:text-gray-400">PbRM: <?= $pendientespbrm['total_resultados'] ?> pendientes de revisión</p>
+                    <?php else: ?>
+
+                    <?php endif ?>
+                        
+
+                    <?php if($pendientespdm['total_resultados'] != 0): ?>
+                        <p class="font-normal text-gray-700 dark:text-gray-400">PDM: <?= $pendientespdm['total_resultados'] ?> pendientes de revisión</p>
+                    <?php else: ?>
+
+                    <?php endif ?>
+                    <br>
+                    
                     <form action="" method="post">
                         <button class="inline-flex mb-2 items-center py-2 px-3 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" name="id_dependencia" value="<?= $dp['id_dependencia'] ?>">
                              Ver Areas
                         </button>
                     </form>
+                    <br>
                 </div>
                 <?php endforeach ?>
             </div>
@@ -60,6 +165,24 @@ if(!$_SESSION || $_SESSION['sistema'] != 'pbrm'){
         <?php foreach($areas as $a): ?>
             <div class="items-start p-4 ml-2 mr-2 mb-4 text-center  bg-white rounded-lg border border-gray-400 shadow-md dark:bg-gray-800 dark:border-gray-700">
                 <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"> <?= $a['nombre_area'] ?> </h5>
+
+                <?php $pendientesareaspbrm = Pendientesareaspbrm($con, $a['id_area']) ?>
+                <?php $pendientesareaspdm = Pendientesareaspdm($con, $a['id_area']) ?>
+
+                <?php if($pendientesareaspbrm['total_resultados'] != 0): ?>
+                <p class="font-normal text-gray-700 dark:text-gray-400">PbRM: <?= $pendientesareaspbrm['total_resultados'] ?> pendientes de revisión</p>
+                <?php else: ?>
+
+                <?php endif ?>
+
+
+                <?php if($pendientesareaspdm['total_resultados'] != 0): ?>
+                <p class="font-normal text-gray-700 dark:text-gray-400">PDM: <?= $pendientesareaspdm['total_resultados'] ?> pendientes de revisión</p>
+                <?php else: ?>
+
+                <?php endif ?>
+
+<br>
                 <form action="" method="post">
                     <button class="inline-flex mb-2 items-center py-2 px-3 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" name="id_area" value="<?= $a['id_area'] ?>">
                             Ver Avances
@@ -132,7 +255,7 @@ if(!$_SESSION || $_SESSION['sistema'] != 'pbrm'){
                                     <?= $anual ?>
                                 </td>
                                 <td class="px-6 py-4">
- 
+                                    <?= SumaAvancesmesymes($con, $el_mes, $a['id_actividad']); ?>
                                 </td>
                                 <td class="px-6 py-4">
                                     <?= $a[$mesi] ?>
@@ -222,7 +345,7 @@ if(!$_SESSION || $_SESSION['sistema'] != 'pbrm'){
                                         </td>
                                         <td class="py-2 px-6" align="center">
                                             <?php if(isset($avanceMensual['path_evidenia_evidencia'])): ?>
-                                                <a target="_blank" onclick="abrirVentana()" href="<?= Imagenes($avanceMensual['path_evidenia_evidencia']) ?>">
+                                                <a target="_blank" onclick="abrirVentana<?= $avanceMensual['id_actividad'] ?>()" href="<?= Imagenes($avanceMensual['path_evidenia_evidencia']) ?>">
                                                     <?= imgmd($avanceMensual['path_evidenia_evidencia']) ?>
                                                 </a>
                                             <?php else: ?>
@@ -232,35 +355,36 @@ if(!$_SESSION || $_SESSION['sistema'] != 'pbrm'){
                                     </tr>
                                 </table>
                             
-                                
-                                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">    
-                                    <tbody>
-                                        <tr class="bg-white dark:bg-gray-800">
-                                            <td scope="row" class="py-2 px-6" align="center" valign="top">
-                                                <?php 
-                                                if(isset($avanceMensual['localidades'])){
-                                                    echo localidades($avanceMensual['localidades'], $localidades);
-                                                }else{
-                                                    echo 'No se seleccionaron localidades';
-                                                } ?>    
-                                            </td>
-                                            <td scope="row" class="py-2 px-6" align="center" valign="top">
-                                                <?php if($avanceMensual['beneficiarios']): 
-                                                    print $avanceMensual['beneficiarios'];?>
-                                                <?php else: ?>
-                                                    <b> No selecciono beneficiarios </b>
-                                                <?php endif ?>         
-                                            </td>
-                                            <td scope="row" class="py-2 px-6" align="center" valign="top">
-                                                <?php if($avanceMensual['recursos']): 
-                                                    print $avanceMensual['recursos'];?>
-                                                <?php else: ?>
-                                                    <b> No selecciono recursos </b>
-                                                <?php endif ?>         
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <?php if($avanceMensual['id_linea']): ?>
+                                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">    
+                                        <tbody>
+                                            <tr class="bg-white dark:bg-gray-800">
+                                                <td scope="row" class="py-2 px-6" align="center" valign="top">
+                                                    <?php 
+                                                    if(isset($avanceMensual['localidades'])){
+                                                        echo localidades($avanceMensual['localidades'], $localidades);
+                                                    }else{
+                                                        echo 'No se seleccionaron localidades';
+                                                    } ?>    
+                                                </td>
+                                                <td scope="row" class="py-2 px-6" align="center" valign="top">
+                                                    <?php if($avanceMensual['beneficiarios']): 
+                                                        print $avanceMensual['beneficiarios'];?>
+                                                    <?php else: ?>
+                                                        <b> No selecciono beneficiarios </b>
+                                                    <?php endif ?>         
+                                                </td>
+                                                <td scope="row" class="py-2 px-6" align="center" valign="top">
+                                                    <?php if($avanceMensual['recursos']): 
+                                                        print $avanceMensual['recursos'];?>
+                                                    <?php else: ?>
+                                                        <b> No selecciono recursos </b>
+                                                    <?php endif ?>         
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                <?php endif ?>
                                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                     <tr>
                                         <td>
@@ -282,8 +406,16 @@ if(!$_SESSION || $_SESSION['sistema'] != 'pbrm'){
                                                 <?= tiempos($avanceMensual['fecha_avance']) ?>
                                         </td>
                                     </tr>
-                                </table>                                         
+                                </table>
+                                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                    <?= BotonPBRM($avanceMensual, $permisos, $m['id_area'], $el_mes) ?>
+                                </table>                                        
                             </div>
+                            <script>
+                            function abrirVentana<?= $avanceMensual['id_actividad'] ?>() {
+                                window.open('<?= $avanceMensual['path_evidenia_evidencia'] ?>', '_blank', 'width=1000,height=700');
+                            }
+                            </script>
                         </div>
                     </div>
                 </div>
@@ -304,11 +436,7 @@ if(!$_SESSION || $_SESSION['sistema'] != 'pbrm'){
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
-<script>
-function abrirVentana() {
-    window.open('tu_pagina.php', '_blank', 'width=1000,height=700');
-}
-</script>
+
 </div>
 </body>
 </html>

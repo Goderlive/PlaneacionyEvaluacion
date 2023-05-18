@@ -2,6 +2,14 @@
 require_once 'models/actividades_avances_modelo.php';
 
 
+
+function NombreArea($con, $id_area){
+    $nombre_dependencia = DependenciafromArea($con, $id_area);
+    $nombre_area = TraeNombreArea($con, $id_area);
+    return array($nombre_dependencia['nombre_dependencia'], $nombre_area, $nombre_dependencia['id_dependencia'], $nombre_dependencia['id_area']);
+}
+
+
 function TraeDependenciasController($con, $permisos){
     if($permisos['nivel'] == 1 ){
         $dependencias = TraeTodasDependencias($con);
@@ -113,22 +121,119 @@ function Botonavance($avanceMensual, $permisos){
         if($avanceMensual['validado'] != 1 && $avanceMensual['validado_2'] != 1) : //Si FALTA ambos  
             $clase =  'focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900';   
         endif; 
-        
-        
-        return '<button data-modal-target="evidenciasModal'.$avanceMensual['id_actividad'].'" data-modal-toggle="evidenciasModal'.$avanceMensual['id_actividad'].'" class="'.$clase.'" type="button">'.
-                $avanceMensual['avance']
-            .'</button>';
     }else{ // fin de validacion de linea de accion 
-    
         if($avanceMensual['validado'] == 1) : //Si YA esta VADIDADO     
-            return 'validado no tiene linea';
+            $clase = 'focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800';
         endif; 
 
         if($avanceMensual['validado'] != 1) : //Si FALTA validarlo     
-            return 'falta validacion unica de PBRM';
+            $clase =  'focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900';   
         endif; 
     } 
+    return '<button data-modal-target="evidenciasModal'.$avanceMensual['id_actividad'].'" data-modal-toggle="evidenciasModal'.$avanceMensual['id_actividad'].'" class="'.$clase.'" type="button">'.
+    $avanceMensual['avance']
+    .'</button>';
 }
+
+
+function BotonPBRM($avanceMensual, $permisos, $id_area, $el_mes){
+    $clase = '';
+
+    $botonValidarPbRM = '<form action="models/avances_modelo.php" method="post">
+        <input type="hidden" name="id_avance" value="'.$avanceMensual['id_avance'].'">
+        <input type="hidden" name="usuario" value="'.$_SESSION['id_usuario'].'">
+        <input type="hidden" name="id_area" value="'.$id_area.'">
+        <input type="hidden" name="mes" value="'.$el_mes.'">
+        <button type="submit" name="valida_actividad" value="1" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Validar</button>
+        <button type="submit" name="cancela_actividad" value="1" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Rechazar</button>
+    </form>'; 
+    $botonValidartodoPbRM = '<form action="models/avances_modelo.php" method="post">
+        <input type="hidden" name="id_avance" value="'.$avanceMensual['id_avance'].'">
+        <input type="hidden" name="usuario" value="'.$_SESSION['id_usuario'].'">
+        <button type="submit" name="valida_actividad" value="3" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Validar</button>
+        <button type="submit" name="cancela_actividad" value="1" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Rechazar</button>
+    </form>'; 
+
+    $botonValidarPDM = '<form action="models/avances_modelo.php" method="post">
+        <input type="hidden" name="id_avance" value="'. $avanceMensual['id_avance'] .'">
+        <input type="hidden" name="usuario" value="'. $_SESSION['id_usuario'] .'">
+        <button type="submit" name="valida_actividad" value="2" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Validar</button>
+        <button type="submit" name="cancela_actividad" value="2" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Rechazar</button>
+    </form>';
+    if(isset($avanceMensual['id_linea'])){ // validamos si tiene linea de accion
+
+        if($avanceMensual['validado'] == 1 && $avanceMensual['validado_2'] == 1): //Si todo esta SUPER VALIDADO 
+            return '<tr>
+                <td>Validado por ' . $avanceMensual['nombrepbrm'].'</td>
+                <td>Validado por ' . $avanceMensual['nombrepdm'].'</td>
+            </tr>';
+        endif; 
+
+        if(($avanceMensual['validado'] == 1 && $avanceMensual['validado_2'] != 1) || ($avanceMensual['validado'] != 1 && $avanceMensual['validado_2'] == 1)) : //Si FALTA validar PBRM o  PDM    
+            if($permisos['rol'] == 1 && $avanceMensual['validado'] == 1){
+                return '<tr>
+                    <td>Validado por '.$avanceMensual['nombrepbrm'].'</td>
+                    <td>Pendiente de validacion por el area de PDM</td>
+                </tr>';            
+            }
+            if($permisos['rol'] == 1 && $avanceMensual['validado'] != 1){
+                return '<tr>
+                    <td>'.$botonValidarPbRM.'</td>
+                    <td>Validado por '.$avanceMensual['nombrepdm'].'</td>
+                </tr>';            
+            }
+            if($permisos['rol'] == 2 && $avanceMensual['validado_2'] == 1){
+                return '<tr>
+                    <td>Pendiente de validacion por el area de PbRM</td>
+                    <td>Validado por ' . $avanceMensual['nombrepdm'].'</td>
+                </tr>';              
+            }
+            if($permisos['rol'] == 2 && $avanceMensual['validado_2'] != 1){
+                return '<tr>
+                <td>Validado por ' . $avanceMensual['nombrepbrm'].'</td>
+                <td>'.$botonValidarPDM.'</td>
+                </tr>';             
+            }
+        endif; 
+
+        if($avanceMensual['validado'] != 1 && $avanceMensual['validado_2'] != 1) : //Si FALTA ambos  
+            if($permisos['rol'] == 1){
+                return '<tr>
+                    <td>'.$botonValidarPbRM.'</td>
+                    <td>Pendiente de Validación</td>
+                </tr>';            
+            }
+            if($permisos['rol'] == 2){
+                return '<tr>
+                    <td>Pendiente de validacion por el area de PbRM</td>
+                    <td>'.$botonValidarPDM.'</td>
+                </tr>';              
+            }
+
+        endif; 
+    }else{ // fin de validacion de linea de accion 
+    
+        if($avanceMensual['validado'] == 1) : //Si YA esta VADIDADO     
+            return '<tr>
+                <td>Validado Por '.$avanceMensual['nombrepdm'].'</td>
+                <td>No requiere validaciones adicionales</td>
+            </tr>';   
+        endif; 
+        if($avanceMensual['validado'] != 1) : //Si FALTA validarlo     
+            return '<tr>
+                <td>'.$botonValidartodoPbRM.'</td>
+                <td>No requiere validaciones adicionales</td>
+            </tr>';   
+        endif; 
+    } 
+    return '<button data-modal-target="evidenciasModal'.$avanceMensual['id_actividad'].'" data-modal-toggle="evidenciasModal'.$avanceMensual['id_actividad'].'" class="'.$clase.'" type="button">'.
+    $avanceMensual['avance']
+    .'</button>';
+}
+
+
+
+
 
 
 function localidades($locasa, $localidades){

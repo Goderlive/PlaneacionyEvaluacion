@@ -73,21 +73,21 @@ if($_POST){
     $data = $_POST;
 
     if(isset($_POST['valida_actividad'])){
+        $id_area = $_POST['id_area'];
+        $mes = $_POST['mes'];
+
+        $id_usuario = $data['usuario'];
         if($_POST['valida_actividad'] == 1){
             $sql = "UPDATE avances SET validado = 1, id_usuario_validador = ?, fecha_validador = NOW() WHERE id_avance = ?";
         }
         if($_POST['valida_actividad'] == 2){
             $sql = "UPDATE avances SET validado_2 = 1, id_usuario_validador = ?, fecha_validador = NOW() WHERE id_avance = ?";
         }
+        if($_POST['valida_actividad'] == 3){
+            $sql = "UPDATE avances SET validado = 1, validado_2 = 1, id_usuario_validador = $id_usuario, id_usuario_validador_2 = ?, fecha_validador = NOW() WHERE id_avance = ?";
+        }
         $sqlr = $con->prepare($sql);
         $sqlr->execute(array($data['usuario'], $data['id_avance']));
-        $tipo = "actividades";
-    }
-
-    if(isset($_POST['pbrm'])){
-        $sql = "UPDATE avances SET validado = 1, validado_2 = 1, id_usuario_validador = ?, id_usuario_validador_2 = ?, fecha_validador = NOW() WHERE id_avance = ?";
-        $sqlr = $con->prepare($sql);
-        $sqlr->execute(array($data['usuario'], $data['usuario'], $data['id_avance']));
         $tipo = "actividades";
     }
 
@@ -96,7 +96,6 @@ if($_POST){
         $nrows = $con->exec("DELETE FROM avances WHERE id_avance = $id_avance");
         $tipo = "actividades";
     }
-
 
     if(isset($_POST['valida_indicador'])){
         $sql = "UPDATE avances_indicadores SET validado = 1, id_usuario_valida = ?, fecha_valida = NOW() WHERE id_avance = ?";
@@ -114,7 +113,15 @@ if($_POST){
 
     
 
-    header("Location: ../revisa_avances.php?type=$tipo");
-}
+    ?>
+    <form id="myForm" action="../actividades_avances.php" method="post">
+        <input type="hidden" name="id_area" value="<?=$id_area?>">
+        <input type="hidden" name="mes" value="<?=$mes?>">
+    </form>
+    <script type="text/javascript">
+        document.getElementById('myForm').submit();
+    </script>
+    <?php
+    }
 
 ?>

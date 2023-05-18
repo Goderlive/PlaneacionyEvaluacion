@@ -22,26 +22,74 @@ function TraerAreas($con, $id_dependencia){
     return $areas;
 }
 
+
+function Pendientespbrm($con, $id_dependencia){
+    $sentencia = "SELECT COUNT(*) AS total_resultados FROM avances av
+    JOIN actividades ac ON av.id_actividad = ac.id_actividad
+    LEFT JOIN areas ar ON ar.id_area = ac.id_area
+    LEFT JOIN dependencias dp ON dp.id_dependencia = ar.id_dependencia
+    WHERE dp.id_dependencia = $id_dependencia AND av.validado = 0";
+    $stm = $con->query($sentencia);
+    $areas = $stm->fetch(PDO::FETCH_ASSOC);
+    return $areas;
+}
+function Pendientespdm($con, $id_dependencia){
+    $sentencia = "SELECT COUNT(*) AS total_resultados FROM avances av
+    JOIN actividades ac ON av.id_actividad = ac.id_actividad
+    LEFT JOIN areas ar ON ar.id_area = ac.id_area
+    LEFT JOIN dependencias dp ON dp.id_dependencia = ar.id_dependencia
+    WHERE dp.id_dependencia = $id_dependencia AND av.validado_2 = 0";
+    $stm = $con->query($sentencia);
+    $areas = $stm->fetch(PDO::FETCH_ASSOC);
+    return $areas;
+}
+
+
+
+
+function Pendientesareaspbrm($con, $id_area){
+    $sentencia = "SELECT COUNT(*) AS total_resultados FROM avances av
+    JOIN actividades ac ON av.id_actividad = ac.id_actividad
+    LEFT JOIN areas ar ON ar.id_area = ac.id_area
+    WHERE ar.id_area = $id_area AND av.validado = 0";
+    $stm = $con->query($sentencia);
+    $areas = $stm->fetch(PDO::FETCH_ASSOC);
+    return $areas;
+}
+function Pendientesareaspdm($con, $id_area){
+    $sentencia = "SELECT COUNT(*) AS total_resultados FROM avances av
+    JOIN actividades ac ON av.id_actividad = ac.id_actividad
+    LEFT JOIN areas ar ON ar.id_area = ac.id_area
+    WHERE ar.id_area = $id_area AND av.validado_2 = 0";
+    $stm = $con->query($sentencia);
+    $areas = $stm->fetch(PDO::FETCH_ASSOC);
+    return $areas;
+}
+
 function Actividades_DB($con, $id_area){
     $sql = "SELECT a.*, p.*, li.* FROM actividades a
     LEFT JOIN programaciones p ON p.id_actividad = a.id_actividad
     LEFT JOIN lineasactividades la ON la.id_actividad = a.id_actividad
     LEFT JOIN pdm_lineas li ON li.id_linea = la.id_linea 
-    WHERE a.id_area = $id_area";
+    WHERE a.id_area = $id_area
+    GROUP BY a.id_actividad
+    ORDER BY a.codigo_actividad ASC
+    ";
     $stm = $con->query($sql);
     $actividades = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $actividades;
 }
 
 function AvanceMes($con, $actividad, $mes){
-    $sqlav = "SELECT * FROM avances a
+    $sqlav = "SELECT *, u.nombre as nombre, u.apellidos as apellidos, upb.nombre AS nombrepbrm, upd.nombre AS nombrepdm FROM avances a
     LEFT JOIN lineasactividades la ON la.id_actividad = a.id_actividad
     LEFT JOIN pdm_lineas li ON li.id_linea = la.id_linea
     LEFT JOIN usuarios u ON u.id_usuario = a.id_usuario_avance
+    LEFT JOIN usuarios upb ON upb.id_usuario = a.id_usuario_validador
+    LEFT JOIN usuarios upd ON upd.id_usuario = a.id_usuario_validador_2
     WHERE a.mes = $mes AND a.id_actividad = $actividad";
     $stma = $con->query($sqlav);
     $avance = $stma->fetch(PDO::FETCH_ASSOC);
-
     return $avance;
 }
 
@@ -49,6 +97,38 @@ function AvanceMes($con, $actividad, $mes){
 function TraeLocalidades($con){
     $stm = $con->query("SELECT * FROM localidades");
     return $localidades = $stm->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
+function SumaAvancesmesymes($con, $mes, $id_actividad){
+    $stm = $con->query("SELECT SUM(avance) AS total_avance
+    FROM avances
+    WHERE (mes BETWEEN 1 AND $mes) AND (validado=1) AND id_actividad = $id_actividad;
+    ");
+    $sumaavances = $stm->fetch(PDO::FETCH_ASSOC);
+    return $sumaavances['total_avance'];
+}
+
+
+function TraeNombredependencia($con, $id_dependencia){
+    $stm = $con->query("SELECT nombre_dependencia FROM dependencias WHERE id_dependencia = $id_dependencia");
+    $nombre_dependencia = $stm->fetch(PDO::FETCH_ASSOC);
+    return $nombre_dependencia['nombre_dependencia'];
+}
+
+function TraeNombreArea($con, $id_area){
+    $stm = $con->query("SELECT nombre_area FROM areas WHERE id_area = $id_area");
+    $nombre_area = $stm->fetch(PDO::FETCH_ASSOC);
+    return $nombre_area['nombre_area'];
+}
+
+
+function DependenciafromArea($con, $id_area){
+    $stm = $con->query("SELECT d.nombre_dependencia, a.nombre_area, d.id_dependencia, a.id_area FROM areas a
+    LEFT JOIN dependencias d ON d.id_dependencia = a.id_dependencia 
+    WHERE a.id_area = $id_area");
+    $nombre_area = $stm->fetch(PDO::FETCH_ASSOC);
+    return $nombre_area;
 }
 
 
@@ -76,3 +156,4 @@ function TraeAvances($con, $id_usuario, $nivel){ // Debemos revisar esto
     //var_dump($data_avances_actividades);
     return $data_avances_actividades;
 }
+
