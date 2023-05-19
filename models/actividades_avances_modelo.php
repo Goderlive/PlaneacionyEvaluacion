@@ -80,6 +80,31 @@ function Actividades_DB($con, $id_area){
     return $actividades;
 }
 
+
+function TraeActividad($con, $id_actividad){
+    $sql = "SELECT * FROM actividades a
+    JOIN programaciones p ON p.id_actividad = a.id_actividad
+    JOIN lineasactividades la ON la.id_actividad = a.id_actividad
+    JOIN pdm_lineas li ON li.id_linea = la.id_linea 
+    WHERE a.id_actividad = $id_actividad";
+    $stm = $con->query($sql);
+    $actividades = $stm->fetch(PDO::FETCH_ASSOC);
+    return $actividades;
+}
+
+function TraeAvance($con, $id_avance){
+    $stm = $con->query("SELECT *, ac.id_actividad as actividad FROM avances a
+    JOIN actividades ac ON ac.id_actividad = a.id_actividad
+    LEFT JOIN lineasactividades la ON la.id_actividad = a.id_actividad
+    LEFT JOIN pdm_lineas li ON li.id_linea = la.id_linea 
+    LEFT JOIN usuarios u ON u.id_usuario = a.id_usuario_avance
+    WHERE a.id_avance = $id_avance");
+    $avance = $stm->fetch(PDO::FETCH_ASSOC);
+    return $avance;
+}
+
+
+
 function AvanceMes($con, $actividad, $mes){
     $sqlav = "SELECT *, u.nombre as nombre, u.apellidos as apellidos, upb.nombre AS nombrepbrm, upd.nombre AS nombrepdm FROM avances a
     LEFT JOIN lineasactividades la ON la.id_actividad = a.id_actividad
@@ -157,3 +182,17 @@ function TraeAvances($con, $id_usuario, $nivel){ // Debemos revisar esto
     return $data_avances_actividades;
 }
 
+if(isset($_POST['editar'])){
+    $id_avance = $_POST['id_avance'];
+    $permitidas = json_encode($_POST['permitidas']);
+    $id_aut_edicion = $_POST['id_aut_edicion'];
+
+
+    $sql = "INSERT INTO modificaciones_actividades (id_avance, permitidas, id_aut_edicion) VALUES (?,?,?)";
+    $sqlr = $con->prepare($sql);
+    $sqlr->execute(array($id_avance, $permitidas, $id_aut_edicion));
+    
+    header("Location: ../actividades_avances.php");
+
+    
+}

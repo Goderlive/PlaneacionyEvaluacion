@@ -5461,6 +5461,7 @@ CREATE TABLE avances(
   id_usuario_validador_2 INT,
   fecha_avance TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   fecha_validador TIMESTAMP NULL,
+  remote_aress VARCHAR(200),
   CONSTRAINT FK_avane_actividad FOREIGN KEY (id_actividad) REFERENCES actividades (id_actividad) ON DELETE CASCADE,
   CONSTRAINT FK_user_captura FOREIGN KEY (id_usuario_avance) REFERENCES usuarios (id_usuario) ON DELETE CASCADE,
   CONSTRAINT FK_user_valida FOREIGN KEY (id_usuario_validador) REFERENCES usuarios (id_usuario) ON DELETE CASCADE
@@ -6494,3 +6495,13 @@ CREATE TABLE setings(
     programaAFechas VARCHAR(13)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 INSERT INTO setings (year_report, anteproyectoFechas, proyectoFechas, programaAFechas) VALUES ("2022", "01,01;01,01", "01,01;01,01", "01,01;01,01");
+
+
+DROP TABLE IF EXISTS modificaciones_actividades;
+CREATE TABLE modificaciones_actividades(
+  id_modificacion INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  id_avance INT,
+  permitidas VARCHAR(255),
+  id_aut_edicion INT,
+  fecha DATETIME DEFAULT CURRENT_TIMESTAMP()
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
