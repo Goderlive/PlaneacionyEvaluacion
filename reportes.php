@@ -59,8 +59,7 @@ require_once 'Controllers/ReporteController.php'; ?>
                         </tr>
                     </thead>
                     <tbody>
-                    <?= Actividades($con, $el_mes, $id_area, $meses, $actividadesDB)?>
-
+                        <?= Actividades($con, $el_mes, $id_area, $meses, $actividadesDB)?>
                     </tbody>
             </table>
         </div>
@@ -70,21 +69,8 @@ require_once 'Controllers/ReporteController.php'; ?>
     <br>
     <?= ModalesEvidencias($con, $actividadesDB, $el_mes)?>    
 <?php include 'footer.php';?>
-
-
-
-
-
 <?= BotonImprimir($con, $id_area, $el_mes);
 ?>
-
-
-
-
-
-
-
-
 </body>
 </html>
 <?php

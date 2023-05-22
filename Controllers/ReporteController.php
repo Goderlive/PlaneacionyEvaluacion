@@ -39,7 +39,21 @@ function MenuMes($el_mes, $id_area){
 }
 
 
-function ValidaBotones($mes, $actividad){
+function ValidaBotones($con, $mes, $actividad, $codigo_actividad){
+
+    $editable = editable($con, $actividad);
+    if($editable){
+        return '
+    <form action="editar_avance_actividad.php" method="post">
+        <input type="hidden" name="id_modificacion" value="'.$editable['id_modificacion'].'">
+        <button type="submit" name="editable" class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">
+            Editar 
+        </button>
+    </form>';
+
+    }
+
+
     $boton = 'class = "bg-blue-700 text-white hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800';
     $text = 'Reportar';
 
@@ -50,7 +64,7 @@ function ValidaBotones($mes, $actividad){
     if($mes >  intval(date('m'))){
         $boton = 'disabled class="text-white bg-blue-400 dark:bg-blue-500 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center';
     }
-    if(isset($actividad['validado']) && $actividad['validado'] == 1 ){
+    if((isset($actividad['validado']) && $actividad['validado'] == 1) && (isset($actividad['validado']) && $actividad['validado'] == 1)){
         $boton = 'disabled class="text-white bg-green-500 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center';
         $text = "Reportado";
     }
@@ -58,12 +72,16 @@ function ValidaBotones($mes, $actividad){
     array_push($regreso, $boton);
     array_push($regreso, $text);
 
-    return $regreso;
+
+
+    return '<button ' . $boton . 'type="button" data-modal-toggle="mymodal'. $codigo_actividad .'"> '.
+            $text
+        .'</button> ';
 }
+
 
 function barraAvance($con, $id_actividad, $mes){
     $text ='';
-
     $programado = ProgramaActividad($con, $id_actividad); //Aqui traemos la programacion y la sumamos hasta el mes actual 
     $contador = 0;
     $sumaProgramacion = 0;
@@ -183,7 +201,7 @@ function Actividades($con, $mes, $id_area, $meses, $actividadesDB){
         $anual = $a['enero'] + $a['febrero'] + $a['marzo'] + $a['abril'] + $a['mayo'] + $a['junio'] + $a['julio'] + $a['agosto'] + $a['septiembre'] + $a['octubre'] + $a['noviembre'] + $a['diciembre'];
         $mesi = strtolower($meses[$mes]);
 
-        $botones = ValidaBotones($mes, $avanceMensual);
+        $botones = ValidaBotones($con, $mes, $avanceMensual, $a['codigo_actividad']);
         $avance = barraAvance($con, $a['id_actividad'], $mes);
 
         $avanceThisMes = AvanceThisMes($con, $a['id_actividad'], $mes);
@@ -214,11 +232,9 @@ function Actividades($con, $mes, $id_area, $meses, $actividadesDB){
             <td class="px-6 py-4 text-center"> '.
                 $botonAvance  
             .'</td>
-            <td class="px-6 py-4 text-right">
-                <button ' . $botones[0] . 'type="button" data-modal-toggle="mymodal'. $a['codigo_actividad'] .'"> '.
-                    $botones[1]
-                .'</button>
-            </td>
+            <td class="px-6 py-4 text-right">'.
+            $botones
+            .'</td>
         </tr>';
     }
     return $resp;
@@ -339,7 +355,7 @@ function Modales($con, $actividadesDB, $el_mes, $permisos){
 
                             <div class="relative"> 
                                 <label for="avance" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-800 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Alcanzado Mes</label>
-                                <input required name ="avance" min=0 id="avance" type="number" placeholder="Programado: '.$a[$meses[$el_mes]].'" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+                                <input required name ="avance" min=0 id="avance" type="number" placeholder="Programado: '.$a[$meses[$el_mes]].'" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"/>
                             </div>
                             <br>
                             <label class="block mb-1 text-sm font-medium text-gray-900 dark:text-gray-300" for="small_size">Evidencia de la Evidencia:</label>

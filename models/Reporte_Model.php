@@ -71,6 +71,19 @@ function ProgramaActividad($con, $id_actividad){
     return $programacion;
 }
 
+
+function editable($con, $avance){
+    if($avance){
+        $id_avance = $avance['id_avance'];
+    }else{
+        return 0;
+    }
+    $stm = $con->query("SELECT * FROM modificaciones_actividades WHERE id_avance = $id_avance");
+    $editable = $stm->fetch(PDO::FETCH_ASSOC);
+    return $editable;
+}
+
+
 function AvancesActividad($con, $id_actividad, $mes){
     $stm = $con->query("SELECT SUM(avance) FROM avances WHERE id_actividad = $id_actividad AND mes < $mes+1 AND validado = 1");
     $avances = $stm->fetch(PDO::FETCH_ASSOC);
