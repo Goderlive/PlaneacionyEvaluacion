@@ -16,7 +16,7 @@ include 'Controllers/breadcrumbs.php';
 <?= breadcrumbs(array("Inicio"=> "index.php", "Mi Perfil" => "mi_perfil.php"))?>
         
         <br>
-        <h2 class="mb-4 text-2xl font-extrabold tracking-tight leading-none text-gray-800 md:text-5xl lg:text-6xl dark:text-white">Administrador de Cuentas</h2>
+        <h2 class="text-4xl font-extrabold dark:text-white">Administrador de Cuentas</h2>
         <br>
 
 
@@ -24,8 +24,8 @@ include 'Controllers/breadcrumbs.php';
         <?php
             $datos = TraeUsuario($con, $id_usuario);
             if($datos): ?>
-            <div role="status" class="animate-pulse">
-                <h1 class="mb-4 text-xl font-bold tracking-tight leading-none text-gray-800 md:text-5xl lg:text-6xl dark:text-white">Cuenta de Administrador</h1>
+            <div role="status">
+                <h1 class="text-3xl font-extrabold dark:text-white my-3">Cuenta de Administrador</h1>
 
                 <form action="models/mi_perfil_Model.php" method="POST">
                     <input type="hidden" name="id_usuario" value="<?= $id_usuario ?>">

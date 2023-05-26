@@ -1,21 +1,24 @@
-<?php 
+<?php
 require_once 'conection.php';
 
-function TraeDependencias($con, $id_usuario){
+function TraeDependencias($con, $id_usuario)
+{
     $stm = $con->query("SELECT * FROM dependencias dp 
     WHERE id_administrador = $id_usuario");
     $dependencias = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $dependencias;
 }
 
-function TraeTodasDependencias($con){
+function TraeTodasDependencias($con)
+{
     $stm = $con->query("SELECT * FROM dependencias dp ");
     $dependencias = $stm->fetchAll(PDO::FETCH_ASSOC);
     //var_dump($dependencias);
     return $dependencias;
 }
 
-function TraerAreas($con, $id_dependencia){
+function TraerAreas($con, $id_dependencia)
+{
     $stm = $con->query("SELECT * FROM areas 
     WHERE id_dependencia = $id_dependencia");
     $areas = $stm->fetchAll(PDO::FETCH_ASSOC);
@@ -23,7 +26,8 @@ function TraerAreas($con, $id_dependencia){
 }
 
 
-function Pendientespbrm($con, $id_dependencia){
+function Pendientespbrm($con, $id_dependencia)
+{
     $sentencia = "SELECT COUNT(*) AS total_resultados FROM avances av
     JOIN actividades ac ON av.id_actividad = ac.id_actividad
     LEFT JOIN areas ar ON ar.id_area = ac.id_area
@@ -33,7 +37,8 @@ function Pendientespbrm($con, $id_dependencia){
     $areas = $stm->fetch(PDO::FETCH_ASSOC);
     return $areas;
 }
-function Pendientespdm($con, $id_dependencia){
+function Pendientespdm($con, $id_dependencia)
+{
     $sentencia = "SELECT COUNT(*) AS total_resultados FROM avances av
     JOIN actividades ac ON av.id_actividad = ac.id_actividad
     LEFT JOIN areas ar ON ar.id_area = ac.id_area
@@ -47,7 +52,8 @@ function Pendientespdm($con, $id_dependencia){
 
 
 
-function Pendientesareaspbrm($con, $id_area){
+function Pendientesareaspbrm($con, $id_area)
+{
     $sentencia = "SELECT COUNT(*) AS total_resultados FROM avances av
     JOIN actividades ac ON av.id_actividad = ac.id_actividad
     LEFT JOIN areas ar ON ar.id_area = ac.id_area
@@ -56,7 +62,8 @@ function Pendientesareaspbrm($con, $id_area){
     $areas = $stm->fetch(PDO::FETCH_ASSOC);
     return $areas;
 }
-function Pendientesareaspdm($con, $id_area){
+function Pendientesareaspdm($con, $id_area)
+{
     $sentencia = "SELECT COUNT(*) AS total_resultados FROM avances av
     JOIN actividades ac ON av.id_actividad = ac.id_actividad
     LEFT JOIN areas ar ON ar.id_area = ac.id_area
@@ -66,7 +73,8 @@ function Pendientesareaspdm($con, $id_area){
     return $areas;
 }
 
-function Actividades_DB($con, $id_area){
+function Actividades_DB($con, $id_area)
+{
     $sql = "SELECT a.*, p.*, li.* FROM actividades a
     LEFT JOIN programaciones p ON p.id_actividad = a.id_actividad
     LEFT JOIN lineasactividades la ON la.id_actividad = a.id_actividad
@@ -81,18 +89,20 @@ function Actividades_DB($con, $id_area){
 }
 
 
-function TraeActividad($con, $id_actividad){
+function TraeActividad($con, $id_actividad)
+{
     $sql = "SELECT * FROM actividades a
     JOIN programaciones p ON p.id_actividad = a.id_actividad
-    JOIN lineasactividades la ON la.id_actividad = a.id_actividad
-    JOIN pdm_lineas li ON li.id_linea = la.id_linea 
+    LEFT JOIN lineasactividades la ON la.id_actividad = a.id_actividad
+    LEFT JOIN pdm_lineas li ON li.id_linea = la.id_linea 
     WHERE a.id_actividad = $id_actividad";
     $stm = $con->query($sql);
     $actividades = $stm->fetch(PDO::FETCH_ASSOC);
     return $actividades;
 }
 
-function TraeAvance($con, $id_avance){
+function TraeAvance($con, $id_avance)
+{
     $stm = $con->query("SELECT *, ac.id_actividad as actividad FROM avances a
     JOIN actividades ac ON ac.id_actividad = a.id_actividad
     LEFT JOIN lineasactividades la ON la.id_actividad = a.id_actividad
@@ -105,7 +115,8 @@ function TraeAvance($con, $id_avance){
 
 
 
-function AvanceMes($con, $actividad, $mes){
+function AvanceMes($con, $actividad, $mes)
+{
     $sqlav = "SELECT *, u.nombre as nombre, u.apellidos as apellidos, upb.nombre AS nombrepbrm, upd.nombre AS nombrepdm FROM avances a
     LEFT JOIN lineasactividades la ON la.id_actividad = a.id_actividad
     LEFT JOIN pdm_lineas li ON li.id_linea = la.id_linea
@@ -119,13 +130,15 @@ function AvanceMes($con, $actividad, $mes){
 }
 
 
-function TraeLocalidades($con){
+function TraeLocalidades($con)
+{
     $stm = $con->query("SELECT * FROM localidades");
     return $localidades = $stm->fetchAll(PDO::FETCH_ASSOC);
 }
 
 
-function SumaAvancesmesymes($con, $mes, $id_actividad){
+function SumaAvancesmesymes($con, $mes, $id_actividad)
+{
     $stm = $con->query("SELECT SUM(avance) AS total_avance
     FROM avances
     WHERE (mes BETWEEN 1 AND $mes) AND (validado=1) AND id_actividad = $id_actividad;
@@ -135,7 +148,8 @@ function SumaAvancesmesymes($con, $mes, $id_actividad){
 }
 
 
-function TraeNombredependencia($con, $id_dependencia){
+function TraeNombredependencia($con, $id_dependencia)
+{
     $stm = $con->query("SELECT nombre_dependencia FROM dependencias WHERE id_dependencia = $id_dependencia");
     $nombre_dependencia = $stm->fetch(PDO::FETCH_ASSOC);
     return $nombre_dependencia['nombre_dependencia'];
@@ -158,7 +172,8 @@ function DependenciafromArea($con, $id_area){
 
 
 
-function TraeAvances($con, $id_usuario, $nivel){ // Debemos revisar esto
+function TraeAvances($con, $id_usuario, $nivel)
+{ // Debemos revisar esto
     $stm = $con->query("SELECT *,
     us1.nombre as nombre1, us1.apellidos as apellidos1,
     us2.nombre as nombre2, us2.apellidos as apellidos2,
@@ -182,7 +197,9 @@ function TraeAvances($con, $id_usuario, $nivel){ // Debemos revisar esto
     return $data_avances_actividades;
 }
 
-if(isset($_POST['editar'])){
+if (isset($_POST['editar'])) {
+    $id_area = $_POST['id_area'];
+    $mes = $_POST['mes'];
     $id_avance = $_POST['id_avance'];
     $permitidas = json_encode($_POST['permitidas']);
     $id_aut_edicion = $_POST['id_aut_edicion'];
@@ -191,8 +208,19 @@ if(isset($_POST['editar'])){
     $sql = "INSERT INTO modificaciones_actividades (id_avance, permitidas, id_aut_edicion) VALUES (?,?,?)";
     $sqlr = $con->prepare($sql);
     $sqlr->execute(array($id_avance, $permitidas, $id_aut_edicion));
-    
-    header("Location: ../actividades_avances.php");
 
-    
+
+    $sql = "INSERT INTO avances (mes, avance, justificacion, path_evidenia_evidencia, descripcion_evidencia, id_actividad, id_usuario_avance, localidades, beneficiarios, recursos) VALUES (?,?,?,?,?,?,?,?,?,?)";
+    $sqlr = $con->prepare($sql);
+    $sqlr->execute(array($mes, $_POST['avance'], $_POST['justificacion'], $path_evidencia_evidencia, $_POST['descripcion_evidencia'], $id_actividad, $_POST['id_usuario'], $localidades, $beneficiarios, $recursos));
+?>
+    <form id="myForm" action="../actividades_avances.php" method="post">
+        <input type="hidden" name="id_area" value="<?= $id_area ?>">
+        <input type="hidden" name="mes" value="<?= $mes ?>">
+    </form>
+    <script type="text/javascript">
+        document.getElementById('myForm').submit();
+    </script>
+<?php
+
 }
