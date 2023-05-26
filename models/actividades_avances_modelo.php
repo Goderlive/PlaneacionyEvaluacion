@@ -117,7 +117,7 @@ function TraeAvance($con, $id_avance)
 
 function AvanceMes($con, $actividad, $mes)
 {
-    $sqlav = "SELECT *, u.nombre as nombre, u.apellidos as apellidos, upb.nombre AS nombrepbrm, upd.nombre AS nombrepdm FROM avances a
+    $sqlav = "SELECT *, u.nombre as nombre, u.apellidos as apellidos, upb.nombre AS nombrepbrm, upd.nombre AS nombrepdm, a.id_actividad as id_actividad FROM avances a
     LEFT JOIN lineasactividades la ON la.id_actividad = a.id_actividad
     LEFT JOIN pdm_lineas li ON li.id_linea = la.id_linea
     LEFT JOIN usuarios u ON u.id_usuario = a.id_usuario_avance
