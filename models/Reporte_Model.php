@@ -83,6 +83,14 @@ function editable($con, $avance){
     return $editable;
 }
 
+function RevisaAvancesExistentes($con, $id_actividad, $mes){
+    $stm = $con->query("SELECT * FROM avances WHERE id_actividad = $id_actividad AND mes = $mes");
+    $avance = $stm->fetch(PDO::FETCH_ASSOC);
+    if($avance){
+        return true;
+    }
+}
+
 
 function AvancesActividad($con, $id_actividad, $mes){
     $stm = $con->query("SELECT SUM(avance) FROM avances WHERE id_actividad = $id_actividad AND mes < $mes+1 AND validado = 1");
@@ -126,8 +134,22 @@ if (isset($_POST['jfnkasjnkasdf34q345']) == "Enviar") {
         }else{
             $recursos = NULL;
         }
-        $dir = '../archivos/actividades/'.$year.'/'.$mes.'/'.$id_dependencia.'/'.$id_area.'/'.$id_actividad.'/';
+        
+        // Verificamos que no exista este avance
+        if(RevisaAvancesExistentes($con, $id_actividad, $mes)){?>
+        <form id="myForm" action="../reportes.php" method="post">
+            <input type="hidden" name="id_area" value="<?=$id_area?>">
+            <input type="hidden" name="mes" value="<?=$mes?>">
+        </form>
+        <script type="text/javascript">
+            alert("Meta Actualizada")
+            document.getElementById('myForm').submit();
+        </script>
+        <?php
+        die();
+        }
 
+        $dir = '../archivos/actividades/'.$year.'/'.$mes.'/'.$id_dependencia.'/'.$id_area.'/'.$id_actividad.'/';
         if(!is_dir($dir)){
             mkdir($dir, 0741, true);
         }

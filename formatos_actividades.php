@@ -76,6 +76,9 @@ if(!$_SESSION['sistema'] == 'pbrm'):?>
             <?php if(TieneDirector($con, $id_dependencia) && TienePuestoMedio($con, $area['id_area'])): ?>
                 <div class="inline-flex rounded-md shadow-sm" role="group">
                     <?= Botones($con, $area['id_area']) ?>
+                </div>                
+                <div class="inline-flex rounded-md shadow-sm" role="group">
+                    <?= BotonesFirmados($con, $area['id_area']) ?>
                 </div>
             </form>
             <?php else: ?>

@@ -22,9 +22,9 @@ $actual = $actual[count($actual)-1];
 
 $inicio = array("index.php", "mi_perfil.php", "mis_areas.php", "mis_formatos.php", "ajustes.php", "unidades_medida.php", "administra_usuarios.php", "revisa_avances.php", "captura_trimestral.php");
 $actividades = array("actividades.php", "reconduccion_actividades.php", "actividades_todas.php", "formatos_actividades.php", "reportes.php", "programacion_actividades.php", "mis_reconducciones_actividades.php");
-$valida_actividades = array("actividades.php", "reconduccion_actividades.php", "actividades_todas.php", "formatos_actividades.php", "reportes.php", "programacion_actividades.php", "mis_reconducciones_actividades.php");
+$valida_actividades = array("reconduccion_actividades.php", "actividades_avances.php", "admin_formatos_actividades.php");
 $indicadores = array("indicadores.php", "reconduccion_indicadores.php", "matrices.php", "formatos_indicadores.php");
-$valida_indicadores = array("indicadores.php", "reconduccion_indicadores.php", "matrices.php", "formatos_indicadores.php");
+$valida_indicadores = array("indicadores.php", "reconduccion_indicadores.php", "matrices.php", "formatos_indicadores.php", "indicadores_avance.php");
 
 
 if(in_array($actual, $inicio)){
@@ -79,19 +79,6 @@ function item_principal($actual, $buscador, $texto, $destino, $permisos, $mi_per
                         }
                         ?></a>
                     </li>
-                    <li>
-                        <?php
-
-                        // $thisyear = date('Y');
-                        // $myyear = $_SESSION['anio']; 
-                        // if($thisyear == $myyear) {
-                        //     $ante = $thisyear + 1;
-                        //     print '<a href="models/inicio_modelo.php?anteproyecto='.$ante.'"> Anteproyecto '.$ante.' </a>';
-                        // }else{
-                        //     print '<a href="models/inicio_modelo.php?anteproyecto='.$thisyear.'"> Regresar a '.$thisyear.' </a>';
-                        // }
-                        ?>
-                    </li>
                     <?= item_principal($actual, $inicio, "Inicio", "index.php", array(1,2,3,4,5), $mi_permiso) ?>
                     <?= item_principal($actual, $actividades, "Actividades", "actividades.php", array(3,4,5), $mi_permiso) ?>
                     <?= item_principal($actual, $valida_actividades, "Valida Actividades", "actividades_avances.php", array(1,2), $mi_permiso) ?>
@@ -110,7 +97,7 @@ function item_principal($actual, $buscador, $texto, $destino, $permisos, $mi_per
                                 <?= item_context("captura_trimestral.php", "Formatos para Captura Trimestral", array(1,2), $mi_permiso) ?>
                             </ul>
                         </div> <?php endif ?>
-                    <?php if(in_array($actual, $actividades)):?>
+                        <?php if(in_array($actual, $actividades)):?>
                         <div id="dropdownNavbar" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                             <ul class="py-1 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownNavbarButton">
                                 <?= item_context("actividades.php", "Actividades por Área", array(1,2,3,4,5), $mi_permiso) ?>
@@ -123,8 +110,19 @@ function item_principal($actual, $buscador, $texto, $destino, $permisos, $mi_per
                                 ?>
                             </ul>
                         </div> <?php endif ?>
-                                
-                    <?php if(in_array($actual, $indicadores)):?>
+                        <?php if(in_array($actual, $valida_actividades)): // Validador?>
+                        <div id="dropdownNavbar" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
+                            <ul class="py-1 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownNavbarButton">
+                                <?= item_context("actividades.php", "Actividades por Área", array(1,2,3,4,5), $mi_permiso) ?>
+                                <?php 
+                                    if($mi_permiso != 5){
+                                        echo item_context("reconduccion_actividades.php", "Reconducciónes de Actividades", array(1,2,3,4,5), $mi_permiso); 
+                                        echo item_context("admin_formatos_actividades.php", "Formatos Impresos", array(1,2), $mi_permiso);
+                                    }
+                                ?>
+                            </ul>
+                        </div> <?php endif ?>
+                        <?php if(in_array($actual, $indicadores)):?>
                         <div id="dropdownNavbar" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                             <ul class="py-1 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownNavbarButton">
                                 <?= item_context("indicadores.php", "Reportar Indicadores", array(1,2,3,4,5), $mi_permiso) ?>
@@ -132,6 +130,13 @@ function item_principal($actual, $buscador, $texto, $destino, $permisos, $mi_per
                                 <?= item_context("reconduccion_indicadores.php", "Reconducción de Indicadores", array(1,2,3,4), $mi_permiso)?>
                                 <?= item_context("formatos_indicadores.php", "Imprime Formatos", array(1,2,3,4), $mi_permiso)?>
                                 <?= item_context("indicadores_todos.php", "Todos los Indicadores", array(1,2,3,4), $mi_permiso)?>
+                            </ul>
+                        </div> <?php endif ?>
+                        <?php if(in_array($actual, $valida_indicadores)):?>
+                        <div id="dropdownNavbar" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
+                            <ul class="py-1 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownNavbarButton">
+                                <?= item_context("reconduccion_indicadores.php", "Reconducción de Indicadores", array(1,2,3,4), $mi_permiso)?>
+                                <?= item_context("formatos_indicadores.php", "Formatos Impresos", array(1,2,3,4), $mi_permiso)?>
                             </ul>
                         </div> <?php endif ?>
                         <a href="login.php"><svg class="w-6 h-6 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg></a>

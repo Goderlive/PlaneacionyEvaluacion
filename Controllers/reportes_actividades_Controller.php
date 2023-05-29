@@ -25,6 +25,10 @@ return $data;
 }
 
 
+function BotonesFirmados($con, $id_area){
+    
+}
+
 
 
 ?>

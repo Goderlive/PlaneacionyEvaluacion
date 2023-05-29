@@ -6486,13 +6486,13 @@ INSERT INTO localidades (nombre_localidad) VALUES
 
 DROP TABLE IF EXISTS setings;
 CREATE TABLE setings(
-    id_setings INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    year_report VARCHAR(4) NOT NULL,
-    id_tesoreria INT,
-    id_uippe INT,
-    anteproyectoFechas VARCHAR(13),
-    proyectoFechas VARCHAR(13),
-    programaAFechas VARCHAR(13)
+  id_setings INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  year_report VARCHAR(4) NOT NULL,
+  id_tesoreria INT,
+  id_uippe INT,
+  anteproyectoFechas VARCHAR(13),
+  proyectoFechas VARCHAR(13),
+  programaAFechas VARCHAR(13)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 INSERT INTO setings (year_report, anteproyectoFechas, proyectoFechas, programaAFechas) VALUES ("2022", "01,01;01,01", "01,01;01,01", "01,01;01,01");
 
@@ -6504,4 +6504,13 @@ CREATE TABLE modificaciones_actividades(
   permitidas VARCHAR(255),
   id_aut_edicion INT,
   fecha DATETIME DEFAULT CURRENT_TIMESTAMP()
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+
+DROP TABLE IF EXISTS firmadosActividades;
+CREATE TABLE firmadosActividades(
+  id_formatoactividades INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  dir_formatoactividades VARCHAR(255),
+  id_dependencia INT, 
+  trimestre VARCHAR(5)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;

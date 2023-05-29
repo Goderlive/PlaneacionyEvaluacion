@@ -15,7 +15,6 @@ function TraeAreasDependencias($con, $id_dependencia){
 }
 
 
-
 function RevisaAvances($con, $id_area){
     $stm = $con->query("SELECT * FROM actividades WHERE id_area = $id_area");
     $actividades = $stm->fetchAll(PDO::FETCH_ASSOC);
@@ -23,9 +22,7 @@ function RevisaAvances($con, $id_area){
 }
 
 
-
 function CuentaAvances($con, $id_area, $mesI, $mesF){
-
     $stm = $con->query("SELECT COUNT(av.id_avance) FROM avances av
     LEFT JOIN actividades ac ON ac.id_actividad = av.id_actividad
     WHERE ac.id_area = $id_area AND av.mes > $mesI-1 AND av.mes < $mesF+1 AND av.validado = 1");
