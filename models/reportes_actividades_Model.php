@@ -50,4 +50,10 @@ function TienePuestoMedio($con, $id_area){
     $titularArea = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $titularArea;
 }
+
+function traeporDependenciasytrim($con, $id_dependencia, $trimestre){
+    $stm = $con->query("SELECT * FROM firmadosActividades WHERE id_dependencia = $id_dependencia AND trimestre = $trimestre");
+    $formatos = $stm->fetch(PDO::FETCH_ASSOC);
+    return $formatos;
+}
 ?>
