@@ -434,10 +434,14 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                             <?= BotonPBRM($avanceMensual, $permisos, $m['id_area'], $el_mes) ?>
                                         </table>
-                                        <form action="validaediciones.php" method="post">
-                                            <input type="hidden" name="id_avance" value="<?= $avanceMensual['id_avance'] ?>">
-                                            <button type="submit" name="valida_actividad" value="1" class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">Permitir Editar</button>
-                                        </form>
+                                        <?php if(GetModificaciones($con, $avanceMensual['id_avance'])): ?>
+                                            <button type="submit" disabled name="valida_actividad" value="1" class="cursor-not-allowed focus:outline-none text-white bg-purple-300 hover:bg-purple-350 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">Edición Pendiente</button>
+                                        <?php else: ?>
+                                            <form action="validaediciones.php" method="post">
+                                                <input type="hidden" name="id_avance" value="<?= $avanceMensual['id_avance'] ?>">
+                                                <button type="submit" name="valida_actividad" value="1" class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">Permitir Editar</button>
+                                            </form>
+                                        <?php endif ?>
                                     </div>
                                     <script>
                                         function abrirVentana<?= $avanceMensual['id_actividad'] ?>() {

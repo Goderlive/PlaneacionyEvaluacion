@@ -50,6 +50,12 @@ function Pendientespdm($con, $id_dependencia)
 }
 
 
+function GetModificaciones($con, $id_avance)
+{
+    $stm = $con->query("SELECT * FROM modificaciones_actividades WHERE id_avance = $id_avance");
+    $edicion = $stm->fetch(PDO::FETCH_ASSOC);
+    return $edicion;
+}
 
 
 function Pendientesareaspbrm($con, $id_area)
@@ -155,14 +161,16 @@ function TraeNombredependencia($con, $id_dependencia)
     return $nombre_dependencia['nombre_dependencia'];
 }
 
-function TraeNombreArea($con, $id_area){
+function TraeNombreArea($con, $id_area)
+{
     $stm = $con->query("SELECT nombre_area FROM areas WHERE id_area = $id_area");
     $nombre_area = $stm->fetch(PDO::FETCH_ASSOC);
     return $nombre_area['nombre_area'];
 }
 
 
-function DependenciafromArea($con, $id_area){
+function DependenciafromArea($con, $id_area)
+{
     $stm = $con->query("SELECT d.nombre_dependencia, a.nombre_area, d.id_dependencia, a.id_area FROM areas a
     LEFT JOIN dependencias d ON d.id_dependencia = a.id_dependencia 
     WHERE a.id_area = $id_area");

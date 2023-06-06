@@ -6503,7 +6503,8 @@ CREATE TABLE modificaciones_actividades(
   id_avance INT,
   permitidas VARCHAR(255),
   id_aut_edicion INT,
-  fecha DATETIME DEFAULT CURRENT_TIMESTAMP()
+  fecha DATETIME DEFAULT CURRENT_TIMESTAMP(),
+  atendida INT DEFAULT 0
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 
