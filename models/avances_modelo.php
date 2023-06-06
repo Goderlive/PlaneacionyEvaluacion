@@ -71,10 +71,10 @@ function traeavance($con, $id_indicador, $trimestre){
 if($_POST){
     $tipo = '';
     $data = $_POST;
+    $id_area = $_POST['id_area'];
+    $mes = $_POST['mes'];
 
     if(isset($_POST['valida_actividad'])){
-        $id_area = $_POST['id_area'];
-        $mes = $_POST['mes'];
 
         $id_usuario = $data['usuario'];
         if($_POST['valida_actividad'] == 1){
@@ -92,7 +92,7 @@ if($_POST){
     }
 
     if(isset($_POST['cancela_actividad'])){
-        $id_avance = $data['id_avance'];
+        $id_avance = $_POST['id_avance'];
         $nrows = $con->exec("DELETE FROM avances WHERE id_avance = $id_avance");
         $tipo = "actividades";
     }

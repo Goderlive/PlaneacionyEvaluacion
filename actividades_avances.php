@@ -298,7 +298,7 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                 <?php foreach ($actividadesDB as $m) : ?>
                     <?php $avanceMensual = AvanceMes($con, $m['id_actividad'], $el_mes); ?>
                     <?php $anual = $m['enero'] + $m['febrero'] + $m['marzo'] + $m['abril'] + $m['mayo'] + $m['junio'] + $m['julio'] + $m['agosto'] + $m['septiembre'] + $m['octubre'] + $m['noviembre'] + $m['diciembre'] ?>
-                    <?php if($avanceMensual):  // Comienza el area de modales
+                    <?php if ($avanceMensual) :  // Comienza el area de modales
                     ?>
                         <div id="evidenciasModal<?= $avanceMensual['id_actividad'] ?>" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
                             <div class="relative w-full max-w-7xl max-h-full">
@@ -434,12 +434,21 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                             <?= BotonPBRM($avanceMensual, $permisos, $m['id_area'], $el_mes) ?>
                                         </table>
-                                        <?php if(GetModificaciones($con, $avanceMensual['id_avance'])): ?>
+                                        <?php if (GetModificaciones($con, $avanceMensual['id_avance'])) : ?>
                                             <button type="submit" disabled name="valida_actividad" value="1" class="cursor-not-allowed focus:outline-none text-white bg-purple-300 hover:bg-purple-350 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">Edición Pendiente</button>
-                                        <?php else: ?>
+                                        <?php else : ?>
                                             <form action="validaediciones.php" method="post">
                                                 <input type="hidden" name="id_avance" value="<?= $avanceMensual['id_avance'] ?>">
                                                 <button type="submit" name="valida_actividad" value="1" class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">Permitir Editar</button>
+                                            </form>
+                                        <?php endif ?>
+                                        <?php if ($avanceMensual['validado'] == 1 & $avanceMensual['validado_2'] == 1) : ?>
+                                            <form action="models/avances_modelo.php" method="post">
+                                                <input type="hidden" name="id_avance" value="<?= $avanceMensual['id_avance']?>">
+                                                <input type="hidden" name="usuario" value="<?= $_SESSION['id_usuario']?>">
+                                                <input type="hidden" name="id_area" value="<?= $m['id_area']?>">
+                                                <input type="hidden" name="mes" value="<?= $el_mes?>">
+                                                <button type="submit" name="cancela_actividad" value="1" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Eliminar Avance Aprobado</button>
                                             </form>
                                         <?php endif ?>
                                     </div>
