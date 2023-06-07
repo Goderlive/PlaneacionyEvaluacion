@@ -1,13 +1,15 @@
 <?php
 require_once 'conection.php';
 
-function NombreArea($con, $id_area){
+function NombreArea($con, $id_area)
+{
     $stm = $con->query("SELECT * FROM areas WHERE id_area = $id_area");
     $area = $stm->fetch(PDO::FETCH_ASSOC);
     return $area["nombre_area"];
 }
 
-function traeladependencia($con, $id_area){
+function traeladependencia($con, $id_area)
+{
     $stm = $con->query("SELECT d.id_dependencia FROM dependencias d
                         JOIN areas a ON a.id_dependencia = d.id_dependencia 
                         WHERE a.id_area = $id_area");
@@ -16,20 +18,29 @@ function traeladependencia($con, $id_area){
 }
 
 
-function traelocalidades($con){
+function GetModificaciones($con, $id_avance){
+    $stm = $con->query("SELECT * FROM modificaciones_actividades WHERE id_avance = $id_avance");
+    $edicion = $stm->fetch(PDO::FETCH_ASSOC);
+    return $edicion;
+}
+
+function traelocalidades($con)
+{
     $stm = $con->query("SELECT * FROM localidades");
     $localidades = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $localidades;
 }
 
 
-function buscaactilistas($con, $id_actividad){
+function buscaactilistas($con, $id_actividad)
+{
     $stm = $con->query("SELECT * FROM lineasactividades WHERE id_actividad = $id_actividad");
     $actividad = $stm->fetch(PDO::FETCH_ASSOC);
     return $actividad;
 }
 
-function CuentaAvances($con, $id_area, $mes){
+function CuentaAvances($con, $id_area, $mes)
+{
     $stm = $con->query("SELECT COUNT(av.id_avance) FROM avances av
     LEFT JOIN actividades ac ON ac.id_actividad = av.id_actividad
     WHERE ac.id_area = $id_area AND av.mes < $mes+1 AND av.validado = 1");
@@ -38,7 +49,8 @@ function CuentaAvances($con, $id_area, $mes){
     return $c_avance;
 }
 
-function CuentaActividades($con, $id_area, $mes){
+function CuentaActividades($con, $id_area, $mes)
+{
     $stm = $con->query("SELECT COUNT(id_actividad) FROM actividades WHERE id_area = $id_area");
     $c_avance = $stm->fetch(PDO::FETCH_ASSOC);
     $c_avance = ($c_avance['COUNT(id_actividad)']) ? $c_avance['COUNT(id_actividad)'] : NULL;
@@ -47,7 +59,8 @@ function CuentaActividades($con, $id_area, $mes){
 
 
 
-function Actividades_DB($con, $id_area){
+function Actividades_DB($con, $id_area)
+{
     $sql = "SELECT * FROM actividades a
     LEFT JOIN programaciones p ON p.id_actividad = a.id_actividad
     WHERE a.id_area = $id_area";
@@ -56,7 +69,8 @@ function Actividades_DB($con, $id_area){
     return $actividades;
 }
 
-function AvanceMes($con, $actividad, $mes){
+function AvanceMes($con, $actividad, $mes)
+{
     $sqlav = "SELECT * FROM avances a
     WHERE a.mes = $mes AND id_actividad = $actividad";
     $stma = $con->query($sqlav);
@@ -64,7 +78,8 @@ function AvanceMes($con, $actividad, $mes){
     return $actividades;
 }
 
-function ProgramaActividad($con, $id_actividad){
+function ProgramaActividad($con, $id_actividad)
+{
     $stm = $con->query("SELECT * FROM programaciones WHERE id_actividad = $id_actividad");
     $programacion = $stm->fetch(PDO::FETCH_ASSOC);
     $programacion = array_slice($programacion, 1, -1);
@@ -72,10 +87,11 @@ function ProgramaActividad($con, $id_actividad){
 }
 
 
-function editable($con, $avance){
-    if($avance){
+function editable($con, $avance)
+{
+    if ($avance) {
         $id_avance = $avance['id_avance'];
-    }else{
+    } else {
         return 0;
     }
     $stm = $con->query("SELECT * FROM modificaciones_actividades WHERE id_avance = $id_avance");
@@ -83,16 +99,18 @@ function editable($con, $avance){
     return $editable;
 }
 
-function RevisaAvancesExistentes($con, $id_actividad, $mes){
+function RevisaAvancesExistentes($con, $id_actividad, $mes)
+{
     $stm = $con->query("SELECT * FROM avances WHERE id_actividad = $id_actividad AND mes = $mes");
     $avance = $stm->fetch(PDO::FETCH_ASSOC);
-    if($avance){
+    if ($avance) {
         return true;
     }
 }
 
 
-function AvancesActividad($con, $id_actividad, $mes){
+function AvancesActividad($con, $id_actividad, $mes)
+{
     $stm = $con->query("SELECT SUM(avance) FROM avances WHERE id_actividad = $id_actividad AND mes < $mes+1 AND validado = 1");
     $avances = $stm->fetch(PDO::FETCH_ASSOC);
 
@@ -100,17 +118,19 @@ function AvancesActividad($con, $id_actividad, $mes){
     return $avances;
 }
 
-function AvanceThisMes($con, $id_actividad, $mes){
-    $stm = $con->query("SELECT avance FROM avances WHERE id_actividad = $id_actividad AND mes = $mes AND validado = 1");
+function AvanceThisMes($con, $id_actividad, $mes)
+{
+    $stm = $con->query("SELECT avance FROM avances WHERE id_actividad = $id_actividad AND mes = $mes ");
     $avance = $stm->fetch(PDO::FETCH_ASSOC);
     return $avance;
 }
 
 
-function AvanceFullThisMes($con, $id_actividad, $mes){
+function AvanceFullThisMes($con, $id_actividad, $mes)
+{
     $stm = $con->query("SELECT * FROM avances a
     JOIN usuarios u ON a.id_usuario_avance = u.id_usuario
-    WHERE id_actividad = $id_actividad AND mes = $mes AND validado = 1");
+    WHERE id_actividad = $id_actividad AND mes = $mes");
     $avance = $stm->fetch(PDO::FETCH_ASSOC);
     return $avance;
 }
@@ -118,52 +138,52 @@ function AvanceFullThisMes($con, $id_actividad, $mes){
 
 if (isset($_POST['jfnkasjnkasdf34q345']) == "Enviar") {
     session_start();
-    if($_SESSION['sistema'] = 'pbrm'){
+    if ($_SESSION['sistema'] = 'pbrm') {
         $year = date('Y');
         $mes = $_POST['mes'];
         $id_actividad = $_POST['id_actividad'];
         $id_dependencia = $_POST['id_dependencia'];
         $id_area = $_POST['id_area'];
         $localidades = isset($_POST['localidades']) ? implode(",", $_POST['localidades']) : NULL;
-        $beneficiarios = (isset($_POST['beneficiarios']) && $_POST['beneficiarios'] != "" ) ? $_POST['beneficiarios'] : NULL;
+        $beneficiarios = (isset($_POST['beneficiarios']) && $_POST['beneficiarios'] != "") ? $_POST['beneficiarios'] : NULL;
         $recursos_federales = isset($_POST['recursos_federales']) ? $_POST['recursos_federales'] : NULL;
         $recursos_estatales = isset($_POST['recursos_estatales']) ? $_POST['recursos_estatales'] : NULL;
         $recursos_propios = isset($_POST['recursos_propios']) ? $_POST['recursos_propios'] : NULL;
-        if($recursos_federales || $recursos_estatales || $recursos_propios){
-            $recursos = "R F: " .$recursos_federales . "% - R E: " . $recursos_estatales . "% - R P: " . $recursos_propios . "%";
-        }else{
+        if ($recursos_federales || $recursos_estatales || $recursos_propios) {
+            $recursos = "R F: " . $recursos_federales . "% - R E: " . $recursos_estatales . "% - R P: " . $recursos_propios . "%";
+        } else {
             $recursos = NULL;
         }
-        
+
         // Verificamos que no exista este avance
-        if(RevisaAvancesExistentes($con, $id_actividad, $mes)){?>
-        <form id="myForm" action="../reportes.php" method="post">
-            <input type="hidden" name="id_area" value="<?=$id_area?>">
-            <input type="hidden" name="mes" value="<?=$mes?>">
-        </form>
-        <script type="text/javascript">
-            alert("Meta Actualizada")
-            document.getElementById('myForm').submit();
-        </script>
+        if (RevisaAvancesExistentes($con, $id_actividad, $mes)) { ?>
+            <form id="myForm" action="../reportes.php" method="post">
+                <input type="hidden" name="id_area" value="<?= $id_area ?>">
+                <input type="hidden" name="mes" value="<?= $mes ?>">
+            </form>
+            <script type="text/javascript">
+                alert("Meta Actualizada")
+                document.getElementById('myForm').submit();
+            </script>
         <?php
-        die();
+            die();
         }
 
-        $dir = '../archivos/actividades/'.$year.'/'.$mes.'/'.$id_dependencia.'/'.$id_area.'/'.$id_actividad.'/';
-        if(!is_dir($dir)){
+        $dir = '../archivos/actividades/' . $year . '/' . $mes . '/' . $id_dependencia . '/' . $id_area . '/' . $id_actividad . '/';
+        if (!is_dir($dir)) {
             mkdir($dir, 0741, true);
         }
 
         $path_evidencia_evidencia = NULL;
 
-        if(isset($_FILES['evidencia_de_evidencia']) && $_FILES['evidencia_de_evidencia']['error'] == 0 && in_array($_FILES['evidencia_de_evidencia']['type'], array('image/jpg','image/jpeg','image/png'))){
-            if($_FILES["evidencia_de_evidencia"]["error"] == UPLOAD_ERR_OK){
-                $imagen = str_replace(array(' ', 'php','js','phtml','php3','exe'), '_', date('Ymd_His') . '_' . $_FILES['evidencia_de_evidencia']['name']);
-                $uno = rand(1,99);
-                $nombre_evidencia_de_evidencia = basename("ede".$uno.$imagen);
-                $full_evidencia_evidencia = $dir.$nombre_evidencia_de_evidencia;
+        if (isset($_FILES['evidencia_de_evidencia']) && $_FILES['evidencia_de_evidencia']['error'] == 0 && in_array($_FILES['evidencia_de_evidencia']['type'], array('image/jpg', 'image/jpeg', 'image/png'))) {
+            if ($_FILES["evidencia_de_evidencia"]["error"] == UPLOAD_ERR_OK) {
+                $imagen = str_replace(array(' ', 'php', 'js', 'phtml', 'php3', 'exe'), '_', date('Ymd_His') . '_' . $_FILES['evidencia_de_evidencia']['name']);
+                $uno = rand(1, 99);
+                $nombre_evidencia_de_evidencia = basename("ede" . $uno . $imagen);
+                $full_evidencia_evidencia = $dir . $nombre_evidencia_de_evidencia;
 
-                if(move_uploaded_file($_FILES['evidencia_de_evidencia']['tmp_name'], $full_evidencia_evidencia)){
+                if (move_uploaded_file($_FILES['evidencia_de_evidencia']['tmp_name'], $full_evidencia_evidencia)) {
                     $path_evidencia_evidencia = $full_evidencia_evidencia;
                 }
             }
@@ -172,17 +192,16 @@ if (isset($_POST['jfnkasjnkasdf34q345']) == "Enviar") {
         $sql = "INSERT INTO avances (mes, avance, justificacion, path_evidenia_evidencia, descripcion_evidencia, id_actividad, id_usuario_avance, localidades, beneficiarios, recursos) VALUES (?,?,?,?,?,?,?,?,?,?)";
         $sqlr = $con->prepare($sql);
         $sqlr->execute(array($mes, $_POST['avance'], $_POST['justificacion'], $path_evidencia_evidencia, $_POST['descripcion_evidencia'], $id_actividad, $_POST['id_usuario'], $localidades, $beneficiarios, $recursos));
-        
+
         ?>
         <form id="myForm" action="../reportes.php" method="post">
-            <input type="hidden" name="id_area" value="<?=$id_area?>">
-            <input type="hidden" name="mes" value="<?=$mes?>">
+            <input type="hidden" name="id_area" value="<?= $id_area ?>">
+            <input type="hidden" name="mes" value="<?= $mes ?>">
         </form>
         <script type="text/javascript">
             alert("Meta Actualizada")
             document.getElementById('myForm').submit();
         </script>
-        <?php
+<?php
     }
 }
-

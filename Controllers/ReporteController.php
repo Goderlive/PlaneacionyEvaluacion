@@ -44,12 +44,12 @@ function ValidaBotones($con, $mes, $actividad, $codigo_actividad){
     $editable = editable($con, $actividad);
     if($editable){
         return '
-    <form action="editar_avance_actividad.php" method="post">
-        <input type="hidden" name="id_modificacion" value="'.$editable['id_modificacion'].'">
-        <button type="submit" name="editable" class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">
-            Editar 
-        </button>
-    </form>';
+            <form action="editar_avance_actividad.php" method="post">
+                <input type="hidden" name="id_modificacion" value="'.$editable['id_modificacion'].'">
+                <button type="submit" name="editable" class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">
+                    Editar 
+                </button>
+            </form>';
 
     }
 
@@ -148,60 +148,273 @@ function BotonAvance($avanceThisMes, $numero){
 }
 
 
-function ModalesEvidencias($con, $actividades, $mes){
-    $data = "";
-    foreach($actividades as $a){
-        $avance = AvanceFullThisMes($con, $a['id_actividad'], $mes);
-        $numero = $a['id_actividad'];
 
-        
-        if($avance){
-            $img = substr($avance['path_evidenia_evidencia'], 3);
-            $data .= ' <!-- Modal Evidencia -->
-            <div id="evidenciasModal'.$numero.'" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full">
-                <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
-                    <!-- Modal content -->
-                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                        <!-- Modal header -->
-                        <div class="flex justify-between items-start p-4 rounded-t border-b dark:border-gray-600">
-                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                                Evidencia
-                            </h3>
-                            <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="evidenciasModal'.$numero.'">
-                                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                                <span class="sr-only">Close modal</span>
-                            </button>
-                        </div>
-                        <!-- Modal body -->
-                        <div class="p-6 space-y-6">
-                            Evidencia Capturada por: '. $avance['nombre'] . ' ' . $avance['apellidos'] .'
-                            <br>
-                            '. $avance['fecha_avance'] .'
-                            <img src="'. $img .'" alt="alt" width="300">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            ';
+function localidades($locasa, $localidades){
+    $locas = explode(",", $locasa);
+        foreach ($locas as $loca){
+            print $localidades[$loca-1]['nombre_localidad'] . "<br>";
+        }
+}
+
+function tiempos($dato_timestamp){
+    $hora_actual = date('Y-m-d H:i:s');
+    $timestamp_bd = strtotime($dato_timestamp);
+    $diferencia = time() - $timestamp_bd;
+    $dias_diferencia = floor($diferencia / (60 * 60 * 24));
+    $horas_diferencia = floor(($diferencia % (60 * 60 * 24)) / 3600);
+    $minutos_diferencia = floor(($diferencia % 3600) / 60);
+
+    // Imprime el resultado
+    $txtr = "Reportado hace:\n";
+    if($dias_diferencia != 0){
+        if($dias_diferencia > 1){
+            $txtr .= $dias_diferencia . ' días, ';
+        }else{
+            $txtr .= $dias_diferencia . ' día, ';
         }
     }
+    if($horas_diferencia != 0){
+        if($horas_diferencia > 1){
+            $txtr .= $horas_diferencia . ' horas, ';
+        }else{
+            $txtr .= $horas_diferencia . ' hora, ';
+        }
+    }
+    $txtr .= $minutos_diferencia . " minutos";
 
+    return $txtr;
+}
+
+
+
+function nombremes($mes){
+    $meses = array("Sin Mes", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");
+    return $meses[$mes];
+}
+
+function Imagenes($a){
+    $img = substr($a, 3);
+    if($img){
+        return $img;
+    }
+}
+
+function imgsmall($data){
+    $img = Imagenes($data);
+    if($img){
+        return '<img src="' . $img . '" alt="evidencia" width="150" height="150">';
+    }else{
+        return "Sin Evidencia";
+    }
+}
+
+function imgmd($data){
+    $img = Imagenes($data);
+    if($img){
+        return '<img src="' . $img . '" alt="evidencia" style="max-width: 150px; max-height: 150px;">';
+    }
+}
+
+
+
+function ModalesEvidencias($con, $actividades, $mes){
+    $meses = array("Sin Mes", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");
+    $mesi = strtolower($meses[$mes]);
+    $localidades = traelocalidades($con);
+    $data = "";
+    foreach($actividades as $a){
+        $modificacionestxt = '';
+
+        $anual = $a['enero'] + $a['febrero'] + $a['marzo'] + $a['abril'] + $a['mayo'] + $a['junio'] + $a['julio'] + $a['agosto'] + $a['septiembre'] + $a['octubre'] + $a['noviembre'] + $a['diciembre'];
+
+        $avance = AvanceFullThisMes($con, $a['id_actividad'], $mes);
+        if($avance){
+            if (isset($avance['id_linea'])){
+                if($avance['localidades']){
+                    $locatxt = localidades($avance['localidades'], $localidades);
+                }else{
+                    $locatxt = '<b>No Seleccionaron localidades</b>';
+                }
+
+                if($avance['beneficiarios']){
+                    $benetxt = $avance['beneficiarios'];
+                }else{
+                    $benetxt = '<b>No Seleccionaron Beneficiarios</b>';
+                }
+
+                if ($avance['recursos']){
+                    $recursostxt = $avance['recursos'];
+                }else{
+                    $recursostxt = "<b>No selecciono recursos </b>";
+                }
+
+                if (GetModificaciones($con, $avance['id_avance'])){
+                    $modificacionestxt = '<button type="submit" disabled name="valida_actividad" value="1" class="cursor-not-allowed focus:outline-none text-white bg-purple-300 hover:bg-purple-350 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">Edición Pendiente</button>';
+                }
+                $tablepdm ='<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <tbody>
+                        <tr class="bg-white dark:bg-gray-800">
+                            <td scope="row" class="py-2 px-6" align="center" valign="top"> '. 
+                              $locatxt  
+                            .'</td>
+                            <td scope="row" class="py-2 px-6" align="center" valign="top">'.
+                                $benetxt 
+                            .' </td>
+                            <td scope="row" class="py-2 px-6" align="center" valign="top">'.
+                                $recursostxt
+                            .'</td>
+                        </tr>
+                    </tbody>
+                </table>';
+            }
+            else{
+                $tablepdm = '';
+            }
+            if (isset($avance['path_evidenia_evidencia'])){
+                $imgd = imgmd($avance['path_evidenia_evidencia']);
+                $evidencia = '
+                <a target="_blank" href="'.Imagenes($avance['path_evidenia_evidencia']).'">
+                '.$imgd .')
+                </a>
+                ';
+            }else{ 
+                $evidencia = 'Sin Evidencia';
+            }
+            $tiempotxt = tiempos($avance['fecha_avance']);
+            if ($avance['validado'] != 1 & $avance['validado_2'] != 1){
+                $botonEliminar = '<form action="models/avances_modelo.php" method="post">
+                    <input type="hidden" name="id_avance" value="'. $avance['id_avance'].'">
+                    <input type="hidden" name="usuario" value="'. $_SESSION['id_usuario'].'">
+                    <input type="hidden" name="id_area" value="'. $a['id_area'].'">
+                    <input type="hidden" name="mes" value="'. $mes.'">
+                    <button type="submit" name="cancela_actividad" value="1" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Eliminar Avance</button>
+                </form>';
+            }else{
+                $botonEliminar = 'Puedes solicitar una edicion a tu enlace';
+            }
+
+            $numero = $a['id_actividad'];
+            $img = substr($avance['path_evidenia_evidencia'], 3);
+            $nombres2 = nombremes($avance['mes']);
+            $data .= ' 
+            
+                <!-- Extra Large Modal -->
+                <div id="evidenciasModal'.$numero.'" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                    <div class="relative w-full max-w-7xl max-h-full">
+                        <!-- Modal content -->
+                        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                            <!-- Modal header -->
+                            <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">
+                                <h3 class="text-xl font-medium text-gray-900 dark:text-white">'.
+                                    $a['nombre_actividad']
+                                .'</h3>
+                                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="evidenciasModal'.$numero.'">
+                                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                    <span class="sr-only">Close modal</span>
+                                </button>
+                            </div>
+                            <!-- Modal body -->
+                            <div class="p-6 space-y-6">
+                                
+                            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                <tr>
+                                    <th scope="col" class="py-3 px-6" align="center">
+                                        Nombre de la Meta de Actividad
+                                    </th>
+                                    <th scope="col" class="py-3 px-6" align="center">
+                                        U d M
+                                    </th>
+                                    <th scope="col" class="py-3 px-6" align="center">
+                                        Prog. Anual
+                                    </th>
+                                    <th scope="col" class="py-3 px-6" align="center">
+                                        Mes
+                                    </th>
+                                    <th scope="col" class="py-3 px-6" align="center">
+                                        Prog Mes
+                                    </th>
+                                    <th scope="col" class="py-3 px-6" align="center">
+                                        Alcanzada
+                                    </th>
+                                    <th scope="col" class="py-3 px-6" align="center">
+                                        Variacion
+                                    </th>
+                                    <th scope="col" class="py-3 px-6" align="center">
+                                        Evidencia
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th scope="row" class="py-2 px-6" align="center" valign="top">'.
+                                        $a['nombre_actividad'] 
+                                    .'</th>
+                                    <td class="py-2 px-6" align="center" valign="top">'.
+                                        $a['unidad']
+                                    .'</td>
+                                    <td class="py-2 px-6" align="center" valign="top">'.
+                                            $anual
+                                    .'</td>
+                                    <td class="py-2 px-6" align="center" valign="top">'.
+                                        $nombres2
+                                    .'</td>
+                                    <td class="py-2 px-6" align="center" valign="top">'.
+                                        $a[$mesi]
+                                    .'</td>
+                                    <td class="py-2 px-6" align="center" valign="top">
+                                        <b>'. $avance['avance'].' <b>
+                                    </td>
+                                    <td class="py-2 px-6" align="center" valign="top">'. 
+                                        intval($avance['avance']) - $a[$mesi]
+                                    .'</td>
+                                    <td class="py-2 px-6" align="center">'.
+                                        $evidencia
+                                    .'</td>
+                                </tr>
+                            </table>'.
+                            $tablepdm
+                            .'<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                <tr>
+                                    <td>
+                                        Descripcion de la Evidencia: '. $avance['descripcion_evidencia'] .' <br>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Justificación por variación: '. $avance['justificacion'] .' <br>
+                                    </td>
+                                <tr>
+                                    <td>
+                                        Reportado por: <b> '.$avance['nombre'] . ' ' . $avance['apellidos'] . '"</b> <br>" <br>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>'.
+                                        $tiempotxt
+                                    .'</td>
+                                </tr>
+                            </table>'.
+                                $modificacionestxt
+                            . " " . $botonEliminar 
+                        .'</div>
+                        </div>
+                    </div>
+                </div>';
+        }
+    }
     return $data;
 }
 
 
 
 function Actividades($con, $mes, $id_area, $meses, $actividadesDB){
-
     $resp = '';
     foreach ($actividadesDB as $a){
-        $avanceMensual = AvanceMes($con, $a['id_actividad'], $mes);
+        $avance = AvanceMes($con, $a['id_actividad'], $mes);
 
 
         $anual = $a['enero'] + $a['febrero'] + $a['marzo'] + $a['abril'] + $a['mayo'] + $a['junio'] + $a['julio'] + $a['agosto'] + $a['septiembre'] + $a['octubre'] + $a['noviembre'] + $a['diciembre'];
         $mesi = strtolower($meses[$mes]);
 
-        $botones = ValidaBotones($con, $mes, $avanceMensual, $a['codigo_actividad']);
+        $botones = ValidaBotones($con, $mes, $avance, $a['codigo_actividad']);
         $avance = barraAvance($con, $a['id_actividad'], $mes);
 
         $avanceThisMes = AvanceThisMes($con, $a['id_actividad'], $mes);

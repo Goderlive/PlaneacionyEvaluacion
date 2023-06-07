@@ -7,7 +7,7 @@ session_start();
 <?php include 'header.php';
 require_once 'Controllers/ReporteController.php'; ?>
 <?php include 'Controllers/breadcrumbs.php';?>
-<?php if($permisos['nivel'] == 1 || $permisos['nivel'] == 4 || $permisos['nivel'] == 5){?>
+<?php if($permisos['nivel'] == 4 || $permisos['nivel'] == 5){?>
 
 <body>
     <br>
@@ -67,10 +67,9 @@ require_once 'Controllers/ReporteController.php'; ?>
 
     <?= Modales($con, $actividadesDB, $el_mes, $permisos)?>
     <br>
-    <?= ModalesEvidencias($con, $actividadesDB, $el_mes)?>    
-<?php include 'footer.php';?>
-<?= BotonImprimir($con, $id_area, $el_mes);
-?>
+    <?= ModalesEvidencias($con, $actividadesDB, $el_mes)?>
+    <?= BotonImprimir($con, $id_area, $el_mes)?>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
 </body>
 </html>
 <?php
