@@ -60,14 +60,10 @@ $user_anio = $_SESSION['anio'];
                     </button>
                 </form>
                 <div class="px-3 pt-4 pb-2 text-center">
-
-
-                    <a href="#">
-                        <?php $lineas = buscalineas($con, $area['id_area']) ?>
-                        <?php if($lineas): ?>
-                            <span class="inline-block bg-red-600 text-white rounded-full px-3 py-1 text-sm font-semibold text-white-700 mr-2 mb-2">Esta area tiene Actividades vinculadas al PDM</span>
-                        <?php endif ?>
-                    </a>
+                    <?php $lineas = buscalineas($con, $area['id_area']) ?>
+                    <?php if($lineas): ?>
+                        <p class="text-red-600">Esta área tiene Actividades vinculadas al PDM.</p>
+                    <?php endif ?>
                 </div>
             </div>
         <?php endforeach ?>
