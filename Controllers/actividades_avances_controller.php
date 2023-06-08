@@ -166,33 +166,33 @@ function BotonPBRM($avanceMensual, $permisos, $id_area, $el_mes){
 
         if($avanceMensual['validado'] == 1 && $avanceMensual['validado_2'] == 1): //Si todo esta SUPER VALIDADO 
             return '<tr>
-                <td>Validado por ' . $avanceMensual['nombrepbrm'].'</td>
-                <td>Validado por ' . $avanceMensual['nombrepdm'].'</td>
+                <td>Validado por: ' . $avanceMensual['nombrepbrm'].'</td>
+                <td>Validado por: ' . $avanceMensual['nombrepdm'].'</td>
             </tr>';
         endif; 
 
         if(($avanceMensual['validado'] == 1 && $avanceMensual['validado_2'] != 1) || ($avanceMensual['validado'] != 1 && $avanceMensual['validado_2'] == 1)) : //Si FALTA validar PBRM o  PDM    
             if($permisos['rol'] == 1 && $avanceMensual['validado'] == 1){
                 return '<tr>
-                    <td>Validado por '.$avanceMensual['nombrepbrm'].'</td>
+                    <td>Validado por: '.$avanceMensual['nombrepbrm'].'</td>
                     <td>Pendiente de validacion por el area de PDM</td>
                 </tr>';            
             }
             if($permisos['rol'] == 1 && $avanceMensual['validado'] != 1){
                 return '<tr>
                     <td>'.$botonValidarPbRM.'</td>
-                    <td>Validado por '.$avanceMensual['nombrepdm'].'</td>
+                    <td>Validado por: '.$avanceMensual['nombrepdm'].'</td>
                 </tr>';            
             }
             if($permisos['rol'] == 2 && $avanceMensual['validado_2'] == 1){
                 return '<tr>
                     <td>Pendiente de validacion por el area de PbRM</td>
-                    <td>Validado por ' . $avanceMensual['nombrepdm'].'</td>
+                    <td>Validado por: ' . $avanceMensual['nombrepdm'].'</td>
                 </tr>';              
             }
             if($permisos['rol'] == 2 && $avanceMensual['validado_2'] != 1){
                 return '<tr>
-                <td>Validado por ' . $avanceMensual['nombrepbrm'].'</td>
+                <td>Validado por: ' . $avanceMensual['nombrepbrm'].'</td>
                 <td>'.$botonValidarPDM.'</td>
                 </tr>';             
             }
@@ -217,7 +217,7 @@ function BotonPBRM($avanceMensual, $permisos, $id_area, $el_mes){
     
         if($avanceMensual['validado'] == 1) : //Si YA esta VADIDADO     
             return '<tr>
-                <td>Validado Por '.$avanceMensual['nombrepdm'].'</td>
+                <td>Validado Por: '.$avanceMensual['nombrepdm'].'</td>
                 <td>No requiere validaciones adicionales</td>
             </tr>';   
         endif; 
@@ -261,22 +261,28 @@ function tiempos($dato_timestamp){
     $minutos_diferencia = floor(($diferencia % 3600) / 60);
 
     // Imprime el resultado
-    echo "Reportado hace:\n";
+    $txtr = "Reportado hace:\n";
     if($dias_diferencia != 0){
         if($dias_diferencia > 1){
-            echo $dias_diferencia . ' días, ';
+            $txtr .= $dias_diferencia . ' días, ';
         }else{
-            echo $dias_diferencia . ' día, ';
+            $txtr .= $dias_diferencia . ' día, ';
         }
     }
     if($horas_diferencia != 0){
         if($horas_diferencia > 1){
-            echo $horas_diferencia . ' horas, ';
+            $txtr .= $horas_diferencia . ' horas, ';
         }else{
-            echo $horas_diferencia . ' hora, ';
+            $txtr .= $horas_diferencia . ' hora, ';
         }
     }
-    echo $minutos_diferencia . " minutos";
+    $txtr .= $minutos_diferencia . " minutos";
+
+    if($dias_diferencia > 5){
+        return "Reportado el " . $dato_timestamp;
+    }else{
+        return $txtr;
+    }
 }
 
 

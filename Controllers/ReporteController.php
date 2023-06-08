@@ -9,7 +9,16 @@ if (!isset($_POST['id_area'])){
     <?php
 }else{
     $id_area = $_POST['id_area'];
-    $el_mes = (isset($_POST['mes'])) ? $_POST['mes'] : intval(date('m'));
+
+    if(isset($_POST['mes'])){
+        $el_mes = $_POST['mes'];
+    }else{
+        if(date('d') > 24){
+            $el_mes = intval(date('m'));
+        }else{
+            $el_mes = intval(date('m')-1);
+        }
+    }
 }
 $meses = array("Sin Mes", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");
 
@@ -39,7 +48,8 @@ function MenuMes($el_mes, $id_area){
 }
 
 
-function ValidaBotones($con, $mes, $actividad, $codigo_actividad){
+function ValidaBotones($con, $mes, $actividad, $codigo_actividad, $id_actividad){
+    $meses = array("Sin Mes", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");
 
     $editable = editable($con, $actividad);
     if($editable){
@@ -50,12 +60,17 @@ function ValidaBotones($con, $mes, $actividad, $codigo_actividad){
                     Editar 
                 </button>
             </form>';
-
     }
 
+    $reconduccion = tieneReconduccion($con, $id_actividad);
+    if($reconduccion){
+        return '<button disabled class="text-white bg-blue-400 dark:bg-blue-500 cursor-not-allowed font-medium rounded-lg text-sm py-1 text-center" type="button" data-modal-toggle="mymodal'. $codigo_actividad .'">
+            Reconducción Pendiente
+        </button> ';
+        }
 
     $boton = 'class = "bg-blue-700 text-white hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800';
-    $text = 'Reportar';
+    $text = 'Reportar <br>' . $meses[$mes];
 
     if(isset($actividad['avance'])){
         $text = "Revisión";
@@ -68,13 +83,7 @@ function ValidaBotones($con, $mes, $actividad, $codigo_actividad){
         $boton = 'disabled class="text-white bg-green-500 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center';
         $text = "Reportado";
     }
-    $regreso=[];
-    array_push($regreso, $boton);
-    array_push($regreso, $text);
-
-
-
-    return '<button ' . $boton . 'type="button" data-modal-toggle="mymodal'. $codigo_actividad .'"> '.
+    return '<button ' . $boton . '" type="button" data-modal-toggle="mymodal'. $codigo_actividad .'"> '.
             $text
         .'</button> ';
 }
@@ -150,10 +159,12 @@ function BotonAvance($avanceThisMes, $numero){
 
 
 function localidades($locasa, $localidades){
+    $nlocas = '';
     $locas = explode(",", $locasa);
         foreach ($locas as $loca){
-            print $localidades[$loca-1]['nombre_localidad'] . "<br>";
+            $nlocas .= $localidades[$loca-1]['nombre_localidad'] . "<br>";
         }
+    return $nlocas;
 }
 
 function tiempos($dato_timestamp){
@@ -182,7 +193,11 @@ function tiempos($dato_timestamp){
     }
     $txtr .= $minutos_diferencia . " minutos";
 
-    return $txtr;
+    if($dias_diferencia > 5){
+        return "Reportado el " . $dato_timestamp;
+    }else{
+        return $txtr;
+    }
 }
 
 
@@ -274,7 +289,7 @@ function ModalesEvidencias($con, $actividades, $mes){
                 $imgd = imgmd($avance['path_evidenia_evidencia']);
                 $evidencia = '
                 <a target="_blank" href="'.Imagenes($avance['path_evidenia_evidencia']).'">
-                '.$imgd .')
+                '.$imgd .'
                 </a>
                 ';
             }else{ 
@@ -290,7 +305,7 @@ function ModalesEvidencias($con, $actividades, $mes){
                     <button type="submit" name="cancela_actividad" value="1" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Eliminar Avance</button>
                 </form>';
             }else{
-                $botonEliminar = 'Puedes solicitar una edicion a tu enlace';
+                $botonEliminar = '';
             }
 
             $numero = $a['id_actividad'];
@@ -374,16 +389,16 @@ function ModalesEvidencias($con, $actividades, $mes){
                             .'<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                 <tr>
                                     <td>
-                                        Descripcion de la Evidencia: '. $avance['descripcion_evidencia'] .' <br>
+                                        Descripcion de la Evidencia: <b>'. $avance['descripcion_evidencia'] .' </b><br>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        Justificación por variación: '. $avance['justificacion'] .' <br>
+                                        Justificación por variación: <b>'. $avance['justificacion'] .' </b><br>
                                     </td>
                                 <tr>
                                     <td>
-                                        Reportado por: <b> '.$avance['nombre'] . ' ' . $avance['apellidos'] . '"</b> <br>" <br>
+                                        Reportado por: <b> '.$avance['nombre'] . ' ' . $avance['apellidos'] . '</b><br><br> 
                                     </td>
                                 </tr>
                                 <tr>
@@ -414,7 +429,7 @@ function Actividades($con, $mes, $id_area, $meses, $actividadesDB){
         $anual = $a['enero'] + $a['febrero'] + $a['marzo'] + $a['abril'] + $a['mayo'] + $a['junio'] + $a['julio'] + $a['agosto'] + $a['septiembre'] + $a['octubre'] + $a['noviembre'] + $a['diciembre'];
         $mesi = strtolower($meses[$mes]);
 
-        $botones = ValidaBotones($con, $mes, $avance, $a['codigo_actividad']);
+        $botones = ValidaBotones($con, $mes, $avance, $a['codigo_actividad'], $a['id_actividad']);
         $avance = barraAvance($con, $a['id_actividad'], $mes);
 
         $avanceThisMes = AvanceThisMes($con, $a['id_actividad'], $mes);

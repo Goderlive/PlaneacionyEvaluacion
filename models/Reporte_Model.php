@@ -69,10 +69,10 @@ function Actividades_DB($con, $id_area)
     return $actividades;
 }
 
-function AvanceMes($con, $actividad, $mes)
+function AvanceMes($con, $id_actividad, $mes)
 {
     $sqlav = "SELECT * FROM avances a
-    WHERE a.mes = $mes AND id_actividad = $actividad";
+    WHERE a.mes = $mes AND id_actividad = $id_actividad";
     $stma = $con->query($sqlav);
     $actividades = $stma->fetch(PDO::FETCH_ASSOC);
     return $actividades;
@@ -130,11 +130,19 @@ function AvanceFullThisMes($con, $id_actividad, $mes)
 {
     $stm = $con->query("SELECT * FROM avances a
     JOIN usuarios u ON a.id_usuario_avance = u.id_usuario
-    WHERE id_actividad = $id_actividad AND mes = $mes");
+    LEFT JOIN lineasactividades l ON l.id_actividad = a.id_actividad
+    WHERE a.id_actividad = $id_actividad AND a.mes = $mes");
     $avance = $stm->fetch(PDO::FETCH_ASSOC);
     return $avance;
 }
 
+function tieneReconduccion($con, $id_actividad){
+    $stm = $con->query("SELECT * FROM programacion_reconducciones pr
+    LEFT JOIN reconducciones_atividades ra ON ra.id_reconduccion_actividades = id_reconduccion
+    WHERE pr.id_actividad = $id_actividad AND validado != 1");
+    $avance = $stm->fetch(PDO::FETCH_ASSOC);
+    return $avance;
+}
 
 if (isset($_POST['jfnkasjnkasdf34q345']) == "Enviar") {
     session_start();
