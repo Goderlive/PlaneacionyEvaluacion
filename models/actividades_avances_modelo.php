@@ -211,16 +211,12 @@ if (isset($_POST['editar'])) {
     $id_avance = $_POST['id_avance'];
     $permitidas = json_encode($_POST['permitidas']);
     $id_aut_edicion = $_POST['id_aut_edicion'];
+    $mensaje = $_POST['mensaje'];
 
 
-    $sql = "INSERT INTO modificaciones_actividades (id_avance, permitidas, id_aut_edicion) VALUES (?,?,?)";
+    $sql = "INSERT INTO modificaciones_actividades (id_avance, permitidas, id_aut_edicion, mensaje) VALUES (?,?,?,?)";
     $sqlr = $con->prepare($sql);
-    $sqlr->execute(array($id_avance, $permitidas, $id_aut_edicion));
-
-
-    $sql = "INSERT INTO avances (mes, avance, justificacion, path_evidenia_evidencia, descripcion_evidencia, id_actividad, id_usuario_avance, localidades, beneficiarios, recursos) VALUES (?,?,?,?,?,?,?,?,?,?)";
-    $sqlr = $con->prepare($sql);
-    $sqlr->execute(array($mes, $_POST['avance'], $_POST['justificacion'], $path_evidencia_evidencia, $_POST['descripcion_evidencia'], $id_actividad, $_POST['id_usuario'], $localidades, $beneficiarios, $recursos));
+    $sqlr->execute(array($id_avance, $permitidas, $id_aut_edicion, $mensaje));
 ?>
     <form id="myForm" action="../actividades_avances.php" method="post">
         <input type="hidden" name="id_area" value="<?= $id_area ?>">

@@ -6502,6 +6502,7 @@ CREATE TABLE modificaciones_actividades(
   id_modificacion INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
   id_avance INT,
   permitidas VARCHAR(255),
+  mensaje TEXT,
   id_aut_edicion INT,
   fecha DATETIME DEFAULT CURRENT_TIMESTAMP(),
   atendida INT DEFAULT 0
