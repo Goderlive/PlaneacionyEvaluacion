@@ -23,7 +23,7 @@ $id_modificacion = $_POST['id_modificacion']?>
 <?php $actividad = TraeActividad($con, $avance['id_actividad']) ?>
 <?php $anual = $actividad['enero'] + $actividad['febrero'] + $actividad['marzo'] + $actividad['abril'] + $actividad['mayo'] + $actividad['junio'] + $actividad['julio'] + $actividad['agosto'] + $actividad['septiembre'] + $actividad['octubre'] + $actividad['noviembre'] + $actividad['diciembre'] ?>
 <?php $meses = array("Sin Mes", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");?>
-
+<?php $localidades = traelocalidades($con) ?>
 <?php 
 
 
@@ -92,8 +92,8 @@ function tiempos($dato_timestamp)
 ?>
 
 
-<br>
-<div id="alert-additional-content-5" class="p-4 border border-gray-300 rounded-lg bg-gray-50 dark:border-gray-600 dark:bg-gray-800" role="alert">
+
+<div id="alert-additional-content-5" class="my-6 p-4 border border-gray-300 rounded-lg bg-blue-50 dark:border-gray-600 dark:bg-gray-800" role="alert">
   <div class="flex items-center">
     <svg aria-hidden="true" class="w-5 h-5 mr-2 text-gray-800 dark:text-gray-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
     <span class="sr-only">Info</span>
@@ -231,20 +231,12 @@ function tiempos($dato_timestamp)
         <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
 
 
-
-<br>
-<?php var_dump($modificacion) ?>
-<br>
-<br>
-<?php var_dump($avance) ?>
-
-
-
-
 <form action="models/editar_avance_actividad.php" method="post"> 
 
+<input type="hidden" name="id_avance" value="<?= $avance['id_avance'] ?>">
+<input type="hidden" name="id_modificacion" value="<?= $modificacion['id_modificacion'] ?>">
 
-<div>
+<div class="my-6">
 <?php if(in_array("avance", $permitidas)): ?>
     <label for="avance" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Avance:</label>
     <input type="number" id="avance" name="avance" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Actual: <?= $avance['avance'] ?>" required>
@@ -252,12 +244,8 @@ function tiempos($dato_timestamp)
     <input type="hidden" name="avance" value="<?= $avance['avance'] ?>">
 <?php endif ?>
 </div>
-<br>
 
-
-
-
-<div>
+<div class="my-6">
 <?php if(in_array("evidencia", $permitidas)): ?>
     <label for="evidencia_de_evidencia" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Evidencia:</label>
     <input type="file" id="evidencia_de_evidencia" name="evidencia_de_evidencia" accept="image/png, image/jpeg, image/jpg" class="block mb-5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"/>
@@ -267,21 +255,16 @@ function tiempos($dato_timestamp)
 <?php endif ?>
 </div>
 
-
-
-<div>
+<div class="my-6">
 <?php if(in_array("descevidencia", $permitidas)): ?>
     <label for="descevidencia" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Descripcion de Evidencia:</label>
     <input type="text" id="descevidencia" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
 <?php else: ?>
-    <input type="hidden" name="descevidencia" value="<?= $ava ?>">
-    <input type="text" id="descevidencia" name="descevidencia" value="<?= end($avance['descripcion_evidencia']) ?>" id="disabled-input" aria-label="disabled input" class="mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly>
+    <input type="hidden" name="descevidencia" value="<?= $avance['descripcion_evidencia'] ?>">
     <?php endif ?>
 </div>
 
-<br>
-
-<div>
+<div class="my-6">
 <?php if(in_array("justificacion", $permitidas)): ?>
     <label for="justificacion" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Justificación caso de +10% o -10% de variación:</label>
     <input type="text" id="justificacion" name="justificacion" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -290,8 +273,7 @@ function tiempos($dato_timestamp)
 <?php endif ?>
 </div>
 
-
-<div>
+<div class="my-6">
 <?php if(in_array("localidades", $permitidas)): ?>
     <label for="localidades" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Localidades:</label>
     <input type="text" id="localidades" name="localidades" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -300,8 +282,16 @@ function tiempos($dato_timestamp)
 <?php endif ?>
 </div>
 
+<div class="my-6">
+<?php if(in_array("beneficiarios", $permitidas)): ?>
+    <label for="beneficiarios" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Beneficiarios:</label>
+    <input type="text" id="beneficiarios" name="beneficiarios" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+<?php else: ?>
+    <input type="hidden" name="beneficiarios" value="<?= $avance['beneficiarios'] ?>">
+<?php endif ?>
+</div>
 
-<div>
+<div class="my-6">
 <?php if(in_array("recursos", $permitidas)): ?>
     <label for="recursos" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Recursos:</label>
     <input type="text" id="recursos" name="recursos" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -310,8 +300,9 @@ function tiempos($dato_timestamp)
 <?php endif ?>
 </div>
 
-<button type="submyt" name="actualizar" value="actualizar" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Actualizar</button>
-
+<button type="submyt" name="actualizar" value="actualizar" class=" text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Actualizar</button>
+<br>
+<br>
 
 </form>
 

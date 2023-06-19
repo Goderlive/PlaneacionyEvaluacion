@@ -62,7 +62,7 @@ $user_anio = $_SESSION['anio'];
                 <div class="px-3 pt-4 pb-2 text-center">
                     <?php $lineas = buscalineas($con, $area['id_area']) ?>
                     <?php if($lineas): ?>
-                        <p class="text-red-600">Esta área tiene Actividades vinculadas al PDM.</p>
+                        <img src="img/pdm.png" class="h-auto max-w-lg mx-auto" alt="Esta área tiene Actividades vinculadas al PDM.">
                     <?php endif ?>
                 </div>
             </div>

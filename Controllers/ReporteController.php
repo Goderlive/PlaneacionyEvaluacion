@@ -50,16 +50,18 @@ function MenuMes($el_mes, $id_area){
 
 function ValidaBotones($con, $mes, $actividad, $codigo_actividad, $id_actividad){
     $meses = array("Sin Mes", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");
-
     $editable = editable($con, $actividad);
+    
     if($editable){
-        return '
-            <form action="editar_avance_actividad.php" method="post">
-                <input type="hidden" name="id_modificacion" value="'.$editable['id_modificacion'].'">
-                <button type="submit" name="editable" class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">
-                    Editar 
-                </button>
-            </form>';
+        if($editable['atendida'] != 1){     
+            return '
+                <form action="editar_avance_actividad.php" method="post">
+                    <input type="hidden" name="id_modificacion" value="'.$editable['id_modificacion'].'">
+                    <button type="submit" name="editable" class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">
+                        Editar 
+                    </button>
+                </form>';
+        }
     }
 
     $reconduccion = tieneReconduccion($con, $id_actividad);
@@ -666,5 +668,4 @@ if ((CuentaActividades($con, $id_area, $mes) * $mes)  ==  CuentaAvances($con, $i
 }
 
 }
-
 ?>
