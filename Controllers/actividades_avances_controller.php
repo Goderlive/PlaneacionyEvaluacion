@@ -239,10 +239,12 @@ function BotonPBRM($avanceMensual, $permisos, $id_area, $el_mes){
 
 
 function localidades($locasa, $localidades){
+    $retu = '';
     $locas = explode(",", $locasa);
-        foreach ($locas as $loca){
-            print $localidades[$loca-1]['nombre_localidad'] . "<br>";
+    foreach ($locas as $loca){
+            $retu .= $localidades[$loca-1]['nombre_localidad'] . "<br>";
         }
+    return $retu;
 }
 
 

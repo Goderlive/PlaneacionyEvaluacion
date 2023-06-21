@@ -28,6 +28,24 @@ $id_modificacion = $_POST['id_modificacion']?>
 
 
 
+
+function lista_localidades($con){
+    $localidades = traelocalidades($con);
+    $options = '<option selected disabled>Seleccione las Localidades</option>
+    ';
+    foreach($localidades as $l){
+        $options .= '<option value="'.$l['id_localidad'].'">'.$l['nombre_localidad'].'</option>
+        ';
+    }
+    return '
+    <select multiple id="localidades" name="localidades[]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        '.$options.'
+    </select>
+    ';
+
+}
+
+
 function localidades($locasa, $localidades)
 {
     $locas = explode(",", $locasa);
@@ -276,7 +294,7 @@ function tiempos($dato_timestamp)
 <div class="my-6">
 <?php if(in_array("localidades", $permitidas)): ?>
     <label for="localidades" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Localidades:</label>
-    <input type="text" id="localidades" name="localidades" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+    <?= lista_localidades($con) ?>
 <?php else: ?>
     <input type="hidden" name="localidades" value="<?= $avance['localidades'] ?>">
 <?php endif ?>

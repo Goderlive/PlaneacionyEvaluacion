@@ -477,19 +477,32 @@ function Actividades($con, $mes, $id_area, $meses, $actividadesDB){
 
 function lista_localidades($con){
     $localidades = traelocalidades($con);
-    $options = '<option selected disabled>Seleccione las Localidades</option>
-    ';
+    $options = '<option selected disabled>Seleccione las Localidades</option>';
     foreach($localidades as $l){
-        $options .= '<option value="'.$l['id_localidad'].'">'.$l['nombre_localidad'].'</option>
-        ';
+        $options .= '<option value="'.$l['id_localidad'].'" data-valor="'.$l['valor'].'">'.$l['nombre_localidad'].'</option>';
     }
+
+    $script = '
+    <script>
+    function calcularSumatoria() {
+        var select = document.getElementById("localidades");
+        var options = select.selectedOptions;
+        var sumatoria = 0;
+        for (var i = 0; i < options.length; i++) {
+            var valor = parseFloat(options[i].getAttribute("data-valor"));
+            sumatoria += valor;
+        }
+        document.getElementById("sumatoria").textContent = sumatoria;
+    }
+    </script>';
+
     return '
-    <label for="localidades" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione multiples opciones<b title="Usa el boton "Ctrl" en tu teclado mas "Click" del mouse"> ?</b></label> 
-    <select multiple id="localidades" name="localidades[]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+    <label for="localidades" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione múltiples opciones <b title="Usa el botón Ctrl en tu teclado más Click del mouse">Ayuda </b></label> 
+    <select multiple id="localidades" required name="localidades[]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" onchange="calcularSumatoria()">
         '.$options.'
     </select>
-    ';
-
+    <p>Beneficiarios Indirectos: <span id="sumatoria"></span></p>
+    '.$script;
 }
 
 function buscalineas($con, $id_actividad){
@@ -561,7 +574,6 @@ function Modales($con, $actividadesDB, $el_mes, $permisos){
     $var = '';
     $year = date('o');
     foreach ($actividadesDB as $a) {
-        $lineas = buscalineas($con, $a['id_actividad']);
         $var .= '<!-- Main modal -->
         <div id="mymodal'. $a['codigo_actividad'] .'" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] md:h-full">
             <div class="relative w-full h-full max-w-7xl md:h-auto">
@@ -579,7 +591,7 @@ function Modales($con, $actividadesDB, $el_mes, $permisos){
                     
                     <!-- Modal body -->
                     <div class="p-4 space-y-4">
-                        <form action="models/Reporte_Model.php" method="POST" enctype="multipart/form-data">
+                        <form action="reportes_cont.php" method="POST" enctype="multipart/form-data">
                             <input type="hidden" name="mes" value="'.$el_mes.'">
                             <input type="hidden" name="year" value="'.$year.'">
                             <input type="hidden" name="id_actividad" value="'.$a['id_actividad'].'">
@@ -592,33 +604,11 @@ function Modales($con, $actividadesDB, $el_mes, $permisos){
                                 <label for="avance" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-800 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Alcanzado Mes</label>
                                 <input required name ="avance" min=0 id="avance" type="number" placeholder="Programado: '.$a[$meses[$el_mes]].'" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"/>
                             </div>
-                            <br>
-                            <label class="block mb-1 text-sm font-medium text-gray-900 dark:text-gray-300" for="small_size">Evidencia de la Evidencia:</label>
-                            <input type="file" name="evidencia_de_evidencia" accept="image/png, image/jpeg, image/jpg" class="block mb-5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"/>
-                    
-                            
 
-                            <table style="width: 100%";>
-                                <tr>
-                                    <th style="width: 42%";>
-                                        <label for="descripcion_evidencia" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Descripción de la Evidencia:</label>
-                                        <textarea id="descripcion_evidencia" name="descripcion_evidencia" rows="1" placeholder="Fecha, lugar y descripción breve de la actividad" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
-                                    </th>
-                                    <th style="width: 6%";>
-                                    </th>
-                                    <th style="width: 42%";>
-                                        <label for="justificacion" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Justificación caso de +10% o -10% de variación:</label>
-                                        <textarea id="justificacion" name="justificacion" rows="1" placeholder="En caso de variacion superior al 10%, describir una justificación de la variación" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>        
-                                    </th>
-                                </tr>
-                            </table>              
-                                '.$lineas.'
-
-                            <br>
                             </div>
                         <!-- Modal footer -->
                         <div class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600">
-                            <input type="submit" value="Enviar" name="jfnkasjnkasdf34q345" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            <input type="submit" value="Enviar" name="siguiente" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                             <button data-modal-toggle="mymodal'. $a['codigo_actividad'] .'" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Cancelar</button>    
                         </div>
                     </form>

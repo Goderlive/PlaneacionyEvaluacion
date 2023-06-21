@@ -52,7 +52,7 @@ function Pendientespdm($con, $id_dependencia)
 
 function GetModificaciones($con, $id_avance)
 {
-    $stm = $con->query("SELECT * FROM modificaciones_actividades WHERE id_avance = $id_avance");
+    $stm = $con->query("SELECT * FROM modificaciones_actividades WHERE id_avance = $id_avance AND atendida = 0");
     $edicion = $stm->fetch(PDO::FETCH_ASSOC);
     return $edicion;
 }
