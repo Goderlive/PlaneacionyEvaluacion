@@ -69,6 +69,16 @@ function Actividades_DB($con, $id_area)
     return $actividades;
 }
 
+function Actividad_DB($con, $id_actividad)
+{
+    $sql = "SELECT * FROM actividades a
+    LEFT JOIN programaciones p ON p.id_actividad = a.id_actividad
+    WHERE a.id_actividad = $id_actividad";
+    $stm = $con->query($sql);
+    $actividades = $stm->fetch(PDO::FETCH_ASSOC);
+    return $actividades;
+}
+
 function AvanceMes($con, $id_actividad, $mes)
 {
     $sqlav = "SELECT * FROM avances a
@@ -202,7 +212,7 @@ if (isset($_POST['jfnkasjnkasdf34q345']) == "Enviar") {
         $sqlr->execute(array($mes, $_POST['avance'], $_POST['justificacion'], $path_evidencia_evidencia, $_POST['descripcion_evidencia'], $id_actividad, $_POST['id_usuario'], $localidades, $beneficiarios, $recursos));
 
         ?>
-        <form id="myForm" action="../reportes.php" method="post">
+        <form id="myForm" action="reportes.php" method="post">
             <input type="hidden" name="id_area" value="<?= $id_area ?>">
             <input type="hidden" name="mes" value="<?= $mes ?>">
         </form>

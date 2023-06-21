@@ -17,10 +17,12 @@ session_start();
             <br>
 
             <?php $actividad = Actividad_DB($con, $_POST['id_actividad']); ?>
-
             <?php $programado = $actividad[strtolower($meses[$_POST['mes']])] ?>
 
-            <?= $actividad['nombre_actividad'] ?>
+
+            <p class="mb-3 text-lg text-gray-500 md:text-xl dark:text-gray-400"><?= $actividad['nombre_actividad'] ?></p>
+            <p class="mb-3 text-lg text-gray-500 md:text-xl dark:text-gray-400">Programado: <?= $programado?></p>
+            <p class="mb-3 text-lg text-gray-500 md:text-xl dark:text-gray-400">Alcanzado: <?= $_POST['avance'] ?></p>
             <br>
             <?php if ($_POST['avance'] == 0) : ?>
                 <?php if ($programado == 0) : ?>
@@ -67,24 +69,24 @@ session_start();
                     <input type="hidden" name="descripcion_evidencia" value="">
                     <input type="hidden" name="id_usuario" value="<?= $_POST['id_usuario'] ?>">
                     <input type="hidden" name="id_area" value="<?= $_POST['id_area'] ?>">
-                    <input type="hidden" name="avance" value="0">
+                    <input type="hidden" name="avance" value="<?= $_POST['avance'] ?>">
                     <input type="hidden" name="jfnkasjnkasdf34q345" value="Enviar">
                     <input type="hidden" name="id_actividad" value="<?= $_POST['id_actividad'] ?>">
                     <input type="hidden" name="mes" value="<?= $_POST['mes'] ?>">
 
                     <br>
                     <label class="block mb-1 text-sm font-medium text-gray-900 dark:text-gray-300" for="small_size">Evidencia de la Evidencia:</label>
-    <input type="file" required name="evidencia_de_evidencia" accept="image/png, image/jpeg, image/jpg" class="block mb-5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" />
+                    <input type="file" required name="evidencia_de_evidencia" accept="image/png, image/jpeg, image/jpg" class="block mb-5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" />
 
-    <label for="descripcion_evidencia" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Descripción de la Evidencia:</label>
-    <textarea id="descripcion_evidencia" required name="descripcion_evidencia" rows="1" placeholder="Fecha, lugar y descripción breve de la actividad" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
-<br>
+                    <label for="descripcion_evidencia" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Descripción de la <b>Actividad</b>:</label>
+                    <textarea id="descripcion_evidencia" required name="descripcion_evidencia" rows="1" placeholder="Fecha, lugar y descripción breve de la actividad" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                    <br>
 
-                    <?php if ($programado == 0 || ($_POST['avance'] / $programado *100  > 110) || ($_POST['avance'] / $programado * 100  < 90)) : ?>
+                    <?php if ($programado == 0 || ($_POST['avance'] / $programado * 100  > 110) || ($_POST['avance'] / $programado * 100  < 90)) : ?>
                         <label for="justificacion" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Justificación por variación:</label>
-                        <textarea id="justificacion" required name="justificacion" rows="1" placeholder="En caso de variacion superior al 10%, describir una justificación de la variación" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                        <textarea id="justificacion" required name="justificacion" rows="1" placeholder="Escribir la justificación de la variación" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
                     <?php endif ?>
-<br><br>
+                    <br><br>
 
 
                     <table style="width: 100%" ;>
@@ -122,7 +124,7 @@ session_start();
                             <th style="width: 10%" ;>
                                 <label for="recursos" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Recurso Estatal</label>
                                 <input type="number" id="recursos_estatales" required placeholder="                %" name="recursos_estatales" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            </th> 
+                            </th>
                             <th style="width: 2%" ;>
                             </th>
                             <th style="width: 10%" ;>
@@ -133,6 +135,12 @@ session_start();
                     </table>
                     <br>
                     <input type="submit" value="Enviar" name="jfnkasjnkasdf34q345" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+
+                </form>
+                <form id="myForm" action="reportes.php" method="post">
+                    <input type="hidden" name="id_area" value="<?= $id_area ?>">
+                    <input type="hidden" name="mes" value="<?= $_POST['mes'] ?>">
+                    <button type="submit" class="my-3 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Cancelar</button>
 
                 </form>
             <?php endif ?>
