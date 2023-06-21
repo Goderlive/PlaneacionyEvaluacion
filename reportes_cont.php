@@ -27,7 +27,7 @@ session_start();
             <?php if ($_POST['avance'] == 0) : ?>
                 <?php if ($programado == 0) : ?>
                     <form id="myForm" action="" method="post">
-                        <input type="hidden" name="id_dependencia" value="">
+                        <input type="hidden" name="id_dependencia" value="<?= $_POST['id_dependencia'] ?>">
                         <input type="hidden" name="justificacion" value="">
                         <input type="hidden" name="descripcion_evidencia" value="">
                         <input type="hidden" name="id_usuario" value="<?= $_POST['id_usuario'] ?>">
@@ -43,8 +43,7 @@ session_start();
                 <?php else : ?>
                     <br>
                     <form id="myForm" action="" method="post">
-                        <input type="hidden" name="id_dependencia" value="">
-                        <input type="hidden" name="justificacion" value="">
+                        <input type="hidden" name="id_dependencia" value="<?= $_POST['id_dependencia'] ?>">
                         <input type="hidden" name="descripcion_evidencia" value="">
                         <input type="hidden" name="id_usuario" value="<?= $_POST['id_usuario'] ?>">
                         <input type="hidden" name="id_area" value="<?= $_POST['id_area'] ?>">
@@ -63,9 +62,8 @@ session_start();
 
 
             <?php if ($_POST['avance'] != 0) : ?>
-                <form action="" method="post">
-                    <input type="hidden" name="id_dependencia" value="">
-                    <input type="hidden" name="justificacion" value="">
+                <form action="" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="id_dependencia" value="<?= $_POST['id_dependencia'] ?>">
                     <input type="hidden" name="descripcion_evidencia" value="">
                     <input type="hidden" name="id_usuario" value="<?= $_POST['id_usuario'] ?>">
                     <input type="hidden" name="id_area" value="<?= $_POST['id_area'] ?>">

@@ -154,9 +154,9 @@ function tieneReconduccion($con, $id_actividad){
     return $avance;
 }
 
-if (isset($_POST['jfnkasjnkasdf34q345']) == "Enviar") {
+if (isset($_POST['jfnkasjnkasdf34q345']) && $_POST['jfnkasjnkasdf34q345'] == "Enviar") {
     session_start();
-    if ($_SESSION['sistema'] = 'pbrm') {
+    if ($_SESSION['sistema'] == 'pbrm') {
         $year = date('Y');
         $mes = $_POST['mes'];
         $id_actividad = $_POST['id_actividad'];
@@ -187,7 +187,7 @@ if (isset($_POST['jfnkasjnkasdf34q345']) == "Enviar") {
             die();
         }
 
-        $dir = '../archivos/actividades/' . $year . '/' . $mes . '/' . $id_dependencia . '/' . $id_area . '/' . $id_actividad . '/';
+        $dir = 'archivos/actividades/' . $year . '/' . $mes . '/' . $id_dependencia . '/' . $id_area . '/' . $id_actividad . '/';
         if (!is_dir($dir)) {
             mkdir($dir, 0741, true);
         }

@@ -215,9 +215,10 @@ function nombremes($mes){
 }
 
 function Imagenes($a){
-    $img = substr($a, 3);
-    if($img){
-        return $img;
+    if(file_exists($a)){
+        return $a;
+    }else{
+        return substr($a, 3);
     }
 }
 
@@ -316,7 +317,7 @@ function ModalesEvidencias($con, $actividades, $mes){
             }
 
             $numero = $a['id_actividad'];
-            $img = substr($avance['path_evidenia_evidencia'], 3);
+            $img = $avance['path_evidenia_evidencia'];
             $nombres2 = nombremes($avance['mes']);
             $data .= ' 
             

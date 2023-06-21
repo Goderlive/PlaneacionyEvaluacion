@@ -454,7 +454,11 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                                     </div>
                                     <script>
                                         function abrirVentana<?= $avanceMensual['id_actividad'] ?>() {
-                                            window.open('<?= $img = substr($avanceMensual['path_evidenia_evidencia'], 3) ?>', '_blank', 'width=1000,height=700');
+                                            if (file_exists('<?= $avanceMensual['path_evidenia_evidencia'] ?>')) {
+                                                window.open('<?= $avanceMensual['path_evidenia_evidencia'] ?>', '_blank', 'width=1000,height=700');
+                                            }else{
+                                                window.open('<?= substr($avanceMensual['path_evidenia_evidencia'],3) ?>', '_blank', 'width=1000,height=700');
+                                            }
                                         }
                                     </script>
                                 </div>

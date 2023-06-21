@@ -44,16 +44,12 @@ function MenuMes($el_mes, $id_area){
 
 
 function Actividades($con, $mes, $id_area, $meses, $actividadesDB){
-
     $resp = '';
     foreach ($actividadesDB as $a){
-        $avanceMensual = AvanceMes($con, $a['id_actividad'], $mes);
-
 
         $anual = $a['enero'] + $a['febrero'] + $a['marzo'] + $a['abril'] + $a['mayo'] + $a['junio'] + $a['julio'] + $a['agosto'] + $a['septiembre'] + $a['octubre'] + $a['noviembre'] + $a['diciembre'];
         $mesi = strtolower($meses[$mes]);
 
-        $botones = ValidaBotones($mes, $avanceMensual);
         $avance = barraAvance($con, $a['id_actividad'], $mes);
 
         $avanceThisMes = AvanceThisMes($con, $a['id_actividad'], $mes);
@@ -234,10 +230,6 @@ function BotonPBRM($avanceMensual, $permisos, $id_area, $el_mes){
 }
 
 
-
-
-
-
 function localidades($locasa, $localidades){
     $retu = '';
     $locas = explode(",", $locasa);
@@ -290,9 +282,10 @@ function tiempos($dato_timestamp){
 
 
 function Imagenes($a){
-    $img = substr($a, 3);
-    if($img){
-        return $img;
+    if(file_exists($a)){
+        return $a;
+    }else{
+        return substr($a,3)
     }
 }
 
