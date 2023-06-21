@@ -285,7 +285,7 @@ function Imagenes($a){
     if(file_exists($a)){
         return $a;
     }else{
-        return substr($a,3)
+        return substr($a,3);
     }
 }
 
