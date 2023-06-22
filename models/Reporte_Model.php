@@ -73,6 +73,7 @@ function Actividad_DB($con, $id_actividad)
 {
     $sql = "SELECT * FROM actividades a
     LEFT JOIN programaciones p ON p.id_actividad = a.id_actividad
+    LEFT JOIN lineasactividades l ON l.id_actividad = a.id_actividad
     WHERE a.id_actividad = $id_actividad";
     $stm = $con->query($sql);
     $actividades = $stm->fetch(PDO::FETCH_ASSOC);
@@ -154,8 +155,9 @@ function tieneReconduccion($con, $id_actividad){
     return $avance;
 }
 
+
+
 if (isset($_POST['jfnkasjnkasdf34q345']) && $_POST['jfnkasjnkasdf34q345'] == "Enviar") {
-    session_start();
     if ($_SESSION['sistema'] == 'pbrm') {
         $year = date('Y');
         $mes = $_POST['mes'];
@@ -166,7 +168,9 @@ if (isset($_POST['jfnkasjnkasdf34q345']) && $_POST['jfnkasjnkasdf34q345'] == "En
         $beneficiarios = (isset($_POST['beneficiarios']) && $_POST['beneficiarios'] != "") ? $_POST['beneficiarios'] : NULL;
         $recursos_federales = isset($_POST['recursos_federales']) ? $_POST['recursos_federales'] : NULL;
         $recursos_estatales = isset($_POST['recursos_estatales']) ? $_POST['recursos_estatales'] : NULL;
+        $justificacion = isset($_POST['justificacion']) ? $_POST['justificacion'] : NULL;
         $recursos_propios = isset($_POST['recursos_propios']) ? $_POST['recursos_propios'] : NULL;
+        $actividad_trimestral = isset($_POST['actividad_trimestral']) ? $_POST['actividad_trimestral'] : NULL;
         if ($recursos_federales || $recursos_estatales || $recursos_propios) {
             $recursos = "R F: " . $recursos_federales . "% - R E: " . $recursos_estatales . "% - R P: " . $recursos_propios . "%";
         } else {
@@ -175,12 +179,12 @@ if (isset($_POST['jfnkasjnkasdf34q345']) && $_POST['jfnkasjnkasdf34q345'] == "En
 
         // Verificamos que no exista este avance
         if (RevisaAvancesExistentes($con, $id_actividad, $mes)) { ?>
-            <form id="myForm" action="../reportes.php" method="post">
+            <form id="myForm" action="reportes.php" method="post">
                 <input type="hidden" name="id_area" value="<?= $id_area ?>">
                 <input type="hidden" name="mes" value="<?= $mes ?>">
             </form>
             <script type="text/javascript">
-                alert("Meta Actualizada")
+                alert("Meta Actualizada r")
                 document.getElementById('myForm').submit();
             </script>
         <?php
@@ -207,10 +211,26 @@ if (isset($_POST['jfnkasjnkasdf34q345']) && $_POST['jfnkasjnkasdf34q345'] == "En
             }
         }
 
-        $sql = "INSERT INTO avances (mes, avance, justificacion, path_evidenia_evidencia, descripcion_evidencia, id_actividad, id_usuario_avance, localidades, beneficiarios, recursos) VALUES (?,?,?,?,?,?,?,?,?,?)";
+        $sql = "INSERT INTO avances (mes, avance, justificacion, path_evidenia_evidencia, descripcion_evidencia, id_actividad, id_usuario_avance, localidades, beneficiarios, recursos, actividad_trimestral) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
         $sqlr = $con->prepare($sql);
-        $sqlr->execute(array($mes, $_POST['avance'], $_POST['justificacion'], $path_evidencia_evidencia, $_POST['descripcion_evidencia'], $id_actividad, $_POST['id_usuario'], $localidades, $beneficiarios, $recursos));
+        $sqlr->execute(array($mes, $_POST['avance'], $justificacion, $path_evidencia_evidencia, $_POST['descripcion_evidencia'], $id_actividad, $_POST['id_usuario'], $localidades, $beneficiarios, $recursos, $actividad_trimestral));
 
+
+        if(isset($_POST['udmed'])) {
+            $udmed = $_POST['udmed'];
+            $id_actividad = $_POST['id_actividad']; // Suponiendo que se obtiene el valor de id_actividad correctamente
+        
+            try {
+                $sqlupdate = "UPDATE lineasactividades SET udmed = '$udmed' WHERE id_actividad = $id_actividad";
+                $sqlu = $con->prepare($sqlupdate);
+                $sqlu->execute();
+            } catch (\Throwable $th) {
+                throw $th;
+                die();
+            }
+        
+        }
+        
         ?>
         <form id="myForm" action="reportes.php" method="post">
             <input type="hidden" name="id_area" value="<?= $id_area ?>">

@@ -21,7 +21,7 @@ session_start();
 
 
             <p class="mb-3 text-lg text-gray-500 md:text-xl dark:text-gray-400"><?= $actividad['nombre_actividad'] ?></p>
-            <p class="mb-3 text-lg text-gray-500 md:text-xl dark:text-gray-400">Programado: <?= $programado?></p>
+            <p class="mb-3 text-lg text-gray-500 md:text-xl dark:text-gray-400">Programado: <?= $programado ?></p>
             <p class="mb-3 text-lg text-gray-500 md:text-xl dark:text-gray-400">Alcanzado: <?= $_POST['avance'] ?></p>
             <br>
             <?php if ($_POST['avance'] == 0) : ?>
@@ -89,11 +89,15 @@ session_start();
 
                     <table style="width: 100%" ;>
                         <tr>
-                            <th style="width: 23%" ;>
+                            <th style="width: 20%" ;>
                             </th>
                             <th style="width: 2%" ;>
                             </th>
                             <th style="width: 23%" ;>
+                            </th>
+                            <th style="width: 2%" ;>
+                            </th>
+                            <th style="width: 2%" ;>
                             </th>
                             <th style="width: 2%" ;>
                             </th>
@@ -107,10 +111,26 @@ session_start();
                             </th>
                             <th style="width: 2%" ;>
                             </th>
-                            <th style="width: 23%" ;>
+                            <th style="width: 8%" ;>
                                 <label for="beneficiarios" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Beneficiarios Directos</label>
-                                <input type="text" id="beneficiarios" required name="beneficiarios" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <input type="number" id="beneficiarios" required name="beneficiarios" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             </th>
+                            <?php if (!$actividad['udmed']) : ?>
+                                <th style="width: 2%" ;>
+                                </th>
+                                <th style="width: 15%" ;>
+                                    <label for="udmed" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Unidad de Medida</label>
+                                    <input type="text" id="udmed" required name="udmed" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                </th>
+                            <?php endif ?>
+                            <?php if ($actividad['udmed']) : ?>
+                                <th style="width: 2%" ;>
+                                </th>
+                                <th style="width: 15%" ;>
+                                    <label for="udmed" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Unidad de Medida</label>
+                                    <input type="text" id="udmed" value="<?= $actividad['udmed'] ?>" disabled required name="udmed" class="cursor-not-allowed bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                </th>
+                            <?php endif ?>
                             <th style="width: 2%" ;>
                             </th>
                             <th style="width: 10%" ;>
@@ -131,15 +151,20 @@ session_start();
                             </th>
                         </tr>
                     </table>
+                    <?php if($_POST['mes']% 3 == 0 ): ?>
+                    <br>
+                    <label for="actividad_trimestral" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Describe tus avances de este trimestre</label>
+                    <textarea id="actividad_trimestral" name="actividad_trimestral" require rows="3" placeholder="Fin de trimestre. Explica de forma extendida tu avance trimestral de esta actividad" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                    <?php endif ?>
                     <br>
                     <input type="submit" value="Enviar" name="jfnkasjnkasdf34q345" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
 
                 </form>
+
                 <form id="myForm" action="reportes.php" method="post">
                     <input type="hidden" name="id_area" value="<?= $id_area ?>">
                     <input type="hidden" name="mes" value="<?= $_POST['mes'] ?>">
                     <button type="submit" class="my-3 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Cancelar</button>
-
                 </form>
             <?php endif ?>
 

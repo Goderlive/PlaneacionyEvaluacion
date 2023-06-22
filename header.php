@@ -11,7 +11,7 @@ $id_usuario = $_SESSION['id_usuario'];
 require_once 'models/inicio_modelo.php';
 $permisos = getPermisos($con, $_SESSION['id_usuario']);
 $mi_permiso = $permisos['nivel'];
-
+$aniosiguiente = date('Y');
 
 
 // Aqui estan las variables de los Menus
@@ -25,6 +25,8 @@ $actividades = array("actividades.php", "reconduccion_actividades.php", "activid
 $valida_actividades = array("reconduccion_actividades.php", "actividades_avances.php", "admin_formatos_actividades.php");
 $indicadores = array("indicadores.php", "reconduccion_indicadores.php", "matrices.php", "formatos_indicadores.php");
 $valida_indicadores = array("indicadores.php", "reconduccion_indicadores.php", "matrices.php", "formatos_indicadores.php", "indicadores_avance.php");
+$pdm = array("pdm_admin.php");
+$anteproyecto = array("anteproyecto.php");
 
 
 if(in_array($actual, $inicio)){
@@ -80,6 +82,8 @@ function item_principal($actual, $buscador, $texto, $destino, $permisos, $mi_per
                         ?></a>
                     </li>
                     <?= item_principal($actual, $inicio, "Inicio", "index.php", array(1,2,3,4,5), $mi_permiso) ?>
+                    <?= item_principal($actual, $pdm, "Anteproyecto" . $aniosiguiente, "anteproyecto.php", array(1,2,3,4,5), $mi_permiso) ?>
+                    <?= item_principal($actual, $anteproyecto, "PDM", "pdm_admin.php", array(1,2,3), $mi_permiso) ?>
                     <?= item_principal($actual, $actividades, "Actividades", "actividades.php", array(3,4,5), $mi_permiso) ?>
                     <?= item_principal($actual, $valida_actividades, "Valida Actividades", "actividades_avances.php", array(1,2), $mi_permiso) ?>
                     <?= item_principal($actual, $indicadores, "Indicadores", "indicadores.php", array(3,4,5), $mi_permiso) ?>
