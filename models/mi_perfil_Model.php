@@ -62,6 +62,14 @@ function TraeUsuario($con, $id_usuario){ // Primero traemos el principal
 }
 
 
+function Traeadmins($con, $id_usuario){
+    $stm = $con->query("SELECT * FROM usuarios u 
+    LEFT JOIN permisos p ON p.id_usuario = u.id_usuario
+    WHERE (p.nivel = 1 OR p.nivel = 2) AND u.id_usuario != $id_usuario");
+    $usuario = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $usuario;
+}
+
 
 if(isset($_POST['contrasenia'])){
     $password = $_POST["contrasena"];
