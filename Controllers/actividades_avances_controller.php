@@ -80,11 +80,7 @@ function Actividades($con, $mes, $id_area, $meses, $actividadesDB){
             <td class="px-6 py-4 text-center"> '.
                 $botonAvance  
             .'</td>
-            <td class="px-6 py-4 text-right">
-                <button ' . $botones[0] . 'type="button" data-modal-toggle="mymodal'. $a['codigo_actividad'] .'"> '.
-                    $botones[1]
-                .'</button>
-            </td>
+
         </tr>';
     }
     return $resp;
@@ -245,10 +241,17 @@ function nombremes($mes){
         return $meses[$mes];
 }
 
+
 function ProcSumaProgramadosmesymes($con, $mes, $id_actividad){
     $programacion = SumaProgramadosmesymes($con, $id_actividad);
     $meses = array("enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre");
-    
+    $suma = 0;
+    $a = 0;
+    do {
+        $suma = $programacion[$meses[$a]];
+        $a +=1;
+    } while ($a <= $mes);
+    return $suma;
 }
 
 

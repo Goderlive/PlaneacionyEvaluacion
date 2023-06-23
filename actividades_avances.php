@@ -279,7 +279,7 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                                         <?= $anual ?>
                                     </td>
                                     <td class="px-6 py-4">
-                                        <?= SumaProgramadosmesymes($con, $el_mes, $a['id_actividad']); ?>
+                                        <?= ProcSumaProgramadosmesymes($con, $el_mes, $a['id_actividad']); ?>
                                     </td>
                                     <td class="px-6 py-4">
                                         <?= SumaAvancesmesymes($con, $el_mes, $a['id_actividad']); ?>
