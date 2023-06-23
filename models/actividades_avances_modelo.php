@@ -154,6 +154,16 @@ function SumaAvancesmesymes($con, $mes, $id_actividad)
 }
 
 
+function SumaProgramadosmesymes($con, $id_actividad){
+    $sql = "SELECT * FROM programaciones
+    WHERE id_actividad = $id_actividad
+    ";
+    $stm = $con->query($sql);
+    $sumaavances = $stm->fetch(PDO::FETCH_ASSOC);
+    return $sumaavances;
+}
+
+
 function TraeNombredependencia($con, $id_dependencia)
 {
     $stm = $con->query("SELECT nombre_dependencia FROM dependencias WHERE id_dependencia = $id_dependencia");

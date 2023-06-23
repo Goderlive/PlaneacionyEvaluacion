@@ -79,7 +79,7 @@ $txt = "";
 $stm = $con->query("SELECT * FROM localidades");
 $localidades = $stm->fetchAll();
 
-$trimestre = 1;
+$trimestre = 2;
 $sql = " SELECT * FROM lineasactividades la
 LEFT JOIN actividades ac ON ac.id_actividad = la.id_actividad
 LEFT JOIN pdm_lineas pl ON pl.id_linea = la.id_linea

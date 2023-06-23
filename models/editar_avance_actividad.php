@@ -3,7 +3,7 @@ require_once 'conection.php';
 
 
 function traeAvance($con, $id_avance){
-    $stm = $con->query("SELECT * FROM avances a 
+    $stm = $con->query("SELECT *, a.id_actividad as id_actividad FROM avances a 
     LEFT JOIN usuarios u ON u.id_usuario = a.id_usuario_avance
     LEFT JOIN lineasactividades la ON la.id_actividad = a.id_actividad
     WHERE a.id_avance = $id_avance");
@@ -36,8 +36,8 @@ function traeModificacion($con, $id_modificacion){
     return $modificacion;
 }
 
-function TraeActividad($con, $id_actividad)
-{
+function TraeActividad($con, $id_actividad){
+
     $sql = "SELECT * FROM actividades a
     JOIN programaciones p ON p.id_actividad = a.id_actividad
     LEFT JOIN lineasactividades la ON la.id_actividad = a.id_actividad

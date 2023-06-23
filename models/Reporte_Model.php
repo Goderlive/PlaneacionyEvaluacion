@@ -80,6 +80,14 @@ function Actividad_DB($con, $id_actividad)
     return $actividades;
 }
 
+function traeudmed($con){
+    $sqlav = "SELECT * FROM udmed_pdm";
+    $stma = $con->query($sqlav);
+    $unidadesdemedida = $stma->fetchAll(PDO::FETCH_ASSOC);
+    return $unidadesdemedida;
+}
+
+
 function AvanceMes($con, $id_actividad, $mes)
 {
     $sqlav = "SELECT * FROM avances a
@@ -171,8 +179,18 @@ if (isset($_POST['jfnkasjnkasdf34q345']) && $_POST['jfnkasjnkasdf34q345'] == "En
         $justificacion = isset($_POST['justificacion']) ? $_POST['justificacion'] : NULL;
         $recursos_propios = isset($_POST['recursos_propios']) ? $_POST['recursos_propios'] : NULL;
         $actividad_trimestral = isset($_POST['actividad_trimestral']) ? $_POST['actividad_trimestral'] : NULL;
+
         if ($recursos_federales || $recursos_estatales || $recursos_propios) {
-            $recursos = "R F: " . $recursos_federales . "% - R E: " . $recursos_estatales . "% - R P: " . $recursos_propios . "%";
+            $recursos = '';
+            if($recursos_federales){
+                $recursos .= "R F: " . $recursos_federales . "% - ";
+            }
+            if($recursos_estatales){
+                $recursos .=  "R E: " . $recursos_estatales . "% - ";
+            }
+            if($recursos_propios){
+                $recursos .= "R P: " . $recursos_propios . "%";
+            }
         } else {
             $recursos = NULL;
         }

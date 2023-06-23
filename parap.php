@@ -14,14 +14,10 @@
  
 
 <?php 
-$sentencia = "SELECT ac.nombre_actividad, la.lineaactividad, a.beneficiarios FROM avances a
-JOIN actividades ac ON ac.id_actividad = a.id_actividad
-JOIN lineasactividades la ON a.id_actividad = la.id_actividad
-JOIN pdm_lineas li ON li.id_linea = la.id_linea 
-WHERE a.mes = 3  
-ORDER BY `la`.`lineaactividad` ASC"; 
-
-
+$sentencia = "SELECT * FROM lineasactividades la 
+LEFT JOIN actividades ac ON ac.id_actividad = la.id_actividad
+LEFT JOIN pdm_lineas li ON li.id_linea = la.id_linea 
+"; 
 $stm = $con->query($sentencia);
 $data = $stm->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -29,10 +25,6 @@ $data = $stm->fetchAll(PDO::FETCH_ASSOC);
 <?php foreach($data as $d): ?>
 
     <?php 
-    $texto = preg_replace('/\d+/', '', $d['beneficiarios']);
-    $texto = trim($texto);
-    $texto = str_replace(',', '', $texto);
-    $texto = str_replace('.', '', $texto);
 
 //    echo $texto . "\n";
     echo $d['nombre_actividad'];

@@ -42,7 +42,6 @@ function lista_localidades($con){
         '.$options.'
     </select>
     ';
-
 }
 
 

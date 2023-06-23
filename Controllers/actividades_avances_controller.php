@@ -245,6 +245,13 @@ function nombremes($mes){
         return $meses[$mes];
 }
 
+function ProcSumaProgramadosmesymes($con, $mes, $id_actividad){
+    $programacion = SumaProgramadosmesymes($con, $id_actividad);
+    $meses = array("enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre");
+    
+}
+
+
 
 function tiempos($dato_timestamp){
     $hora_actual = date('Y-m-d H:i:s');
