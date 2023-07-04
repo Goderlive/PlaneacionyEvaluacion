@@ -432,6 +432,19 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                                             </tr>
                                             <tr>
                                                 <td>
+                                                    <?php if($el_mes % 3 == 0 ): ?>
+                                                        <?php if($avanceMensual['actividad_trimestral']): ?>
+                                                            <div class="scrollable-content">
+                                                                <textarea style="width: 100%;" readonly> <?= $avanceMensual['actividad_trimestral'] ?> </textarea>
+                                                            </div>
+                                                            <?php else: ?>
+                                                                <textarea style="width: 100%;" readonly> Sin Descripción trimestral </textarea>
+                                                        <?php endif ?>
+                                                    <?php endif ?>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
 
                                                     <?= tiempos($avanceMensual['fecha_avance']) ?>
                                                 </td>

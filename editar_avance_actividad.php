@@ -248,7 +248,7 @@ function tiempos($dato_timestamp)
         <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
 
 
-<form action="models/editar_avance_actividad.php" method="post"> 
+<form action="models/editar_avance_actividad.php" method="post" enctype="multipart/form-data"> 
 
 <input type="hidden" name="id_avance" value="<?= $avance['id_avance'] ?>">
 <input type="hidden" name="id_modificacion" value="<?= $modificacion['id_modificacion'] ?>">
@@ -275,7 +275,7 @@ function tiempos($dato_timestamp)
 <div class="my-6">
 <?php if(in_array("descevidencia", $permitidas)): ?>
     <label for="descevidencia" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Descripcion de Evidencia:</label>
-    <input type="text" id="descevidencia" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+    <input type="text" id="descevidencia" name="descevidencia" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
 <?php else: ?>
     <input type="hidden" name="descevidencia" value="<?= $avance['descripcion_evidencia'] ?>">
     <?php endif ?>
@@ -302,7 +302,7 @@ function tiempos($dato_timestamp)
 <div class="my-6">
 <?php if(in_array("beneficiarios", $permitidas)): ?>
     <label for="beneficiarios" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Beneficiarios:</label>
-    <input type="text" id="beneficiarios" name="beneficiarios" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+    <input type="number" id="beneficiarios" name="beneficiarios" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
 <?php else: ?>
     <input type="hidden" name="beneficiarios" value="<?= $avance['beneficiarios'] ?>">
 <?php endif ?>

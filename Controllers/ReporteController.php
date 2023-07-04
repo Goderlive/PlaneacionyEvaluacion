@@ -260,7 +260,7 @@ function ModalesEvidencias($con, $actividades, $mes){
                 }
 
                 if($avance['beneficiarios']){
-                    $benetxt = $avance['beneficiarios'];
+                    $benetxt = $avance['beneficiarios'] . " " . $avance['udmed'];
                 }else{
                     $benetxt = '<b>No Seleccionaron Beneficiarios</b>';
                 }
@@ -319,8 +319,17 @@ function ModalesEvidencias($con, $actividades, $mes){
             $numero = $a['id_actividad'];
             $img = $avance['path_evidenia_evidencia'];
             $nombres2 = nombremes($avance['mes']);
-            $data .= ' 
+
+            if ($avance['actividad_trimestral']) {
+                $textotrimestral = $avance['actividad_trimestral'];
+                $textotrimestral = '<div class="scrollable-content">
+                <textarea style="width: 100%;" readonly>'.$textotrimestral.'</textarea>
+              </div>';
+            }else{
+                $textotrimestral = '';
+            }
             
+            $data .= ' 
                 <!-- Extra Large Modal -->
                 <div id="evidenciasModal'.$numero.'" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
                     <div class="relative w-full max-w-7xl max-h-full">
@@ -408,6 +417,12 @@ function ModalesEvidencias($con, $actividades, $mes){
                                     <td>
                                         Reportado por: <b> '.$avance['nombre'] . ' ' . $avance['apellidos'] . '</b><br><br> 
                                     </td>
+                                </tr>
+
+                                <tr>
+                                    <td>'.
+                                    $textotrimestral  
+                                    .'</td>
                                 </tr>
                                 <tr>
                                     <td>'.

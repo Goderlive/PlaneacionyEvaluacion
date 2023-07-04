@@ -22,7 +22,7 @@ $actual = $actual[count($actual)-1];
 
 $inicio = array("index.php", "mi_perfil.php", "mis_areas.php", "mis_formatos.php", "ajustes.php", "unidades_medida.php", "administra_usuarios.php", "revisa_avances.php", "captura_trimestral.php");
 $actividades = array("actividades.php", "reconduccion_actividades.php", "actividades_todas.php", "formatos_actividades.php", "reportes.php", "reportes_cont.php", "programacion_actividades.php", "mis_reconducciones_actividades.php");
-$valida_actividades = array("reconduccion_actividades.php", "actividades_avances.php", "admin_formatos_actividades.php");
+$valida_actividades = array("validaediciones.php","reconduccion_actividades.php", "actividades_avances.php", "admin_formatos_actividades.php");
 $indicadores = array("indicadores.php", "reconduccion_indicadores.php", "matrices.php", "formatos_indicadores.php");
 $valida_indicadores = array("indicadores.php", "reconduccion_indicadores.php", "matrices.php", "formatos_indicadores.php", "indicadores_avance.php");
 $pdm = array("pdm_admin.php");
