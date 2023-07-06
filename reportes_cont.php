@@ -77,7 +77,7 @@ session_start();
                     <input type="file" required name="evidencia_de_evidencia" accept="image/png, image/jpeg, image/jpg" class="block mb-5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" />
 
                     <label for="descripcion_evidencia" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Descripción de la <b>Actividad</b>:</label>
-                    <textarea id="descripcion_evidencia" required name="descripcion_evidencia" rows="1" placeholder="Fecha, lugar y descripción breve de la actividad" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                    <textarea id="descripcion_evidencia" required name="descripcion_evidencia" rows="1" placeholder="Descripción breve de la actividad realizada duante el mes " class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
                     <br>
 
                     <?php if ($programado == 0 || ($_POST['avance'] / $programado * 100  > 110) || ($_POST['avance'] / $programado * 100  < 90)) : ?>
@@ -129,11 +129,11 @@ session_start();
                                     </th>
                                     <th style="width: 15%" ;>
                                         <label for="udmed" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Unidad de Medida</label>
-                                        <select id="udmed" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                            <option selected>Seleccione su unidad</option>
+                                        <select id="udmed" name="udmed" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                            <option disabled>Seleccione su unidad</option>
                                             <?php $udmed = traeudmed($con) ?>
                                             <?php var_dump($udmed) ?>
-                                            <?php foreach ($udmed as $u) : ?>
+                                            <?php foreach($udmed as $u): ?>
                                                 <option value="<?= $u['nombre'] ?>"><?= $u['nombre'] ?></option>
                                             <?php endforeach ?>
                                         </select>
@@ -160,14 +160,7 @@ session_start();
                             </tr>
                         </table>
                     <?php endif ?>
-                    <?php if ($actividad['lineaactividad']) : ?>
-                        <?php if ($_POST['mes'] % 3 == 0) : ?>
-                            <br>
-                            <label for="actividad_trimestral" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Describe tus avances de este trimestre</label>
-                            <textarea id="actividad_trimestral" name="actividad_trimestral" require rows="3" placeholder="Fin de trimestre. Explica de forma extendida tu avance trimestral de esta actividad" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
-                        <?php endif ?>
-                    <?php endif ?>
-                    <br>
+<br><br>
                     <input type="submit" value="Enviar" name="jfnkasjnkasdf34q345" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
 
                 </form>

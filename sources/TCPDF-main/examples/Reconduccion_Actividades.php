@@ -179,7 +179,7 @@ $oficio_movimiento_fecha = '&nbsp;
 		<tbody>
 		<tr>
 			<td rowspan="2" style="width: 15%; text-align: left">&nbsp;</td>
-			<td style="width: 50%; text-align: left">Tipo de Movimiento: Reconucción Programatica</td>
+			<td style="width: 50%; text-align: left">Tipo de Movimiento: Reconducción Programatica</td>
 			<td style="width: 0%; text-align: left">N. Oficio: '.$reconduccion['no_oficio'].'</td>
 		</tr>
 		<tr>

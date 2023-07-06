@@ -398,8 +398,8 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                                                             } ?>
                                                         </td>
                                                         <td scope="row" class="py-2 px-6" align="center" valign="top">
-                                                            <?php if ($avanceMensual['beneficiarios']) :
-                                                                print $avanceMensual['beneficiarios']; ?>
+                                                            <?php if ($avanceMensual['beneficiarios']):
+                                                                print $avanceMensual['beneficiarios'] . ' ' . $avanceMensual['udmed']; ?>
                                                             <?php else : ?>
                                                                 <b> No selecciono beneficiarios </b>
                                                             <?php endif ?>

@@ -53,6 +53,11 @@ function localidades($locasa, $localidades)
     }
 }
 
+function Imagenes($a){
+    if(file_exists($a)){
+        return $a;
+    }else{
+        return substr($a,3);
 
 function Imagenes($a){
     if(file_exists($a)){
@@ -63,6 +68,7 @@ function Imagenes($a){
 }
 
 function imgsmall($data){
+function imgsmall($data){
     $img = Imagenes($data);
     if($img){
         return '<img src="' . $img . '" alt="evidencia" width="150" height="150">';
@@ -72,11 +78,13 @@ function imgsmall($data){
 }
 
 function imgmd($data){
+function imgmd($data){
     $img = Imagenes($data);
     if($img){
         return '<img src="' . $img . '" alt="evidencia" style="max-width: 150px; max-height: 150px;">';
     }
 }
+
 
 
 function tiempos($dato_timestamp)
@@ -303,17 +311,60 @@ function tiempos($dato_timestamp)
 <?php if(in_array("beneficiarios", $permitidas)): ?>
     <label for="beneficiarios" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Beneficiarios:</label>
     <input type="number" id="beneficiarios" name="beneficiarios" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+    
+    <?php if($avance['udmed']): ?>
+        <input type="hidden" name="udmed" value="<?= $avance['udmed'] ?>">
+        <?= $avance['udmed'] ?>
+    <?php else: ?>
+        <label for="udmed" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Unidad de Medida</label>
+        <select id="udmed" name="udmed" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+            <option disabled>Seleccione su unidad</option>
+            <?php $udmed = traeudmed($con) ?>
+            <?php foreach($udmed as $u): ?>
+                <option value="<?= $u['nombre'] ?>"><?= $u['nombre'] ?></option>
+            <?php endforeach ?>
+        </select>
+    <?php endif ?>
 <?php else: ?>
     <input type="hidden" name="beneficiarios" value="<?= $avance['beneficiarios'] ?>">
+    <input type="hidden" name="udmed" value="<?= $avance['udmed'] ?>">
 <?php endif ?>
 </div>
 
 <div class="my-6">
 <?php if(in_array("recursos", $permitidas)): ?>
     <label for="recursos" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Recursos:</label>
-    <input type="text" id="recursos" name="recursos" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+    <table style="width: 50%;">
+        <tr>
+            <td>
+                <label for="recursos_federales" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Recurso Federal</label>
+                <input type="number" id="recursos_federales" placeholder="                %"  name="recursos_federales" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            </td>
+            <td>
+                <label for="recursos_estatales" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Recurso Estatal</label>
+                <input type="number" id="recursos_estatales" placeholder="                %"  name="recursos_estatales" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            </td>
+            <td>
+                <label for="recursos_propios" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Recurso Propio</label>
+                <input type="number" id="recursos_propios" placeholder="                %"  name="recursos_propios" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            </td>
+        </tr>
+    </table>
 <?php else: ?>
     <input type="hidden" name="recursos" value="<?= $avance['recursos'] ?>">
+<?php endif ?>
+</div>
+
+<div class="my-6">
+<?php if(in_array("nudmed", $permitidas)): ?>
+    <label for="nudmed" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Unidad de Medida</label>
+    <select id="nudmed" name="nudmed" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+        <option disabled>Seleccione su unidad</option>
+        <?php $udmed = traeudmed($con) ?>
+        <?php foreach($udmed as $u): ?>
+            <option value="<?= $u['nombre'] ?>"><?= $u['nombre'] ?></option>
+        <?php endforeach ?>
+    </select>
 <?php endif ?>
 </div>
 
