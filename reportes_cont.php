@@ -86,8 +86,8 @@ session_start();
                     <?php endif ?>
 
 
-                    <?php if($actividad['lineaactividad']): ?>
-                    <br><br>
+                    <?php if ($actividad['lineaactividad']) : ?>
+                        <br><br>
                         <table style="width: 100%" ;>
                             <tr>
                                 <th style="width: 20%" ;>
@@ -124,7 +124,7 @@ session_start();
                                         <input type="text" id="udmed" value="<?= $actividad['udmed'] ?>" disabled required name="udmed" class="cursor-not-allowed bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     </th>
                                 <?php endif ?>
-                                <?php if (!$actividad['udmed']): ?>
+                                <?php if (!$actividad['udmed']) : ?>
                                     <th style="width: 2%" ;>
                                     </th>
                                     <th style="width: 15%" ;>
@@ -133,10 +133,10 @@ session_start();
                                             <option selected>Seleccione su unidad</option>
                                             <?php $udmed = traeudmed($con) ?>
                                             <?php var_dump($udmed) ?>
-                                            <?php foreach($udmed as $u): ?>
-                                            <option value="<?= $u['nombre'] ?>"><?= $u['nombre'] ?></option>
+                                            <?php foreach ($udmed as $u) : ?>
+                                                <option value="<?= $u['nombre'] ?>"><?= $u['nombre'] ?></option>
                                             <?php endforeach ?>
-                                        </select>                                                
+                                        </select>
                                     </th>
                                 <?php endif ?>
                                 <th style="width: 2%" ;>
@@ -160,10 +160,12 @@ session_start();
                             </tr>
                         </table>
                     <?php endif ?>
-                    <?php if($_POST['mes']% 3 == 0 ): ?>
-                    <br>
-                    <label for="actividad_trimestral" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Describe tus avances de este trimestre</label>
-                    <textarea id="actividad_trimestral" name="actividad_trimestral" require rows="3" placeholder="Fin de trimestre. Explica de forma extendida tu avance trimestral de esta actividad" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                    <?php if ($actividad['lineaactividad']) : ?>
+                        <?php if ($_POST['mes'] % 3 == 0) : ?>
+                            <br>
+                            <label for="actividad_trimestral" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Describe tus avances de este trimestre</label>
+                            <textarea id="actividad_trimestral" name="actividad_trimestral" require rows="3" placeholder="Fin de trimestre. Explica de forma extendida tu avance trimestral de esta actividad" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                        <?php endif ?>
                     <?php endif ?>
                     <br>
                     <input type="submit" value="Enviar" name="jfnkasjnkasdf34q345" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">

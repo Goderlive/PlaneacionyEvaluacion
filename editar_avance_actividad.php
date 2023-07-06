@@ -53,31 +53,31 @@ function localidades($locasa, $localidades)
     }
 }
 
-function Imagenes($a)
-{
-    $img = substr($a, 3);
-    if ($img) {
-        return $img;
+
+function Imagenes($a){
+    if(file_exists($a)){
+        return $a;
+    }else{
+        return substr($a, 3);
     }
 }
 
-function imgsmall($data)
-{
+function imgsmall($data){
     $img = Imagenes($data);
-    if ($img) {
+    if($img){
         return '<img src="' . $img . '" alt="evidencia" width="150" height="150">';
-    } else {
+    }else{
         return "Sin Evidencia";
     }
 }
 
-function imgmd($data)
-{
+function imgmd($data){
     $img = Imagenes($data);
-    if ($img) {
+    if($img){
         return '<img src="' . $img . '" alt="evidencia" style="max-width: 150px; max-height: 150px;">';
     }
 }
+
 
 function tiempos($dato_timestamp)
     {
