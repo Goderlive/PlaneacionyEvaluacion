@@ -203,8 +203,8 @@ function tiempos($dato_timestamp)
                         </td>
                         <td scope="row" class="py-2 px-6" align="center" valign="top">
                             <?php if ($avance['beneficiarios']) :
-                                print $avance['beneficiarios']; ?>
-                            <?php else : ?>
+                                print $avance['beneficiarios'] . " " . $avance['udmed']; ?>
+                                <?php else : ?>
                                 <b> No selecciono beneficiarios </b>
                             <?php endif ?>
                         </td>
@@ -223,7 +223,7 @@ function tiempos($dato_timestamp)
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <tr>
                 <td>
-                    Descripcion de la Evidencia: <?= $avance['descripcion_evidencia'] ?> <br>
+                    Descripcion de la Actividad: <?= $avance['descripcion_evidencia'] ?> <br>
                 </td>
             </tr>
             <tr>
@@ -273,7 +273,7 @@ function tiempos($dato_timestamp)
 
 <div class="my-6">
 <?php if(in_array("descevidencia", $permitidas)): ?>
-    <label for="descevidencia" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Descripcion de Evidencia:</label>
+    <label for="descevidencia" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Descripcion de Actividad:</label>
     <input type="text" id="descevidencia" name="descevidencia" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
 <?php else: ?>
     <input type="hidden" name="descevidencia" value="<?= $avance['descripcion_evidencia'] ?>">
@@ -338,7 +338,7 @@ function tiempos($dato_timestamp)
             <td>
                 <label for="recursos_propios" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Recurso Propio</label>
                 <input type="number" id="recursos_propios" placeholder="                %"  name="recursos_propios" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-            </td>
+            </td>   
         </tr>
     </table>
 <?php else: ?>
