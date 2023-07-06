@@ -19,7 +19,7 @@ function traeladependencia($con, $id_area)
 
 
 function GetModificaciones($con, $id_avance){
-    $stm = $con->query("SELECT * FROM modificaciones_actividades WHERE id_avance = $id_avance");
+    $stm = $con->query("SELECT * FROM modificaciones_actividades WHERE id_avance = $id_avance AND atendida = 0");
     $edicion = $stm->fetch(PDO::FETCH_ASSOC);
     return $edicion;
 }
@@ -113,7 +113,7 @@ function editable($con, $avance)
     } else {
         return 0;
     }
-    $stm = $con->query("SELECT * FROM modificaciones_actividades WHERE id_avance = $id_avance");
+    $stm = $con->query("SELECT * FROM modificaciones_actividades WHERE id_avance = $id_avance ORDER BY id_modificacion DESC");
     $editable = $stm->fetch(PDO::FETCH_ASSOC);
     return $editable;
 }

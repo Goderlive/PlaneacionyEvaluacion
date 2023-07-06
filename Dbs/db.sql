@@ -4305,7 +4305,8 @@ CREATE TABLE lineasactividades(
   lineaactividad INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
   id_actividad INT,
   id_linea INT,
-  esprincipal INT
+  esprincipal INT,
+  udmed VARCHAR(255)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 INSERT INTO lineasactividades (id_actividad, id_linea) VALUES

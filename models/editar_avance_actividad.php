@@ -22,8 +22,15 @@ function traeAvanceyareas($con, $id_avance){
 }
 
 
-function traelocalidades($con)
-{
+function traeudmed($con){
+    $sqlav = "SELECT * FROM udmed_pdm";
+    $stma = $con->query($sqlav);
+    $unidadesdemedida = $stma->fetchAll(PDO::FETCH_ASSOC);
+    return $unidadesdemedida;
+}
+
+
+function traelocalidades($con){
     $stm = $con->query("SELECT * FROM localidades");
     $localidades = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $localidades;
@@ -67,6 +74,7 @@ if (isset($_POST['actualizar']) && $_POST['actualizar'] == "actualizar") {
         $id_avance = $_POST['id_avance'];
         $avance = traeAvanceyareas($con, $id_avance);
 
+
         $fecha = $avance['fecha_avance'];
         $year = date("Y", strtotime($fecha));
         $mes = date("m", strtotime($fecha));
@@ -74,7 +82,13 @@ if (isset($_POST['actualizar']) && $_POST['actualizar'] == "actualizar") {
         $id_area = $avance['id_area'];
         $id_actividad = $avance['id_actividad'];
 
-        $localidades = isset($_POST['localidades']) && $_POST['localidades'] != "" ? implode(",", $_POST['localidades']) : NULL;
+        if(is_array($_POST['localidades'])){
+            $localidades = implode(",", $_POST['localidades']);
+        }else{
+            $localidades = $_POST['localidades'];
+        }
+        
+        $udmed = (isset($_POST['udmed']) && $_POST['udmed'] != "") ? $_POST['udmed'] : NULL;
         $beneficiarios = (isset($_POST['beneficiarios']) && $_POST['beneficiarios'] != "") ? $_POST['beneficiarios'] : NULL;
         $recursos_federales = isset($_POST['recursos_federales']) ? $_POST['recursos_federales'] : NULL;
         $recursos_estatales = isset($_POST['recursos_estatales']) ? $_POST['recursos_estatales'] : NULL;
@@ -91,8 +105,13 @@ if (isset($_POST['actualizar']) && $_POST['actualizar'] == "actualizar") {
             $recursos .= "R P: " . $recursos_propios . "%";
         }
         if (!$recursos_federales && !$recursos_estatales && !$recursos_propios) {
-            $recursos = NULL;
+            $recursos = $_POST['recursos'];
         }
+
+        if(isset($_POST['nudmed']) && $_POST['nudmed'] != ""){
+            $udmed = $_POST['nudmed'];
+        }
+
 
         if (isset($_FILES['evidencia_de_evidencia']) && $_FILES['evidencia_de_evidencia']['error'] == 0 && in_array($_FILES['evidencia_de_evidencia']['type'], array('image/jpg', 'image/jpeg', 'image/png'))) {
 
@@ -160,6 +179,20 @@ if (isset($_POST['actualizar']) && $_POST['actualizar'] == "actualizar") {
             echo "<br>";
         } catch (PDOException $e) {
             echo "Error al ejecutar la consulta 3: " . $e->getMessage();
+            echo "<br>";
+        }
+
+
+        try {
+            $sql3 = "UPDATE lineasactividades SET udmed = :udmed WHERE id_actividad = :id_actividad";
+            $stmt3 = $con->prepare($sql3);
+            $stmt3->bindParam(":udmed", $udmed);
+            $stmt3->bindParam(":id_actividad", $id_actividad);
+            $stmt3->execute();
+            echo "La información de lineasactividades ha actualizado correctamente.";
+            echo "<br>";
+        } catch (PDOException $e) {
+            echo "Error al ejecutar la actualizacion en lineasactividades: " . $e->getMessage();
             echo "<br>";
         }
 
