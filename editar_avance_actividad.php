@@ -58,9 +58,16 @@ function Imagenes($a){
         return $a;
     }else{
         return substr($a,3);
+
+function Imagenes($a){
+    if(file_exists($a)){
+        return $a;
+    }else{
+        return substr($a, 3);
     }
 }
 
+function imgsmall($data){
 function imgsmall($data){
     $img = Imagenes($data);
     if($img){
@@ -71,11 +78,13 @@ function imgsmall($data){
 }
 
 function imgmd($data){
+function imgmd($data){
     $img = Imagenes($data);
     if($img){
         return '<img src="' . $img . '" alt="evidencia" style="max-width: 150px; max-height: 150px;">';
     }
 }
+
 
 
 function tiempos($dato_timestamp)

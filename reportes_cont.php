@@ -86,8 +86,8 @@ session_start();
                     <?php endif ?>
 
 
-                    <?php if($actividad['lineaactividad']): ?>
-                    <br><br>
+                    <?php if ($actividad['lineaactividad']) : ?>
+                        <br><br>
                         <table style="width: 100%" ;>
                             <tr>
                                 <th style="width: 20%" ;>
@@ -124,7 +124,7 @@ session_start();
                                         <input type="text" id="udmed" value="<?= $actividad['udmed'] ?>" disabled required name="udmed" class="cursor-not-allowed bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     </th>
                                 <?php endif ?>
-                                <?php if (!$actividad['udmed']): ?>
+                                <?php if (!$actividad['udmed']) : ?>
                                     <th style="width: 2%" ;>
                                     </th>
                                     <th style="width: 15%" ;>
