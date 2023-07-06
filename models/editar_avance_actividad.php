@@ -78,6 +78,7 @@ if (isset($_POST['actualizar']) && $_POST['actualizar'] == "actualizar") {
         $fecha = $avance['fecha_avance'];
         $year = date("Y", strtotime($fecha));
         $mes = date("m", strtotime($fecha));
+        $mes = str_replace("0", "", $mes);
         $id_dependencia = $avance['id_dependencia'];
         $id_area = $avance['id_area'];
         $id_actividad = $avance['id_actividad'];
@@ -134,9 +135,15 @@ if (isset($_POST['actualizar']) && $_POST['actualizar'] == "actualizar") {
             }
         }
 
+
+        //Verificamos si se actualizo la evidencia
+
+        if(isset($_POST['evidencia_de_evidencia_old'])){
+            $path_evidencia_evidencia = $_POST['evidencia_de_evidencia_old'];
+        }
+
         // Preparar la consulta UPDATE
         $sql = "UPDATE avances SET avance = :avance, descripcion_evidencia = :descevidencia, path_evidenia_evidencia = :path_evidencia_evidencia, justificacion = :justificacion, localidades = :localidades, beneficiarios = :beneficiarios, recursos = :recursos WHERE id_avance = :id_avance";
-
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindParam(":id_avance", $id_avance);
