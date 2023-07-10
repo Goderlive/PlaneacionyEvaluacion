@@ -16,6 +16,10 @@ function TraeDependenciasController($con, $permisos){
     if($permisos['nivel'] == 2){
         $dependencias = TraeDependencias($con, $permisos['id_usuario']);
     }
+    if($permisos['rol'] == 2){
+        $dependencias = TraeDependenciasPDM($con, $permisos);
+    }
+    
     return $dependencias;
 }
 
@@ -245,11 +249,11 @@ function nombremes($mes){
 
 function ProcSumaProgramadosmesymes($con, $mes, $id_actividad){
     $programacion = SumaProgramadosmesymes($con, $id_actividad);
-    $meses = array("enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre");
+    $meses = array("","enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre");
     $suma = 0;
-    $a = 0;
+    $a = 1;
     do {
-        $suma = $programacion[$meses[$a]];
+        $suma += $programacion[$meses[$a]];
         $a +=1;
     } while ($a <= $mes);
     return $suma;

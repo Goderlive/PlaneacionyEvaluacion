@@ -11,11 +11,23 @@ function TraeDependencias($con, $id_usuario)
 
 function TraeTodasDependencias($con)
 {
-    $stm = $con->query("SELECT * FROM dependencias dp ");
+    $stm = $con->query("SELECT * FROM dependencias dp");
     $dependencias = $stm->fetchAll(PDO::FETCH_ASSOC);
-    //var_dump($dependencias);
     return $dependencias;
 }
+
+
+function TraeDependenciasPDM($con, $permiso){
+    $stm = $con->query("SELECT dp.* FROM dependencias dp 
+    JOIN areas ar ON ar.id_dependencia = dp.id_dependencia
+    JOIN actividades ac ON ac.id_area = ar.id_area
+    JOIN lineasactividades li ON li.id_actividad = ac.id_actividad
+    GROUP BY dp.id_dependencia
+    ");
+    $dependencias = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $dependencias;
+}
+
 
 function TraerAreas($con, $id_dependencia)
 {
@@ -146,7 +158,7 @@ function SumaAvancesmesymes($con, $mes, $id_actividad)
 {
     $stm = $con->query("SELECT SUM(avance) AS total_avance
     FROM avances
-    WHERE (mes BETWEEN 1 AND $mes) AND (validado=1) AND id_actividad = $id_actividad;
+    WHERE (mes BETWEEN 1 AND $mes) AND id_actividad = $id_actividad;
     ");
     $sumaavances = $stm->fetch(PDO::FETCH_ASSOC);
     return $sumaavances['total_avance'];

@@ -203,7 +203,7 @@ if (isset($_POST['actualizar']) && $_POST['actualizar'] == "actualizar") {
             echo "<br>";
         }
 
-        die();
+
         header("Location: ../actividades.php");
         exit(); // Agregado para terminar la ejecución después de redirigir
     }

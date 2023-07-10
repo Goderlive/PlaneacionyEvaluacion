@@ -637,6 +637,28 @@ function meses($trimestre){
 
 
 
+
+function Imagenes($a){
+    if(file_exists($a)){
+        return $a;
+    }else{
+        return substr($a, 3);
+    }
+}
+
+function imgsmall($data){
+    $img = Imagenes($data);
+    if($img){
+        return '<img src="' . $img . '" alt="evidencia" width="80">';
+    }else{
+        return "Sin Evidencia";
+    }
+}
+
+
+
+
+
 function TablaEvidencias($evidencias, $trimestre, $con){
 	$meses = meses($trimestre);
 	$data = '
@@ -650,11 +672,44 @@ function TablaEvidencias($evidencias, $trimestre, $con){
 	foreach($evidencias as $a){ // Aunque se llama evidencias, en realidad trae las actividades.
 
 		$mes1 = pideevidencias($con, $a['id_actividad'], $meses[0][0]);
-		$imagen1 = ($mes1['path_evidenia_evidencia'] != '' ? '<img src="../../'  . $mes1['path_evidenia_evidencia'].'" alt="" width="80px"> <br>' : '');
-		$mes2 = pideevidencias($con, $a['id_actividad'], $meses[0][1]);
-		$imagen2 = ($mes2['path_evidenia_evidencia'] != '' ? '<img src="../../'  . $mes2['path_evidenia_evidencia'].'" alt="" width="80px"> <br>' : '');
-		$mes3 = pideevidencias($con, $a['id_actividad'], $meses[0][2]);
-		$imagen3 = ($mes3['path_evidenia_evidencia'] != '' ? '<img src="../../'  . $mes3['path_evidenia_evidencia'].'" alt="" width="80px"> <br>' : '');
+		if($mes1['path_evidenia_evidencia']){
+			$img1 = "../../" . $mes1['path_evidenia_evidencia'];
+			if(!file_exists($img1)){
+				$imagen1 = imgsmall($img1) . '<br>';
+			}else{
+				$img1 = "../" . $img1;
+				$imagen1 = imgsmall($img1) . '<br>';
+			}
+		}else{
+			$imagen1 = '';
+		}
+
+		$mes2 = pideevidencias($con, $a['id_actividad'], $meses[0][0]);
+		if($mes2['path_evidenia_evidencia']){
+			$img2 = "../../" . $mes2['path_evidenia_evidencia'];
+			if(!file_exists($img2)){
+				$imagen2 = imgsmall($img2) . '<br>';
+			}else{
+				$img2 = "../" . $img2;
+				$imagen2 = imgsmall($img2) . '<br>';
+			}
+		}else{
+			$imagen2 = '';
+		}
+
+		$mes3 = pideevidencias($con, $a['id_actividad'], $meses[0][0]);
+		if($mes3['path_evidenia_evidencia']){
+			$img3 = "../../" . $mes3['path_evidenia_evidencia'];
+			if(!file_exists($img3)){
+				$imagen3 = imgsmall($img3) . '<br>';
+			}else{
+				$img3 = "../" . $img3;
+				$imagen3 = imgsmall($img3) . '<br>';
+			}
+		}else{
+			$imagen3 = '';
+		}
+		
 
 
 		$data .= '
