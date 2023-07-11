@@ -81,12 +81,9 @@ function ValidaBotones($con, $mes, $actividad, $codigo_actividad, $id_actividad)
     if($mes >  intval(date('m'))){
         $boton = 'disabled class="text-white bg-blue-400 dark:bg-blue-500 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center';
     }
-    /* Cuando el mes ya paso hace algunos dias...
-    if($mes ==  intval(date('m')-1)){
-        $boton = 'disabled class="text-white bg-blue-400 dark:bg-blue-500 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center';
-    }
-    */
-    if((isset($actividad['validado']) && $actividad['validado'] == 1) && (isset($actividad['validado']) && $actividad['validado'] == 1)){
+
+    
+    if((isset($actividad['validado']) && $actividad['validado'] == 1) && (isset($actividad['validado_2']) && $actividad['validado_2'] == 1)){
         $boton = 'disabled class="text-white bg-green-500 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center';
         $text = "Reportado";
     }

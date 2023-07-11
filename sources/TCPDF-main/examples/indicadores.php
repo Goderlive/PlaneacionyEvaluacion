@@ -48,7 +48,9 @@ if($num_trimestre == 2){
 	JOIN programas_presupuestarios pp ON pp.id_programa = py.id_programa
 	JOIN dependencias_generales dg ON iu.id_dep_general = dg.id_dependencia
 	JOIN dependencias_auxiliares da ON da.id_dependencia_auxiliar = iu.id_dep_aux
-	WHERE dp.id_dependencia = $id_dependencia AND (iu.periodicidad = 'Semetral')" );
+	WHERE dp.id_dependencia = $id_dependencia AND (iu.periodicidad = 'Mensual' OR iu.periodicidad = 'Trimestral' OR iu.periodicidad = 'Semestral')
+	GROUP BY iu.id
+	" );
 }
 if($num_trimestre == 4){
 	$stm = $con->query("SELECT * FROM indicadores_uso iu
@@ -57,7 +59,9 @@ if($num_trimestre == 4){
 	JOIN programas_presupuestarios pp ON pp.id_programa = py.id_programa
 	JOIN dependencias_generales dg ON iu.id_dep_general = dg.id_dependencia
 	JOIN dependencias_auxiliares da ON da.id_dependencia_auxiliar = iu.id_dep_aux
-	WHERE dp.id_dependencia = $id_dependencia" );
+	WHERE dp.id_dependencia = $id_dependencia AND (iu.periodicidad = 'Mensual' OR iu.periodicidad = 'Trimestral' OR iu.periodicidad = 'Semestral' OR iu.periodicidad = 'Anual')
+	GROUP BY iu.id
+	" );
 }
 $indicadores = $stm->fetchAll(PDO::FETCH_ASSOC);  // 
 
@@ -145,9 +149,11 @@ function SumadorAcumulado($programacion, $trimestre){
 
 $trimestreNombre = TrimestreNombreCompleto($trimestre);
 
+
 foreach($indicadores as $indica): // Aqui deberia comenzar el foreach /////////////////////////////////////////////////////////
 // add a page
 $pdf->AddPage();
+
 
 $metaAnual_a = intval($indica['at1']) + intval($indica['at2']) + intval($indica['at3']) + intval($indica['at4']); 
 $metaAnual_b = intval($indica['bt1']) + intval($indica['bt2']) + intval($indica['bt3']) + intval($indica['bt4']); 

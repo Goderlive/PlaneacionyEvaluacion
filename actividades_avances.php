@@ -249,7 +249,7 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                                     Avance Programado
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Avance Acumulado
+                                    Avance Reportado
                                 </th>
                                 <th scope="col" class="px-6 py-3">
                                     Programado <?= $meses[$el_mes] ?>
