@@ -11,7 +11,7 @@ $id_usuario = $_SESSION['id_usuario'];
 require_once 'models/inicio_modelo.php';
 $permisos = getPermisos($con, $_SESSION['id_usuario']);
 $mi_permiso = $permisos['nivel'];
-$aniosiguiente = date('Y');
+$aniosiguiente = intval(date('Y')+1);
 
 
 // Aqui estan las variables de los Menus
@@ -82,7 +82,7 @@ function item_principal($actual, $buscador, $texto, $destino, $permisos, $mi_per
                         ?></a>
                     </li>
                     <?= item_principal($actual, $inicio, "Inicio", "index.php", array(1,2,3,4,5), $mi_permiso) ?>
-                    <?= item_principal($actual, $anteproyecto, "Anteproyecto" . $aniosiguiente, "anteproyecto.php", array(1,2,3,4,5), $mi_permiso) ?>
+                    <?= item_principal($actual, $anteproyecto, "Anteproyecto " . $aniosiguiente, "anteproyecto.php", array(1,2,3,4,5), $mi_permiso) ?>
                     <?= item_principal($actual, $pdm, "PDM", "pdm_admin.php", array(1,2,3), $mi_permiso) ?>
                     <?= item_principal($actual, $actividades, "Actividades", "actividades.php", array(3,4,5), $mi_permiso) ?>
                     <?= item_principal($actual, $valida_actividades, "Valida Actividades", "actividades_avances.php", array(1,2), $mi_permiso) ?>
@@ -94,7 +94,7 @@ function item_principal($actual, $buscador, $texto, $destino, $permisos, $mi_per
                         <div id="dropdownNavbar" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                             <ul class="py-1 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownNavbarButton">
                                 <?= item_context("mi_perfil.php", "Mi Perfil", array(1,2,3,4,5), $mi_permiso) ?>
-                                <?= item_context("mis_areas.php", "Mis Areas", array(1,2,3,4), $mi_permiso) ?>
+                                <?= item_context("mis_areas.php", "Mis Áreas", array(1,2,3,4), $mi_permiso) ?>
                                 <?= item_context("mis_formatos.php", "Mis Formatos", array(1,2,3,4), $mi_permiso) ?>
                                 <?= item_context("ajustes.php", "Ajustes", array(1,2), $mi_permiso)?>
                                 <?= item_context("unidades_medida.php", "Unidades de Medida", array(1,2), $mi_permiso)?>

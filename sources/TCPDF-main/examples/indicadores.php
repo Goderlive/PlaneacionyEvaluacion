@@ -346,7 +346,7 @@ if ($programacion_trimestre_b != 0 && $avance['avance_b'] != 0) {
     $eficienciatrimetral = "N/A";
 }
 
-if(($eficienciatrimetral > 90) && ($eficienciatrimetral < 110)){
+if(($eficienciatrimetral > 90) && ($eficienciatrimetral < 110) || $eficienciatrimetral == "N/A"){
 	$color = "color:green;";
 	$semaforotrimestral = "Aceptable";
 }else{
@@ -359,7 +359,8 @@ if ($total_acumulado_b != 0 && $alcanzadoAcumulado[1] != 0 && $total_acumulado_a
 } else {
     $eficienciaanual = "N/A";
 }
-if(($eficienciaanual > 90) && ($eficienciaanual < 110)){
+
+if(($eficienciaanual > 90) && ($eficienciaanual < 110) || $eficienciaanual == "N/A"){
 	$colora = "color:green;";
 	$semaforoanual = "Aceptable";	
 }else{
