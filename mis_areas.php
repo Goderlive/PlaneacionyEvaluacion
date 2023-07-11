@@ -32,7 +32,7 @@ if($_SESSION['sistema'] == "pbrm"){
 <?= breadcrumbs(array("Inicio"=> "index.php", "Mis Areas"=> ""))?>
 
 <br>
-<h2 class="mb-4 text-2xl font-extrabold tracking-tight leading-none text-gray-800 md:text-5xl lg:text-6xl dark:text-white">Esta Sección permite administrar lo referente a las Areas</h2>
+<h3 class="text-3xl font-bold dark:text-white">Esta Sección permite administrar lo referente a las Áreas</h3>
 <br>
 
 <?php if($permisos['nivel'] == 5): ?>
