@@ -300,20 +300,21 @@ if(isset($_POST['id_area']) && $_POST){
 									<?php $mensual = ProgramaMensual($con, $actividad); // La funcion limita lo 12 campos solamente de los 15 que tiene
 										$contadorMes = 1;
 										$thisTrimestre = ceil($thismes/3);
+
 									foreach($mensual as $mes): // Primer recorremos los 12 
 									// Primero tenemos que mostrar los que esten fuera del trimestre en el que estamos
-										$trimestreAvance= 13;
+										$trimestreAvance= 2;
 										// para configuracion normal, cambiar el signo siguiente.
-										if($thisTrimestre > $trimestreAvance):?>  <!-- Si los avances estan en un trimestre menor al actual no se pueden cambiar, entonces mostraremos un boton desabilitado -->
+										if($thisTrimestre <= $trimestreAvance):?>  <!-- Si los avances estan en un trimestre menor al actual no se pueden cambiar, entonces mostraremos un boton desabilitado -->
 											<td class="py-4 px-6">
 												<input type="text" id="disabled-input" aria-label="disabled input" class="mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="<?= $mes ?>" disabled required>
 												<input type="hidden" name="<?= $actividad?>[]" value="<?= $mes ?>">
 											</td>
 											<!--Aqui ya sabemos que estamos ante un caso posible, primero vamos a revisar si tiene avance... -->
 										<?php else:
-											if($avance = MuestraAvanceActual($con, $contadorMes, $actividad)):?>
+											if(!$avance = MuestraAvanceActual($con, $contadorMes, $actividad)):?>
 											<td class="py-4 px-6">
-												<input type="text" id="disabled-input" aria-label="disabled input" class="mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="<?= $avance['avance'] ?>" disabled required>
+												<input type="text" id="disabled-input" aria-label="disabled input" class="mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="<?= $mes ?>" disabled required>
 												<input type="hidden" name="<?= $actividad?>[]" value="<?= $mes ?>">
 											</td>	
 											<?php else:?>

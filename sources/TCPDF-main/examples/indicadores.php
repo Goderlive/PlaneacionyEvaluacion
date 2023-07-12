@@ -132,6 +132,8 @@ function BuscaAvances($con, $id_indicador, $num_trimestre){
 	return $avances;
 }
 
+
+
 function BuscaAvancesAcumulados($con, $id_indicador, $trimestre){
 	$stm = $con->query("SELECT SUM(avance_a), SUM(avance_b) FROM avances_indicadores
 	WHERE id_indicador = $id_indicador AND trimestre <= $trimestre AND validado = 1");
