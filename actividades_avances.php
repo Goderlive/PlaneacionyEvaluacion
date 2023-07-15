@@ -418,7 +418,7 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                             <tr>
                                                 <td>
-                                                    Descripcion de la Evidencia: <?= $avanceMensual['descripcion_evidencia'] ?> <br>
+                                                    Descripcion de la Actividad: <?= $avanceMensual['descripcion_evidencia'] ?> <br>
                                                 </td>
                                             </tr>
                                             <tr>

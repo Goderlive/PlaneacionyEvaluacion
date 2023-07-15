@@ -399,13 +399,13 @@ function QueTrimestreEs2($trimestre){
 		return 1;
 	}
 	if($trimestre == "2do" || $trimestre == "2"){
-		return 1;
+		return 2;
 	}
 	if($trimestre == "3er" || $trimestre == "3"){
-		return 1;
+		return 3;
 	}
 	if($trimestre == "4to" || $trimestre == "4"){
-		return 1;
+		return 4;
 	}
 }
 
@@ -507,8 +507,8 @@ $tabseg = '
             <th style="width:16%; text-align: center; border:1px solid gray; font-size: 8px"><b>Líneas de acción </b></th>
             <th style="width:7%; text-align: center; border:1px solid gray; font-size: 8px"><b>Área(s) Responsable (s)</b></th>
             <th style="width:16%; text-align: center; border:1px solid gray; font-size: 8px"><b>Acciones realizadas</b></th>
-            <th style="width:5%; text-align: center; border:1px solid gray; font-size: 8px"><b>Prog.</b></th>
-            <th style="width:5%; text-align: center; border:1px solid gray; font-size: 8px"><b>Alc.</b></th>
+            <th style="width:5%; text-align: center; border:1px solid gray; font-size: 8px"><b>Prog. Trim.</b></th>
+            <th style="width:5%; text-align: center; border:1px solid gray; font-size: 8px"><b>Alc. Trim.</b></th>
             <th style="width:5%; text-align: center; border:1px solid gray; font-size: 8px"><b>%</b></th>
             <th style="width:16%; text-align: center; border:1px solid gray; font-size: 8px"><b>Localidad (es) beneficiada (s)</b></th>
             <th style="width:11%; text-align: center; border:1px solid gray; font-size: 8px"><b>Beneficiarios directos</b></th>
@@ -523,7 +523,7 @@ foreach($seguimiento as $s){
 	$proganual = $s['enero'] + $s['febrero'] + $s['marzo'] + $s['abril'] + $s['mayo'] + $s['junio'] + $s['julio'] + $s['agosto'] + $s['septiembre'] + $s['octubre'] + $s['noviembre'] + $s['diciembre'];
 	if($thistrimestre == 1){
 		$progtrimestral = intval($s['enero']) + intval($s['febrero']) + intval($s['marzo']);
-	} 
+	}
 	if($thistrimestre == 2){
 		$progtrimestral = intval($s['abril']) + intval($s['mayo']) + intval($s['junio']);
 	} 
@@ -550,7 +550,7 @@ foreach($seguimiento as $s){
 		<td style="width:5%; text-align: center; border:1px solid gray; font-size: 7px">'. $avance[3].'</td>
 		<td style="width:5%; text-align: center; border:1px solid gray; font-size: 7px">'.$porcentajecumplimiento.'</td>
 		<td style="width:16%; text-align: center; border:1px solid gray; font-size: 7px">'.$avance[0].'</td>
-		<td style="width:11%; text-align: center; border:1px solid gray; font-size: 7px">'.$avance[1].'</td>
+		<td style="width:11%; text-align: center; border:1px solid gray; font-size: 7px">'.$avance[1]. '<br>' . $s['udmed'] . '</td>
 		<td style="width:11%; text-align: center; border:1px solid gray; font-size: 7px">'.$avance[2].'</td>
 	</tr>
 	';

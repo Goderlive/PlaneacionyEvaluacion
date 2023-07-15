@@ -28,7 +28,7 @@ if($_SESSION['sistema'] == "pbrm" || $_SESSION['id_permiso'] != 1){
         foreach ($reconducciones as $reconduccion):?> <!-- Tenemos una vista de cada reconduccion -->
             <form action="models/revisa_reconducciones_Model.php" method="post">
 
-            <div role="status" class="p-4 max-w-xl rounded border border-gray-200 shadow animate-pulse md:p-6 dark:border-gray-700">
+            <div role="status" class="rounded border border-gray-200 shadow md:p-6 dark:border-gray-700">
                 <div class=" justify-center mb-4 bg-gray-100 rounded dark:bg-gray-100">
                     <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white"> <?= $reconduccion['nombre_dependencia'] . " -> " . $reconduccion['nombre_area']?></h5>
                     <p><?= "Oficio: " . $reconduccion['no_oficio'] . " <br>Dep. Gen: " . $reconduccion['dep_general'] . " -- Dep. Aux: " . $reconduccion['dep_aux'] . " -- Programa: " . $reconduccion['programa']?></p>
@@ -68,6 +68,11 @@ if($_SESSION['sistema'] == "pbrm" || $_SESSION['id_permiso'] != 1){
                                 <tr class="border-b border-gray-200 dark:border-gray-700">
                                     <?= Programacion($programacion['programacion_final'])?>
                                 </tr>
+                                <tr>
+                                    <td colspan="12">
+                                        <?= $programacion['justificacion'] ?>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -95,7 +100,7 @@ if($_SESSION['sistema'] == "pbrm" || $_SESSION['id_permiso'] != 1){
                 $nuevaprogramacionanual = intval($nuevaprogramacion[0]) + intval($nuevaprogramacion[1]) + intval($nuevaprogramacion[2]) + intval($nuevaprogramacion[3]);  ?>
 
                 <?php $originalindicador = TraeOriginalIndicador($con, $reconduccion['id_indicador']) ?>
-                <div role="status" class="p-4 max-w-xl rounded border border-gray-200 shadow animate-pulse md:p-6 dark:border-gray-700 my-4">
+                <div role="status" class="rounded border border-gray-200 md:p-6 dark:border-gray-700 my-4">
                     <div class=" justify-center mb-4 rounded">
                         <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white"> <?= $reconduccion['nombre_dependencia']?></h5>
                         <p><?= "Oficio: " . $reconduccion['no_oficio'] . " Fecha: " . $reconduccion['fecha'] . " <br>Dep. Gen: " . $reconduccion['dep_general'] . " -- Dep. Aux: " . $reconduccion['dep_aux'] . " -- Programa: " . $reconduccion['programa_p']?></p>

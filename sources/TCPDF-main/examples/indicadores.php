@@ -139,6 +139,12 @@ function BuscaAvancesAcumulados($con, $id_indicador, $trimestre){
 	WHERE id_indicador = $id_indicador AND trimestre <= $trimestre AND validado = 1");
 	$avances = $stm->fetch();
 	return $avances;
+
+}
+
+
+function BuscaAvancestipo($con, $id_indicador, $trimestre){
+	print "";
 }
 
 
@@ -153,12 +159,20 @@ $trimestreNombre = TrimestreNombreCompleto($trimestre);
 
 
 foreach($indicadores as $indica): // Aqui deberia comenzar el foreach /////////////////////////////////////////////////////////
+
 // add a page
 $pdf->AddPage();
 
-
-$metaAnual_a = intval($indica['at1']) + intval($indica['at2']) + intval($indica['at3']) + intval($indica['at4']); 
-$metaAnual_b = intval($indica['bt1']) + intval($indica['bt2']) + intval($indica['bt3']) + intval($indica['bt4']); 
+if($indica['tipo_op_a'] == 'Sumable'){
+	$metaAnual_a = intval($indica['at1']) + intval($indica['at2']) + intval($indica['at3']) + intval($indica['at4']);
+}else{
+	$metaAnual_a = intval($indica['at1']);
+}
+if($indica['tipo_op_b'] == 'Sumable'){
+	$metaAnual_b = intval($indica['bt1']) + intval($indica['bt2']) + intval($indica['bt3']) + intval($indica['bt4']);
+}else{
+	$metaAnual_b = intval($indica['bt1']);  
+}
 
 
 $membretes = '
@@ -264,11 +278,26 @@ $programacion_trimestre_b = ($num_trimestre == 1) ? $indica['bt1'] : (($num_trim
 
 $avance = BuscaAvances($con, $id_indicador, $num_trimestre);
 
-$total_acumulado_a = ($num_trimestre == 1) ? intval($indica['at1']) : (($num_trimestre == 2) ? intval($indica['at1']) + intval($indica['at2']) : (($num_trimestre == 3) ? intval($indica['at1']) + intval($indica['at2']) + intval($indica['at3']) : intval($indica['at1']) + intval($indica['at2']) + intval($indica['at3']) + intval($indica['at4'])));
-$total_acumulado_b = ($num_trimestre == 1) ? intval($indica['bt1']) : (($num_trimestre == 2) ? intval($indica['bt1']) + intval($indica['bt2']) : (($num_trimestre == 3) ? intval($indica['bt1']) + intval($indica['bt2']) + intval($indica['bt3']) : intval($indica['bt1']) + intval($indica['bt2']) + intval($indica['bt3']) + intval($indica['bt4'])));
+if($indica['tipo_op_a'] == 'Sumable'){
+	$total_acumulado_a = ($num_trimestre == 1) ? intval($indica['at1']) : (($num_trimestre == 2) ? intval($indica['at1']) + intval($indica['at2']) : (($num_trimestre == 3) ? intval($indica['at1']) + intval($indica['at2']) + intval($indica['at3']) : intval($indica['at1']) + intval($indica['at2']) + intval($indica['at3']) + intval($indica['at4'])));
+}else{
+	$total_acumulado_a = ($num_trimestre == 1) ? intval($indica['at1']) : (($num_trimestre == 2) ? intval($indica['at2']) : (($num_trimestre == 3) ? intval($indica['at3']) : intval($indica['at4'])));
+}
+if($indica['tipo_op_b'] == 'Sumable'){
+	$total_acumulado_b = ($num_trimestre == 1) ? intval($indica['bt1']) : (($num_trimestre == 2) ? intval($indica['bt1']) + intval($indica['bt2']) : (($num_trimestre == 3) ? intval($indica['bt1']) + intval($indica['bt2']) + intval($indica['bt3']) : intval($indica['bt1']) + intval($indica['bt2']) + intval($indica['bt3']) + intval($indica['bt4'])));
+}else{
+	$total_acumulado_b = ($num_trimestre == 1) ? intval($indica['bt1']) : (($num_trimestre == 2) ? intval($indica['bt2']) : (($num_trimestre == 3) ? intval($indica['bt3']) : intval($indica['bt4'])));
+}
 
 
 $alcanzadoAcumulado = BuscaAvancesAcumulados($con, $id_indicador, $num_trimestre);
+
+if($indica['tipo_op_a'] != 'Sumable'){
+	$alcanzadoAcumulado[0] = $avance['avance_a'];
+}
+if($indica['tipo_op_b'] != 'Sumable'){
+	$alcanzadoAcumulado[1] = $avance['avance_b'];
+}
 
 $porcentajeAvance = $metaAnual_a != 0 ? substr(($programacion_trimestre_a / $metaAnual_a) *100, 0, 5) : "N/A";
 $porcentajealcanzado = $programacion_trimestre_a != 0 ? substr(($avance['avance_a'] / $programacion_trimestre_a) *100 , 0, 5) : "N/A";
