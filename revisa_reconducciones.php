@@ -92,12 +92,16 @@ if($_SESSION['sistema'] == "pbrm" || $_SESSION['id_permiso'] != 1){
 
     <?php if($tipo == "indicadores"): // Aqui comienza en caso de revisar reconducciones de INDICADORES?>
         <?php $reconducciones = TraeTodasReconduccionesIndicadores($con); ?>
-            <?php foreach ($reconducciones as $reconduccion):?>
-                <?php $oldprogramacion = explode("|" ,$reconduccion['programacion_inicial_a']);
-                $oldprogramacionanual = intval($oldprogramacion[0]) + intval($oldprogramacion[1]) + intval($oldprogramacion[2]) + intval($oldprogramacion[3]);  ?>
+            <?php foreach ($reconducciones as $reconduccion):
+                $oldprogramacion = explode("|" ,$reconduccion['programacion_inicial_a']);
+                $oldprogramacionanual = intval($oldprogramacion[0]) + intval($oldprogramacion[1]) + intval($oldprogramacion[2]) + intval($oldprogramacion[3]);
+                $nuevaprogramacion = explode("|" ,$reconduccion['programacion_modificada_a']);
+                $nuevaprogramacionanual = intval($nuevaprogramacion[0]) + intval($nuevaprogramacion[1]) + intval($nuevaprogramacion[2]) + intval($nuevaprogramacion[3]);
 
-                <?php $nuevaprogramacion = explode("|" ,$reconduccion['programacion_modificada_a']);
-                $nuevaprogramacionanual = intval($nuevaprogramacion[0]) + intval($nuevaprogramacion[1]) + intval($nuevaprogramacion[2]) + intval($nuevaprogramacion[3]);  ?>
+                $oldprogramacionb = explode("|" ,$reconduccion['programacion_inicial_b']);
+                $oldprogramacionanualb = intval($oldprogramacionb[0]) + intval($oldprogramacionb[1]) + intval($oldprogramacionb[2]) + intval($oldprogramacionb[3]);
+                $nuevaprogramacionb = explode("|" ,$reconduccion['programacion_modificada_b']);
+                $nuevaprogramacionanualb = intval($nuevaprogramacionb[0]) + intval($nuevaprogramacionb[1]) + intval($nuevaprogramacionb[2]) + intval($nuevaprogramacionb[3]);  ?>
 
                 <?php $originalindicador = TraeOriginalIndicador($con, $reconduccion['id_indicador']) ?>
                 <div role="status" class="rounded border border-gray-200 md:p-6 dark:border-gray-700 my-4">
@@ -206,6 +210,58 @@ if($_SESSION['sistema'] == "pbrm" || $_SESSION['id_permiso'] != 1){
                                     </td>
                                     <td class="px-6 py-4 bg-blue-50">
                                         <?= $nuevaprogramacionanual ?>
+                                    </td>
+                                </tr>
+                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                    <td class="px-6 py-4">
+                                        B <?= $reconduccion['variable_b'] ?>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <?= $originalindicador['umedida_b'] ?>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <?= $reconduccion['umedida_b'] ?>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <?= $originalindicador['tipo_op_b'] ?>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <?= $reconduccion['tipo_op_b'] ?>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <?= $oldprogramacionb[0] ?>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <?= $oldprogramacionb[1] ?>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <?= $oldprogramacionb[2] ?>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <?= $oldprogramacionb[3] ?>
+                                    </td>
+                                    <td class="px-6 py-4 bg-blue-50">
+                                        <?= $oldprogramacionanualb ?>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <?= $nuevaprogramacionb[0] ?>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <?= $nuevaprogramacionb[1] ?>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <?= $nuevaprogramacionb[2] ?>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <?= $nuevaprogramacionb[3] ?>
+                                    </td>
+                                    <td class="px-6 py-4 bg-blue-50">
+                                        <?= $nuevaprogramacionanualb ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="15">
+                                        <?= $reconduccion['justificacion_impacto'] ?>
                                     </td>
                                 </tr>
                                 <form action="models/revisa_reconducciones_Model.php" method="post">
