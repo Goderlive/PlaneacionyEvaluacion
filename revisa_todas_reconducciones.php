@@ -25,10 +25,12 @@ if(isset($_SESSION) && isset($_SESSION['sistema']) && $_SESSION['sistema'] == "p
 <div class="container text-center mx-auto">
 
 <?php foreach($reconducciones as $r): ?>
-    <div role="status" class="p-4 max-w-xl rounded border border-gray-200 shadow animate-pulse md:p-6 dark:border-gray-700">
+    <div role="status" class="rounded border border-gray-200 shadow md:p-6 dark:border-gray-700">
         <div class=" justify-center mb-4 bg-gray-100 rounded dark:bg-gray-100">
             <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white"> <?= $r['nombre_dependencia'] . " -> " . $r['nombre_area']?></h5>
             <p><?= "Oficio: " . $r['no_oficio'] . " <br>Dep. Gen: " . $r['dep_general'] . " -- Dep. Aux: " . $r['dep_aux'] . " -- Programa: " . $r['programa']?></p>
+            <?= $r['fecha'] ?>
+            <?= $r['id_reconduccion_actividades'] ?>
         </div>
 
         <!-- vamos a buscar las calindarizaciones realacionadas con esta reconduccion -->
@@ -50,7 +52,6 @@ if(isset($_SESSION) && isset($_SESSION['sistema']) && $_SESSION['sistema'] == "p
                                 <?= $dataActividad['codigo_actividad'] . " - " . $dataActividad['nombre_actividad'] . " - " . $dataActividad['unidad'] ?>
                             </td> 
                         </tr>
-
                         <tr>
                             <?= EncabezadoMeses()?>
                         </tr>
