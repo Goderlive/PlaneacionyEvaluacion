@@ -322,7 +322,7 @@ $contadorProgramaciones = 0;
 $justificaciones = "";
 foreach ($programaciones as $prog) {
 	$contadorProgramaciones += 1;
-	$justificaciones .= $prog['no_actividad'] . $prog['justificacion'] . "; ";
+	$justificaciones .= $prog['no_actividad'] . ') ' . $prog['justificacion'] . " ";
 	if(DefineReconduccion($prog['programacion_inicial'], $prog['programacion_final']) == "Reducción"){
 		array_push($left, $prog);
 	}else{
@@ -481,7 +481,7 @@ $justificacion = '&nbsp;
 <br>
 <table style="width: 100%; border: 1px solid black; border-collapse: collapse;">
 	<tr>
-		<td>De creación o reasignación de metas de actividad y/o recursos al proyecto (Benef icio, Impacto, Repercusión programática). En su caso Utilizar hoja anexa.</td>
+		<td>De creación o reasignación de metas de actividad y/o recursos al proyecto (Beneficio, Impacto, Repercusión programática). En su caso Utilizar hoja anexa.</td>
 	</tr>
 </table>
 <br>
