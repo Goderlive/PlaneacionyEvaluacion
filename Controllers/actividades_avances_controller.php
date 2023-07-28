@@ -9,6 +9,22 @@ function NombreArea($con, $id_area){
 }
 
 
+function PendientesSegunPermisos($con, $id_area, $permisos, $mes){
+    if($permisos['rol'] == 1){
+        $sentencia = "SELECT COUNT(*) as result FROM avances av
+        JOIN actividades ac ON ac.id_actividad = av.id_actividad
+        WHERE ac.id_area = $id_area AND av.mes = $mes AND validado = 1";
+    }
+    if($permisos['rol'] == 1){
+        $sentencia = "SELECT COUNT(*) as result FROM avances av
+        JOIN actividades ac ON ac.id_actividad = av.id_actividad
+        WHERE ac.id_area = $id_area AND av.mes = $mes AND validado_2 = 1";
+    }
+
+    return Fetch($con, $sentencia)['result'];
+}
+
+
 function TraeDependenciasController($con, $permisos){
     if($permisos['nivel'] == 1 ){
         $dependencias = TraeTodasDependencias($con);
@@ -22,6 +38,7 @@ function TraeDependenciasController($con, $permisos){
     
     return $dependencias;
 }
+
 
 function MenuMes($el_mes, $id_area){
     $item = '';
