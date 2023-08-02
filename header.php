@@ -83,7 +83,7 @@ function item_principal($actual, $buscador, $texto, $destino, $permisos, $mi_per
                     </li>
                     <?= item_principal($actual, $inicio, "Inicio", "index.php", array(1,2,3,4,5), $mi_permiso) ?>
                     <?= item_principal($actual, $anteproyecto, "Anteproyecto " . $aniosiguiente, "anteproyecto.php", array(1,2,3,4,5), $mi_permiso) ?>
-                    <?= item_principal($actual, $pdm, "PDM", "pdm_admin.php", array(1,2,3), $mi_permiso) ?>
+                    <?= item_principal($actual, $pdm, "PDM", "pdm_admin.php", array(1,2,3,4), $mi_permiso) ?>
                     <?= item_principal($actual, $actividades, "Actividades", "actividades.php", array(3,4,5), $mi_permiso) ?>
                     <?= item_principal($actual, $valida_actividades, "Valida Actividades", "actividades_avances.php", array(1,2), $mi_permiso) ?>
                     <?= item_principal($actual, $indicadores, "Indicadores", "indicadores.php", array(3,4,5), $mi_permiso) ?>
