@@ -202,13 +202,15 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                                         <?php else: ?>
                                             
                                             <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-white bg-red-600 rounded-lg">
-                                                <?php $sinvalidar = SinValidar($con, $a['id_area'], date('m')-3) ?>
+                                                <?php $sinvalidar = SinValidar($con, $a['id_area'], date('m')-3, $permisos) ?>
                                                 <?= $sinvalidar ?>
                                             </div>
+                                            <br>
                                             <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-white bg-yellow-300 rounded-lg">
                                                 <?php $pendientes = PendientesSegunPermisos($con, $a['id_area'], $permisos, date('m')-3) ?>
                                                 <?= $pendientes ?>
                                             </div>
+                                            <br>
                                             <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-white bg-gray-700 rounded-lg">
                                                 <?php //deberia ser una resta simple de las anteriores  ?>
                                                 <?= $totalActividades - $sinvalidar - $pendientes ?>

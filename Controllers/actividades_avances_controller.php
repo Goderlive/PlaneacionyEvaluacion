@@ -13,15 +13,35 @@ function PendientesSegunPermisos($con, $id_area, $permisos, $mes){
     if($permisos['rol'] == 1){
         $sentencia = "SELECT COUNT(*) as result FROM avances av
         JOIN actividades ac ON ac.id_actividad = av.id_actividad
-        WHERE ac.id_area = $id_area AND av.mes = $mes AND validado = 1";
+        WHERE ac.id_area = $id_area AND av.mes = $mes AND av.validado = 1 AND av.validado_2 = 0";
     }
-    if($permisos['rol'] == 1){
+    if($permisos['rol'] == 2){
         $sentencia = "SELECT COUNT(*) as result FROM avances av
         JOIN actividades ac ON ac.id_actividad = av.id_actividad
-        WHERE ac.id_area = $id_area AND av.mes = $mes AND validado_2 = 1";
+        WHERE ac.id_area = $id_area AND av.mes = $mes AND av.validado_2 = 1 AND av.validado = 0";
     }
 
     return Fetch($con, $sentencia)['result'];
+}
+
+
+function SinValidar($con, $id_area, $mes, $permisos){
+    if($permisos['rol'] == 1){
+        $sentencia = "SELECT COUNT(*) AS total FROM avances av
+        JOIN actividades ac ON ac.id_actividad = av.id_actividad
+        LEFT JOIN areas ar ON ar.id_area = ac.id_area
+        WHERE ar.id_area = $id_area AND av.mes = $mes AND av.validado = 0
+        ";
+    }
+    if($permisos['rol'] == 2){
+        $sentencia = "SELECT COUNT(*) AS total FROM avances av
+        JOIN actividades ac ON ac.id_actividad = av.id_actividad
+        LEFT JOIN areas ar ON ar.id_area = ac.id_area
+        WHERE ar.id_area = $id_area AND av.mes = $mes AND av.validado_2 = 0
+        ";
+    }
+
+    return Fetch($con, $sentencia)['total'];
 }
 
 
