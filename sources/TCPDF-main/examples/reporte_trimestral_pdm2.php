@@ -138,6 +138,7 @@ function BuscaAvances2($con, $actividad, $trimestre, $localidades, $unidaddemedi
 	$todosrecursos = "";
 	$porcentaje = 0;
 	$i= 0;
+	$texto = '';
 	foreach($avances as $a){
 		$i += 1;
 		if($a['localidades']){
@@ -155,9 +156,10 @@ function BuscaAvances2($con, $actividad, $trimestre, $localidades, $unidaddemedi
 		$todosbeneficiarios .= extraer_numeros($a['beneficiarios'], $unidaddemedida) . "<br>";
 		$todosrecursos .= $a['recursos'] . "<br>";
 		$porcentaje += $a['avance'];
+		$texto .= $a['descripcion_evidencia'] . "<br>";
 	}
 	$arrmag = array();
-	array_push($arrmag, $todasLocalidades,$todosbeneficiarios,$todosrecursos, $porcentaje);
+	array_push($arrmag, $todasLocalidades,$todosbeneficiarios,$todosrecursos, $porcentaje, $texto);
 	return $arrmag;
 }
 
@@ -204,25 +206,26 @@ foreach($magali as $mag){
 
 
 	echo "<tr>";
-		echo "<td>" . $mag['nombre_pilaoeje'] . "</td>";
-		echo "<td>" . $mag['nombre_tema'] . "</td>";
-		echo "<td>" . $mag['clave_objetivo'] . "</td>";
-		echo "<td>" . $mag['nombre_objetivo'] . "</td>";
-		echo "<td>" . $mag['clave_estrategia'] . "</td>";
-		echo "<td>" . $mag['nombre_estrategia'] . "</td>";
-		echo "<td>" . $mag['clave_linea'] . "</td>";
-		echo "<td>" . $mag['nombre_linea'] . "</td>";
-		echo "<td>" . $mag['nombre_dependencia'] . "</td>";
-		echo "<td>" . $mag['nombre_actividad'] . "</td>";
-		echo "<td>" . $mag['unidad'] . "</td>";
-		echo "<td>" . $progAnual . "</td>";
-		echo "<td>" . $progTrim . "</td>";
-		echo "<td>" . $avance[3] . "</td>";
-		echo "<td>" . substr($porcentajetrimestral, 0, 4) . "%</td>";
-		echo "<td>" . substr($porcentajeanual, 0, 4) . "%</td>";
+		echo "<td>" . $mag['nombre_pilaoeje'] . "<br>" . $mag['nombre_pilaoeje'] . "<br>" . $mag['nombre_pilaoeje'] . "</td>";
+		echo "<td>" . $mag['nombre_tema'] . "<br>" . $mag['nombre_tema'] . "<br>" . $mag['nombre_tema'] . "</td>";
+		echo "<td>" . $mag['clave_objetivo'] . "<br>" . $mag['clave_objetivo'] . "<br>" . $mag['clave_objetivo'] . "</td>";
+		echo "<td>" . $mag['nombre_objetivo'] . "<br>" . $mag['nombre_objetivo'] . "<br>" . $mag['nombre_objetivo'] . "</td>";
+		echo "<td>" . $mag['clave_estrategia'] . "<br>" . $mag['clave_estrategia'] . "<br>" . $mag['clave_estrategia'] . "</td>";
+		echo "<td>" . $mag['nombre_estrategia'] . "<br>" . $mag['nombre_estrategia'] . "<br>" . $mag['nombre_estrategia'] . "</td>";
+		echo "<td>" . $mag['clave_linea'] . "<br>" . $mag['clave_linea'] . "<br>" . $mag['clave_linea'] . "</td>";
+		echo "<td>" . $mag['nombre_linea'] . "<br>" . $mag['nombre_linea'] . "<br>" . $mag['nombre_linea'] . "</td>";
+		echo "<td>" . $mag['nombre_dependencia'] . "<br>" . $mag['nombre_dependencia'] . "<br>" . $mag['nombre_dependencia'] . "</td>";
+		echo "<td>" . $mag['nombre_actividad'] . "<br>" . $mag['nombre_actividad'] . "<br>" . $mag['nombre_actividad'] . "</td>";
+		echo "<td>" . $mag['unidad'] . "<br>" . $mag['unidad'] . "<br>" . $mag['unidad'] . "</td>";
+		echo "<td>" . $progAnual . "<br>" . $progAnual . "<br>" . $progAnual. "</td>";
+		echo "<td>" . $progTrim . "<br>" . $progTrim . "<br>" . $progTrim . "</td>";
+		echo "<td>" . $avance[3] . "<br>" . $avance[3] . "<br>" . $avance[3] . "</td>";
+		echo "<td>" . substr($porcentajetrimestral, 0, 4) . "<br>" . substr($porcentajetrimestral, 0, 4) . "<br>" . substr($porcentajetrimestral, 0, 4) . "</td>";
+		echo "<td>" . substr($porcentajeanual, 0, 4) . "<br>" . substr($porcentajeanual, 0, 4) . "<br>" . substr($porcentajeanual, 0, 4) . "</td>";
 		echo "<td>" . $avance[0] . "</td>";
 		echo "<td>" . $avance[1] . "</td>";
 		echo "<td>" . $avance[2] . "</td>";
+		echo "<td>" . $avance[4] . "</td>";
 	echo "</tr>";
 }
 echo "</table>";

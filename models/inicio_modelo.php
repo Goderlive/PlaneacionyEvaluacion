@@ -34,7 +34,12 @@ function getPermisos($con, $id_usuario){
 function VerificaAvancesActividades($con){
     $stm = $con->query("SELECT * FROM avances a
     LEFT JOIN actividades p ON p.id_actividad = a.id_actividad
-    WHERE a.validado != 1");
+    LEFT JOIN areas ar ON ar.id_area = p.id_area
+    LEFT JOIN dependencias dp ON dp.id_dependencia = ar.id_dependencia
+    WHERE a.validado != 1
+    GROUP BY p.id_area
+    LIMIT 5
+    ");
     $data_avances_actividades = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $data_avances_actividades;
 }
@@ -45,8 +50,25 @@ function VerificaAvancesIndicadores($con){
     return $data_avances_actividades;
 }
 
+
+function VerificaModificaciones($con){
+    $stm = $con->query("SELECT * FROM modificaciones_actividades ma
+    JOIN avances av ON av.id_avance = ma.id_avance
+    JOIN actividades ac ON ac.id_actividad = av.id_actividad
+    LEFT JOIN areas ar ON ar.id_area = ac.id_area
+    LEFT JOIN dependencias dp ON dp.id_dependencia = ar.id_dependencia
+    WHERE ma.atendida = 0 LIMIT 5");
+    $modificaciones = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $modificaciones;
+}
+
 function VerificaReconduccionesActividades($con){
-    $stm = $con->query("SELECT * FROM reconducciones_atividades WHERE validado != 1");
+    $stm = $con->query("SELECT * FROM reconducciones_atividades ra 
+    LEFT JOIN areas ar ON ar.id_area = ra.id_area
+    LEFT JOIN dependencias dp ON dp.id_dependencia = ar.id_dependencia
+    WHERE ra.validado != 1
+    LIMIT 5
+    ");
     $data_reconducciones_actividades = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $data_reconducciones_actividades;
 }
