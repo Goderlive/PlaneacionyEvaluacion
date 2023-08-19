@@ -53,11 +53,6 @@ function localidades($locasa, $localidades)
     }
 }
 
-function Imagenes($a){
-    if(file_exists($a)){
-        return $a;
-    }else{
-        return substr($a,3);
 
 function Imagenes($a){
     if(file_exists($a)){
@@ -68,7 +63,6 @@ function Imagenes($a){
 }
 
 function imgsmall($data){
-function imgsmall($data){
     $img = Imagenes($data);
     if($img){
         return '<img src="' . $img . '" alt="evidencia" width="150" height="150">';
@@ -77,7 +71,6 @@ function imgsmall($data){
     }
 }
 
-function imgmd($data){
 function imgmd($data){
     $img = Imagenes($data);
     if($img){
