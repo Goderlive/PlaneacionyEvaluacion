@@ -1,37 +1,46 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.css" rel="stylesheet" />
+
 </head>
+
 <body>
-  
-<table style="width: 100%;">
-  	<tbody>
-	  <tr>
-			<td style="width: 47%; text-align: center">Metas de Actividad Programadas y alcanzadas del Proyecto a cancelar o Reducir.
-				
-			</td>
-			<td style="width: 6%">&nbsp;</td> 
-			<td style="width: 47%; text-align: center">Metas de Actividad Programadas y alcanzadas del Proyecto que se crea o incrementa.
-
-			</td>
-    	</tr>
-  	</tbody>
-</table>
+<?php 
+require_once 'models/conection.php';
 
 
+$sql = "SELECT * FROM actividades ac
+	JOIN lineasactividades la ON la.id_actividad = ac.id_actividad
+	LEFT JOIN programaciones p ON p.id_actividad = ac.id_actividad
+	GROUP BY ac.id_actividad 
+	";
+$stm = $con->query($sql);
+$actividades = $stm->fetchAll(PDO::FETCH_ASSOC);
 
-<tr>
-	<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">Inicial</td>
-	<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">Avance</td>
-	<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">Modificada</td>
-	<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">1</td>
-	<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">2</td>
-	<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">3</td>
-	<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">4</td>
-	<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">4</td>
-	<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">4</td>
-	<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">4</td>
-</tr>
+
+foreach($actividades as $a){
+	print $a['id_actividad']. "|". $a['nombre_actividad'] . "|" . $a['unidad'] . "|";
+	print $a['enero'] . "|" . $a['febrero'] . "|" . $a['marzo'] . "|" . $a['abril'] . "|" . $a['mayo'] . "|" . $a['junio'] . "|" . $a['julio'] . "|" . $a['agosto'] . "|" . $a['septiembre'] . "|" . $a['octubre'] . "|" . $a['noviembre'] . "|" . $a['diciembre'];
+	print '<br>';
+}
+
+
+
+
+?>
+
+
+
+
+
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.js"></script>
 
 </body>
+
 </html>

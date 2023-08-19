@@ -138,26 +138,61 @@ $encabezado_gen_aux_etc = ' &nbsp;
 
 $proginicial_a = explode("|", $reconduccion['programacion_inicial_a']);
 $proginicial_b = explode("|", $reconduccion['programacion_inicial_b']);
-$proginicial_a = $proginicial_a[0] + $proginicial_a[1] + $proginicial_a[2] + $proginicial_a[3]; 
-$proginicial_b = $proginicial_b[0] + $proginicial_b[1] + $proginicial_b[2] + $proginicial_b[3]; 
+
+
+if($reconduccion['tipo_op_a'] == 'Sumable'){
+	$proginicial_a = $proginicial_a[0] + $proginicial_a[1] + $proginicial_a[2] + $proginicial_a[3]; 
+}else{
+	$proginicial_a = $proginicial_a[3]; 
+}
+
+if($reconduccion['tipo_op_b'] == 'Sumable'){
+	$proginicial_b = $proginicial_b[0] + $proginicial_b[1] + $proginicial_b[2] + $proginicial_b[3]; 
+}else{
+	$proginicial_b = $proginicial_b[3]; 
+}
+
+
 
 $id_indicador = $reconduccion['id_indicador'];
-$stm = $con->query("SELECT avance_a, avance_b FROM avances_indicadores WHERE id_indicador = $id_indicador");
+$stm = $con->query("SELECT avance_a, avance_b FROM avances_indicadores WHERE id_indicador = $id_indicador ORDER BY id_avance DESC");
 $avances = $stm->fetchAll(PDO::FETCH_ASSOC);
 
 
 $progfinal_a = explode("|", $reconduccion['programacion_modificada_a']);
 $progfinal_b = explode("|", $reconduccion['programacion_modificada_b']);
-$progfinalfinal_a = $progfinal_a[0] + $progfinal_a[1] + $progfinal_a[2] + $progfinal_a[3]; 
-$progfinalfinal_b = $progfinal_b[0] + $progfinal_b[1] + $progfinal_b[2] + $progfinal_b[3]; 
+if($reconduccion['tipo_op_a'] == 'Sumable'){
+	$progfinalfinal_a = $progfinal_a[0] + $progfinal_a[1] + $progfinal_a[2] + $progfinal_a[3];
+}else{
+	$progfinalfinal_a = $progfinal_a[3];
+}
+if($reconduccion['tipo_op_b'] == 'Sumable'){
+	$progfinalfinal_b = $progfinal_b[0] + $progfinal_b[1] + $progfinal_b[2] + $progfinal_b[3]; 
+}else{
+	$progfinalfinal_b = $progfinal_b[3]; 
+}
 
 
 $av_a = 0;
 $av_b = 0;
-foreach($avances as $a){
-	$av_a += $a['avance_a'];
-	$av_b += $a['avance_b'];
+if($reconduccion['tipo_op_a'] == 'Sumable'){
+	foreach($avances as $a){
+		$av_a += $a['avance_a'];
+	}
+}elseif($reconduccion['tipo_op_a'] == 'Constante'){
+	$av_a = end($avances);
+	$av_a = $av_a['avance_a'];
 }
+if($reconduccion['tipo_op_b'] == 'Sumable'){
+	foreach($avances as $a){
+		$av_b += $a['avance_b'];
+	}
+}elseif($reconduccion['tipo_op_b'] == 'Constante'){
+	$av_b = end($avances);
+	$av_b = $av_b['avance_b'];
+}
+
+
 
 
 $tab1 = ($progfinal_b[0] != 0) ? substr(($progfinal_a[0]/$progfinal_b[0])*100, 0,5) : 0;
@@ -208,7 +243,7 @@ $infoReconduccion = '
 				<td style="width: 9%; text-align: center; border: 1px solid black; border-collapse: collapse;">&nbsp;<br>&nbsp;<br>'.$reconduccion['tipo_op_b'].'</td> 
 				<td style="width: 9%; text-align: center; border: 1px solid black; border-collapse: collapse;">&nbsp;<br>&nbsp;<br>'.$proginicial_b.'</td> 
 				<td style="width: 9%; text-align: center; border: 1px solid black; border-collapse: collapse;">&nbsp;<br>&nbsp;<br>'.$av_b.'</td> 
-				<td style="width: 9%; text-align: center; border: 1px solid black; border-collapse: collapse;">&nbsp;<br>&nbsp;<br>'.$progfinalfinal_a.'</td> 
+				<td style="width: 9%; text-align: center; border: 1px solid black; border-collapse: collapse;">&nbsp;<br>&nbsp;<br>'.$progfinalfinal_b.'</td> 
 				<td style="width: 7%; text-align: center; border: 1px solid black; border-collapse: collapse;">&nbsp;<br>&nbsp;<br>'.$progfinal_b[0].'</td> 
 				<td style="width: 7%; text-align: center; border: 1px solid black; border-collapse: collapse;">&nbsp;<br>&nbsp;<br>'.$progfinal_b[1].'</td> 
 				<td style="width: 7%; text-align: center; border: 1px solid black; border-collapse: collapse;">&nbsp;<br>&nbsp;<br>'.$progfinal_b[2].'</td> 

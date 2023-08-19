@@ -9,6 +9,42 @@ function NombreArea($con, $id_area){
 }
 
 
+function PendientesSegunPermisos($con, $id_area, $permisos, $mes){
+    if($permisos['rol'] == 1){
+        $sentencia = "SELECT COUNT(*) as result FROM avances av
+        JOIN actividades ac ON ac.id_actividad = av.id_actividad
+        WHERE ac.id_area = $id_area AND av.mes = $mes AND av.validado = 1 AND av.validado_2 = 0";
+    }
+    if($permisos['rol'] == 2){
+        $sentencia = "SELECT COUNT(*) as result FROM avances av
+        JOIN actividades ac ON ac.id_actividad = av.id_actividad
+        WHERE ac.id_area = $id_area AND av.mes = $mes AND av.validado_2 = 1 AND av.validado = 0";
+    }
+
+    return Fetch($con, $sentencia)['result'];
+}
+
+
+function SinValidar($con, $id_area, $mes, $permisos){
+    if($permisos['rol'] == 1){
+        $sentencia = "SELECT COUNT(*) AS total FROM avances av
+        JOIN actividades ac ON ac.id_actividad = av.id_actividad
+        LEFT JOIN areas ar ON ar.id_area = ac.id_area
+        WHERE ar.id_area = $id_area AND av.mes = $mes AND av.validado = 0
+        ";
+    }
+    if($permisos['rol'] == 2){
+        $sentencia = "SELECT COUNT(*) AS total FROM avances av
+        JOIN actividades ac ON ac.id_actividad = av.id_actividad
+        LEFT JOIN areas ar ON ar.id_area = ac.id_area
+        WHERE ar.id_area = $id_area AND av.mes = $mes AND av.validado_2 = 0
+        ";
+    }
+
+    return Fetch($con, $sentencia)['total'];
+}
+
+
 function TraeDependenciasController($con, $permisos){
     if($permisos['nivel'] == 1 ){
         $dependencias = TraeTodasDependencias($con);
@@ -16,8 +52,13 @@ function TraeDependenciasController($con, $permisos){
     if($permisos['nivel'] == 2){
         $dependencias = TraeDependencias($con, $permisos['id_usuario']);
     }
+    if($permisos['rol'] == 2){
+        $dependencias = TraeDependenciasPDM($con, $permisos);
+    }
+    
     return $dependencias;
 }
+
 
 function MenuMes($el_mes, $id_area){
     $item = '';
@@ -245,11 +286,11 @@ function nombremes($mes){
 
 function ProcSumaProgramadosmesymes($con, $mes, $id_actividad){
     $programacion = SumaProgramadosmesymes($con, $id_actividad);
-    $meses = array("enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre");
+    $meses = array("","enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre");
     $suma = 0;
-    $a = 0;
+    $a = 1;
     do {
-        $suma = $programacion[$meses[$a]];
+        $suma += $programacion[$meses[$a]];
         $a +=1;
     } while ($a <= $mes);
     return $suma;

@@ -16,7 +16,7 @@ function TieneDirector($con, $id_dependencia){
 function CuentaAvances($con, $id_dependencia, $trimestre){
     $stm = $con->query("SELECT COUNT(ai.id_avance) FROM avances_indicadores ai
     LEFT JOIN indicadores_uso iu ON iu.id = ai.id_indicador
-    WHERE iu.id_dependencia = $id_dependencia AND ai.trimestre = $trimestre");
+    WHERE iu.id_dependencia = $id_dependencia AND ai.trimestre = $trimestre AND validado = 1");
     $c_avance = $stm->fetch(PDO::FETCH_ASSOC);
     $c_avance = ($c_avance['COUNT(ai.id_avance)']) ? $c_avance['COUNT(ai.id_avance)'] : NULL;
 

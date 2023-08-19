@@ -48,7 +48,9 @@ if($num_trimestre == 2){
 	JOIN programas_presupuestarios pp ON pp.id_programa = py.id_programa
 	JOIN dependencias_generales dg ON iu.id_dep_general = dg.id_dependencia
 	JOIN dependencias_auxiliares da ON da.id_dependencia_auxiliar = iu.id_dep_aux
-	WHERE dp.id_dependencia = $id_dependencia AND (iu.periodicidad = 'Semetral')" );
+	WHERE dp.id_dependencia = $id_dependencia AND (iu.periodicidad = 'Mensual' OR iu.periodicidad = 'Trimestral' OR iu.periodicidad = 'Semestral')
+	GROUP BY iu.id
+	" );
 }
 if($num_trimestre == 4){
 	$stm = $con->query("SELECT * FROM indicadores_uso iu
@@ -57,7 +59,9 @@ if($num_trimestre == 4){
 	JOIN programas_presupuestarios pp ON pp.id_programa = py.id_programa
 	JOIN dependencias_generales dg ON iu.id_dep_general = dg.id_dependencia
 	JOIN dependencias_auxiliares da ON da.id_dependencia_auxiliar = iu.id_dep_aux
-	WHERE dp.id_dependencia = $id_dependencia" );
+	WHERE dp.id_dependencia = $id_dependencia AND (iu.periodicidad = 'Mensual' OR iu.periodicidad = 'Trimestral' OR iu.periodicidad = 'Semestral' OR iu.periodicidad = 'Anual')
+	GROUP BY iu.id
+	" );
 }
 $indicadores = $stm->fetchAll(PDO::FETCH_ASSOC);  // 
 
@@ -128,11 +132,19 @@ function BuscaAvances($con, $id_indicador, $num_trimestre){
 	return $avances;
 }
 
+
+
 function BuscaAvancesAcumulados($con, $id_indicador, $trimestre){
 	$stm = $con->query("SELECT SUM(avance_a), SUM(avance_b) FROM avances_indicadores
 	WHERE id_indicador = $id_indicador AND trimestre <= $trimestre AND validado = 1");
 	$avances = $stm->fetch();
 	return $avances;
+
+}
+
+
+function BuscaAvancestipo($con, $id_indicador, $trimestre){
+	print "";
 }
 
 
@@ -145,12 +157,22 @@ function SumadorAcumulado($programacion, $trimestre){
 
 $trimestreNombre = TrimestreNombreCompleto($trimestre);
 
+
 foreach($indicadores as $indica): // Aqui deberia comenzar el foreach /////////////////////////////////////////////////////////
+
 // add a page
 $pdf->AddPage();
 
-$metaAnual_a = intval($indica['at1']) + intval($indica['at2']) + intval($indica['at3']) + intval($indica['at4']); 
-$metaAnual_b = intval($indica['bt1']) + intval($indica['bt2']) + intval($indica['bt3']) + intval($indica['bt4']); 
+if($indica['tipo_op_a'] == 'Sumable'){
+	$metaAnual_a = intval($indica['at1']) + intval($indica['at2']) + intval($indica['at3']) + intval($indica['at4']);
+}else{
+	$metaAnual_a = intval($indica['at1']);
+}
+if($indica['tipo_op_b'] == 'Sumable'){
+	$metaAnual_b = intval($indica['bt1']) + intval($indica['bt2']) + intval($indica['bt3']) + intval($indica['bt4']);
+}else{
+	$metaAnual_b = intval($indica['bt1']);  
+}
 
 
 $membretes = '
@@ -256,11 +278,26 @@ $programacion_trimestre_b = ($num_trimestre == 1) ? $indica['bt1'] : (($num_trim
 
 $avance = BuscaAvances($con, $id_indicador, $num_trimestre);
 
-$total_acumulado_a = ($num_trimestre == 1) ? intval($indica['at1']) : (($num_trimestre == 2) ? intval($indica['at1']) + intval($indica['at2']) : (($num_trimestre == 3) ? intval($indica['at1']) + intval($indica['at2']) + intval($indica['at3']) : intval($indica['at1']) + intval($indica['at2']) + intval($indica['at3']) + intval($indica['at4'])));
-$total_acumulado_b = ($num_trimestre == 1) ? intval($indica['bt1']) : (($num_trimestre == 2) ? intval($indica['bt1']) + intval($indica['bt2']) : (($num_trimestre == 3) ? intval($indica['bt1']) + intval($indica['bt2']) + intval($indica['bt3']) : intval($indica['bt1']) + intval($indica['bt2']) + intval($indica['bt3']) + intval($indica['bt4'])));
+if($indica['tipo_op_a'] == 'Sumable'){
+	$total_acumulado_a = ($num_trimestre == 1) ? intval($indica['at1']) : (($num_trimestre == 2) ? intval($indica['at1']) + intval($indica['at2']) : (($num_trimestre == 3) ? intval($indica['at1']) + intval($indica['at2']) + intval($indica['at3']) : intval($indica['at1']) + intval($indica['at2']) + intval($indica['at3']) + intval($indica['at4'])));
+}else{
+	$total_acumulado_a = ($num_trimestre == 1) ? intval($indica['at1']) : (($num_trimestre == 2) ? intval($indica['at2']) : (($num_trimestre == 3) ? intval($indica['at3']) : intval($indica['at4'])));
+}
+if($indica['tipo_op_b'] == 'Sumable'){
+	$total_acumulado_b = ($num_trimestre == 1) ? intval($indica['bt1']) : (($num_trimestre == 2) ? intval($indica['bt1']) + intval($indica['bt2']) : (($num_trimestre == 3) ? intval($indica['bt1']) + intval($indica['bt2']) + intval($indica['bt3']) : intval($indica['bt1']) + intval($indica['bt2']) + intval($indica['bt3']) + intval($indica['bt4'])));
+}else{
+	$total_acumulado_b = ($num_trimestre == 1) ? intval($indica['bt1']) : (($num_trimestre == 2) ? intval($indica['bt2']) : (($num_trimestre == 3) ? intval($indica['bt3']) : intval($indica['bt4'])));
+}
 
 
 $alcanzadoAcumulado = BuscaAvancesAcumulados($con, $id_indicador, $num_trimestre);
+
+if($indica['tipo_op_a'] != 'Sumable'){
+	$alcanzadoAcumulado[0] = $avance['avance_a'];
+}
+if($indica['tipo_op_b'] != 'Sumable'){
+	$alcanzadoAcumulado[1] = $avance['avance_b'];
+}
 
 $porcentajeAvance = $metaAnual_a != 0 ? substr(($programacion_trimestre_a / $metaAnual_a) *100, 0, 5) : "N/A";
 $porcentajealcanzado = $programacion_trimestre_a != 0 ? substr(($avance['avance_a'] / $programacion_trimestre_a) *100 , 0, 5) : "N/A";
@@ -340,7 +377,7 @@ if ($programacion_trimestre_b != 0 && $avance['avance_b'] != 0) {
     $eficienciatrimetral = "N/A";
 }
 
-if(($eficienciatrimetral > 90) && ($eficienciatrimetral < 110)){
+if(($eficienciatrimetral > 90) && ($eficienciatrimetral < 110) || $eficienciatrimetral == "N/A"){
 	$color = "color:green;";
 	$semaforotrimestral = "Aceptable";
 }else{
@@ -353,7 +390,8 @@ if ($total_acumulado_b != 0 && $alcanzadoAcumulado[1] != 0 && $total_acumulado_a
 } else {
     $eficienciaanual = "N/A";
 }
-if(($eficienciaanual > 90) && ($eficienciaanual < 110)){
+
+if(($eficienciaanual > 90) && ($eficienciaanual < 110) || $eficienciaanual == "N/A"){
 	$colora = "color:green;";
 	$semaforoanual = "Aceptable";	
 }else{

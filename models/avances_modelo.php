@@ -102,6 +102,8 @@ if($_POST){
         $sqlr = $con->prepare($sql);
         $sqlr->execute(array($data['usuario'], $data['id_avance']));
         $tipo = "indicadores";
+        header("Location: ../revisa_avances.php?type=indicadores");
+
     }
 
     if(isset($_POST['cancela_indicador'])){

@@ -6579,3 +6579,9 @@ INSERT INTO udmed_pdm (nombre) VALUES
 ("Turista/s"),
 ("Unidad/es económica/s"),
 ("Visitante/s");
+
+DROP TABLE IF EXISTS cuentaactividades;
+CREATE TABLE cuentaactividades(
+  id_no_actividad INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  id_actividad INT UNIQUE
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;

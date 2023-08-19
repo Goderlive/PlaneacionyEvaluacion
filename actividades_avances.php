@@ -179,12 +179,65 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
 
             <?php if (isset($_POST['id_dependencia'])) :  //Aqui validamos el area
             ?>
+                <?php $meses = array("Sin Mes", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"); ?>
                 <?php $id_dependencia = $_POST['id_dependencia'] ?>
                 <?php $areas = TraerAreas($con, $id_dependencia) ?>
                 <div class="grid grid-cols-4">
                     <?php foreach ($areas as $a) : ?>
-                        <div class="items-start p-4 ml-2 mr-2 mb-4 text-center  bg-white rounded-lg border border-gray-400 shadow-md dark:bg-gray-800 dark:border-gray-700">
+                        <?php $totalActividades = CuentaActividadesArea($con, $a['id_area']); ?>
+                        <div class="items-start p-4 ml-2 mr-2 mb-4 bg-white rounded-lg border border-gray-400 shadow-md dark:bg-gray-800 dark:border-gray-700">
                             <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"> <?= $a['nombre_area'] ?> </h5>
+                            <h5 class="mb-2 tracking-tight text-gray-900 dark:text-white"> <?= $a['clave_dependencia'] . "-" . $a['clave_dependencia_auxiliar'] . '-' . $a['codigo_proyecto'] ?> </h5>
+                            <h5 class="mb-2 tracking-tight text-gray-900 dark:text-white"> <?= $totalActividades ?> Actividades </h5>
+                            <div class="flex mt-1 space-x-3">
+                                <?php if(date('m') >= 3): ?>
+                                    <div id="toast-interactive" class="p-1 text-gray-500 bg-white rounded-lg shadow dark:bg-gray-800 dark:text-gray-400" role="alert">
+                                        <span class="mb-1 text-sm font-semibold text-gray-900 dark:text-white"><?= $meses[intval(date('m'))-2] ?></span>
+                                        <br>
+                                        <?php $validadas = ActividadesValidadas($con, $a['id_area'], date('m')-2) ?>
+                                        <?php if($validadas == $totalActividades): ?>
+                                            <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-white bg-green-400 rounded-lg">
+                                                OK!
+                                            </div>
+                                        <?php else: ?>
+                                            
+                                            <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-white bg-red-600 rounded-lg">
+                                                <?php $sinvalidar = SinValidar($con, $a['id_area'], date('m')-3, $permisos) ?>
+                                                <?= $sinvalidar ?>
+                                            </div>
+                                            <br>
+                                            <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-white bg-yellow-300 rounded-lg">
+                                                <?php $pendientes = PendientesSegunPermisos($con, $a['id_area'], $permisos, date('m')-3) ?>
+                                                <?= $pendientes ?>
+                                            </div>
+                                            <br>
+                                            <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-white bg-gray-700 rounded-lg">
+                                                <?php //deberia ser una resta simple de las anteriores  ?>
+                                                <?= $totalActividades - $sinvalidar - $pendientes ?>
+                                            </div>
+                                        <?php endif ?>
+                                    </div>
+                                <?php endif ?>
+                                <?php if(date('m') >= 2): ?>
+                                    <div id="toast-interactive" class="p-1 text-gray-500 bg-white rounded-lg shadow dark:bg-gray-800 dark:text-gray-400" role="alert">
+                                        <span class="mb-1 text-sm font-semibold text-gray-900 dark:text-white"><?= $meses[intval(date('m'))-1] ?></span>
+                                        <br>
+                                        <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-white bg-red-300 rounded-lg">
+                                            3
+                                        </div>
+                                    </div>
+                                <?php endif ?>
+                                <div id="toast-interactive" class="p-1 text-gray-500 bg-white rounded-lg shadow dark:bg-gray-800 dark:text-gray-400" role="alert">
+                                    <span class="mb-1 text-sm font-semibold text-gray-900 dark:text-white"><?= $meses[intval(date('m'))] ?></span>
+                                    <br>
+                                    <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-white bg-red-300 rounded-lg">
+                                        3
+                                    </div>
+                                </div>
+                                
+
+
+                            </div>
 
                             <?php $pendientesareaspbrm = Pendientesareaspbrm($con, $a['id_area']) ?>
                             <?php $pendientesareaspdm = Pendientesareaspdm($con, $a['id_area']) ?>
@@ -249,7 +302,7 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                                     Avance Programado
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Avance Acumulado
+                                    Avance Reportado
                                 </th>
                                 <th scope="col" class="px-6 py-3">
                                     Programado <?= $meses[$el_mes] ?>
@@ -398,7 +451,7 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                                                             } ?>
                                                         </td>
                                                         <td scope="row" class="py-2 px-6" align="center" valign="top">
-                                                            <?php if ($avanceMensual['beneficiarios']):
+                                                            <?php if ($avanceMensual['beneficiarios']) :
                                                                 print $avanceMensual['beneficiarios'] . ' ' . $avanceMensual['udmed']; ?>
                                                             <?php else : ?>
                                                                 <b> No selecciono beneficiarios </b>
@@ -418,7 +471,7 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                             <tr>
                                                 <td>
-                                                    Descripcion de la Evidencia: <?= $avanceMensual['descripcion_evidencia'] ?> <br>
+                                                    Descripcion de la Actividad: <?= $avanceMensual['descripcion_evidencia'] ?> <br>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -432,13 +485,13 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <?php if($el_mes % 3 == 0 ): ?>
-                                                        <?php if($avanceMensual['actividad_trimestral']): ?>
+                                                    <?php if ($el_mes % 3 == 0) : ?>
+                                                        <?php if ($avanceMensual['actividad_trimestral']) : ?>
                                                             <div class="scrollable-content">
                                                                 <textarea style="width: 100%;" readonly> <?= $avanceMensual['actividad_trimestral'] ?> </textarea>
                                                             </div>
-                                                            <?php else: ?>
-                                                                <textarea style="width: 100%;" readonly> Sin Descripción trimestral </textarea>
+                                                        <?php else : ?>
+                                                            <textarea style="width: 100%;" readonly> Sin Descripción trimestral </textarea>
                                                         <?php endif ?>
                                                     <?php endif ?>
                                                 </td>
@@ -463,10 +516,10 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                                         <?php endif ?>
                                         <?php if ($avanceMensual['validado'] == 1 & $avanceMensual['validado_2'] == 1) : ?>
                                             <form action="models/avances_modelo.php" method="post">
-                                                <input type="hidden" name="id_avance" value="<?= $avanceMensual['id_avance']?>">
-                                                <input type="hidden" name="usuario" value="<?= $_SESSION['id_usuario']?>">
-                                                <input type="hidden" name="id_area" value="<?= $m['id_area']?>">
-                                                <input type="hidden" name="mes" value="<?= $el_mes?>">
+                                                <input type="hidden" name="id_avance" value="<?= $avanceMensual['id_avance'] ?>">
+                                                <input type="hidden" name="usuario" value="<?= $_SESSION['id_usuario'] ?>">
+                                                <input type="hidden" name="id_area" value="<?= $m['id_area'] ?>">
+                                                <input type="hidden" name="mes" value="<?= $el_mes ?>">
                                                 <button type="submit" name="cancela_actividad" value="1" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Eliminar Avance Aprobado</button>
                                             </form>
                                         <?php endif ?>
@@ -475,8 +528,8 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                                         function abrirVentana<?= $avanceMensual['id_actividad'] ?>() {
                                             if (file_exists('<?= $avanceMensual['path_evidenia_evidencia'] ?>')) {
                                                 window.open('<?= $avanceMensual['path_evidenia_evidencia'] ?>', '_blank', 'width=1000,height=700');
-                                            }else{
-                                                window.open('<?= substr($avanceMensual['path_evidenia_evidencia'],3) ?>', '_blank', 'width=1000,height=700');
+                                            } else {
+                                                window.open('<?= substr($avanceMensual['path_evidenia_evidencia'], 3) ?>', '_blank', 'width=1000,height=700');
                                             }
                                         }
                                     </script>
