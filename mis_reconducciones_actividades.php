@@ -10,8 +10,15 @@ if (!$_SESSION['sistema'] == "pbrm") {
     require_once 'Controllers/reconducciona_Controlador.php';
     include 'Controllers/breadcrumbs.php';
 }
-if ($permisos['id_dependencia'] != NULL) {
-    $dep = $permisos['id_dependencia'];
+
+if(isset($_POST['id_dependencia'])){
+    $dep = $_POST['id_dependencia'];
+}
+
+if ($permisos['nivel'] < 5) {
+    if($permisos['nivel'] == 4){
+        $dep = $permisos['id_dependencia'];
+    }
 } else {
     print " Tu cuenta no permite realizar esta acción";
     die();
@@ -47,8 +54,6 @@ $thismes = ceil(date('m'));
         <h3 class="mb-2 center text-2xl font-bold text-gray-900 dark:text-white">Reconducciones de <b>Actividades</b></h3>
         <br>
 
-        <?php
-        if (!$_POST) : ?>
             <?php if (($rec_pendientes = TraeReconduccionesporvalidar($con, $dep)) || ($rec_validadas = TraeReconduccionesValidadas($con, $dep))) : ?>
                 <?php if($rec_pendientes): ?>
                     <h5 class="text-xl font-bold dark:text-white my-3">Reconducciones Pendientes de Validación</h5>
@@ -242,7 +247,6 @@ $thismes = ceil(date('m'));
                 <?php endforeach ?>
 
             <?php endif ?>
-        <?php endif ?> <!-- Aqui terminamos el area de reconducciones realizadas -->
 
 
 

@@ -14,6 +14,14 @@ function TraeReconduccionesporvalidar($con, $id_area){
 }
 
 
+
+function Traedepndencias($con){
+    $stm = $con->query("SELECT * FROM dependencias");
+    $dependencias = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $dependencias;
+}
+
+
 function TraeReconduccionesValidadas($con, $id_dependencia){
     $stm = $con->query(
         "SELECT ra.* FROM reconducciones_atividades ra 
