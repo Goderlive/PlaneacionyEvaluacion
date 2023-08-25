@@ -129,8 +129,6 @@ if (isset($_POST['actualizar']) && $_POST['actualizar'] == "actualizar") {
 
                 if (move_uploaded_file($_FILES['evidencia_de_evidencia']['tmp_name'], $full_evidencia_evidencia)) {
                     $path_evidencia_evidencia = $full_evidencia_evidencia;
-                    print '<pre>';
-                    var_dump($path_evidencia_evidencia);
                 }
             }
         }
