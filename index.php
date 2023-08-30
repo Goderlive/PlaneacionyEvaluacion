@@ -14,12 +14,29 @@ include 'head.php';
 <html lang="es">
 
 <body>
-
+    <?php $meses = array("Sin Mes", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"); ?>
     <div class="container text-center mx-auto">
         <br>
         <h3 class="font-bold text-4xl text-gray-800 border-b-3 border-gray-100 p-2 mb-2">Bienvenido(a) <?= $user['nombre'] . " " . $user['apellidos'] ?></h3>
         <br>
 
+        <!-- Aviso de impresion -->
+        <div id="alert-1" class="flex items-center p-4 mb-4 text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400" role="alert">
+            <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+            </svg>
+            <span class="sr-only">Info</span>
+            <div class="ml-3 text-sm font-medium">
+                Felicidades! Ya puedes imprimir tu Formato Único Trimestral correspondiente al 3er Trimestre. Puedes imprimirlo <a href="#" class="font-semibold underline hover:no-underline">AQUI</a> 
+            </div>
+            <button type="button" class="ml-auto -mx-1.5 -my-1.5 bg-blue-50 text-blue-500 rounded-lg focus:ring-2 focus:ring-blue-400 p-1.5 hover:bg-blue-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-blue-400 dark:hover:bg-gray-700" data-dismiss-target="#alert-1" aria-label="Close">
+                <span class="sr-only">Close</span>
+                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                </svg>
+            </button>
+        </div>
+        <!-- Finaliza Aviso de impresion -->
 
         <section class="bg-white dark:bg-gray-900">
             <div class="mx-auto">
@@ -29,7 +46,6 @@ include 'head.php';
                             Actividades
                         </a>
                         <?php if ($permisos['nivel'] == 1 || $permisos['nivel'] == 2) : ?>
-                            <?php $meses = array("Sin Mes", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"); ?>
                             <?php // Primero traeremos 5 avances por validar  
                             ?>
                             <?php if ($avances = VerificaAvancesActividades($con)) : ?>
@@ -119,7 +135,67 @@ include 'head.php';
                             <?php endif ?>
                         <?php endif ?>
 
-                        <?php if ($permisos['nivel'] <= 4) : ?>
+                        <?php if ($permisos['nivel'] == 4) : ?>
+
+                            <?php if ($modificaciones = VerificaModificacionesEnlaces($con, $permisos['id_dependencia'])) : ?>
+                                <?php foreach ($modificaciones as $m) : ?>
+                                    <div id="alert-additional-content-1" class="p-4 mb-4 text-purple-800 border border-purple-300 rounded-lg bg-purple-50 dark:bg-gray-800 dark:text-purple-400 dark:border-purple-800" role="alert">
+                                        <div class="flex items-center">
+                                            <svg class="flex-shrink-0 w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                                            </svg>
+                                            <span class="sr-only">Info</span>
+                                            <h3 class="text-lg font-medium text-left"> <?= $m['nombre_dependencia'] . " - " . $m['nombre_area'] ?> </h3>
+                                        </div>
+                                        <div class="mt-2 mb-4 text-sm text-left">
+                                            <?= $meses[$m['mes']] . " - " . $m['nombre_actividad'] ?>
+                                        </div>
+                                        <div class="flex">
+                                            <form action="reportes.php" method="post">
+                                                <input type="hidden" name="mes" value="<?= $m['mes'] ?>">
+                                                <button type="submit" name="id_area" value="<?= $m['id_area'] ?>" class="text-white bg-purple-800 hover:bg-purple-900 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-xs px-3 py-1.5 mr-2 text-center inline-flex items-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800">
+                                                    <svg class="-ml-0.5 mr-2 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 14">
+                                                        <path d="M10 0C4.612 0 0 5.336 0 7c0 1.742 3.546 7 10 7 6.454 0 10-5.258 10-7 0-1.664-4.612-7-10-7Zm0 10a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z" />
+                                                    </svg>
+                                                    Ver
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                <?php endforeach ?>
+                            <?php endif ?>
+
+                        <?php endif ?>
+
+                        <?php if ($permisos['nivel'] == 5) : ?>
+
+                            <?php if ($modificaciones = VerificaModificacionesEnlaces5($con, $permisos['id_area'])) : ?>
+                                <?php foreach ($modificaciones as $m) : ?>
+                                    <div id="alert-additional-content-1" class="p-4 mb-4 text-purple-800 border border-purple-300 rounded-lg bg-purple-50 dark:bg-gray-800 dark:text-purple-400 dark:border-purple-800" role="alert">
+                                        <div class="flex items-center">
+                                            <svg class="flex-shrink-0 w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                                            </svg>
+                                            <span class="sr-only">Info</span>
+                                            <h3 class="text-lg font-medium text-left"> <?= $m['nombre_dependencia'] . " - " . $m['nombre_area'] ?> </h3>
+                                        </div>
+                                        <div class="mt-2 mb-4 text-sm text-left">
+                                            <?= $meses[$m['mes']] . " - " . $m['nombre_actividad'] ?>
+                                        </div>
+                                        <div class="flex">
+                                            <form action="reportes.php" method="post">
+                                                <input type="hidden" name="mes" value="<?= $m['mes'] ?>">
+                                                <button type="submit" name="id_area" value="<?= $m['id_area'] ?>" class="text-white bg-purple-800 hover:bg-purple-900 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-xs px-3 py-1.5 mr-2 text-center inline-flex items-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800">
+                                                    <svg class="-ml-0.5 mr-2 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 14">
+                                                        <path d="M10 0C4.612 0 0 5.336 0 7c0 1.742 3.546 7 10 7 6.454 0 10-5.258 10-7 0-1.664-4.612-7-10-7Zm0 10a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z" />
+                                                    </svg>
+                                                    Ver
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                <?php endforeach ?>
+                            <?php endif ?>
 
                         <?php endif ?>
 

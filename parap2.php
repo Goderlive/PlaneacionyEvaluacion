@@ -1,79 +1,111 @@
 <?php
 require_once 'models/conection.php';
-// Consulta SQL para obtener las etiquetas desde la base de datos
-$query = "SELECT nombre_dependencia FROM dependencias";
-$stmt = $con->prepare($query);
-$stmt->execute();
-$labels = $stmt->fetchAll(PDO::FETCH_COLUMN);
+    $sql = "SELECT * FROM pdm_objetivos ";
+    $stm = $con->query($sql);
+    $objetivos = $stm->fetchAll(PDO::FETCH_ASSOC);
+    
+    function estrategias($con, $id){
+        $sql = "SELECT * FROM pdm_estrategias WHERE id_objetivo = $id";
+        $stm = $con->query($sql);
+        return $estrategias = $stm->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    function lineas($con, $id){    
+        $sql = "SELECT * FROM pdm_lineas WHERE id_estrategia = $id";
+        $stm = $con->query($sql);
+        return $lineas = $stm->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    $prin = array();
+    
+    foreach ($objetivos as $o) {
+        $objetivo = array(
+            "name" => $o['nombre_objetivo'],
+            "id" => $o['id_objetivo'],
+            "estrategias" => array()
+        );
+    
+        $estrategias = estrategias($con, $o['id_objetivo']);
+        foreach ($estrategias as $estrategia) {
+            $estrategiaItem = array(
+                "name" => $estrategia['nombre_estrategia'],
+                "id" => $estrategia['id_estrategia'],
+                "lineas" => array()
+            );
+    
+            $lineas = lineas($con, $estrategia['id_estrategia']);
+            foreach ($lineas as $linea) {
+                $lineaItem = array(
+                    "name" => $linea['nombre_linea'],
+                    "id" => "linea-" . $linea['id_linea']
+                );
+                $estrategiaItem['lineas'][] = $lineaItem;
+            }
+    
+            $objetivo['estrategias'][] = $estrategiaItem;
+        }
+    
+        $prin[] = $objetivo;
+    }
+    ?>
 
-$stm = $con->query("SELECT id_dependencia FROM dependencias");
-$dependencias = $stm->fetchAll(PDO::FETCH_ASSOC);
-
-function avances($con, $id_dependencia){
-	$sentencia1 = "SELECT ac.* FROM actividades ac
-	JOIN programaciones pr ON pr.id_actividad = ac.id_actividad 
-	LEFT JOIN areas ar ON ar.id_area = ac.id_area
-	LEFT JOIN dependencias dp ON dp.id_dependencia = ar.id_dependencia
-	WHERE dp.id_dependencia = $id_dependencia
-	";
-	$stm = $con->query($sentencia1);
-	$actividades = $stm->fetchAll(PDO::FETCH_ASSOC);
-
-	
-
-
-}
-
-foreach($dependencias as $d):
-	$avance = avances($con, $d['id_dependencia']);
-
-endforeach;
-
-// Cerrar la conexión
-$conn = null;
-
-$datos = [12, 19, 3, 5, 2, 19, 3, 5, 2, 19, 3, 5, 2, 19, 3, 5, 2]; // Reemplaza esto con tu propio array de datos
-
-
-$datos_json = json_encode($datos);
-
-?>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Gráfico de Barras con Chart.js y Datos desde MySQL</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+var subjectObject = <?php echo json_encode($prin, JSON_PRETTY_PRINT); ?>;
+
+window.onload = function() {
+  var subjectSel = document.getElementById("subject");
+  var topicSel = document.getElementById("topic");
+  var chapterSel = document.getElementById("chapter");
+
+  for (var x in subjectObject) {
+    console.log(x)
+    subjectSel.options[subjectSel.options.length] = new Option(x, x);
+  }
+  subjectSel.onchange = function() {
+    //empty Chapters- and Topics- dropdowns
+    chapterSel.length = 1;
+    topicSel.length = 1;
+    //display correct values
+    for (var y in subjectObject[this.value]) {
+      topicSel.options[topicSel.options.length] = new Option(y, y);
+    }
+  }
+  topicSel.onchange = function() {
+    //empty Chapters dropdown
+    chapterSel.length = 1;
+    //display correct values
+    var z = subjectObject[subjectSel.value][this.value];
+    for (var i = 0; i < z.length; i++) {
+      chapterSel.options[chapterSel.options.length] = new Option(z[i], z[i]);
+    }
+  }
+}
+</script>
+</head>   
 <body>
-    <canvas id="myChart"></canvas>
 
-    <script>
-		var datos = <?php echo $datos_json; ?>; // Convertir datos JSON de PHP a JavaScript
+<h1>Cascading Dropdown Example</h1>
 
-        var labels = <?php echo json_encode($labels); ?>; // Convertir los datos PHP a JavaScript
+<form name="form1" id="form1" action="/action_page.php">
+Subjects: <select name="subject" id="subject">
+    <option value="" selected="selected">Select subject</option>
+  </select>
+  <br><br>
+Topics: <select name="topic" id="topic">
+    <option value="" selected="selected">Please select subject first</option>
+  </select>
+  <br><br>
+Chapters: <select name="chapter" id="chapter">
+    <option value="" selected="selected">Please select topic first</option>
+  </select>
+  <br><br>
+  <input type="submit" value="Submit">  
+</form>
 
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels, // Usar las etiquetas obtenidas desde MySQL
-                datasets: [{
-                    label: 'Ventas',
-                    data: datos, // Usar los datos desde el array en PHP
-                    backgroundColor: 'rgba(54, 162, 235, 0.6)', // Azul más oscuro
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    </script>
 </body>
 </html>

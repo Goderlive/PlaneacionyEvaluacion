@@ -62,6 +62,32 @@ function VerificaModificaciones($con){
     return $modificaciones;
 }
 
+
+function VerificaModificacionesEnlaces($con, $id_dependencia){
+    $stm = $con->query("SELECT * FROM modificaciones_actividades ma
+    JOIN avances av ON av.id_avance = ma.id_avance
+    JOIN actividades ac ON ac.id_actividad = av.id_actividad
+    LEFT JOIN areas ar ON ar.id_area = ac.id_area
+    LEFT JOIN dependencias dp ON dp.id_dependencia = ar.id_dependencia
+    WHERE ma.atendida = 0 AND ar.id_dependencia = $id_dependencia
+    LIMIT 5");
+    $modificaciones = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $modificaciones;
+}
+
+
+function VerificaModificacionesEnlaces5($con, $id_area){
+    $stm = $con->query("SELECT * FROM modificaciones_actividades ma
+    JOIN avances av ON av.id_avance = ma.id_avance
+    JOIN actividades ac ON ac.id_actividad = av.id_actividad
+    LEFT JOIN areas ar ON ar.id_area = ac.id_area
+    LEFT JOIN dependencias dp ON dp.id_dependencia = ar.id_dependencia
+    WHERE ma.atendida = 0 AND ac.id_area = $id_area
+    LIMIT 5");
+    $modificaciones = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $modificaciones;
+}
+
 function VerificaReconduccionesActividades($con){
     $stm = $con->query("SELECT * FROM reconducciones_atividades ra 
     LEFT JOIN areas ar ON ar.id_area = ra.id_area
