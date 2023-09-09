@@ -28,47 +28,320 @@ if ($_SESSION['sistema'] == 'pbrm') {
             <br>
             <?= breadcrumbs(array("Inicio" => "index.php", "Actividades" => "")) ?>
             <br>
+            <?php if ($_GET) : ?>
+                <?php if (isset($_GET['tipo']) && $_GET['tipo'] == 'b') : ?>
+                    <?php $foda = traeFoda($con, $_GET['id_area']) ?>
+                    <div class="bg-blue-50 rounded-lg py-2 my-2 px-2">
+                        <form action="" method="POST">
+                            <input type="hidden" name="id_area" value="<?= $_GET['id_area'] ?>">
+                            <h4 class="text-2xl font-bold dark:text-white">Diagnóstico de Programa Presupuestario elaborado usando Analisis FODA:</h4>
+                            <?php $programa = traePrograma($con, $_GET['id_area']) ?>
+                            <label for="fortalezas" class="mt-4 block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fortalezas (Internas)</label>
+                            <textarea id="fortalezas" name="fortalezas" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"><?= ($foda) ? $foda['diagnostico_fortaleza'] : '' ?></textarea>
 
+                            <label for="oportunidades" class="mt-4 block mb-2 text-sm font-medium text-gray-900 dark:text-white">Oportunidades (Externas)</label>
+                            <textarea id="oportunidades" name="oportunidades" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"><?= ($foda) ? $foda['diagnostico_oportunidad'] : '' ?></textarea>
 
-            <?php if ($_POST) : ?>
-                <?php if (isset($_POST['b'])) : ?>
+                            <label for="debilidades" class="mt-4 block mb-2 text-sm font-medium text-gray-900 dark:text-white">Debilidades (Internas)</label>
+                            <textarea id="debilidades" name="debilidades" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"><?= ($foda) ? $foda['diagnostico_debilidad'] : '' ?></textarea>
 
-                    <?php $programa = traePrograma($con, $_POST['id_area']) ?>
-                    <form action="" method="post">
-                        <label for="fortalezas"  class="mt-4 block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fortalezas (Internas)</label>
-                        <textarea id="fortalezas" name="fortalezas" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
-                    
-                        <label for="oportunidades"  class="mt-4 block mb-2 text-sm font-medium text-gray-900 dark:text-white">Oportunidades (Externas)</label>
-                        <textarea id="oportunidades" name="oportunidades" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
-                    
-                        <label for="debilidades"  class="mt-4 block mb-2 text-sm font-medium text-gray-900 dark:text-white">Debilidades (Internas)</label>
-                        <textarea id="debilidades" name="debilidades" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
-                    
-                        <label for="amenazas"  class="mt-4 block mb-2 text-sm font-medium text-gray-900 dark:text-white">Amenazas (Externas)</label>
-                        <textarea id="amenazas" name="amenazas" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
-                        
-                        
-                        <label for="objetivo_programa"  class="mt-4 block mb-2 text-sm font-medium text-gray-900 dark:text-white">Objetivo del Programa Presupuestario</label>
-                        <textarea id="objetivo_programa" readonly name="objetivo_programa" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"><?= $programa['objetivo_pp'] ?></textarea>
-                        
-                        
-                        <label for="estrategias"  class="mt-4 block mb-2 text-sm font-medium text-gray-900 dark:text-white">Estrategias para alcanzar el objetivo del Programa Presupuestario</label>
-                        <textarea id="estrategias" name="estrategias" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                            <label for="amenazas" class="mt-4 block mb-2 text-sm font-medium text-gray-900 dark:text-white">Amenazas (Externas)</label>
+                            <textarea id="amenazas" name="amenazas" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"><?= ($foda) ? $foda['diagnostico_amenaza'] : '' ?></textarea>
+                            <br>
+                            <button type="submit" name="update_foda" value="update_foda" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Actualizar FODA</button>
+                        </form>
+                    </div>
+                    <br>
+                    <div class="bg-green-50 rounded-lg my-2 py-2 px-2">
+                        <form action="" method="POST">
+                            <input type="hidden" name="id_area" value="<?= $_GET['id_area'] ?>">
+                            <h4 class="text-2xl font-bold dark:text-white">Estrategia para alcanzar el objetivo del Programa presupuestario:</h4>
+                            <label for="objetivo_programa" class="mt-4 block mb-2 text-sm font-medium text-gray-900 dark:text-white">Objetivo del Programa Presupuestario</label>
+                            <?= $programa['objetivo_pp'] ?>
+                            <label for="estrategia" class="mt-4 block mb-2 text-sm font-medium text-gray-900 dark:text-white">Estrategias para alcanzar el objetivo del Programa Presupuestario</label>
+                            <textarea id="estrategia" name="estrategia" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"><?= (isset($foda['estrategia'])) ? $foda['estrategia'] : '' ?></textarea>
+                            <br>
+                            <button type="submit" name="update_objetivo" value="update_objetivo" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Actualizar Estrategia</button>
+                        </form>
+                    </div>
+                    <br>
+                    <div class="bg-yellow-50 rounded-lg my-2 py-2 px-2">
+                        <h4 class="text-2xl font-bold dark:text-white">Objetivos, Estrategias y Lineas de Acción del PDM antendidas:</h4>
+                        <br>
+                        <?php if (isset($foda['linea_accion'])) : ?>
+                            <?php $oel = traeOEL($con, $foda['linea_accion']) ?>
+                            Objetivo: <?= $oel['clave_objetivo'] . "-" . $oel['nombre_objetivo'] ?> <br>
+                            Estrategia: <?= $oel['clave_estrategia'] . "-" . $oel['nombre_estrategia'] ?> <br>
+                            Línea de Acción: <?= $oel['clave_linea'] . "-" . $oel['nombre_linea'] ?>
+                            <br>
+                            <form action="" method="post">
+                                <input type="hidden" name="id_area" value="<?= $_GET['id_area'] ?>">
+                                <input type="hidden" name="linea_accion" value="<?= $foda['linea_accion'] ?>">
+                                <br>
+                                <button type="submit" name="delete_pdm" value="delete_pdm" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Eliminar</button>
+                            </form>
+                        <?php else : ?>
+                            <?php if (!(isset($_GET['objetivo']) || isset($_GET['estrategia']))) : ?>
+                                Paso 1
+                                <?php $objetivos = traeObjetivos_todos($con) ?>
+                                <form action="" method="GET">
+                                    <input type="hidden" name="id_area" value="<?= $_GET['id_area'] ?>">
+                                    <input type="hidden" name="b" value="<?= $_GET['id_area'] ?>">
+                                    <select name="objetivo" multiple id="countries_multiple" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <option selected>Elige un Objetivo PDM</option>
+                                        <?php foreach ($objetivos as $o) : ?>
+                                            <option value="<?= $o['id_objetivo'] ?>"><?= $o['clave_objetivo'] . '-' . $o['nombre_objetivo'] ?></option>
+                                        <?php endforeach ?>
+                                    </select>
+                                    <label for="countries_multiple" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione una opción</label>
+                                    <button type="submit" name="update_objetivo" value="update_objetivo" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Elegir Objetivo</button>
+                                </form>
+                            <?php endif ?>
 
-                    </form>
+                            <?php if (isset($_GET['objetivo'])) : ?>
+                                Paso 2 <br>
+                                Objetivo: <?= traeobjetivoPDM($con, $_GET['objetivo']) ?>
+                                <?php $id_objetivo = $_GET['objetivo'] ?>
+                                <?php $estrategias = traeEstrategias($con, $id_objetivo) ?>
+                                <form action="" method="GET">
+                                    <input type="hidden" name="id_area" value="<?= $_GET['id_area'] ?>">
+                                    <input type="hidden" name="b" value="<?= $_GET['id_area'] ?>">
+                                    <select name="estrategia" multiple id="countries_multiple" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <option selected>Elige una Estrategia</option>
+                                        <?php foreach ($estrategias as $e) : ?>
+                                            <option value="<?= $e['id_estrategia'] ?>"><?= $e['clave_estrategia'] . '-' . $e['nombre_estrategia'] ?></option>
+                                        <?php endforeach ?>
+                                    </select>
+                                    <label for="countries_multiple" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione una opción</label>
+                                    <button type="submit" name="update_estrategia" value="update_estrategia" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Elegir Estrategia</button>
+                                </form>
+                            <?php endif ?>
+
+                            <?php if (isset($_GET['estrategia'])) : ?>
+                                <?= $_GET['estrategia'] ?>
+                                Paso Ultimo <br>
+                                <?= traeoestrategia_pdm($con, $_GET['estrategia']) ?>
+                                <?php $id_estrategia = $_GET['estrategia'] ?>
+                                <?php $lineas = traeLineas($con, $id_estrategia) ?>
+                                <form action="" method="POST">
+                                    <input type="hidden" name="id_area" value="<?= $_GET['id_area'] ?>">
+                                    <select multiple name="id_linea" id="countries_multiple" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <option selected>Elige una Linea de Acción</option>
+                                        <?php foreach ($lineas as $l) : ?>
+                                            <option value="<?= $l['id_linea'] ?>"><?= $l['clave_linea'] . '-' . $l['nombre_linea'] ?></option>
+                                        <?php endforeach ?>
+                                    </select>
+                                    <label for="countries_multiple" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione una opción</label>
+                                    <button type="submit" name="update_linea" value="update_linea" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Elegir Linea de Acción</button>
+                                </form>
+                            <?php endif ?>
+                        <?php endif ?>
+
+                    </div>
+                    <br>
+                    <div class="bg-blue-50 rounded-lg my-2 py-2 px-2">
+                        <h4 class="text-2xl font-bold dark:text-white">Objetivos y Metas para el Desarrollo Sostenible (ODS), atendidas por el Programa Presupuestario:</h4>
+                        <br>
+                        <?php if (isset($foda['id_ods'])) : ?>
+                            <?php $ods = traeODSyE($con, $foda['id_ods']) ?>
+                            Objetivo: <?= $ods['clv_objetivo'] . "-" . $ods['objetivo'] ?> <br>
+                            Línea de Acción: <?= $ods['clv_estrategia'] . "-" . $ods['estrategia'] ?>
+                            <form action="" method="post">
+                                <input type="hidden" name="id_ods" value="<?= $foda['id_ods'] ?>">
+                                <input type="hidden" name="id_area" value="<?= $_GET['id_area'] ?>">
+                                <br>
+                                <button type="submit" name="delete_ods" value="delete_ods" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Eliminar</button>
+                            </form>
+                        <?php else : ?>
+                            <?php if (!isset($_GET['objetivo_ods'])) : ?>
+                                Paso 1
+                                <?php $objetivos = traeODSO($con) ?>
+                                <form action="" method="GET">
+                                    <input type="hidden" name="id_area" value="<?= $_GET['id_area'] ?>">
+                                    <input type="hidden" name="b" value="<?= $_GET['id_area'] ?>">
+                                    <select name="objetivo_ods" multiple id="countries_multiple" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <option selected>Elige un Objetivo ODS</option>
+                                        <?php foreach ($objetivos as $o) : ?>
+                                            <option value="<?= $o['id_objetivo'] ?>"><?= $o['clv_objetivo'] . '-' . $o['objetivo'] ?></option>
+                                        <?php endforeach ?>
+                                    </select>
+                                    <label for="countries_multiple" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione una opción</label>
+                                    <button type="submit" name="update_objetivo" value="update_objetivo" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Elegir Objetivo</button>
+                                </form>
+                            <?php endif ?>
+
+                            <?php if (isset($_GET['objetivo_ods'])) : ?>
+                                Paso Ultimo <br>
+                                <?= traeObjetivoODS($con, $_GET['objetivo_ods']) ?>
+                                <?php $objetivo_ods = $_GET['objetivo_ods'] ?>
+                                <?php $estrategias = traeEstrategiasODS($con, $objetivo_ods) ?>
+                                <form action="" method="POST">
+                                    <input type="hidden" name="id_area" value="<?= $_GET['id_area'] ?>">
+                                    <select multiple name="id_estrategia_ods" id="countries_multiple" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <option selected>Elige una Estrategia</option>
+                                        <?php foreach ($estrategias as $e) : ?>
+                                            <option value="<?= $e['id_estrategia'] ?>"><?= $e['clv_estrategia'] . '-' . $e['estrategia'] ?></option>
+                                        <?php endforeach ?>
+                                    </select>
+                                    <label for="countries_multiple" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione una opción</label>
+                                    <button type="submit" name="update_ODS" value="update_linea" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Elegir Estrategia ODS</button>
+                                </form>
+                            <?php endif ?>
+                        <?php endif ?>
+
+                    </div>
+                    <br><br>
                 <?php endif ?>
 
-                <?php if (isset($_POST['d'])) : ?>
-                    entraste al d
+
+                <?php if (isset($_GET['tipo']) && $_GET['tipo'] == 'd') : ?>
+                    <?php $id_dependencia = $permisos['id_dependencia'] ?>
+                    <?php $indicadores = traeIndicadores($con, $id_dependencia) ?>
+
+
+
+                    <div class="relative overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3">
+                                        Nombre
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Periodicidad
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Variables
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Unidad de Medida
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Tipo de Operación
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Primer Trimestre
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Segundo Trimestre
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Tercer Trimestre
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Cuarto Trimestre
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Programar/Eliminar
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if (isset($_POST['indicadores'])) {
+                                    var_dump($_POST);
+                                } ?>
+                                <?php foreach ($indicadores as $i) : ?>
+                                    <form action="" method="post">
+                                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                            <td class="px-6 py-4">
+                                                <?= $i['nombre_indicador'] ?>
+                                                </th>
+                                            <td class="px-6 py-4">
+                                                <?= $i['periodicidad'] ?>
+                                                </th>
+                                            <td class="px-6 py-4">
+                                                A: <?= $i['variable_a'] ?>
+                                                <br>
+                                                B: <?= $i['variable_b'] ?>
+                                                </th>
+                                            <td class="px-6 py-4">
+                                                <br>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <br>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <br>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <br>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <br>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <br>
+                                            </td>
+                                            <td>
+                                                <button data-modal-target="modal-<?= $i['id'] ?>" data-modal-toggle="modal-<?= $i['id'] ?>" class="block w-full md:w-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+                                                    Programar
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </form>
+
+
+                                    <!-- Extra Large Modal -->
+                                    <div id="modal-<?= $i['id'] ?>" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                        <div class="relative w-full max-w-7xl max-h-full">
+                                            <!-- Modal content -->
+                                            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                                <!-- Modal header -->
+                                                <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">
+                                                    <h3 class="text-xl font-medium text-gray-900 dark:text-white">
+                                                        Programar <?= $i['nombre_indicador'] ?>
+                                                    </h3>
+                                                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="modal-<?= $i['id'] ?>">
+                                                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                                        </svg>
+                                                        <span class="sr-only">Close modal</span>
+                                                    </button>
+                                                </div>
+                                                <!-- Modal body -->
+                                                <div class="p-6 space-y-6">
+                                                    <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                                                        With less than a month to go before the European Union enacts new consumer privacy laws for its citizens, companies around the world are updating their terms of service agreements to comply.
+                                                    </p>
+                                                    <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                                                        The European Union’s General Data Protection Regulation (G.D.P.R.) goes into effect on May 25 and is meant to ensure a common set of data rights in the European Union. It requires organizations to notify users as soon as possible of high-risk data breaches that could personally affect them.
+                                                    </p>
+                                                    <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                                                        With less than a month to go before the European Union enacts new consumer privacy laws for its citizens, companies around the world are updating their terms of service agreements to comply.
+                                                    </p>
+                                                    <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                                                        The European Union’s General Data Protection Regulation (G.D.P.R.) goes into effect on May 25 and is meant to ensure a common set of data rights in the European Union. It requires organizations to notify users as soon as possible of high-risk data breaches that could personally affect them.
+                                                    </p>
+                                                    <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                                                        With less than a month to go before the European Union enacts new consumer privacy laws for its citizens, companies around the world are updating their terms of service agreements to comply.
+                                                    </p>
+                                                    <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                                                        The European Union’s General Data Protection Regulation (G.D.P.R.) goes into effect on May 25 and is meant to ensure a common set of data rights in the European Union. It requires organizations to notify users as soon as possible of high-risk data breaches that could personally affect them.
+                                                    </p>
+                                                </div>
+                                                <!-- Modal footer -->
+                                                <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+                                                    <button data-modal-hide="modal-<?= $i['id'] ?>" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">I accept</button>
+                                                    <button data-modal-hide="modal-<?= $i['id'] ?>" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Decline</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                <?php endforeach ?>
+                            </tbody>
+                        </table>
+                    </div>
+
                 <?php endif ?>
 
-                <?php if (isset($_POST['a'])) : ?>
+                <?php if (isset($_GET['tipo']) && $_GET['tipo'] == 'a') : ?>
                     entraste al a
                 <?php endif ?>
             <?php endif ?>
 
 
-            <?php if (!$_POST) : ?>
+            <?php if (!$_GET) : ?>
                 <?php if ($permisos['nivel'] > 3) :  // Primero veridicamos el permiso... EN CASO DE ENLACE 
                 ?>
                     <?php if ($real_anio == $user_anio) : // Luego verificamos si es un anio corriente 
@@ -90,15 +363,15 @@ if ($_SESSION['sistema'] == 'pbrm') {
                                     <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"> <?= $area['nombre_area'] ?> </h5>
                                     <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><?= $area['clave_dependencia'] . '-' . $area['clave_dependencia_auxiliar'] . '-' . $area['codigo_proyecto'] ?></p>
                                     <div class="inline-flex rounded-md shadow-sm" role="group">
-                                        <form action="" method="post">
+                                        <form action="" method="get">
                                             <input type="hidden" name="id_area" value="<?= $area['id_area'] ?>">
-                                            <button type="submit" name="b" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-l-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700">
+                                            <button type="submit" name="tipo" value="b" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-l-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700">
                                                 01b
                                             </button>
-                                            <button type="submit" name="d" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700">
+                                            <button type="submit" name="tipo" value="d" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700">
                                                 01d
                                             </button>
-                                            <button type="submit" name="a" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-r-md hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700">
+                                            <button type="submit" name="tipo" value="a" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-r-md hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700">
                                                 02a
                                             </button>
                                         </form>
@@ -116,34 +389,12 @@ if ($_SESSION['sistema'] == 'pbrm') {
                             <?php endforeach ?>
                         </div>
                     <?php endif ?> <!--Hasta aqui se menciona lo relacionado con los anios para reportar -->
-
-
-                    <?php if ($real_anio != $user_anio) : //  verificamos si es un anio de anteproyecto 
-                    ?>
-                        <div class="grid grid-cols-4">
-                            <?php $areas = areas_con($con, $dep, $user_anio);
-                            foreach ($areas as $area) : ?>
-                                <div class="items-start p-4 ml-2 mr-2 mb-4 text-center  bg-white rounded-lg border border-gray-400 shadow-md dark:bg-gray-800 dark:border-gray-700"">
-                                    <h5 class=" mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"> <?= $area['nombre_area'] ?> </h5>
-                                    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Metas mensuales.</p>
-                                    <form action="actividades_anteproyecto.php" method="post">
-                                        <button class="inline-flex mb-2 items-center py-2 px-3 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" name="id_area" value="<?= $area['id_area'] ?>">
-                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                                            </svg>
-                                            Programar
-                                        </button>
-                                    </form>
-                                </div>
-                            <?php endforeach ?>
-                        </div>
-                    <?php endif ?>
                 <?php endif ?>
             <?php endif ?>
         </div>
     </body>
 
-    <?php include 'footer.php'; ?>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
 
     </html>
 <?php

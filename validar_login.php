@@ -1,42 +1,37 @@
 <?php
+session_start();
 include_once 'models/conection.php';
-if (!$_POST) {
-    header("Location: login.php");
-}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST["correo_electronico"];
     $password = $_POST["contrasena"];
 
-    if (isset($email) && isset($password)) {
+    if (!empty($email) && !empty($password)) {
         $stmt = $con->prepare("SELECT * FROM usuarios WHERE correo_electronico = ? AND activo = 1");
-        $stmt->execute([$email]);
-        $usuario = $stmt->fetch();
-        if ($usuario) {
-            // Verificar si la contraseña ingresada coincide con la contraseña almacenada en la base de datos
-            if (password_verify($password, $usuario["contrasena"])) {
-                // Iniciar sesión
-                session_start();
+        if ($stmt->execute([$email])) {
+            $usuario = $stmt->fetch();
+            if ($usuario && password_verify($password, $usuario["contrasena"])) {
+                // Credenciales válidas, redirige al usuario a la página de inicio
                 $_SESSION["id_usuario"] = $usuario["id_usuario"];
                 $_SESSION["sistema"] = "pbrm";
                 $_SESSION['correo_electronico'] = $usuario['correo_electronico'];
                 $_SESSION['anio'] = date('Y');
-                // Redirigir al usuario a la página de inicio o a su perfil de usuario
                 header("Location: index.php");
                 exit();
             } else {
-                // La contraseña ingresada es incorrecta
-                echo "<script>alert('La contraseña ingresada es incorrecta'); window.location.href='login.php';</script>";
-                exit();
+                $_SESSION['error_message'] = 'La contraseña ingresada es incorrecta';
             }
         } else {
-            // El correo electrónico ingresado no existe en la base de datos
-            echo "<script>alert('La contraseña o el correo electrónico son incorrectos'); window.location.href='login.php';</script>";
-            exit();
+            $_SESSION['error_message'] = 'Error en la consulta de la base de datos';
         }
     } else {
-        // El correo electrónico y/o la contraseña no fueron ingresados
-        echo "<script>alert('Ingrese sus datos correctamente'); window.location.href='login.php';</script>";
-        exit();
+        $_SESSION['error_message'] = 'Ingrese sus datos correctamente';
     }
+    header("Location: login.php");
+    exit();
 }
+
+// Si no es una solicitud POST, redirige al usuario a la página de inicio de sesión
+header("Location: login.php");
+exit();
+?>

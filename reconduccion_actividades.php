@@ -349,6 +349,7 @@ if ($_SESSION['sistema'] == "pbrm") {
 
 								<?php endforeach ?>
 								</table>
+								<br>
 								<input type="submit" value="Solicitar Reconducción" name="data" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
 						</form>
 					</div>
@@ -374,21 +375,21 @@ if ($_SESSION['sistema'] == "pbrm") {
 				<br>
 				<?php $dependencias = Traedepndencias($con) ?>
 				<div class="grid grid-cols-4">
-                    <?php foreach ($dependencias as $dp) : ?>
-                        <div class="items-start p-4 ml-2 mr-2 mb-4 text-center  bg-white rounded-lg border border-gray-400 shadow-md dark:bg-gray-800 dark:border-gray-700">
-                            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"> <?= $dp['nombre_dependencia'] ?> </h5>
-                            <br>
+					<?php foreach ($dependencias as $dp) : ?>
+						<div class="items-start p-4 ml-2 mr-2 mb-4 text-center  bg-white rounded-lg border border-gray-400 shadow-md dark:bg-gray-800 dark:border-gray-700">
+							<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"> <?= $dp['nombre_dependencia'] ?> </h5>
+							<br>
 
-                            <form action="mis_reconducciones_actividades.php" method="post">
+							<form action="mis_reconducciones_actividades.php" method="post">
 								<input type="hidden" name="id_dependencia" value="<?= $dp['id_dependencia'] ?>">
-                                <button class="inline-flex mb-2 items-center py-2 px-3 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" name="id_dependencia" value="<?= $dp['id_dependencia'] ?>">
-                                    Ver Reconducciones
-                                </button>
-                            </form>
-                            <br>
-                        </div>
-                    <?php endforeach ?>
-                </div>
+								<button class="inline-flex mb-2 items-center py-2 px-3 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" name="id_dependencia" value="<?= $dp['id_dependencia'] ?>">
+									Ver Reconducciones
+								</button>
+							</form>
+							<br>
+						</div>
+					<?php endforeach ?>
+				</div>
 
 
 
