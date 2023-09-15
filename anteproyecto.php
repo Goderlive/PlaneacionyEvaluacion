@@ -20,7 +20,8 @@ if ($_SESSION['sistema'] == 'pbrm') {
     ?>
     <?php include 'Controllers/breadcrumbs.php'; ?>
     <?php $dependenciasAuxiliares = DependenciasAuxiliares($con, $user_anio) ?>
-    <?php $proyectos = Proyectos($con, $user_anio) ?>
+    <?php $proyectos = Proyectos($con, $user_anio);
+    ?>
 
 
     <body>
@@ -196,7 +197,9 @@ if ($_SESSION['sistema'] == 'pbrm') {
 
                 <?php if (isset($_GET['tipo']) && $_GET['tipo'] == 'd') : ?>
                     <?php $id_dependencia = $permisos['id_dependencia'] ?>
-                    <?php $indicadores = traeIndicadores($con, $id_dependencia) ?>
+                    <?php $indicadores = traeIndicadores($con, $id_dependencia);
+                    $actividadest = traeActividadesDependencia($con, $permisos['id_dependencia'])
+                    ?>
 
 
 
@@ -237,9 +240,6 @@ if ($_SESSION['sistema'] == 'pbrm') {
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php if (isset($_POST['indicadores'])) {
-                                    var_dump($_POST);
-                                } ?>
                                 <?php foreach ($indicadores as $i) : ?>
                                     <form action="" method="post">
                                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
@@ -255,7 +255,7 @@ if ($_SESSION['sistema'] == 'pbrm') {
                                                 B: <?= $i['variable_b'] ?>
                                                 </th>
                                             <td class="px-6 py-4">
-                                                <br>
+                                                <?php ($i['programado'] == 1 ? $i['umedida_a'] . '<br>' . $i['umedida_b'] : '') ?>
                                             </td>
                                             <td class="px-6 py-4">
                                                 <br>
@@ -300,30 +300,89 @@ if ($_SESSION['sistema'] == 'pbrm') {
                                                 </div>
                                                 <!-- Modal body -->
                                                 <div class="p-6 space-y-6">
-                                                    <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                                                        With less than a month to go before the European Union enacts new consumer privacy laws for its citizens, companies around the world are updating their terms of service agreements to comply.
-                                                    </p>
-                                                    <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                                                        The European Union’s General Data Protection Regulation (G.D.P.R.) goes into effect on May 25 and is meant to ensure a common set of data rights in the European Union. It requires organizations to notify users as soon as possible of high-risk data breaches that could personally affect them.
-                                                    </p>
-                                                    <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                                                        With less than a month to go before the European Union enacts new consumer privacy laws for its citizens, companies around the world are updating their terms of service agreements to comply.
-                                                    </p>
-                                                    <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                                                        The European Union’s General Data Protection Regulation (G.D.P.R.) goes into effect on May 25 and is meant to ensure a common set of data rights in the European Union. It requires organizations to notify users as soon as possible of high-risk data breaches that could personally affect them.
-                                                    </p>
-                                                    <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                                                        With less than a month to go before the European Union enacts new consumer privacy laws for its citizens, companies around the world are updating their terms of service agreements to comply.
-                                                    </p>
-                                                    <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                                                        The European Union’s General Data Protection Regulation (G.D.P.R.) goes into effect on May 25 and is meant to ensure a common set of data rights in the European Union. It requires organizations to notify users as soon as possible of high-risk data breaches that could personally affect them.
-                                                    </p>
+                                                    Dimensión que atiende: <?= $i['dimension'] ?> <br>
+                                                    Tipo: <?= $i['tipo'] ?><br>
+                                                    Formula: <?= $i['formula'] ?> <br>
+                                                    Tipo de Indicador: <?= $i['tipo'] ?><br>
+                                                    Periodicidad: <b><?= $i['periodicidad'] ?></b><br>
+                                                    <form action="" method="post">
+                                                        <input type="hidden" name="id_indicador" value="<?= $i['id'] ?>">
+                                                        <div>
+                                                            <div>
+                                                                <label for="factor_de_comparacion" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Factor de Comparación</label>
+                                                                <input type="text" name="factor_de_comparacion" id="factor_de_comparacion" value="<?= (isset($i['factor_de_comparacion'])) ? $i['factor_de_comparacion'] : "" ?>" placeholder="Se registrará en forma numérica la descripción del factor de comparación." class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                                            </div><br>
+                                                            <div>
+                                                                <label for="desc_factor_de_comparacion" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Descripción del Factor de Comparación</label>
+                                                                <input type="text" name="desc_factor_de_comparacion" id="desc_factor_de_comparacion" value="<?= (isset($i['desc_factor_de_comparacion'])) ? $i['desc_factor_de_comparacion'] : "" ?>" placeholder="Descripción del dato oficial, el que se compara el resultado obtenido." class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                                            </div><br>
+                                                            <div>
+                                                                <label for="linea_base" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Línea Base</label>
+                                                                <input type="text" name="linea_base" id="linea_base" value="<?= (isset($i['linea_base'])) ? $i['linea_base'] : "" ?>" placeholder="Punto de partida al momento de iniciarse las acciones planificadas" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                                            </div><br>
+                                                            <div>
+                                                                <label for="desc_meta_anual" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Descripción de la Meta Anual</label>
+                                                                <input type="text" name="desc_meta_anual" id="desc_meta_anual" value="<?= (isset($i['desc_meta_anual'])) ? $i['desc_meta_anual'] : "" ?>" placeholder="Se menciona cualitativamente el logro de la meta que se espera alcanzar en el año." class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                                            </div><br>
+                                                            <div>
+                                                                <label for="medios_de_verificacion" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Medios de Verificación</label>
+                                                                <input type="text" name="medios_de_verificacion" id="medios_de_verificacion" value="<?= (isset($i['medios_de_verificacion'])) ? $i['medios_de_verificacion'] : "" ?>" placeholder="Fuentes de información que se utilizarán." class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                                            </div><br>
+                                                            <div>
+                                                                <label for="actividades" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sleccione todas las Actividades Relacionadas</label>
+                                                                <select multiple name="id_actividades[]" id="actividades" size="7" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                                    <option selected>Seleccione las Actividades</option>
+                                                                    <?php foreach($actividadest as $a): ?>
+                                                                        <option value="<?= $a['id_actividad'] ?>"><?= $a['nombre_actividad'] ?></option>
+                                                                    <?php endforeach ?>
+                                                                </select>
+                                                            </div><br>
+                                                        </div>
+                                                        <div class="grid gap-6 mb-6 md:grid-cols-4">
+                                                            <div>
+                                                                <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">A: 1er T</label>
+                                                                <input type="text" name="at1" id="first_name" value="<?= (isset($i['at1'])) ? $i['at1'] : "" ?>" <?= ($i['periodicidad'] == "Anual" || $i['periodicidad'] == "Semestral") ? "disabled readonly" : '' ?> class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                                            </div>
+                                                            <div>
+                                                                <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">A: 2do T</label>
+                                                                <input type="text" name="at2" id="last_name" value="<?= (isset($i['at2'])) ? $i['at2'] : "" ?>" <?= ($i['periodicidad'] == "Anual") ? "disabled readonly" : '' ?> class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                                            </div>
+                                                            <div>
+                                                                <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">A: 3er T</label>
+                                                                <input type="text" name="at3" id="last_name" value="<?= (isset($i['at3'])) ? $i['at3'] : "" ?>" <?= ($i['periodicidad'] == "Anual" || $i['periodicidad'] == "Semestral") ? "disabled readonly" : '' ?> class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                                            </div>
+                                                            <div>
+                                                                <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">A: 4to T</label>
+                                                                <input type="text" name="at4" id="last_name" value="<?= (isset($i['at4'])) ? $i['at4'] : "" ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="grid gap-6 mb-6 md:grid-cols-4">
+
+                                                            <div>
+                                                                <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">B: 1er T</label>
+                                                                <input type="text" name="bt1" id="first_name" value="<?= (isset($i['bt1'])) ? $i['bt1'] : "" ?>" <?= ($i['periodicidad'] == "Anual" || $i['periodicidad'] == "Semestral") ? "disabled readonly" : '' ?> class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                                            </div>
+                                                            <div>
+                                                                <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">B: 2do T</label>
+                                                                <input type="text" name="bt2" id="last_name" value="<?= (isset($i['bt2'])) ? $i['bt2'] : "" ?>" <?= ($i['periodicidad'] == "Anual") ? "disabled readonly" : '' ?> class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                                            </div>
+                                                            <div>
+                                                                <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">B: 3er T</label>
+                                                                <input type="text" name="bt3" id="last_name" value="<?= (isset($i['bt3'])) ? $i['bt3'] : "" ?>" <?= ($i['periodicidad'] == "Anual" || $i['periodicidad'] == "Semestral") ? "disabled readonly" : '' ?> class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                                            </div>
+                                                            <div>
+                                                                <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">B: 4to T</label>
+                                                                <input type="text" name="bt4" id="last_name" value="<?= (isset($i['bt4'])) ? $i['bt4'] : "" ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+
+                                                            <button type="submit" name="program_indicador" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Programar</button>
+                                                            <button data-modal-hide="modal-<?= $i['id'] ?>" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Cancelar</button>
+                                                        </div>
+                                                    </form>
                                                 </div>
                                                 <!-- Modal footer -->
-                                                <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-                                                    <button data-modal-hide="modal-<?= $i['id'] ?>" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">I accept</button>
-                                                    <button data-modal-hide="modal-<?= $i['id'] ?>" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Decline</button>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>

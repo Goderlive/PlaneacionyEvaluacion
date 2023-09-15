@@ -92,7 +92,15 @@ function traeIndicadores($con, $id_dependencia){
     return $indicadores = $stm->fetchAll(PDO::FETCH_ASSOC);
 }
 
-
+function traeActividadesDependencia($con, $id_dependencia){
+    $sentencia = "SELECT * FROM ante_actividades a
+    LEFT JOIN ante_areas ar ON ar.id_area = a.id_area
+    LEFT JOIN dependencias d ON d.id_dependencia = ar.id_dependencia
+    WHERE d.id_dependencia = $id_dependencia";
+    $stm = $con->query($sentencia);
+    $actividades = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $actividades;
+}
 
 
 if(isset($_POST['update_foda'])){
@@ -248,6 +256,29 @@ if(isset($_POST['delete_pdm'])){
 if(isset($_POST['delete_ods'])){
     $id_area = $_POST['id_area'];
     $id_estrategia_ods = $_POST['id_ods'];
+
+
+    $sql = "UPDATE ante_unob SET id_ods = NULL WHERE id_ods = ?";
+    $sqlr = $con->prepare($sql);
+    $sqlr->execute(array($id_estrategia_ods));
+
+
+    ?>
+    <form id="myForm" action="" method="get">
+        <input type="hidden" name="id_area" value="<?=$id_area?>">
+        <input type="hidden" name="b" value="<?=$id_area?>">
+    </form>
+    <script type="text/javascript">
+        document.getElementById('myForm').submit();
+    </script>
+    <?php
+}
+
+if(isset($_POST['program_indicador'])){
+
+    print '<pre>';
+    var_dump($_POST);
+    die();
 
 
     $sql = "UPDATE ante_unob SET id_ods = NULL WHERE id_ods = ?";
