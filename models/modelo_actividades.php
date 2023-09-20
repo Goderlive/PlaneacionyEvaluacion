@@ -40,7 +40,6 @@ function buscalineas($con, $id_area){
 
 
 function unArea($con, $dep){
-
     $sql = "SELECT * FROM areas a
         INNER JOIN dependencias_generales dp ON a.id_dependencia = dp.id_dependencia
         INNER JOIN dependencias_auxiliares da ON a.id_dependencia_aux = da.id_dependencia_auxiliar

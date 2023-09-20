@@ -49,6 +49,12 @@ function traeEstrategias($con, $id_objetivo){
     return $estrategias = $stm->fetchAll(PDO::FETCH_ASSOC);
 }
 
+function traeIndicador($con, $id_indicador){
+    $sentencia = "SELECT * FROM ante_indicadores_uso WHERE id = $id_indicador";
+    $stm = $con->query($sentencia);
+    return $indicadores = $stm->fetch(PDO::FETCH_ASSOC);
+}
+
 function traeLineas($con, $id_estrategia){
     $sentencia = "SELECT * FROM pdm_lineas WHERE id_estrategia = $id_estrategia";
     $stm = $con->query($sentencia);
@@ -89,14 +95,16 @@ function traeIndicadores($con, $id_dependencia){
     $sentencia = "SELECT * FROM ante_indicadores_uso
     WHERE id_dependencia = $id_dependencia";
     $stm = $con->query($sentencia);
-    return $indicadores = $stm->fetchAll(PDO::FETCH_ASSOC);
+    $indicadores = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $indicadores;
 }
 
 function traeActividadesDependencia($con, $id_dependencia){
     $sentencia = "SELECT * FROM ante_actividades a
     LEFT JOIN ante_areas ar ON ar.id_area = a.id_area
-    LEFT JOIN dependencias d ON d.id_dependencia = ar.id_dependencia
-    WHERE d.id_dependencia = $id_dependencia";
+    LEFT JOIN ante_dependencias d ON d.id_antedependencia = ar.id_dependencia
+    WHERE d.id_antedependencia = $id_dependencia
+    ORDER BY a.id_area ASC";
     $stm = $con->query($sentencia);
     $actividades = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $actividades;
@@ -276,20 +284,45 @@ if(isset($_POST['delete_ods'])){
 
 if(isset($_POST['program_indicador'])){
 
-    print '<pre>';
-    var_dump($_POST);
-    die();
+    $id_indicador = $_POST['id_indicador'];
+    
+    $tipo_op_a = (isset($_POST['tipo_op_a'])) ? $_POST['tipo_op_a'] : NULL;
+    $tipo_op_b = (isset($_POST['tipo_op_b'])) ? $_POST['tipo_op_b'] : NULL;
+    $tipo_op_c = (isset($_POST['tipo_op_c'])) ? $_POST['tipo_op_c'] : NULL;
+    $umedida_a = (isset($_POST['umedida_a'])) ? $_POST['umedida_a'] : NULL;
+    $umedida_b = (isset($_POST['umedida_b'])) ? $_POST['umedida_b'] : NULL;
+    $umedida_c = (isset($_POST['umedida_c'])) ? $_POST['umedida_c'] : NULL;
+    $interpretacion = (isset($_POST['interpretacion'])) ? $_POST['interpretacion'] : NULL;
+    $factor_de_comparacion = (isset($_POST['factor_de_comparacion'])) ? $_POST['factor_de_comparacion'] : NULL;
+    $desc_factor_de_comparacion = (isset($_POST['desc_factor_de_comparacion'])) ? $_POST['desc_factor_de_comparacion'] : NULL;
+    $linea_base = (isset($_POST['linea_base'])) ? $_POST['linea_base'] : NULL;
+    $actividades_ids = ($_POST['id_actividades'] ? json_encode($_POST['id_actividades']) : NULL);
+    $desc_meta_anual = (isset($_POST['desc_meta_anual'])) ? $_POST['desc_meta_anual'] : NULL;
+    $medios_de_verificacion = (isset($_POST['medios_de_verificacion'])) ? $_POST['medios_de_verificacion'] : NULL;
+    $at1 = (isset($_POST['at1'])) ? $_POST['at1'] : 0;
+    $at2 = (isset($_POST['at2'])) ? $_POST['at2'] : 0;
+    $at3 = (isset($_POST['at3'])) ? $_POST['at3'] : 0;
+    $at4 = (isset($_POST['at4'])) ? $_POST['at4'] : 0;
+    $bt1 = (isset($_POST['bt1'])) ? $_POST['bt1'] : 0;
+    $bt2 = (isset($_POST['bt2'])) ? $_POST['bt2'] : 0;
+    $bt3 = (isset($_POST['bt3'])) ? $_POST['bt3'] : 0;
+    $bt4 = (isset($_POST['bt4'])) ? $_POST['bt4'] : 0;
+    $ct1 = (isset($_POST['ct1'])) ? $_POST['ct1'] : 0;
+    $ct2 = (isset($_POST['ct2'])) ? $_POST['ct2'] : 0;
+    $ct3 = (isset($_POST['ct3'])) ? $_POST['ct3'] : 0;
+    $ct4 = (isset($_POST['ct4'])) ? $_POST['ct4'] : 0;
+    $id_alta = (isset($_POST['id_alta'])) ? $_POST['id_alta'] : NULL;
+    $validado = 1;
 
-
-    $sql = "UPDATE ante_unob SET id_ods = NULL WHERE id_ods = ?";
+    $sql = "UPDATE ante_indicadores_uso SET tipo_op_a = '$tipo_op_a', tipo_op_b = '$tipo_op_b', tipo_op_c = '$tipo_op_c', umedida_a = '$umedida_a', umedida_b = '$umedida_b', umedida_c = '$umedida_c', interpretacion = '$interpretacion', factor_de_comparacion = '$factor_de_comparacion', desc_factor_de_comparacion = '$desc_factor_de_comparacion', linea_base = '$linea_base', actividades_ids = '$actividades_ids', desc_meta_anual = '$desc_meta_anual', medios_de_verificacion = '$medios_de_verificacion', at1 = '$at1', at2 = '$at2', at3 = '$at3', at4 = '$at4', bt1 = '$bt1', bt2 = '$bt2', bt3 = '$bt3', bt4 = '$bt4', ct1 = '$ct1', ct2 = '$ct2', ct3 = '$ct3', ct4 = '$ct4', id_alta = '$id_alta', validado = '$validado' WHERE id = ?";
     $sqlr = $con->prepare($sql);
-    $sqlr->execute(array($id_estrategia_ods));
+    $sqlr->execute(array($id_indicador));
 
-
+    print $id_indicador;
     ?>
     <form id="myForm" action="" method="get">
-        <input type="hidden" name="id_area" value="<?=$id_area?>">
-        <input type="hidden" name="b" value="<?=$id_area?>">
+        <input type="hidden" name="id_dependencia" value="<?=$id_dependencia?>">
+        <input type="hidden" name="tipo" value="d">
     </form>
     <script type="text/javascript">
         document.getElementById('myForm').submit();

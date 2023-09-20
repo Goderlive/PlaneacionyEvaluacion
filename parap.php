@@ -1,45 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
 </head>
+
 <body>
 
-
-<?php
-$id_dependencia = 123;
-$trimestre = 2;
-$actividad = "Ejemplo de actividad";
-
-// Concatenar los valores en una cadena
-$data = $id_dependencia . "-" . $trimestre . "-" . $actividad;
-
-// "Encriptar" la cadena (en este caso, simplemente codificarla en base64)
-$encrypted_data = base64_encode($data);
-
-echo "Cadena encriptada: " . $encrypted_data;
-
-print "<br>";
-
-
-
-$encrypted_data = $encrypted_data; // Obtener la cadena encriptada de la solicitud POST
-
-// "Desencriptar" la cadena (decodificarla de base64)
-$data = base64_decode($encrypted_data);
-
-// Dividir la cadena en los componentes originales
-list($id_dependencia, $trimestre, $actividad) = explode("-", $data);
-
-echo "ID Dependencia: " . $id_dependencia . "<br>";
-echo "Trimestre: " . $trimestre . "<br>";
-echo "Actividad: " . $actividad . "<br>";
-?>
-
-
-
-    
+	<table>
+		<tr>
+			<td>
+				<label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">A: 1er T</label>
+				<input type="number" name="at1" id="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+			</td>
+			<td>
+				<label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">A: 2do T</label>
+				<input type="number" name="at2" id="last_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+			</td>
+			<td>
+				<label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">A: 3er T</label>
+				<input type="number" name="at3" id="last_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+			</td>
+			<td>
+				<label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">A: 4to T</label>
+				<input type="number" name="at4" id="last_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+			</td>
+		</tr>
+	</table>
 </body>
+</body>
+
 </html>
