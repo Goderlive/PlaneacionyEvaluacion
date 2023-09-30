@@ -62,7 +62,7 @@ if ($_SESSION['sistema'] == 'pbrm') {
                             <label for="estrategia" class="mt-4 block mb-2 text-sm font-medium text-gray-900 dark:text-white">Estrategias para alcanzar el objetivo del Programa Presupuestario</label>
                             <textarea id="estrategia" name="estrategia" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"><?= (isset($foda['estrategia'])) ? $foda['estrategia'] : '' ?></textarea>
                             <br>
-                            <button type="submit" name="update_objetivo" value="update_objetivo" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Actualizar Estrategia</button>
+                            <button type="submit" name="update_estrategia" value="update_estrategia" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Actualizar Estrategia</button>
                         </form>
                     </div>
                     <br>
@@ -81,61 +81,59 @@ if ($_SESSION['sistema'] == 'pbrm') {
                                 <br>
                                 <button type="submit" name="delete_pdm" value="delete_pdm" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Eliminar</button>
                             </form>
-                        <?php else : ?>
-                            <?php if (!(isset($_GET['objetivo']) || isset($_GET['estrategia']))) : ?>
-                                Paso 1
-                                <?php $objetivos = traeObjetivos_todos($con) ?>
-                                <form action="" method="GET">
-                                    <input type="hidden" name="id_area" value="<?= $_GET['id_area'] ?>">
-                                    <input type="hidden" name="b" value="<?= $_GET['id_area'] ?>">
-                                    <select name="objetivo" multiple id="countries_multiple" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                        <option selected>Elige un Objetivo PDM</option>
-                                        <?php foreach ($objetivos as $o) : ?>
-                                            <option value="<?= $o['id_objetivo'] ?>"><?= $o['clave_objetivo'] . '-' . $o['nombre_objetivo'] ?></option>
-                                        <?php endforeach ?>
-                                    </select>
-                                    <label for="countries_multiple" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione una opción</label>
-                                    <button type="submit" name="update_objetivo" value="update_objetivo" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Elegir Objetivo</button>
-                                </form>
-                            <?php endif ?>
+                        <?php endif ?>
+                        <?php if (!(isset($_GET['objetivo']) || isset($_GET['estrategia']) || isset($foda['linea_accion']))) : ?>
+                            Paso 1
+                            <?php $objetivos = traeObjetivos_todos($con) ?>
+                            <form action="" method="GET">
+                                <input type="hidden" name="id_area" value="<?= $_GET['id_area'] ?>">
+                                <input type="hidden" name="tipo" value="b">
+                                <select name="objetivo" multiple id="countries_multiple" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option selected>Elige un Objetivo PDM</option>
+                                    <?php foreach ($objetivos as $o) : ?>
+                                        <option value="<?= $o['id_objetivo'] ?>"><?= $o['clave_objetivo'] . '-' . $o['nombre_objetivo'] ?></option>
+                                    <?php endforeach ?>
+                                </select>
+                                <label for="countries_multiple" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione una opción</label>
+                                <button type="submit" name="update_objetivo" value="update_objetivo" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Elegir Objetivo</button>
+                            </form>
+                        <?php endif ?>
 
-                            <?php if (isset($_GET['objetivo'])) : ?>
-                                Paso 2 <br>
-                                Objetivo: <?= traeobjetivoPDM($con, $_GET['objetivo']) ?>
-                                <?php $id_objetivo = $_GET['objetivo'] ?>
-                                <?php $estrategias = traeEstrategias($con, $id_objetivo) ?>
-                                <form action="" method="GET">
-                                    <input type="hidden" name="id_area" value="<?= $_GET['id_area'] ?>">
-                                    <input type="hidden" name="b" value="<?= $_GET['id_area'] ?>">
-                                    <select name="estrategia" multiple id="countries_multiple" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                        <option selected>Elige una Estrategia</option>
-                                        <?php foreach ($estrategias as $e) : ?>
-                                            <option value="<?= $e['id_estrategia'] ?>"><?= $e['clave_estrategia'] . '-' . $e['nombre_estrategia'] ?></option>
-                                        <?php endforeach ?>
-                                    </select>
-                                    <label for="countries_multiple" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione una opción</label>
-                                    <button type="submit" name="update_estrategia" value="update_estrategia" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Elegir Estrategia</button>
-                                </form>
-                            <?php endif ?>
+                        <?php if (isset($_GET['objetivo'])) : ?>
+                            <b>Paso 2</b> <br>
+                            Objetivo PDM: <?= traeobjetivoPDM($con, $_GET['objetivo']) ?>
+                            <?php $id_objetivo = $_GET['objetivo'] ?>
+                            <?php $estrategias = traeEstrategias($con, $id_objetivo) ?>
+                            <form action="" method="GET">
+                                <input type="hidden" name="id_area" value="<?= $_GET['id_area'] ?>">
+                                <input type="hidden" name="tipo" value="b">
+                                <select name="estrategia" multiple id="countries_multiple" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option selected>Elige una Estrategia</option>
+                                    <?php foreach ($estrategias as $e) : ?>
+                                        <option value="<?= $e['id_estrategia'] ?>"><?= $e['clave_estrategia'] . '-' . $e['nombre_estrategia'] ?></option>
+                                    <?php endforeach ?>
+                                </select>
+                                <label for="countries_multiple" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione una opción</label>
+                                <button type="submit" name="update_estrategia" value="update_estrategia" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Elegir Estrategia</button>
+                            </form>
+                        <?php endif ?>
 
-                            <?php if (isset($_GET['estrategia'])) : ?>
-                                <?= $_GET['estrategia'] ?>
-                                Paso Ultimo <br>
-                                <?= traeoestrategia_pdm($con, $_GET['estrategia']) ?>
-                                <?php $id_estrategia = $_GET['estrategia'] ?>
-                                <?php $lineas = traeLineas($con, $id_estrategia) ?>
-                                <form action="" method="POST">
-                                    <input type="hidden" name="id_area" value="<?= $_GET['id_area'] ?>">
-                                    <select multiple name="id_linea" id="countries_multiple" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                        <option selected>Elige una Linea de Acción</option>
-                                        <?php foreach ($lineas as $l) : ?>
-                                            <option value="<?= $l['id_linea'] ?>"><?= $l['clave_linea'] . '-' . $l['nombre_linea'] ?></option>
-                                        <?php endforeach ?>
-                                    </select>
-                                    <label for="countries_multiple" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione una opción</label>
-                                    <button type="submit" name="update_linea" value="update_linea" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Elegir Linea de Acción</button>
-                                </form>
-                            <?php endif ?>
+                        <?php if (isset($_GET['estrategia'])) : ?>
+                            <b>Paso Ultimo</b> <br>
+                            <?= traeoestrategia_pdm($con, $_GET['estrategia']) ?>
+                            <?php $id_estrategia = $_GET['estrategia'] ?>
+                            <?php $lineas = traeLineas($con, $id_estrategia) ?>
+                            <form action="" method="POST">
+                                <input type="hidden" name="id_area" value="<?= $_GET['id_area'] ?>">
+                                <select multiple name="id_linea" id="countries_multiple" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option selected>Elige una Linea de Acción</option>
+                                    <?php foreach ($lineas as $l) : ?>
+                                        <option value="<?= $l['id_linea'] ?>"><?= $l['clave_linea'] . '-' . $l['nombre_linea'] ?></option>
+                                    <?php endforeach ?>
+                                </select>
+                                <label for="update_linea" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione una Linea</label>
+                                <button type="submit" name="update_linea" value="update_linea" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Elegir Linea de Acción</button>
+                            </form>
                         <?php endif ?>
 
                     </div>
@@ -159,7 +157,7 @@ if ($_SESSION['sistema'] == 'pbrm') {
                                 <?php $objetivos = traeODSO($con) ?>
                                 <form action="" method="GET">
                                     <input type="hidden" name="id_area" value="<?= $_GET['id_area'] ?>">
-                                    <input type="hidden" name="b" value="<?= $_GET['id_area'] ?>">
+                                    <input type="hidden" name="tipo" value="b">
                                     <select name="objetivo_ods" multiple id="countries_multiple" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         <option selected>Elige un Objetivo ODS</option>
                                         <?php foreach ($objetivos as $o) : ?>
@@ -167,12 +165,12 @@ if ($_SESSION['sistema'] == 'pbrm') {
                                         <?php endforeach ?>
                                     </select>
                                     <label for="countries_multiple" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione una opción</label>
-                                    <button type="submit" name="update_objetivo" value="update_objetivo" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Elegir Objetivo</button>
+                                    <button type="submit" name="update_objetivo_ods" value="update_objetivo_ods" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Elegir Objetivo</button>
                                 </form>
                             <?php endif ?>
 
                             <?php if (isset($_GET['objetivo_ods'])) : ?>
-                                Paso Ultimo <br>
+                                <b>Paso Ultimo</b> <br>
                                 <?= traeObjetivoODS($con, $_GET['objetivo_ods']) ?>
                                 <?php $objetivo_ods = $_GET['objetivo_ods'] ?>
                                 <?php $estrategias = traeEstrategiasODS($con, $objetivo_ods) ?>
@@ -411,13 +409,464 @@ if ($_SESSION['sistema'] == 'pbrm') {
                             </tbody>
                         </table>
                     </div>
+                <?php endif ?>
+
+
+                <?php if (isset($_GET['id_actividad'])) : ?>
+                    <?php $actividad = traeActividad($con, $_GET['id_actividad']) ?>
+                    <?php $unidades = traeUnidades($con) ?>
+
+                    <div class="relative overflow-x-auto">
+                        <form action="" method="post">
+                            <input type="hidden" name="id_actividad" value="<?= $actividad['id_actividad'] ?>">
+                            <input type="hidden" name="id_area" value="<?= $actividad['id_area'] ?>">
+                            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                    <th scope="col" class="px-2 py-2">
+                                        Actividad
+                                    </th>
+                                    <th scope="col" class="px-2 py-2">
+                                        Unidad de Medida
+                                    </th>
+                                </thead>
+                                <tbody>
+                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                        <th scope="row" class="px-6 py-4">
+                                            <input type="text" maxlength="250" id="nombre_actividad" name="nombre_actividad" value="<?= $actividad['nombre_actividad'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        </th>
+                                        <td class="px-6 py-4">
+                                            <?php if ($actividad['id_unidad'] === null) {
+                                                $idGuardado = 1;
+                                            } else {
+                                                $idGuardado = $actividad['id_unidad'];
+                                            } ?>
+
+                                            <select name="id_unidad" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                <option value="">Selecciona</option>
+                                                <?php foreach ($unidades as $id => $nombre) : ?>
+                                                    <?php $id = $id + 1 ?>
+                                                    <option value="<?= $id; ?>" <?php if ($id == $idGuardado) echo 'selected'; ?>>
+                                                        <?php echo $nombre['nombre_unidad']; ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br>
+                            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                    <th scope="col" class="px-2 py-2">
+                                        Ene
+                                    </th>
+                                    <th scope="col" class="px-2 py-2">
+                                        Feb
+                                    </th>
+                                    <th scope="col" class="px-2 py-2">
+                                        Mar
+                                    </th>
+                                    <th scope="col" class="px-2 py-2">
+                                        Abr
+                                    </th>
+                                    <th scope="col" class="px-2 py-2">
+                                        May
+                                    </th>
+                                    <th scope="col" class="px-2 py-2">
+                                        Jun
+                                    </th>
+                                    <th scope="col" class="px-2 py-2">
+                                        Jul
+                                    </th>
+                                    <th scope="col" class="px-2 py-2">
+                                        Ago
+                                    </th>
+                                    <th scope="col" class="px-2 py-2">
+                                        Sep
+                                    </th>
+                                    <th scope="col" class="px-2 py-2">
+                                        Oct
+                                    </th>
+                                    <th scope="col" class="px-2 py-2">
+                                        Nov
+                                    </th>
+                                    <th scope="col" class="px-2 py-2">
+                                        Dic
+                                    </th>
+                                </thead>
+                                <tbody>
+                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                        <td class="px-6 py-4">
+                                            <input type="number" id="enero" name="enero" value="<?= $actividad['enero'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <input type="number" id="febrero" name="febrero" value="<?= $actividad['febrero'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <input type="number" id="marzo" name="marzo" value="<?= $actividad['marzo'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <input type="number" id="abril" name="abril" value="<?= $actividad['abril'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <input type="number" id="mayo" name="mayo" value="<?= $actividad['mayo'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <input type="number" id="junio" name="junio" value="<?= $actividad['junio'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <input type="number" id="julio" name="julio" value="<?= $actividad['julio'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <input type="number" id="agosto" name="agosto" value="<?= $actividad['agosto'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <input type="number" id="septiembre" name="septiembre" value="<?= $actividad['septiembre'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <input type="number" id="octubre" name="octubre" value="<?= $actividad['octubre'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <input type="number" id="noviembre" name="noviembre" value="<?= $actividad['noviembre'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <input type="number" id="diciembre" name="diciembre" value="<?= $actividad['diciembre'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <?php if ($actividad['validado'] == 1) : ?>
+                                            <td>
+                                                <button type="submit" name="actividad_update" class="text-white bg-yellow-700 hover:bg-yellow-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-800">Modificar</button>
+                                            </td>
+                                        <?php else : ?>
+                                            <td>
+                                                <br>
+                                                <button type="submit" name="actividad_update" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Programar</button>
+                                            </td>
+                                        <?php endif ?>
+                                    </tr>
+                                </tbody>
+                            </table><br>
+
+                            <?php if ($actividad['lineaactividad']) : ?>
+                                Obetivo: <?= $actividad['nombre_objetivo'] ?> <br>
+                                Estrategia: <?= $actividad['nombre_estrategia'] ?> <br>
+                                Línea de Acción: <?= $actividad['nombre_linea'] ?> <br>
+                            <?php endif ?>
+
+
+                            <?php if ($risk = traeRisks($con, $actividad['id_actividad'])) : ?>
+                                el riesgo es: <?= $risk['probabilidad'] . ' y ' . $risk['impacto'] ?>
+                            <?php else : ?>
+
+                                <div class="relative overflow-x-auto">
+                                    Riesgos:
+                                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                            <tr>
+                                                <th scope="col" class="px-6 py-3">
+                                                    Probabilidad
+                                                </th>
+                                                <th scope="col" class="px-6 py-3">
+                                                    Impacto
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                                <td class="px-6 py-4">
+                                                    <?php $probabilidad =  traeProbabilidad($con)  ?>
+                                                    <select id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                        <option selected>Seleccione un Nivel de Probabilidad</option>
+                                                        <?php foreach ($probabilidad as $i) : ?>
+                                                            <option value="<?= $i['valor_probabilidad'] ?>"><?= $i['valor_probabilidad'] . "-" . $i['nombre_probabilidad'] ?></option>
+                                                        <?php endforeach ?>
+                                                    </select>
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    <?php $impacto =  traeImpacto($con)  ?>
+                                                    <select id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                        <option selected>Seleccione un Nivel de Impacto</option>
+                                                        <?php foreach ($impacto as $i) : ?>
+                                                            <option value="<?= $i['valor_impacto'] ?>"><?= $i['valor_impacto'] . "-" . $i['nombre_impacto'] ?></option>
+                                                        <?php endforeach ?>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            <?php endif ?>
+                        </form>
+                    </div>
+
+
+                <?php endif ?>
+
+
+                <?php if (isset($_GET['nueva_actividad'])) : // NUEVA ACTIVIDAD DESDE CERO 
+                ?>
+                    <?php $unidades = traeUnidades($con) ?>
+                    <div class="relative overflow-x-auto">
+                        <form action="" method="post">
+                            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                    <th scope="col" class="px-2 py-2">
+                                        Actividad
+                                    </th>
+                                    <th scope="col" class="px-2 py-2">
+                                        Unidad de Medida
+                                    </th>
+                                </thead>
+                                <tbody>
+                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                        <th scope="row" class="px-6 py-4">
+                                            <input type="text" maxlength="250" id="nombre_actividad" name="nombre_actividad" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        </th>
+                                        <td class="px-6 py-4">
+                                            <select name="id_unidad" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                <option value="">Selecciona</option>
+                                                <?php foreach ($unidades as $id => $nombre) : ?>
+                                                    <option value="<?= $id; ?>">
+                                                        <?php echo $nombre['nombre_unidad']; ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br>
+                            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                    <th scope="col" class="px-2 py-2">
+                                        Ene
+                                    </th>
+                                    <th scope="col" class="px-2 py-2">
+                                        Feb
+                                    </th>
+                                    <th scope="col" class="px-2 py-2">
+                                        Mar
+                                    </th>
+                                    <th scope="col" class="px-2 py-2">
+                                        Abr
+                                    </th>
+                                    <th scope="col" class="px-2 py-2">
+                                        May
+                                    </th>
+                                    <th scope="col" class="px-2 py-2">
+                                        Jun
+                                    </th>
+                                    <th scope="col" class="px-2 py-2">
+                                        Jul
+                                    </th>
+                                    <th scope="col" class="px-2 py-2">
+                                        Ago
+                                    </th>
+                                    <th scope="col" class="px-2 py-2">
+                                        Sep
+                                    </th>
+                                    <th scope="col" class="px-2 py-2">
+                                        Oct
+                                    </th>
+                                    <th scope="col" class="px-2 py-2">
+                                        Nov
+                                    </th>
+                                    <th scope="col" class="px-2 py-2">
+                                        Dic
+                                    </th>
+                                </thead>
+                                <tbody>
+                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                        <td class="px-6 py-4">
+                                            <input type="number" id="enero" name="enero" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <input type="number" id="febrero" name="febrero" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <input type="number" id="marzo" name="marzo" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <input type="number" id="abril" name="abril" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <input type="number" id="mayo" name="mayo" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <input type="number" id="junio" name="junio" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <input type="number" id="julio" name="julio" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <input type="number" id="agosto" name="agosto" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <input type="number" id="septiembre" name="septiembre" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <input type="number" id="octubre" name="octubre" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <input type="number" id="noviembre" name="noviembre" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <input type="number" id="diciembre" name="diciembre" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <br>
+                                            <button type="submit" name="nueva_actividad" class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Registrar</button>
+                                        </td>
+
+                                    </tr>
+                                </tbody>
+                            </table><br>
+
+                        </form>
+                    </div>
+
 
                 <?php endif ?>
 
                 <?php if (isset($_GET['tipo']) && $_GET['tipo'] == 'a') : ?>
-                    entraste al a
+                    <?php $id_area = $_GET['id_area'] ?>
+                    <?php $actividadesAreas = actividadesArea($con, $id_area) ?>
+                    <div class="relative overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                <tr>
+                                    <th scope="col" class="px-2 py-2">
+                                        Actividad
+                                    </th>
+                                    <th scope="col" class="px-2 py-2">
+                                        Unidad de Medida
+                                    </th>
+                                    <th scope="col" class="px-2 py-2 bg-gray-50">
+                                        Anual
+                                    </th>
+                                    <th scope="col" class="px-2 py-2">
+                                        Ene
+                                    </th>
+                                    <th scope="col" class="px-2 py-2">
+                                        Feb
+                                    </th>
+                                    <th scope="col" class="px-2 py-2">
+                                        Mar
+                                    </th>
+                                    <th scope="col" class="px-2 py-2">
+                                        Abr
+                                    </th>
+                                    <th scope="col" class="px-2 py-2">
+                                        May
+                                    </th>
+                                    <th scope="col" class="px-2 py-2">
+                                        Jun
+                                    </th>
+                                    <th scope="col" class="px-2 py-2">
+                                        Jul
+                                    </th>
+                                    <th scope="col" class="px-2 py-2">
+                                        Ago
+                                    </th>
+                                    <th scope="col" class="px-2 py-2">
+                                        Sep
+                                    </th>
+                                    <th scope="col" class="px-2 py-2">
+                                        Oct
+                                    </th>
+                                    <th scope="col" class="px-2 py-2">
+                                        Nov
+                                    </th>
+                                    <th scope="col" class="px-2 py-2">
+                                        Dic
+                                    </th>
+                                    <th scope="col" class="px-2 py-2">
+                                        Acción
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($actividadesAreas as $aca) : ?>
+                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                        <td class="px-2 py-2">
+                                            <?= $aca['nombre_actividad'] ?>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            <?= $aca['nombre_unidad'] ?>
+                                        </td>
+                                        <td class="px-2 py-2 bg-gray-50">
+                                            <?= $aca['enero'] + $aca['febrero'] + $aca['marzo'] + $aca['abril'] + $aca['mayo'] + $aca['junio'] + $aca['julio'] + $aca['agosto'] + $aca['septiembre'] + $aca['octubre'] + $aca['noviembre'] + $aca['diciembre'] ?>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            <?= $aca['enero'] ?>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            <?= $aca['febrero'] ?>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            <?= $aca['marzo'] ?>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            <?= $aca['abril'] ?>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            <?= $aca['mayo'] ?>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            <?= $aca['junio'] ?>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            <?= $aca['julio'] ?>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            <?= $aca['agosto'] ?>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            <?= $aca['septiembre'] ?>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            <?= $aca['octubre'] ?>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            <?= $aca['noviembre'] ?>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            <?= $aca['diciembre'] ?>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            <form action="" method="get">
+                                                <?php if ($aca['validado'] == 1) : ?>
+                                                    <button type="submit" name="id_actividad" value="<?= $aca['id_actividad'] ?>" class="text-white bg-yellow-700 hover:bg-yellow-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-800">Modificar</button>
+                                                <?php else : ?>
+                                                    <button type="submit" name="id_actividad" value="<?= $aca['id_actividad'] ?>" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Programar</button>
+                                                <?php endif ?>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                <?php endforeach ?>
+                                <tr>
+                                    <td>
+                                        <br>
+                                        <form action="" method="get">
+                                            <input type="hidden" name="id_area" value="">
+                                            <button type="submit" name="nueva_actividad" value="<?= $actividadesAreas[0]['id_area'] ?>" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Nueva Actividad</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
                 <?php endif ?>
             <?php endif ?>
+
+
+
 
 
             <?php if (!$_GET) : ?>
@@ -486,4 +935,7 @@ if ($_SESSION['sistema'] == 'pbrm') {
     </script>
 <?php
 }
+
+
+
 ?>

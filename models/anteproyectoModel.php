@@ -18,16 +18,16 @@ function traeobjetivoPDM($con, $id_objetivo){
     $sentencia = "SELECT * FROM pdm_objetivos WHERE id_objetivo = $id_objetivo";
     $stm = $con->query($sentencia);
     $objetivo = $stm->fetch(PDO::FETCH_ASSOC);
-    return $objetivo['clave_objetivo'];
+    return $objetivo['clave_objetivo'] . " " . $objetivo['nombre_objetivo'];
 }
 
 function traeoestrategia_pdm($con, $id_estrategia){
-    $sentencia = "SELECT * FROM pdm_objetivos o
-    JOIN pdm_estrategias e ON o.id_objetivo = e.id_estrategia
-    WHERE id_estrategia = $id_estrategia";
+    $sentencia = "SELECT * FROM pdm_estrategias e
+    LEFT JOIN pdm_objetivos o ON o.id_objetivo = e.id_objetivo
+    WHERE e.id_estrategia = $id_estrategia";
     $stm = $con->query($sentencia);
     $estrategia = $stm->fetch(PDO::FETCH_ASSOC);
-    return $estrategia['clave_objetivo'] . '<br>' . $estrategia['clave_estrategia'];
+    return $estrategia['clave_objetivo'] . " " . $estrategia['nombre_objetivo'] . '<br>' . $estrategia['clave_estrategia']. ' ' . $estrategia['nombre_estrategia'] ;
 }
 
 function traeObjetivos_todos($con){
@@ -61,6 +61,18 @@ function traeLineas($con, $id_estrategia){
     return $lineas = $stm->fetchAll(PDO::FETCH_ASSOC);
 }
 
+function traeProgramacionesOld($con, $id_actividad){
+    $sentencia = "SELECT * FROM programaciones WHERE id_actividad = $id_actividad";
+    $stm = $con->query($sentencia);
+    return $programacion = $stm->fetch(PDO::FETCH_ASSOC);
+}
+
+function traeAlcanzadoOld($con, $id_actividad){
+    $sentencia = "SELECT SUM(avance) AS suma FROM avances WHERE id_actividad = $id_actividad";
+    $stm = $con->query($sentencia);
+    return $programacion = $stm->fetch(PDO::FETCH_ASSOC);
+}
+
 function traeOEL($con, $id_linea){
     $sentencia = "SELECT * FROM pdm_lineas l
     LEFT JOIN pdm_estrategias e ON e.id_estrategia = l.id_estrategia
@@ -74,6 +86,18 @@ function traeODSO($con){
     $sentencia = "SELECT * FROM objetivos_ods";
     $stm = $con->query($sentencia);
     return $oel = $stm->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function traeImpacto($con){
+    $sentencia = "SELECT * FROM risks_impacto ORDER BY id_impacto DESC";
+    $stm = $con->query($sentencia);
+    return $impacto = $stm->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function traeProbabilidad($con){
+    $sentencia = "SELECT * FROM risks_probabilidad ORDER BY id_probabilidad DESC";
+    $stm = $con->query($sentencia);
+    return $probabilidad = $stm->fetchAll(PDO::FETCH_ASSOC);
 }
 
 function traeEstrategiasODS($con, $objetivo_ods){
@@ -91,12 +115,37 @@ function traeODSyE($con, $id_estrategia){
     return $oel = $stm->fetch(PDO::FETCH_ASSOC);
 }
 
+function traeRisks($con, $id_actividad){
+    $sentencia = "SELECT * FROM risks WHERE id_actividad = $id_actividad";
+    $stm = $con->query($sentencia);
+    return $risks = $stm->fetch(PDO::FETCH_ASSOC);
+}
+
+function traeActividad($con, $id_actividad){
+    $sentencia = "SELECT *, a.id_actividad as id_actividad FROM ante_actividades a
+    LEFT JOIN ante_programaciones p ON p.id_actividad = a.id_actividad
+    LEFT JOIN lineasactividades la ON la.id_actividad = a.id_actividad
+    LEFT JOIN pdm_lineas pl ON pl.id_linea = la.id_linea
+    LEFT JOIN pdm_estrategias pe ON pe.id_estrategia = pl.id_estrategia
+    LEFT JOIN pdm_objetivos po ON po.id_objetivo = pe.id_objetivo
+    WHERE a.id_actividad = $id_actividad";
+    $stm = $con->query($sentencia);
+    return $oel = $stm->fetch(PDO::FETCH_ASSOC);
+}
+
 function traeIndicadores($con, $id_dependencia){
     $sentencia = "SELECT * FROM ante_indicadores_uso
     WHERE id_dependencia = $id_dependencia";
     $stm = $con->query($sentencia);
     $indicadores = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $indicadores;
+}
+
+function traeUnidades($con){
+    $sentencia = "SELECT * FROM unidades_medida";
+    $stm = $con->query($sentencia);
+    $unidades = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $unidades;
 }
 
 function traeActividadesDependencia($con, $id_dependencia){
@@ -109,6 +158,21 @@ function traeActividadesDependencia($con, $id_dependencia){
     $actividades = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $actividades;
 }
+
+
+function actividadesArea($con, $id_area){
+    $sentencia = "SELECT * FROM ante_actividades a
+    LEFT JOIN lineasactividades la ON la.id_actividad = a.id_actividad  
+    LEFT JOIN pdm_lineas pl ON pl.id_linea = la.id_linea
+    LEFT JOIN ante_programaciones p ON p.id_actividad = a.id_actividad
+    LEFT JOIN unidades_medida u ON u.id_unidad = a.id_unidad
+    WHERE a.id_area = $id_area
+    GROUP BY a.id_actividad";
+    $stm = $con->query($sentencia);
+    return $oel = $stm->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
 
 
 if(isset($_POST['update_foda'])){
@@ -147,7 +211,7 @@ if(isset($_POST['update_foda'])){
 
 
 
-if(isset($_POST['update_objetivo'])){
+if(isset($_POST['update_estrategia'])){
     $id_area = $_POST['id_area'];
     $estrategia = $_POST['estrategia'];
 
@@ -167,7 +231,7 @@ if(isset($_POST['update_objetivo'])){
     ?>
     <form id="myForm" action="" method="get">
         <input type="hidden" name="id_area" value="<?=$id_area?>">
-        <input type="hidden" name="b" value="<?=$id_area?>">
+        <input type="hidden" name="tipo" value="b">
     </form>
     <script type="text/javascript">
         document.getElementById('myForm').submit();
@@ -197,7 +261,7 @@ if(isset($_POST['id_linea'])){
     ?>
     <form id="myForm" action="" method="get">
         <input type="hidden" name="id_area" value="<?=$id_area?>">
-        <input type="hidden" name="b" value="<?=$id_area?>">
+        <input type="hidden" name="tipo" value="b">
     </form>
     <script type="text/javascript">
         document.getElementById('myForm').submit();
@@ -229,7 +293,7 @@ if(isset($_POST['update_ODS'])){
     ?>
     <form id="myForm" action="" method="get">
         <input type="hidden" name="id_area" value="<?=$id_area?>">
-        <input type="hidden" name="b" value="<?=$id_area?>">
+        <input type="hidden" name="tipo" value="b">
     </form>
     <script type="text/javascript">
         document.getElementById('myForm').submit();
@@ -253,7 +317,7 @@ if(isset($_POST['delete_pdm'])){
     ?>
     <form id="myForm" action="" method="get">
         <input type="hidden" name="id_area" value="<?=$id_area?>">
-        <input type="hidden" name="b" value="<?=$id_area?>">
+        <input type="hidden" name="tipo" value="b">
     </form>
     <script type="text/javascript">
         document.getElementById('myForm').submit();
@@ -274,7 +338,7 @@ if(isset($_POST['delete_ods'])){
     ?>
     <form id="myForm" action="" method="get">
         <input type="hidden" name="id_area" value="<?=$id_area?>">
-        <input type="hidden" name="b" value="<?=$id_area?>">
+        <input type="hidden" name="tipo" value="b">
     </form>
     <script type="text/javascript">
         document.getElementById('myForm').submit();
@@ -318,7 +382,6 @@ if(isset($_POST['program_indicador'])){
     $sqlr = $con->prepare($sql);
     $sqlr->execute(array($id_indicador));
 
-    print $id_indicador;
     ?>
     <form id="myForm" action="" method="get">
         <input type="hidden" name="id_dependencia" value="<?=$id_dependencia?>">
@@ -329,4 +392,58 @@ if(isset($_POST['program_indicador'])){
     </script>
     <?php
 }
+
+
+
+if(isset($_POST['actividad_update'])){
+
+    $id_actividad = $_POST['id_actividad'];
+    $id_area = $_POST['id_area'];
+    $nombre_actividad = $_POST['nombre_actividad'];
+    $id_unidad = $_POST['id_unidad'];
+
+    // Aqui traemos la informacion del 08c
+    $p = traeProgramacionesOld($con, $id_actividad);
+    $a = traeAlcanzadoOld($con, $id_actividad);
+
+    $programado_anual_anterior = $p['enero'] + $p['febrero'] + $p['marzo'] + $p['abril'] + $p['mayo'] + $p['junio'] + $p['julio'] + $p['agosto'] + $p['septiembre'] + $p['octubre'] + $p['noviembre'] + $p['diciembre'];
+    $alcanzado_anual_anterior = $a['suma'];
+
+    $enero = $_POST['enero'];
+    $febrero = $_POST['febrero'];
+    $marzo = $_POST['marzo'];
+    $abril = $_POST['abril'];
+    $mayo = $_POST['mayo'];
+    $junio = $_POST['junio'];
+    $julio = $_POST['julio'];
+    $agosto = $_POST['agosto'];
+    $septiembre = $_POST['septiembre'];
+    $octubre = $_POST['octubre'];
+    $noviembre = $_POST['noviembre'];
+    $diciembre = $_POST['diciembre'];
+    $validado = 1;
+    
+    $sql = "UPDATE ante_actividades SET validado = $validado, nombre_actividad = '$nombre_actividad', id_unidad = '$id_unidad', programado_anual_anterior = '$programado_anual_anterior', alcanzado_anual_anterior = '$alcanzado_anual_anterior' WHERE id_actividad = ?";
+    $sqlr = $con->prepare($sql);
+    $sqlr->execute(array($id_actividad));
+
+    $sql = "UPDATE ante_programaciones SET enero = '$enero', febrero = '$febrero', marzo = '$marzo', abril = '$abril', mayo = '$mayo', junio = '$junio', julio = '$julio', agosto = '$agosto', septiembre = '$septiembre', octubre = '$octubre', noviembre = '$noviembre', diciembre = '$diciembre' WHERE id_actividad = ?";
+    $sqlp = $con->prepare($sql);
+    $sqlp->execute(array($id_actividad));
+
+    ?>
+    <form id="myForm" action="" method="get">
+        <input type="hidden" name="id_area" value="<?=$id_area?>">
+        <input type="hidden" name="tipo" value="a">
+    </form>
+    <script type="text/javascript">
+        document.getElementById('myForm').submit();
+    </script>
+    <?php
+}
+
+if(isset($_POST[''])){
+
+}
+
 ?>

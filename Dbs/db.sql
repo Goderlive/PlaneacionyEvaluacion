@@ -6982,7 +6982,7 @@ CREATE TABLE ante_actividades(
   alcanzado_anual_anterior VARCHAR(50),
   id_area INT,
   id_validacion INT,
-  validado INT,
+  validado INT DEFAULT 0,
   creacion DATETIME DEFAULT CURRENT_TIMESTAMP(),
   id_creacion INT,
   modificacion DATETIME, 
@@ -10008,3 +10008,54 @@ INSERT INTO `ante_indicadores_uso` (`id`, `anio`, `id_dep_general`, `id_dep_aux`
 (327, '2024', 37, 34, 187, 'Tasa de variación en el número de artesanos participantes en eventos.', 'ARTESANOS PARTICIPANTES EN EVENTOS EN EL AñO ACTUAL', 'ARTESANOS PARTICIPANTES EN EVENTOS EN EL AñO ANTERIOR', '', 'Sumable', 'Sumable', '', 'Evento', 'Evento', '', 'Numero de artesanos particpantes en eventos en el año, sobre los  artesanos participantes en el año anterior', 'Estratégico', '((Artesanos participantes en eventos en el año actual/Artesanos participantes en eventos en el año anterior)-1) *100', 'Eficiencia', 'Anual', 'Eventos realizados e', 'Registro del número de artesanaos participantes en eventos', 'Reporte de artesanos participantes en eventos en el ano 2022.', 'Padrón de beneficiados para eventos internos.', '0', '0', '0', '5', '0', '0', '0', '5', '', '', '', '', 32, 160, '2023-04-20 09:08:17', 1),
 (328, '2024', 37, 34, 187, 'Porcentaje de eventos realizados para la venta de los productos de los artesanos.', 'EVENTOS PARA LA VENTA DE LOS PRODUCTOS DE LOS ARTESANOS REALIZADOS', 'EVENTOS PARA LA VENTA DE LOS PRODUCTOS DE LOS ARTESANOS PROGRAMADOS Y/O GESTIONADOS', '', 'Sumable', 'Sumable', '', 'Evento', 'Evento', '', 'Es la comparativa de los eventos realizados para la venta de productos de los artesanos de este año sobre los eventos realizados para la venta de productos del año anterior.', 'Gestión', '(Eventos para la venta de los productos de los artesanos realizados/Eventos para la venta de los productos de los artesanos programados y/o gestionados) *100', 'Eficiencia', 'Semestral', 'Registros internos d', 'Registros internos del 2022 y del ano actual.', 'Solicitudes de eventos realizados en 2022 para la venta de productos de los artesanos.', 'Información del programa. Estadística interna.', '0', '1', '0', '1', '0', '1', '0', '1', '', '', '', '', 32, 160, '2023-04-20 09:08:17', 1),
 (329, '2024', 37, 34, 187, 'Porcentaje de pláticas informativas sobre promoción y comercialización.', 'PLáTICAS INFORMATIVAS SOBRE PROMOCIóN Y COMERCIALIZACIóN OTORGADAS', 'PLáTICAS INFORMATIVAS SOBRE PROMOCIóN Y COMERCIALIZACIóN PROGRAMADAS', '', 'Sumable', 'Sumable', '', 'Platica', 'Platica', '', 'Diferencia de pláticas informativas sobre promoción y comercialización otorgadas, sobre las programadas', 'Gestión', '(Pláticas informativas sobre promoción y comercialización otorgadas/Pláticas informativas sobre promoción y comercialización programadas) *100', 'Eficiencia', 'Trimestral', 'Platicas informativa', 'Listas de asistencia, fotografías de platicas informativas.', 'Reporte de pláticas informativas realizadas sobre promoción y comercialización en 2022.', 'Listas de asistencia. Fotografías', '1', '1', '1', '1', '1', '1', '1', '1', '', '', '', '', 32, 160, '2023-04-20 09:08:17', 1);
+
+
+DROP TABLE IF EXISTS risks;
+CREATE TABLE risks(
+  id_risks INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  id_actividad INT NOT NULL,
+  probabilidad VARCHAR(2),
+  impacto VARCHAR(2)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+
+DROP TABLE IF EXISTS risks_impacto;
+CREATE TABLE risks_impacto(
+  id_impacto INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  valor_impacto VARCHAR(2),
+  nombre_impacto VARCHAR(30),
+  descripcion_impacto VARCHAR(200)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+INSERT INTO risks_impacto (valor_impacto, nombre_impacto, descripcion_impacto) VALUES
+("1", "Sin impacto o impacto mínimo", "El evento adverso tiene efectos insignificantes en la organización o la comunidad."),
+("2", "Bajo impacto", "El evento tiene un impacto relativamente bajo que se puede manejar fácilmente."),
+("3", "Bajo impacto", "El evento tiene un impacto relativamente bajo que se puede manejar fácilmente."),
+("4", "Impacto moderado", "El evento puede causar algunas interrupciones y costos significativos."),
+("5", "Impacto moderado", "El evento puede causar algunas interrupciones y costos significativos."),
+("6", "Impacto sustancial", "El evento tiene un impacto significativo en las operaciones y puede requerir esfuerzos significativos para la recuperación."),
+("7", "Impacto sustancial", "El evento tiene un impacto significativo en las operaciones y puede requerir esfuerzos significativos para la recuperación."),
+("8", "Alto impacto", "El evento tiene un impacto grave que podría poner en peligro la viabilidad de la organización o comunidad."),
+("9", "Alto impacto", "El evento tiene un impacto grave que podría poner en peligro la viabilidad de la organización o comunidad."),
+("10", "Impacto máximo", "El evento tiene un impacto catastrófico y podría ser una amenaza existencial para la organización o comunidad.");
+
+
+DROP TABLE IF EXISTS risks_probabilidad ;
+CREATE TABLE risks_probabilidad (
+  id_probabilidad INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  valor_probabilidad VARCHAR(2),
+  nombre_probabilidad VARCHAR(30),
+  descripcion_probabilidad VARCHAR(200)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+INSERT INTO risks_probabilidad (valor_probabilidad, nombre_probabilidad, descripcion_probabilidad) VALUES
+("1", "Muy improbable", "La probabilidad de que ocurra el evento es extremadamente baja."),
+("2", "Baja probabilidad", "El evento es poco probable, pero no se puede descartar por completo."),
+("3", "Baja probabilidad", "El evento es poco probable, pero no se puede descartar por completo."),
+("4", "Probabilidad moderada", "Existe una probabilidad razonable de que ocurra el evento en un período de tiempo determinado."),
+("5", "Probabilidad moderada", "Existe una probabilidad razonable de que ocurra el evento en un período de tiempo determinado."),
+("6", "Probabilidad sustancial", "El evento es probable y podría ocurrir en varias ocasiones."),
+("7", "Probabilidad sustancial", "El evento es probable y podría ocurrir en varias ocasiones."),
+("8", "Alta probabilidad", "El evento es muy probable y es probable que ocurra frecuentemente."),
+("9", "Alta probabilidad", "El evento es muy probable y es probable que ocurra frecuentemente."),
+("10", "Cierta probabilidad", "El evento es inevitable y seguro que ocurrirá.");
+
+
