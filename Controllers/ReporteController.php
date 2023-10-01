@@ -78,7 +78,7 @@ function ValidaBotones($con, $mes, $actividad, $codigo_actividad, $id_actividad)
         $text = "Revisión";
         $boton = 'disabled class = "bg-yellow-300 cursor-not-allowed text-white hover:bg-yellow-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800';
     }
-    if($mes >  intval(date('m'))){
+    if(!$mes){ // ($mes >  intval(date('m')))
         $boton = 'disabled class="text-white bg-blue-400 dark:bg-blue-500 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center';
     }
 
@@ -110,18 +110,21 @@ function barraAvance($con, $id_actividad, $mes){
         $total = 100;
         $text .= '<div class="w-full bg-gray-200 rounded-full dark:bg-gray-700">
                     <div class="bg-ray-600 text-xs font-medium text-blue-200 text-center p-0.5 leading-none rounded-full" style="width: '.$total.'%"> 0%</div>
-                </div>';
+                </div>
+                Avance: '.$avance;
     }
     elseif($avance == 0 && $sumaProgramacion == 0){
         $total = 100;
         $text .= '<div class="w-full bg-gray-200 rounded-full dark:bg-gray-700">
                     <div class="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style="width: '.$total.'%"> 100%</div>
-                </div>';
+                </div>
+                Avance: '.$avance;
     }elseif($avance == 0 && $sumaProgramacion != 0){
         $total = 100;
         $text .= '<div class="w-full bg-gray-200 rounded-full dark:bg-gray-700">
                     <div class="bg-red-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style="width: '.$total.'%"> 0%</div>
-                </div>';
+                </div>
+                Avance: '.$avance;
     }elseif($avance < $sumaProgramacion){
         $total = ($avance / $sumaProgramacion) * 100;
         $total = intval($total);
@@ -129,22 +132,26 @@ function barraAvance($con, $id_actividad, $mes){
 
         $text .= '<div class="w-full bg-gray-200 rounded-full dark:bg-gray-700">
                     <div class="bg-yellow-300 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style="width: '.$total.'%"> '.$total.'%</div>
-                </div>';
+                </div>
+                Avance: '.$avance;
     }elseif($avance == $sumaProgramacion){
         $total = 100;
         $text .= '<div class="w-full bg-gray-200 rounded-full dark:bg-gray-700">
                     <div class="bg-blue-500 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style="width: '.$total.'%"> '.$total.'%</div>
-                </div>';
+                </div>
+                Avance: '.$avance;
     }elseif($avance > $sumaProgramacion && $sumaProgramacion == 0){
         $text = '<div class="w-full bg-gray-200 rounded-full dark:bg-gray-700">
                 <div class="bg-pink-400 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style="width: 100%">100%</div>
-            </div>';
+            </div>
+            Avance: '.$avance;
     }elseif($avance > $sumaProgramacion  && $sumaProgramacion != 0){
         $total = ($avance / $sumaProgramacion) * 100;
         $total = intval($total);
         $text .= '<div class="w-full bg-gray-200 rounded-full dark:bg-gray-700">
                     <div class="bg-pink-400 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style="width: 100%"> '.$total.'%</div>
-                </div>';
+                </div>
+                Avance: '.$avance;
     }
 
     return $text;
