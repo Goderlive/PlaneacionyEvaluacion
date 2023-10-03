@@ -27,7 +27,7 @@ if ($_SESSION['sistema'] == 'pbrm') {
     <body>
         <div class="container mx-auto">
             <br>
-            <?= breadcrumbs(array("Inicio" => "index.php", "Actividades" => "")) ?>
+            <?= breadcrumbs(array("Inicio" => "index.php", "Anteproyecto 2024" => "anteproyecto.php")) ?>
             <br>
             <?php if ($_GET) : ?>
                 <?php if (isset($_GET['tipo']) && $_GET['tipo'] == 'b') : ?>
@@ -605,11 +605,12 @@ if ($_SESSION['sistema'] == 'pbrm') {
                 <?php endif ?>
 
 
-                <?php if (isset($_GET['nueva_actividad'])) : // NUEVA ACTIVIDAD DESDE CERO 
-                ?>
+                <?php if (isset($_GET['nueva_actividad'])) : // NUEVA ACTIVIDAD DESDE CERO ?>
+                    <?php $id_area = $_GET['id_area'] ?>
                     <?php $unidades = traeUnidades($con) ?>
                     <div class="relative overflow-x-auto">
                         <form action="" method="post">
+                            <input type="hidden" name="id_area" value="<?= $id_area ?>">
                             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                     <th scope="col" class="px-2 py-2">
@@ -719,7 +720,7 @@ if ($_SESSION['sistema'] == 'pbrm') {
                                     <tr>
                                         <td>
                                             <br>
-                                            <button type="submit" name="nueva_actividad" class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Registrar</button>
+                                            <button type="submit" name="nueva_actividad" value="nueva_actividad" class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Registrar</button>
                                         </td>
 
                                     </tr>
@@ -852,7 +853,7 @@ if ($_SESSION['sistema'] == 'pbrm') {
                                     <td>
                                         <br>
                                         <form action="" method="get">
-                                            <input type="hidden" name="id_area" value="">
+                                            <input type="hidden" name="id_area" value="<?= $id_area ?>">
                                             <button type="submit" name="nueva_actividad" value="<?= $actividadesAreas[0]['id_area'] ?>" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Nueva Actividad</button>
                                         </form>
                                     </td>
@@ -866,16 +867,31 @@ if ($_SESSION['sistema'] == 'pbrm') {
             <?php endif ?>
 
 
-
-
-
             <?php if (!$_GET) : ?>
-                <?php if ($permisos['nivel'] > 3) :  // Primero veridicamos el permiso... EN CASO DE ENLACE 
-                ?>
-                    <?php if ($real_anio == $user_anio) : // Luego verificamos si es un anio corriente 
-                    ?>
-                        <div>
-                            <a href="?id_dependencia=<?= $permisos['id_dependencia'] ?>&tipo=d" class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Indicadores</a>
+                <?php if ($permisos['nivel'] > 3) :  // Primero veridicamos el permiso... EN CASO DE ENLACE ?>
+                    <?php if ($real_anio == $user_anio) : // Luego verificamos si es un anio corriente ?>
+                        <h2 class="text-4xl font-bold dark:text-white">Formatos para Imprimir</h2>
+                        
+                        <br>
+                        <div class="flex items-center w-full space-x-2">
+                            <br>
+                            <form action="sources/TCPDF-main/examples/ante_01a.php" method="post">
+                                <input type="hidden" name="id_dependencia" value="<?= $permisos['id_dependencia'] ?>">
+                                <button type="submit" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">01a</button>
+                            </form>
+
+                            <?= boton1b($con, $permisos['id_dependencia']) ?>
+                            <?= boton01c($con, $permisos['id_dependencia']) ?>
+                            <?= boton01d($con, $permisos['id_dependencia']) ?>
+                            <button type="button" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">01e</button>
+                            <?= boton02a($con, $permisos['id_dependencia']) ?>
+                        </div>
+                        <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
+
+                        <h2 class="text-4xl font-bold dark:text-white">Captura de Información</h2>
+                        <br>
+                        <div class="mt-5">
+                            <a href="?id_dependencia=<?= $permisos['id_dependencia'] ?>&tipo=d" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Indicadores</a>
                         </div>
                         <br><br>
                         <div class="grid grid-cols-4">
@@ -885,29 +901,38 @@ if ($_SESSION['sistema'] == 'pbrm') {
                             //En caso de que sea un enlace general. le asignamos la chave de la dependencia, y asi lo buscaremos con un metodo especial
                             if ($permisos['id_dependencia'] != '') {
                                 $dep = $permisos['id_dependencia'];
-                                $areas = areas_con($con, $dep, $real_anio);
+                                $areas = anteAreas_con($con, $dep);
                             } else { // En caso de que el permiso se encuentre en
                                 $dep = $permisos['id_area'];
                                 $areas = unArea($con, $dep, $real_anio);
                             }
                             foreach ($areas as $area) : ?>
                                 <div class="items-start p-4 ml-2 mr-2 mb-4 text-center  bg-white rounded-lg border border-gray-400 shadow-md dark:bg-gray-800 dark:border-gray-700">
-                                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"> <?= $area['nombre_area'] ?> </h5>
+                                    <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white"> <?= $area['nombre_area'] ?> </h5>
                                     <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><?= $area['clave_dependencia'] . '-' . $area['clave_dependencia_auxiliar'] . '-' . $area['codigo_proyecto'] ?></p>
                                     <div class="inline-flex rounded-md shadow-sm" role="group">
                                         <form action="" method="get">
                                             <input type="hidden" name="id_area" value="<?= $area['id_area'] ?>">
-                                            <button type="submit" name="tipo" value="b" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-l-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700">
-                                                01b
-                                            </button>
-                                            <button type="submit" name="tipo" value="a" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-r-md hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700">
-                                                02a
-                                            </button>
+                                            <?php if($area['diagnostico_fortaleza'] && $area['diagnostico_oportunidad'] && $area['diagnostico_debilidad'] && $area['diagnostico_amenaza'] && $area['estrategia'] && $area['id_ods'] && $area['linea_accion']): ?>
+                                                <button type="submit" name="tipo" value="b" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                                                    01b
+                                                </button>
+                                            <?php else: ?>
+                                                <button type="submit" name="tipo" value="b" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-l-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700">
+                                                    01b
+                                                </button>
+                                            <?php endif ?>
+                                            <?php if(controller_ante_actividadesValidadas($con, $area['id_area'])): ?>                                                
+                                                <button type="submit" name="tipo" value="a" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                                                    02a
+                                                </button>
+                                            <?php else: ?>
+                                                <button type="submit" name="tipo" value="a" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-r-md hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700">
+                                                    02a
+                                                </button>
+                                            <?php endif ?>
                                         </form>
                                     </div>
-
-
-
                                     <div class="px-3 pt-4 pb-2 text-center">
                                         <?php $lineas = buscalineas($con, $area['id_area']) ?>
                                         <?php if ($lineas) : ?>

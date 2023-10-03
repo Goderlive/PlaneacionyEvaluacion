@@ -115,6 +115,58 @@ function traeODSyE($con, $id_estrategia){
     return $oel = $stm->fetch(PDO::FETCH_ASSOC);
 }
 
+function traeAreasUnoB($con, $id_dependencia){
+    $sentencia = "SELECT * FROM ante_areas a
+    LEFT JOIN ante_unob u ON u.id_area = a.id_area
+    WHERE a.id_dependencia = $id_dependencia";
+    $stm = $con->query($sentencia);
+    return $unoB= $stm->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function traeAreeasUnoC($con, $id_dependencia){
+    $sentencia = "SELECT * FROM ante_actividades a
+    LEFT JOIN ante_areas ar ON ar.id_area = a.id_area
+    WHERE ar.id_dependencia = $id_dependencia";
+    $stm = $con->query($sentencia);
+    return $unoB= $stm->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function anteAreas_con($con, $id_dependencia){
+    $sql = "SELECT *, a.id_area as id_area FROM areas a
+        INNER JOIN dependencias_generales dp ON a.id_dependencia_general = dp.id_dependencia
+        INNER JOIN dependencias_auxiliares da ON a.id_dependencia_aux = da.id_dependencia_auxiliar
+        INNER JOIN proyectos py ON a.id_proyecto = py.id_proyecto
+        INNER JOIN programas_presupuestarios pp ON py.id_programa = pp.id_programa
+        LEFT JOIN ante_unob ab ON ab.id_area = a.id_area
+        WHERE a.id_dependencia = $id_dependencia";
+    $stm = $con->query($sql);
+    $areas = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $areas;
+}
+
+function ante_actividadesValidadas($con, $id_area){
+    $sql = "SELECT * FROM ante_actividades
+    WHERE id_area = $id_area";
+    $stm = $con->query($sql);
+    $areas = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $areas;
+}
+
+function traeAreeas02a($con, $id_dependencia){
+    $sentencia = "SELECT * FROM ante_actividades a
+    LEFT JOIN ante_areas ar ON ar.id_area = a.id_area
+    WHERE ar.id_dependencia = $id_dependencia";
+    $stm = $con->query($sentencia);
+    return $unoB= $stm->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function traeAnteIndicadores($con, $id_dependencia){
+    $sentencia = "SELECT * FROM ante_indicadores_uso i
+    WHERE i.id_dependencia = $id_dependencia";
+    $stm = $con->query($sentencia);
+    return $unod = $stm->fetchAll(PDO::FETCH_ASSOC);
+}
+
 function traeRisks($con, $id_actividad){
     $sentencia = "SELECT * FROM risks WHERE id_actividad = $id_actividad";
     $stm = $con->query($sentencia);
@@ -200,7 +252,7 @@ if(isset($_POST['update_foda'])){
     ?>
     <form id="myForm" action="" method="get">
         <input type="hidden" name="id_area" value="<?=$id_area?>">
-        <input type="hidden" name="b" value="<?=$id_area?>">
+        <input type="hidden" name="tipo" value="b">
     </form>
     <script type="text/javascript">
         document.getElementById('myForm').submit();
@@ -442,8 +494,52 @@ if(isset($_POST['actividad_update'])){
     <?php
 }
 
-if(isset($_POST[''])){
 
+
+
+
+if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['nueva_actividad'])){
+
+
+    $id_area = $_POST['id_area'];
+    $nombre_actividad = $_POST['nombre_actividad'];
+    $id_unidad = $_POST['id_unidad'];
+    $enero = $_POST['enero'];
+    $febrero = $_POST['febrero'];
+    $marzo = $_POST['marzo'];
+    $abril = $_POST['abril'];
+    $mayo = $_POST['mayo'];
+    $junio = $_POST['junio'];
+    $julio = $_POST['julio'];
+    $agosto = $_POST['agosto'];
+    $septiembre = $_POST['septiembre'];
+    $octubre = $_POST['octubre'];
+    $noviembre = $_POST['noviembre'];
+    $diciembre = $_POST['diciembre'];
+    $programado_anual_anterior = 0;
+    $alcanzado_anual_anterior = 0;
+    $validado = 1;
+    
+    $sql = "INSERT INTO ante_actividades (nombre_actividad, id_unidad, programado_anual_anterior, alcanzado_anual_anterior, id_area, validado) VALUES (?,?,?,?,?,?)";
+    $sqlr = $con->prepare($sql);
+    $sqlr->execute(array($nombre_actividad, $id_unidad, $programado_anual_anterior, $alcanzado_anual_anterior, $id_area, $validado));   
+    
+    $ultimoId = $con->lastInsertId();
+    
+    $sql = "INSERT INTO ante_programaciones (enero, febrero, marzo, abril, mayo, junio, julio, agosto, septiembre, octubre, noviembre, diciembre, id_actividad) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    $sqlr = $con->prepare($sql);
+    $sqlr->execute(array($enero, $febrero, $marzo, $abril, $mayo, $junio, $julio, $agosto, $septiembre, $octubre, $noviembre, $diciembre, $ultimoId));
+    
+
+    ?>
+    <form id="myForm" action="" method="get">
+        <input type="hidden" name="id_area" value="<?=$id_area?>">
+        <input type="hidden" name="tipo" value="a">
+    </form>
+    <script type="text/javascript">
+        document.getElementById('myForm').submit();
+    </script>
+    <?php
 }
 
 ?>

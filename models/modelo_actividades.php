@@ -31,8 +31,7 @@ function Proyectos($con, $anio){
 function buscalineas($con, $id_area){
     $sql = "SELECT * FROM actividades a
     JOIN lineasactividades li ON li.id_actividad = a.id_actividad
-    WHERE a.id_area = $id_area
-    ";
+    WHERE a.id_area = $id_area";
     $stm = $con->query($sql);
     $lineas = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $lineas;
@@ -145,4 +144,5 @@ if(isset($_POST)){
         header("Location: ../actividades.php");
     }
 }
+
 ?>
