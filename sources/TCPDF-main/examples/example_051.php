@@ -88,28 +88,6 @@ if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
 
 // set font
 $pdf->setFont('times', '', 48);
-
-// add a page
-$pdf->AddPage();
-
-// Print a text
-$html = '<span style="background-color:yellow;color:blue;">&nbsp;PAGE 1&nbsp;</span>
-<p stroke="0.2" fill="true" strokecolor="yellow" color="blue" style="font-family:helvetica;font-weight:bold;font-size:26pt;">You can set a full page background.</p>';
-$pdf->writeHTML($html, true, false, true, false, '');
-
-
-// add a page
-$pdf->AddPage();
-
-// Print a text
-$html = '<span style="background-color:yellow;color:blue;">&nbsp;PAGE 2&nbsp;</span>';
-$pdf->writeHTML($html, true, false, true, false, '');
-
-// --- example with background set on page ---
-
-// remove default header
-$pdf->setPrintHeader(false);
-
 // add a page
 $pdf->AddPage();
 
@@ -132,7 +110,7 @@ $pdf->setPageMark();
 
 
 // Print a text
-$html = '<span style="color:white;text-align:center;font-weight:bold;font-size:80pt;">PAGE 3</span>';
+$html = '';
 $pdf->writeHTML($html, true, false, true, false, '');
 
 // ---------------------------------------------------------

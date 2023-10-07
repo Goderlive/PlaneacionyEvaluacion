@@ -67,7 +67,7 @@ if ($_SESSION['sistema'] == 'pbrm') {
                     </div>
                     <br>
                     <div class="bg-yellow-50 rounded-lg my-2 py-2 px-2">
-                        <h4 class="text-2xl font-bold dark:text-white">Objetivos, Estrategias y Lineas de Acción del PDM antendidas:</h4>
+                        <h4 class="text-2xl font-bold dark:text-white">Objetivos, Estrategias y Lineas de Acción del PDM atendidas:</h4>
                         <br>
                         <?php if (isset($foda['linea_accion'])) : ?>
                             <?php $oel = traeOEL($con, $foda['linea_accion']) ?>
@@ -436,17 +436,16 @@ if ($_SESSION['sistema'] == 'pbrm') {
                                         </th>
                                         <td class="px-6 py-4">
                                             <?php if ($actividad['id_unidad'] === null) {
-                                                $idGuardado = 1;
+                                                $idGuardado = 0;
                                             } else {
                                                 $idGuardado = $actividad['id_unidad'];
                                             } ?>
 
                                             <select name="id_unidad" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                                 <option value="">Selecciona</option>
-                                                <?php foreach ($unidades as $id => $nombre) : ?>
-                                                    <?php $id = $id + 1 ?>
-                                                    <option value="<?= $id; ?>" <?php if ($id == $idGuardado) echo 'selected'; ?>>
-                                                        <?php echo $nombre['nombre_unidad']; ?>
+                                                <?php foreach ($unidades as $u) : ?>
+                                                    <option value="<?= $u['id_unidad']; ?>" <?php if ($u['id_unidad'] == $idGuardado) echo 'selected'; ?>>
+                                                        <?php echo $u['nombre_unidad']; ?>
                                                     </option>
                                                 <?php endforeach; ?>
                                             </select>
@@ -868,7 +867,7 @@ if ($_SESSION['sistema'] == 'pbrm') {
 
 
             <?php if (!$_GET) : ?>
-                <?php if ($permisos['nivel'] > 3) :  // Primero veridicamos el permiso... EN CASO DE ENLACE ?>
+                <?php if ($permisos['nivel'] == 4) :  // Primero veridicamos el permiso... EN CASO DE ENLACE ?>
                     <?php if ($real_anio == $user_anio) : // Luego verificamos si es un anio corriente ?>
                         <h2 class="text-4xl font-bold dark:text-white">Formatos para Imprimir</h2>
                         

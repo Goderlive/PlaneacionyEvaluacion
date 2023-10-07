@@ -51,17 +51,20 @@ function Indicadores($con, $trimestre, $id_dependencia){
     if($trimestre == "1" || $trimestre == "3"){
         $thesql = "SELECT * FROM indicadores_uso iu 
         LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador 
-        WHERE iu.id_dependencia = $id_dependencia AND (iu.periodicidad = 'trimestral' OR iu.periodicidad = 'mensual')";
+        WHERE iu.id_dependencia = $id_dependencia AND (iu.periodicidad = 'trimestral' OR iu.periodicidad = 'mensual')
+        GROUP BY iu.id";
     }
     if($trimestre == "2"){
         $thesql = "SELECT * FROM indicadores_uso iu 
         LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador 
-        WHERE iu.id_dependencia = $id_dependencia AND (iu.periodicidad = 'trimestral' OR iu.periodicidad = 'mensual' OR iu.periodicidad = 'semestral')";
+        WHERE iu.id_dependencia = $id_dependencia AND (iu.periodicidad = 'trimestral' OR iu.periodicidad = 'mensual' OR iu.periodicidad = 'semestral')
+        GROUP BY iu.id";
     }
     if($trimestre == "4"){
         $thesql = "SELECT * FROM indicadores_uso iu 
         LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador 
-        WHERE iu.id_dependencia = $id_dependencia AND (iu.periodicidad = 'trimestral' OR iu.periodicidad = 'mensual' OR iu.periodicidad = 'semestral' OR iu.periodicidad = 'anual')";
+        WHERE iu.id_dependencia = $id_dependencia AND (iu.periodicidad = 'trimestral' OR iu.periodicidad = 'mensual' OR iu.periodicidad = 'semestral' OR iu.periodicidad = 'anual')
+        GROUP BY iu.id";
     }
 
     $stm = $con->query($thesql);

@@ -3,7 +3,8 @@ require_once 'conection.php';
 function traePrograma($con, $id_area){
     $sentencia = "SELECT * FROM areas a 
     JOIN proyectos p ON p.id_proyecto = a.id_proyecto
-    JOIN programas_presupuestarios pp ON pp.id_programa = p.id_programa ";
+    JOIN programas_presupuestarios pp ON pp.id_programa = p.id_programa
+    WHERE a.id_area = $id_area";
     $stm = $con->query($sentencia);
     return $programa = $stm->fetch(PDO::FETCH_ASSOC);
 }
@@ -132,13 +133,16 @@ function traeAreeasUnoC($con, $id_dependencia){
 }
 
 function anteAreas_con($con, $id_dependencia){
-    $sql = "SELECT *, a.id_area as id_area FROM areas a
+    $sql = "SELECT *, a.id_area as id_area FROM ante_areas a
         INNER JOIN dependencias_generales dp ON a.id_dependencia_general = dp.id_dependencia
         INNER JOIN dependencias_auxiliares da ON a.id_dependencia_aux = da.id_dependencia_auxiliar
         INNER JOIN proyectos py ON a.id_proyecto = py.id_proyecto
         INNER JOIN programas_presupuestarios pp ON py.id_programa = pp.id_programa
         LEFT JOIN ante_unob ab ON ab.id_area = a.id_area
-        WHERE a.id_dependencia = $id_dependencia";
+        WHERE a.id_dependencia = $id_dependencia
+        GROUP BY a.id_area
+        ORDER BY a.id_area ASC
+        ";
     $stm = $con->query($sql);
     $areas = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $areas;
@@ -194,7 +198,7 @@ function traeIndicadores($con, $id_dependencia){
 }
 
 function traeUnidades($con){
-    $sentencia = "SELECT * FROM unidades_medida";
+    $sentencia = "SELECT * FROM unidades_medida ORDER BY nombre_unidad";
     $stm = $con->query($sentencia);
     $unidades = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $unidades;
@@ -293,33 +297,39 @@ if(isset($_POST['update_estrategia'])){
 }
 
 
+
 if(isset($_POST['id_linea'])){
-    $id_area = $_POST['id_area'];
-    $id_linea = $_POST['id_linea'];
+    // Sanitizar y validar los datos
+    $id_area = filter_var($_POST['id_area'], FILTER_VALIDATE_INT);
+    $id_linea = filter_var($_POST['id_linea'], FILTER_VALIDATE_INT);
 
-    $stm = $con->query("SELECT * FROM ante_unob WHERE id_area = $id_area");
-    $id_ante_unob = $stm->fetch();
 
-    if($id_ante_unob){
-        $sql = "UPDATE ante_unob SET linea_accion = ? WHERE id_area = $id_area";
-        $sqlr = $con->prepare($sql);
-        $sqlr->execute(array($id_linea));
-    }else{
-        $sql = "INSERT INTO ante_unob (linea_accion, id_area) VALUES (?,?)";
-        $sqlr = $con->prepare($sql);
-        $sqlr->execute(array($id_linea, $id_area));
+    if ($id_area === false || $id_linea === false) {
+        // Manejar el caso en el que los datos no sean válidos
+        echo "Datos no válidos.";
+        die();
+    } else {
+        // Verificar si ya existe un registro con id_area e id_linea
+        $stm = $con->prepare("SELECT * FROM ante_unob WHERE id_area = ?");
+        $stm->execute(array($id_area));
+        $existingRecord = $stm->fetch();
+
+        if($existingRecord){
+            // Actualizar el registro existente
+            $sql = "UPDATE ante_unob SET linea_accion = ? WHERE id_area = ?";
+            $sqlr = $con->prepare($sql);
+            $sqlr->execute(array($id_linea, $id_area));
+        } else {
+            // Insertar un nuevo registro
+            $sql = "INSERT INTO ante_unob (linea_accion, id_area) VALUES (?, ?)";
+            $sqlr = $con->prepare($sql);
+            $sqlr->execute(array($id_linea, $id_area));
+        }
+        
+        // Redirigir después de la operación
+        header("Location: anteproyecto.php");
+        exit();
     }
-
-    ?>
-    <form id="myForm" action="" method="get">
-        <input type="hidden" name="id_area" value="<?=$id_area?>">
-        <input type="hidden" name="tipo" value="b">
-    </form>
-    <script type="text/javascript">
-        document.getElementById('myForm').submit();
-    </script>
-    <?php
-
 }
 
 
@@ -499,8 +509,6 @@ if(isset($_POST['actividad_update'])){
 
 
 if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['nueva_actividad'])){
-
-
     $id_area = $_POST['id_area'];
     $nombre_actividad = $_POST['nombre_actividad'];
     $id_unidad = $_POST['id_unidad'];
