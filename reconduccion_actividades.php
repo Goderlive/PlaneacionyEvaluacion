@@ -373,6 +373,17 @@ if ($_SESSION['sistema'] == "pbrm") {
 				<br>
 				<?= breadcrumbs(array("Inicio" => "index.php", "Actividades" => "actividades.php", "Reconducción de Actividades" => "")) ?>
 				<br>
+
+				<div class="p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300" role="alert">
+					<span class="font-medium">Reconducciones </span> <a href="revisa_todas_reconducciones.php">Todas</a>
+				</div>
+
+				<div class="p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300" role="alert">
+					<form action="descargatxtreconducciones.php" method="post">
+					   <button type="submit" name="txt" value="txt" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Reconducciones TXT</button>
+					</form>
+				</div>
+
 				<?php $dependencias = Traedepndencias($con) ?>
 				<div class="grid grid-cols-4">
 					<?php foreach ($dependencias as $dp) : ?>

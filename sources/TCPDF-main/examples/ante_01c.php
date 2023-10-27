@@ -70,7 +70,7 @@ function generaRenglon($con, $anteActividades){
         $progOrg = $a['ene'] + $a['feb'] + $a['mar'] + $a['abr'] + $a['may'] + $a['jun'] + $a['jul'] + $a['ago'] + $a['sep'] + $a['oct'] + $a['nov'] + $a['dic']; 
 
         $varAbs = $progAnte - $sumaAvence;
-        $varPorcentual = ($varAbs) ? substr(($progAnte/$sumaAvence) *100, 0, 3) . '%'  : '0%';
+        $varPorcentual = ($varAbs && $sumaAvence != 0) ? substr(($progAnte/$sumaAvence) *100, 0, 3) . '%'  : '0%';
         $renglon .= '<tr>';
         $renglon .= '<td style="text-align: center; border:1px solid gray; font-size: 7px">' . $a['codigo_actividad']. '</td>';
         $renglon .= '<td style="text-align: left; border:1px solid gray; font-size: 7px">' . $a['nombre_actividad']. '</td>';

@@ -6,7 +6,8 @@ function Traelasreconducciones($con){
     $stm = $con->query("SELECT * FROM reconducciones_atividades ra
     LEFT JOIN areas ar ON ar.id_area = ra.id_area
     LEFT JOIN dependencias dp ON dp.id_dependencia = ar.id_dependencia
-    WHERE ra.validado = 1 AND id_reconduccion_actividades > 47");
+    WHERE ra.validado = 1 
+    ");
     $reconducciones = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $reconducciones;
 }

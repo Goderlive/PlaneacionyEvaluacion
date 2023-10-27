@@ -1,6 +1,4 @@
--- db   : holawebc_simonts
--- user : holawebc_usersimonts
--- pass : Goder170390??
+
 
 DROP DATABASE IF EXISTS planeacion_y_evaluacion;
 CREATE DATABASE planeacion_y_evaluacion;

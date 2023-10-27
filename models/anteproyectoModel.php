@@ -334,36 +334,48 @@ if(isset($_POST['id_linea'])){
 
 
 
-
 if(isset($_POST['update_ODS'])){
-    $id_area = $_POST['id_area'];
-    $id_estrategia_ods = $_POST['id_estrategia_ods'];
+    // Obtener y validar los datos del formulario
+    $id_area = filter_var($_POST['id_area'], FILTER_VALIDATE_INT);
+    $id_estrategia_ods = filter_var($_POST['id_estrategia_ods'], FILTER_VALIDATE_INT);
 
-    $stm = $con->query("SELECT * FROM ante_unob WHERE id_area = $id_area");
+    if ($id_area === false || $id_estrategia_ods === false) {
+        // Manejar el caso en el que los datos no sean válidos
+        echo "Datos no válidos.";
+        die();
+    }
+
+    // Verificar si ya existe un registro con id_area
+    $stm = $con->prepare("SELECT * FROM ante_unob WHERE id_area = ?");
+    $stm->execute(array($id_area));
     $id_ante_unob = $stm->fetch();
 
     if($id_ante_unob){
-        $sql = "UPDATE ante_unob SET id_ods = ? WHERE id_area = $id_area";
+        // Actualizar el registro existente
+        $sql = "UPDATE ante_unob SET id_ods = ? WHERE id_area = ?";
         $sqlr = $con->prepare($sql);
-        $sqlr->execute(array($id_estrategia_ods));
+        $sqlr->execute(array($id_estrategia_ods, $id_area));
     }else{
+        // Insertar un nuevo registro
         $sql = "INSERT INTO ante_unob (id_ods, id_area) VALUES (?,?)";
         $sqlr = $con->prepare($sql);
         $sqlr->execute(array($id_estrategia_ods, $id_area));
     }
 
-    ?>
-    <form id="myForm" action="" method="get">
-        <input type="hidden" name="id_area" value="<?=$id_area?>">
-        <input type="hidden" name="tipo" value="b">
-    </form>
-    <script type="text/javascript">
-        document.getElementById('myForm').submit();
-    </script>
-    <?php
+    // Redirigir después de la operación
+    header("Location: anteproyecto.php");
+    exit();
 
+?>
+<form id="myForm" action="" method="get">
+    <input type="hidden" name="id_area" value="<?=$id_area?>">
+    <input type="hidden" name="tipo" value="b">
+</form>
+<script type="text/javascript">
+    document.getElementById('myForm').submit();
+</script>
+<?php
 }
-
 
 
 if(isset($_POST['delete_pdm'])){
@@ -371,7 +383,7 @@ if(isset($_POST['delete_pdm'])){
     $id_estrategia_pdm = $_POST['linea_accion'];
 
 
-    $sql = "UPDATE ante_unob SET linea_accion = NULL WHERE linea_accion = ?";
+    $sql = "UPDATE ante_unob SET linea_accion = NULL WHERE id_area = $id_area";
     $sqlr = $con->prepare($sql);
     $sqlr->execute(array($id_estrategia_pdm));
 
@@ -387,12 +399,14 @@ if(isset($_POST['delete_pdm'])){
     <?php
 }
 
+
+
 if(isset($_POST['delete_ods'])){
     $id_area = $_POST['id_area'];
     $id_estrategia_ods = $_POST['id_ods'];
 
 
-    $sql = "UPDATE ante_unob SET id_ods = NULL WHERE id_ods = ?";
+    $sql = "UPDATE ante_unob SET id_ods = NULL WHERE id_area = $id_area";
     $sqlr = $con->prepare($sql);
     $sqlr->execute(array($id_estrategia_ods));
 

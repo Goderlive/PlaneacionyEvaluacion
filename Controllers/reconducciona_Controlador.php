@@ -64,7 +64,4 @@ function DefineReconduccion($ini, $fin){
     }
     return "Hola";
 }
-
-
-
 ?>

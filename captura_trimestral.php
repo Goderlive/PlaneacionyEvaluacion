@@ -14,9 +14,7 @@ if(isset($_SESSION) && isset($_SESSION['sistema']) && $_SESSION['sistema'] == "p
 
 
 
-
-
-NOS DICE LAS LINEAS DE ACCION QUE NO TIENEN ACTIVIDAD VINCULADA <br>
+NOS DICE LAS LINEAS DE ACCION QUE NO TIENEN ACTIVIDAD VINCULADA
 <?php 
 $sqlpdm = "SELECT * FROM pdm_lineas 
 WHERE id_linea NOT IN (SELECT id_linea FROM lineasactividades)
@@ -32,6 +30,11 @@ $verificavinculacion = $stm->fetchAll(PDO::FETCH_ASSOC);?>
 
 
 
+
+
+
+
+
 <?php 
 $sql = " SELECT * FROM indicadores_uso iu
 LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador
@@ -39,29 +42,31 @@ LEFT JOIN dependencias dp ON iu.id_dependencia = dp.id_dependencia
 LEFT JOIN dependencias_generales dg ON iu.id_dep_general = dg.id_dependencia
 LEFT JOIN dependencias_auxiliares da ON da.id_dependencia_auxiliar = iu.id_dep_aux
 LEFT JOIN proyectos py ON py.id_proyecto = iu.id_proyecto
-WHERE ai.trimestre = 2
-ORDER BY dg.clave_dependencia, da.clave_dependencia_auxiliar, py.codigo_proyecto";
+ORDER BY dg.clave_dependencia, da.clave_dependencia_auxiliar, py.codigo_proyecto
+";
 $stm = $con->query($sql);
 $indicadores_avances = $stm->fetchAll(PDO::FETCH_ASSOC);?>
-<br>
-Nos muestras las areas que faltan por capturar indicadores: <br>
+
+
+Nos muestras las areas que faltan por capurar indicadores: <br>
 <?php foreach ($indicadores_avances as $ind): ?>
-    <?php if($ind['periodicidad'] == "Mensual" || $ind['periodicidad'] == "Trimestral" || $ind['periodicidad'] == "Semestral"): ?>
+
+    <?php if($ind['periodicidad'] == "Mensual" || $ind['periodicidad'] == "Trimestral"): ?>
+
         <?php if(!$ind['id_avance']):?>
             <?= $ind['nombre_dependencia'] . " - " . $ind['id'] . "<br>" ?>
         <?php endif ?>
     <?php endif ?>
+
 <?php endforeach ?>
 
-
-<br><br>
-Muestra los avances de indicadores
-<br>
+Muestra los avances de indicadores <br>
 <table>
+    
     <?php foreach($indicadores_avances as $indica): ?>
         <?php if($indica['id_avance'] ): ?>
-            <?= "<tr>" ."<td>" . $indica['clave_dependencia'] . " | " . $indica['clave_dependencia_auxiliar'] . " | " . $indica['codigo_proyecto'] . " | " . $indica['nombre_indicador'] . " | " . $indica['at2'] . " | " . $indica['avance_a'] . "</td>". "</tr>" ?>
-            <?= "<tr>" ."<td>" . $indica['clave_dependencia'] . " | " . $indica['clave_dependencia_auxiliar'] . " | " . $indica['codigo_proyecto'] . " | " . $indica['nombre_indicador'] . " | " . $indica['bt2'] . " | " . $indica['avance_b'] . "</td>". "</tr>" ?>
+            <?= "<tr>" ."<td>" . $indica['clave_dependencia'] . " | " . $indica['clave_dependencia_auxiliar'] . " | " . $indica['codigo_proyecto'] . " | " . $indica['nombre_indicador'] . " | " . $indica['at3'] . " | " . $indica['avance_a'] . "</td>". "</tr>" ?>
+            <?= "<tr>" ."<td>" . $indica['clave_dependencia'] . " | " . $indica['clave_dependencia_auxiliar'] . " | " . $indica['codigo_proyecto'] . " | " . $indica['nombre_indicador'] . " | " . $indica['bt3'] . " | " . $indica['avance_b'] . "</td>". "</tr>" ?>
             <tr><td>-</td></tr>
         <?php endif ?>
     <?php endforeach ?>
@@ -104,7 +109,7 @@ $stm = $con->query($sqlpdm);
 $actividadesyavancespdm = $stm->fetchAll(PDO::FETCH_ASSOC);?>
 
 
-<h1>Nos dice las actividades faltantes de reportar PDM</h1>
+<h1> nos dice las actividades faltantes de reportar PDM</h1>
 
 <?php foreach($actividadesyavancespdm as $faltamagi): ?>
     <?php if(isset($faltamagi['id_linea'])): ?>
@@ -130,22 +135,24 @@ $contador = 0;
 print "<table>";
 foreach($actividadesyavances as $a):
     if($trimestre == 1){
-        $avance = revisaavances($con, $a['id_actividad'], 4,6);
+        $avance = revisaavances($con, $a['id_actividad'], 7,9);
         $metatrimav = 0;
         foreach($avance as $v){
             $metatrimav += $v['avance'];            
         }
-        $metatrimpro = $a['abril'] + $a['mayo'] + $a['junio'];
+        $metatrimpro = $a['julio'] + $a['agosto'] + $a['septiembre'];
         $metaanual = $a['enero'] + $a['febrero'] + $a['marzo'] + $a['abril'] + $a['mayo'] + $a['junio'] + $a['julio'] + $a['agosto'] + $a['septiembre'] + $a['octubre'] + $a['noviembre'] + $a['diciembre'];
         print '["' . $a['clave_dependencia'] . '","' . $a['clave_dependencia_auxiliar'] . '","' . $a['codigo_proyecto'] . '","' . $a['codigo_actividad'] . '","' . $a['nombre_actividad'] . '","' . $metaanual . '","' . $metatrimpro . '","' . $metatrimav . '"],';
         print "<br>";
-        $contador +=1;    
+        $contador +=1;
+
+    
     }
 ?>
 
 <?php endforeach ?>
 </table>
-<br>
+
 Nos dice las dependencias que faltan de capturar actividades <br>
 <?php 
 $sql = " SELECT * FROM actividades ac
@@ -165,7 +172,7 @@ $contador = 0;
 
 foreach($actividadesyavances as $a):
     if($trimestre == 1){
-        $avance = revisaavances($con, $a['id_actividad'], 1,3);
+        $avance = revisaavances($con, $a['id_actividad'], 7,9);
         if(count($avance) != 3){
             print $a['nombre_dependencia'] . " esta incompleta ".$a['nombre_actividad']." <br>";
             $contador +=1;

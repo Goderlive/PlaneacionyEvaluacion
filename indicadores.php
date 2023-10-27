@@ -85,7 +85,7 @@ if(isset($_POST) && $_POST){
                                 Reportado
                             </th>
                             <th scope="col" class="px-3 py-3">
-                                Anual
+                                <!-- Anual -->
                             </th>
                             <th scope="col" class="px-3 py-3">
                                 Accion
@@ -133,9 +133,9 @@ if(isset($_POST) && $_POST){
 
                                     </td>
                                     <td class="px-2 py-4">
-                                        <?php print $datos['at1'] + $datos['at2'] + $datos['at3'] + $datos['at4'] . "<br>" . $datos['bt1'] + $datos['bt2'] + $datos['bt3'] + $datos['bt4']; 
+                                        <?php //print intval($datos['at1']) + intval($datos['at2']) + intval($datos['at3']) + intval($datos['at4']) . "<br>" . intval($datos['bt1']) + intval($datos['bt2']) + intval($datos['bt3']) + intval($datos['bt4']); 
                                             if($datos['ct1']){
-                                                print "<br>" . $datos['at1'] + $datos['at2'] + $datos['at3'] + $datos['at4'];
+                                                //print "<br>" . $datos['at1'] + $datos['at2'] + $datos['at3'] + $datos['at4'];
                                             }
                                         ?>
                                     </td>

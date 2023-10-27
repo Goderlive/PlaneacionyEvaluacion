@@ -10,101 +10,128 @@ require_once 'models/conection.php';
   <title>Document</title>
 </head>
 <body>
-<label for="actividades" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sleccione todas las Actividades Relacionadas</label>
-                                                                <select multiple name="id_actividades[]" id="actividades" size="7" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                                    <option selected>Seleccione las Actividades</option>
-                                                                                                                                                                                                                                                                                            <optgroup label="Dirección de Desarrollo Social y Asuntos Indígenas">
-                                                                                                                                                <option value="301">Coordinar las acciones de atención a la población a través de la operación de los programas sociales.</option>
-                                                                                                                                                    </optgroup>
-                                                                                                                                                                                                                                                                                                                                                                        <option value="302">Vigilar la actuación y fortalecer el vínculo institucional de las autoridades auxiliares</option>
-                                                                                                                                                                                                                                                                                            <option value="303">Participación en convenios de colaboración ante instituciones educativas públicas, sector privado, asociaciones civiles sin fines de lucro y fundaciones</option>
-                                                                                                                                                                                                                                                                                                <optgroup label="Subdirección de Vinculación Institucional">
-                                                                                                                                                <option value="304">Supervisión de los proyectos de convenio de colaboración con empresas privadas.</option>
-                                                                                                                                                    </optgroup>
-                                                                                                                                                                                                                                                                                                                                                                        <option value="305">Seguimiento de las gestiones de colaboración ante instituciones educativas públicas, sector privado, asociaciones civiles sin fines de lucro y fundaciones(1.1.1)</option>
-                                                                                                                                                                                                                                                                                            <option value="306">Verificación y seguimiento de las gestiones para la entrega de aparatos funcionales</option>
-                                                                                                                                                                                                                                                                                            <option value="307">Monitoreo del programa FAIS</option>
-                                                                                                                                                                                                                                                                                                <optgroup label="Subdirección de Delegaciones, Participación Ciudadana y Atención a la Comunidad">
-                                                                                                                                                <option value="308">Supervision a las sesiones ordinarias, extraordinarias y plenarias con Delegados Municipales y COPACIs.</option>
-                                                                                                                                                    </optgroup>
-                                                                                                                                                                                                                                                                                                                                                                        <option value="309">Seguimiento a las solicitudes para su canalización a los programas sociales</option>
-                                                                                                                                                                                                                                                                                            <option value="310">Supervisión permanente al personal que opera call center y módulos de atención a la comunidad</option>
-                                                                                                                                                                                                                                                                                            <option value="311">Verificación del cumplimiento de la demanda ciudadana en audiencias a la comunidad</option>
-                                                                                                                                                                                                                                                                                            <option value="312">Seguimiento a las reuniones de evaluación con Delegados y COPACIS</option>
-                                                                                                                                                                                                                                                                                                <optgroup label="Departamento de Planificación Alimentaria">
-                                                                                                                                                <option value="321">Revisión y actualización del padrón de beneficiarios del programa CASAFF (2.1.9)</option>
-                                                                                                                                                    </optgroup>
-                                                                                                                                                                                                                                                                                                                                                                        <option value="322">Regularización en la credencialización a beneficiarios del programa CASAFF (2.1.9)</option>
-                                                                                                                                                                                                                                                                                            <option value="323">Entrega de Canastas alimentarias CASAFF a beneficiarios del programa (2.1.4) (2.1.9) (2.3.2)</option>
-                                                                                                                                                                                                                                                                                                <optgroup label="Subdirección Política Sectorial">
-                                                                                                                                                <option value="314">Seguimiento a las publicaciones en redes sociales</option>
-                                                                                                                                                    </optgroup>
-                                                                                                                                                                                                                                                                                                                                                                        <option value="315">Verificacion de actualización de la base de datos de los padrones de los programas sociales (CASAFF y MÿDICO EN TU CASA)</option>
-                                                                                                                                                                                                                                                                                            <option value="316">Supervisión de la impartición de talleres y pláticas para el desarrollo integral juvenil</option>
-                                                                                                                                                                                                                                                                                            <option value="317">Verificación de la realizacion y entrega del Premio Municipal de la Juventud 2023</option>
-                                                                                                                                                                                                                                                                                            <option value="318">Supervisión de la entrega de tarjetas de descuento para promover el consumo al comercio local y que los jóvenes tengan un impacto de beneficio.</option>
-                                                                                                                                                                                                                                                                                            <option value="319">Supervisión de las actividades de fortalecimiento de la identidad de grupos indígenas</option>
-                                                                                                                                                                                                                                                                                            <option value="320">Participar en la organización de los eventos: día de reyes, día de la madre y día del padre</option>
-                                                                                                                                                                                                                                                                                                <optgroup label="Departamento de Comedores Comunitarios">
-                                                                                                                                                <option value="313">Seguimiento del funcionamiento y desarrollo de Comedores Comunitarios (2.1.4) (2.1.6) (2.1.7) (2.1.8)</option>
-                                                                                                                                                    </optgroup>
-                                                                                                                                                                                                                                                                                                                                                                            <optgroup label="Departamento de Asuntos Indígenas y Programas Integrales">
-                                                                                                                                                <option value="324">Organización e imparticion de actividades de sensibilización y fomento de valores para promover la integración social. (9.1.2) (9.1.3) (9.1.2) (9.1.3)</option>
-                                                                                                                                                    </optgroup>
-                                                                                                                                                                                                                                                                                                                                                                        <option value="325">Fortalecimiento de la identidad de grupos indígenas (11.1.1) (11.1.2) (11.1.3) (11.2.1) (11.2.2) (11.2.3)</option>
-                                                                                                                                                                                                                                                                                            <option value="326">Organización e impartición de cursos recreativos dirigido a estudiantes de nivel básico a medio superior (9.1.2) (9.1.2)</option>
-                                                                                                                                                                                                                                                                                            <option value="327">Organización interinstitucional de los eventos: día de reyes, día de la madre y día del padre (9.1.3) (9.1.1) (9.1.3) (9.1.1)</option>
-                                                                                                                                                                                                                                                                                                <optgroup label="Departamento de Atención a la Comunidad">
-                                                                                                                                                <option value="328">Recepción y validacion de las solicitudes para su canalización a los programas sociales de la Dirección de Desarrollo Social y Asuntos Indigenas (1.2.2) (1.2.2)</option>
-                                                                                                                                                    </optgroup>
-                                                                                                                                                                                                                                                                                                                                                                        <option value="329">Capacitación constante al personal que opera call center y módulos de atención a la comunidad de la Dirección de Desarrollo Social y Asuntos Indigenas</option>
-                                                                                                                                                                                                                                                                                            <option value="330">Realización de campañas de difusión de programas sociales de la Dirección de Desarrollo Social y Asuntos Indigenas, a través de medios tracionales (1.2.2) (1.2.2)</option>
-                                                                                                                                                                                                                                                                                            <option value="331">Seguimiento de la demanda ciudadana en audiencias de la Dirección de Desarrollo Social y Asuntos Indigenas y en Delegaciones Municipales (2.1.1) (2.1.1)</option>
-                                                                                                                                                                                                                                                                                                <optgroup label="Departamento de Delegaciones y Participación Ciudadana">
-                                                                                                                                                <option value="332">Realización de visitas a las Delegaciones Municipales para la atencion de las necesidades de su comunidad (1.1.1) (1.1.1)</option>
-                                                                                                                                                    </optgroup>
-                                                                                                                                                                                                                                                                                                                                                                        <option value="333">Participación en reuniones de evaluación con Delegados y COPACIS (1.1.1)</option>
-                                                                                                                                                                                                                                                                                            <option value="334">Organización y realización de sesiones ordinarias, extraordinarias y plenarias con Delegados Municipales y COPACI`s. (1.1.1)</option>
-                                                                                                                                                                                                                                                                                            <option value="335">Incentivar la participación ciudadana en actividades de las Delegaciones Municipales (1.1.1)</option>
-                                                                                                                                                                                                                                                                                            <option value="336">Coordinación interinstucional para la capacitación a Delgados Municipales y COPACIS(1.1.1)</option>
-                                                                                                                                                                                                                                                                                                <optgroup label="Departamento de Programas Transversales">
-                                                                                                                                                <option value="337">Administración de redes sociales de la dirección de Desarrollo Social y Asuntos Indigenas(1.1.1)</option>
-                                                                                                                                                    </optgroup>
-                                                                                                                                                                                                                                                                                                                                                                        <option value="338">Actualización de la base de datos de los padrones de los programas sociales (CASAFF y MÿDICO EN TU CASA) (2.1.9) (2.3.2) (3.1.4) (2.1.9) (2.3.2) (3.1.4)</option>
-                                                                                                                                                                                                                                                                                                <optgroup label="Departamento de Gestión con Sector Público y Privado">
-                                                                                                                                                <option value="339">Gestión de donaciones en especie al sector público y privado. (1.1.1)</option>
-                                                                                                                                                    </optgroup>
-                                                                                                                                                                                                                                                                                                                                                                        <option value="340">Seguimiento a los proyectos de convenio de colaboración con empresas privadas. (1.1.1)</option>
-                                                                                                                                                                                                                                                                                            <option value="341">Gestiones de colaboración ante instituciones educativas públicas, sector privado, asociaciones civiles sin fines de lucro y fundaciones (1.1.1)</option>
-                                                                                                                                                                                                                                                                                            <option value="342">Convenio de colaboración interinstitucional ante UMIN (1.1.1)</option>
-                                                                                                                                                                                                                                                                                                <optgroup label="Subdirección de Programas Municipales">
-                                                                                                                                                <option value="343">Supervisión de la apertura y el buen manejo de los consultorios médicos habilitados para el Programa Médico en tu Casa (9.1.1)</option>
-                                                                                                                                                    </optgroup>
-                                                                                                                                                                                                                                                                                                                                                                        <option value="344">Coordinar y supervisar las entregas del programa Canasta Social Alimentaria Familias Felices (CASAFF) (9.1.1)</option>
-                                                                                                                                                                                                                                                                                            <option value="345">Supervisión de tarjetas a beneficiarios de los programas sociales municipales</option>
-                                                                                                                                                                                                                                                                                            <option value="346">Supervisión de las capacitaciones al personal involucrado en los distintos programas sociales</option>
-                                                                                                                                                                                                                                                                                            <option value="347">Gestión de convenio con Laboratorios clínicos en el Municipio de Metepec (4.1.2)</option>
-                                                                                                                                                                                                                                                                                                <optgroup label="Departamento de Atención a la Juventud">
-                                                                                                                                                <option value="348">Instrumentación de actividades recreactivas en pro del bienestar de los jovenes de Metepec (10.1.3) (10.1.3)</option>
-                                                                                                                                                    </optgroup>
-                                                                                                                                                                                                                                                                                                                                                                        <option value="349">Organización de talleres y pláticas para el desarrollo integral juvenil (10.1.3) (3.4.1) (3.4.2) (9.1.2)</option>
-                                                                                                                                                                                                                                                                                            <option value="350">Organización y entrega del Premio Municipal de la Juventud 2023 (9.1.2)</option>
-                                                                                                                                                                                                                                                                                            <option value="351">Implementacion digital de la tarjeta de descuento El privilegio de ser joven y vivir en Metepec (9.1.4) (9.1.4)</option>
-                                                                                                                                                                                                                                                                                            <option value="352">Contribución a la difusión de convocatorias en materia de juventud de los tres niveles de gobierno (9.2.2)</option>
-                                                                                                                                                                                                                                                                                            <option value="353">Gestión de conferencias ante instancias públicas, privadas y sociedad civil (3.4.2)</option>
-                                                                                                                                                                                                                                                                                            <option value="354">Registro de tarjetas de descuento para promover el consumo al comercio local y que los jóvenes tengan un impacto de beneficio. (9.1.4)</option>
-                                                                                                                                                                                                                                                                                                <optgroup label="Departamento de Programas Federales y Estatales">
-                                                                                                                                                <option value="355">Apoyo logistico para la entrega de los programas Pensión para el Bienestar de las personas Adultas Mayores y Pensión para el Bienestar de las personas con Discapacidad. (9.1.1) (9.1.1)</option>
-                                                                                                                                                    </optgroup>
-                                                                                                                                                                                                                                                                                                                                                                        <option value="356">Gestión para la entrega de aparatos funcionales (10.3.1)</option>
-                                                                                                                                                                                                                                                                                            <option value="357">Seguimiento del programa FAIS ante instancias federales y estatales en las dos vertientes FISE y FISMUN  (9.1.1)</option>
-                                                                                                                                                                                                                                                                                                <optgroup label="Departamento Medico en tu Casa">
-                                                                                                                                                <option value="358">Gestión de capacitacion para el personal médico sobre los temas actualización en manejo de diabetes e hipertensión (3.1.2) (3.1.2)</option>
-                                                                                                                                                    </optgroup>
-                                                                                                                                                                                                                                                                                                                                                                        <option value="359">Revisión y actualización del padrón de beneficiarios del progama Médico en tu casa</option>
-                                                                                                                                                                                                                                                                                            <option value="360">Seguimiento a la apertura de consultorios médicos en el Municipio de Metepec (4.2.2)</option>
-                                                                                                                                                                                                                                                                                            <option value="361">Visitas a los consultorios médicos para vigilar el servicio brindado por el programa (3.1.2) (4.1.2) (4.1.3)</option>
-                                                                                                                                                                                                                                                                                            <option value="362">Consultas medicas brindadas a la población (3.1.4) (3.1.4)</option>
-                                                                                                                                                                                                            </select>
+
+<?php 
+$sentencia = "
+SELECT ac.id_actividad, dg.clave_dependencia, da.clave_dependencia_auxiliar, py.codigo_proyecto, dp.nombre_dependencia, ar.nombre_area, ac.codigo_actividad, ac.nombre_actividad, ac.unidad, pg.*
+FROM actividades ac
+LEFT JOIN programaciones pg ON pg.id_actividad = ac.id_actividad
+LEFT JOIN areas ar ON ar.id_area = ac.id_area 
+LEFT JOIN dependencias_generales dg ON dg.id_dependencia = ar.id_dependencia_general
+LEFT JOIN dependencias_auxiliares da ON da.id_dependencia_auxiliar = ar.id_dependencia_aux
+LEFT JOIN proyectos py ON py.id_proyecto = ar.id_proyecto
+LEFT JOIN dependencias dp ON dp.id_dependencia = ar.id_dependencia;
+";
+$stm = $con->query($sentencia);
+$actividades = $stm->fetchAll(PDO::FETCH_ASSOC);
+
+
+function avanceActividad($con, $id_actividad, $mes){
+    switch ($mes) {
+        case 'enero':
+            $mes = 1;
+            break;
+        case 'febrero':
+            $mes = 2;
+            break;
+        case 'marzo':
+            $mes = 3;
+            break;
+        case 'abril':
+            $mes = 4;
+            break;
+        case 'mayo':
+            $mes = 5;
+            break;
+        case 'junio':
+            $mes = 6;
+            break;
+        case 'julio':
+            $mes = 7;
+            break;
+        case 'agosto':
+            $mes = 8;
+            break;
+        case 'septiembre':
+            $mes = 9;
+            break;
+        case 'octubre':
+            $mes = 10;
+            break;
+        case 'noviembre':
+            $mes = 11;
+            break;
+        case 'diciembre':
+            $mes = 12;
+            break;
+        default:
+            return 0;
+            break;
+    }
+    $sentencia = "
+    SELECT avance FROM avances
+    WHERE id_actividad = $id_actividad AND
+    mes = $mes
+    ";
+    $stm = $con->query($sentencia);
+    $avance = $stm->fetch(PDO::FETCH_ASSOC);
+    if($avance){
+        return $avance['avance']; 
+    }else{
+        return "";
+    }
+}
+
+
+?>
+
+
+
+
+<table>
+
+    <?php foreach($actividades as $a): ?>
+        <?php $id_actividad = $a['id_actividad'] ?>
+        <tr>
+            <?php $anual = $a['enero'] + $a['febrero'] + $a['marzo'] + $a['abril'] + $a['mayo'] + $a['junio'] + $a['julio'] + $a['agosto'] + $a['septiembre'] + $a['octubre'] + $a['noviembre'] + $a['diciembre'] ?>
+            <td><?= $a['clave_dependencia'] ?></td>
+            <td><?= $a['clave_dependencia_auxiliar'] ?></td>
+            <td><?= $a['codigo_proyecto'] ?></td>
+            <td><?= $a['nombre_dependencia'] ?></td>
+            <td><?= $a['nombre_area'] ?></td>
+            <td><?= $a['codigo_actividad'] ?></td>
+            <td><?= $a['nombre_actividad'] ?></td>
+            <td><?= $a['unidad'] ?></td>
+            <td><?= $anual ?></td>
+            <td><?= $a['enero'] ?></td>
+            <td><?= avanceActividad($con, $id_actividad, "enero") ?></td>
+            <td><?= $a['febrero'] ?></td>
+            <td><?= avanceActividad($con, $id_actividad, "febrero") ?></td>
+            <td><?= $a['marzo'] ?></td>
+            <td><?= avanceActividad($con, $id_actividad, "marzo") ?></td>
+            <td><?= $a['abril'] ?></td>
+            <td><?= avanceActividad($con, $id_actividad, "abril") ?></td>
+            <td><?= $a['mayo'] ?></td>
+            <td><?= avanceActividad($con, $id_actividad, "mayo") ?></td>
+            <td><?= $a['junio'] ?></td>
+            <td><?= avanceActividad($con, $id_actividad, "junio") ?></td>
+            <td><?= $a['julio'] ?></td>
+            <td><?= avanceActividad($con, $id_actividad, "julio") ?></td>
+            <td><?= $a['agosto'] ?></td>
+            <td><?= avanceActividad($con, $id_actividad, "agosto") ?></td>
+            <td><?= $a['septiembre'] ?></td>
+            <td><?= avanceActividad($con, $id_actividad, "septiembre") ?></td>
+            <td><?= $a['octubre'] ?></td>
+            <td><?= avanceActividad($con, $id_actividad, "octubre") ?></td>
+            <td><?= $a['noviembre'] ?></td>
+            <td><?= avanceActividad($con, $id_actividad, "noviembre") ?></td>
+            <td><?= $a['diciembre'] ?></td>
+            <td><?= avanceActividad($con, $id_actividad, "diciembre") ?></td>
+
+        </tr>            
+    <?php endforeach ?>
+        
+</table>
+
 </body>
 </html>
