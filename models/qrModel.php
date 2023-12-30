@@ -1,6 +1,13 @@
 <?php 
 require_once 'conection.php';
 
+function logos($con){
+    $sentencia = "SELECT path_logo_ayuntamiento, path_logo_administracion FROM setings";
+    $stm = $con->query($sentencia);
+    $logos = $stm->fetch(PDO::FETCH_ASSOC);
+    return $logos;
+}
+
 function Dependencia($con, $id_dependencia){
     $sentencia = "SELECT * FROM dependencias
     WHERE id_dependencia = $id_dependencia";

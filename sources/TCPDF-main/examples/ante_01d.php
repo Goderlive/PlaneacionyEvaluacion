@@ -126,7 +126,8 @@ $html1= '
            </tr>
     </table>&nbsp; <br> ';
 
-$html2= '<table style="width:100%" >
+$html2= '
+<table style="width:100%" >
     <tr>
 		<td style="width:25%; text-align: left; font-size: 9px">PILAR DE DESARROLLO/EJE TRANSVERSAL :</td>
         <td style="width:25%; text-align: left; font-size: 9px">'. $a['pilar_o_eje'] .'</td>
@@ -251,11 +252,11 @@ $html3 = '<table style="width:100%" >
     $html6 = '<table style="width: 100%; text-align: center; border-spacing: 3px">
     <tr>
         
-    <td style="font-size: 8px; width: 50%; border: 1px solid gray;"><br><br><br><br><br><br>'. $responsable['gradoa'] .' '. $responsable['nombre'] ." ". $responsable['apellidos'] .'<br>'. $responsable['cargo'] .'</td>
-        <td style="font-size: 8px; width: 50%; border: 1px solid gray;"><br><br><br><br><br><br> '. $Director['gradoa'] .' '. $Director['nombre'] ." ". $Director['apellidos'] .'<br>'. $Director['cargo'] .'</td>
+    <td style="font-size: 8px; width: 50%; border: 1px solid gray;"><br><br><br><br><br><br>'. mb_strtoupper($responsable['gradoa'],'utf-8') .' '. mb_strtoupper($responsable['nombre'],'utf-8') ." ". mb_strtoupper($responsable['apellidos'],'utf-8') .'<br>'. mb_strtoupper($responsable['cargo'],'utf-8') .'</td>
+        <td style="font-size: 8px; width: 50%; border: 1px solid gray;"><br><br><br><br><br><br> '. mb_strtoupper($Director['gradoa'],'utf-8') .' '. mb_strtoupper($Director['nombre'],'utf-8') ." ". mb_strtoupper($Director['apellidos'],'utf-8') .'<br>'. mb_strtoupper($Director['cargo'],'utf-8') .'</td>
         
         <td style="font-size: 8px; width: 25%;"> </td>
-    </tr>	
+    </tr>
     </table>&nbsp; <br> &nbsp; <br>&nbsp;';
 
 
@@ -267,7 +268,7 @@ $pdf->writeHTML($html);
 $pdf->lastPage();
 
 //Close and output PDF document
-$pdf->Output('example_006.pdf', 'D');
+$pdf->Output('01d.pdf', 'D');
 
 //============================================================+
 // END OF FILE

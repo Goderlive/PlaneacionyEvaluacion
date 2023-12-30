@@ -57,13 +57,21 @@ function generaRenglon($con, $anteActividades){
 
         $progAnte = $a['enero'] + $a['febrero'] + $a['marzo'] + $a['abril'] + $a['mayo'] + $a['junio'] + $a['julio'] + $a['agosto'] + $a['septiembre'] + $a['octubre'] + $a['noviembre'] + $a['diciembre']; 
         $prog1er = $a['enero'] + $a['febrero'] + $a['marzo']; 
-        $porcentual1 = number_format(($prog1er/$progAnte) *100,1) . '%';
         $prog2do = $a['abril'] + $a['mayo'] + $a['junio']; 
-        $porcentual2 = number_format(($prog2do/$progAnte) *100,1) . '%';
         $prog3er = $a['julio'] + $a['agosto'] + $a['septiembre']; 
-        $porcentual3 = number_format(($prog3er/$progAnte) *100,1) . '%';
         $prog4to = $a['octubre'] + $a['noviembre'] + $a['diciembre']; 
-        $porcentual4 = number_format(($prog4to/$progAnte) *100,1) . '%';
+
+        if($progAnte != 0){
+            $porcentual1 = number_format(($prog1er/$progAnte) *100,1) . '%';
+            $porcentual2 = number_format(($prog2do/$progAnte) *100,1) . '%';
+            $porcentual3 = number_format(($prog3er/$progAnte) *100,1) . '%';
+            $porcentual4 = number_format(($prog4to/$progAnte) *100,1) . '%';
+        }else{
+            $porcentual1 = "0%";
+            $porcentual2 = "0%";
+            $porcentual3 = "0%";
+            $porcentual4 = "0%";
+        }
 
         $renglon .= '<tr>';
         $renglon .= '<td style="text-align: center; border:1px solid gray; font-size: 7px">' . $a['codigo_actividad']. '</td>';
@@ -95,7 +103,6 @@ LEFT JOIN dependencias ON ar.id_dependencia = dependencias.id_dependencia
 LEFT JOIN titulares ON titulares.id_area = ar.id_area
 WHERE ar.id_dependencia = $variable
 GROUP BY ar.id_area";
-
 $stm = $con->query($consulta);
 $areas = $stm->fetchAll(PDO::FETCH_ASSOC);
 
@@ -217,9 +224,9 @@ $html4 = '<table style="width: 100%; text-align: center; border-spacing: 3px">
     <td style="font-size: 8px; width: 33%; border: 1px solid gray;"> AUTORIZÓ </td>
 </tr>	
 <tr>
-<td style="font-size: 8px; width: 33%; border: 1px solid gray;"><br><br><br><br><br><br>'. $a['gradoa'] .' '. $a['nombre'] ." ". $a['apellidos'] .'<br>'. $a['cargo'] .' </td>
-<td style="font-size: 8px; width: 33%; border: 1px solid gray;"><br><br><br><br><br><br> '. $Director['gradoa'] .' '. $Director['nombre'] ." ". $Director['apellidos'] .'<br>'. $Director['cargo'] .'</td>
-<td style="font-size: 8px; width: 33%; border: 1px solid gray;"><br><br><br><br><br><br>'. $DirectorUIPPE['gradoa'] .' '. $DirectorUIPPE['nombre'] ." ". $DirectorUIPPE['apellidos'] .'<br>'. $DirectorUIPPE['cargo'] .'</td>
+<td style="font-size: 8px; width: 33%; border: 1px solid gray;"><br><br><br><br><br><br>'. mb_strtoupper($a['gradoa'],'utf-8') .' '. mb_strtoupper($a['nombre'],'utf-8') ." ". mb_strtoupper($a['apellidos'],'utf-8') .'<br>'. mb_strtoupper($a['cargo'],'utf-8') .' </td>
+<td style="font-size: 8px; width: 33%; border: 1px solid gray;"><br><br><br><br><br><br> '. mb_strtoupper($Director['gradoa'],'utf-8') .' '. mb_strtoupper($Director['nombre'],'utf-8') ." ". mb_strtoupper($Director['apellidos'],'utf-8') .'<br>'. mb_strtoupper($Director['cargo'],'utf-8') .'</td>
+<td style="font-size: 8px; width: 33%; border: 1px solid gray;"><br><br><br><br><br><br>'. mb_strtoupper($DirectorUIPPE['gradoa'],'utf-8') .' '. mb_strtoupper($DirectorUIPPE['nombre'],'utf-8') ." ". mb_strtoupper($DirectorUIPPE['apellidos'],'utf-8') .'<br>'. mb_strtoupper($DirectorUIPPE['cargo'],'utf-8') .'</td>
 </tr>	
 </table>&nbsp; <br> &nbsp; <br>&nbsp;';
 

@@ -1,30 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa Leaflet</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 400px;
+        }
+    </style>
 </head>
-
 <body>
-
-<?php
-// Texto que quieres "encriptar"
-$texto_original = "id_area=34&trimestre=1";
-
-// "Encriptar" el texto
-$texto_oculto = base64_encode($texto_original);
-
-echo 'Texto oculto: ' . $texto_oculto . "<br>";
-
-// Desencriptar el texto
-$nuevo = 'L2luZGV4LnBocD9kPTI3JnQ9Mw==';
-
-$texto_desencriptado = base64_decode($nuevo);
-
-echo 'Texto desencriptado: ' . $texto_desencriptado;
-?>
+    <div id="map"></div>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="app.js"></script>
 </body>
-
 </html>

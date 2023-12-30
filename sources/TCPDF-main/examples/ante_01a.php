@@ -1,5 +1,8 @@
 <?php
-
+session_start();
+if (!isset($_SESSION) || !isset($_SESSION['sistema']) || !$_SESSION['sistema'] == "pbrm") {
+    header("Location: /index.php");
+}
 
 if(!$_POST['id_dependencia']){
     header("Location: /index.php");
@@ -51,7 +54,6 @@ LEFT JOIN titulares ON titulares.id_area = ante_areas.id_area
 JOIN ante_unob ON ante_areas.id_area = ante_areas.id_area
 WHERE ante_areas.id_dependencia = $variable
 GROUP BY ante_areas.id_area";
-
 $stm = $con->query($consulta);
 $areas = $stm->fetchAll(PDO::FETCH_ASSOC);
 
@@ -168,9 +170,9 @@ $html4 = '<table style="width: 100%; text-align: center; border-spacing: 3px">
 	<td style="font-size: 8px; width: 33%; border: 1px solid gray;"> AUTORIZÓ </td>
 </tr>
 <tr>
-    <td style="font-size: 8px; width: 33%; border: 1px solid gray;"><br><br><br><br><br><br> '. $Director['gradoa'] .' '. $Director['nombre'] ." ". $Director['apellidos'] .'<br>'. $Director['cargo'] .'</td>
-    <td style="font-size: 8px; width: 33%; border: 1px solid gray;"><br><br><br><br><br><br>'. $tesorero['gradoa'] .' '. $tesorero['nombre'] ." ". $tesorero['apellidos'] .'<br>'. $tesorero['cargo'] .'</td>
-	<td style="font-size: 8px; width: 33%; border: 1px solid gray;"><br><br><br><br><br><br>'. $DirectorUIPPE['gradoa'] .' '. $DirectorUIPPE['nombre'] ." ". $DirectorUIPPE['apellidos'] .'<br>'. $DirectorUIPPE['cargo'] .'</td>
+    <td style="font-size: 8px; width: 33%; border: 1px solid gray;"><br><br><br><br><br><br> '. mb_strtoupper($Director['gradoa'],'utf-8') .' '. mb_strtoupper($Director['nombre'],'utf-8') ." ". mb_strtoupper($Director['apellidos'],'utf-8') .'<br>'. mb_strtoupper($Director['cargo'],'utf-8') .'</td>
+    <td style="font-size: 8px; width: 33%; border: 1px solid gray;"><br><br><br><br><br><br>'. mb_strtoupper($tesorero['gradoa'],'utf-8') .' '. mb_strtoupper($tesorero['nombre'],'utf-8') ." ". mb_strtoupper($tesorero['apellidos'],'utf-8') .'<br>'. mb_strtoupper($tesorero['cargo'],'utf-8') .'</td>
+	<td style="font-size: 8px; width: 33%; border: 1px solid gray;"><br><br><br><br><br><br>'. mb_strtoupper($DirectorUIPPE['gradoa'],'utf-8') .' '. mb_strtoupper($DirectorUIPPE['nombre'],'utf-8') ." ". mb_strtoupper($DirectorUIPPE['apellidos'],'utf-8') .'<br>'. mb_strtoupper($DirectorUIPPE['cargo'],'utf-8') .'</td>
 </tr>	
 </table>&nbsp; <br> &nbsp; <br>&nbsp;';
 

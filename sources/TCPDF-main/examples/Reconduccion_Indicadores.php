@@ -207,57 +207,57 @@ $infoReconduccion = '
 			<tr>
 				<td rowspan="2" bgcolor="#D5D5D5" style="width: 7%; text-align: center; border: 1px solid black; border-collapse: collapse;">Nivel de la MIR</td>
 				<td rowspan="2" bgcolor="#D5D5D5" style="width: 10%; text-align: center; border: 1px solid black; border-collapse: collapse;">Denominación del Indicador</td>
-				<td rowspan="2" bgcolor="#D5D5D5" style="width: 10%; text-align: center; border: 1px solid black; border-collapse: collapse;">Variables de Indicador </td>
+				<td rowspan="2" bgcolor="#D5D5D5" style="width: 14%; text-align: center; border: 1px solid black; border-collapse: collapse;">Variables de Indicador </td>
 				<td rowspan="2" bgcolor="#D5D5D5" style="width: 9%; text-align: center; border: 1px solid black; border-collapse: collapse;">Unidad de Medida</td>
 				<td rowspan="2" bgcolor="#D5D5D5" style="width: 9%; text-align: center; border: 1px solid black; border-collapse: collapse;">Tipo de Operación</td>
 				<td rowspan="2" bgcolor="#D5D5D5" style="width: 9%; text-align: center; border: 1px solid black; border-collapse: collapse;">Programación inicial del indicador </td>
 				<td rowspan="2" bgcolor="#D5D5D5" style="width: 9%; text-align: center; border: 1px solid black; border-collapse: collapse;">Avance a la fecha </td>
 				<td rowspan="2" bgcolor="#D5D5D5" style="width: 9%; text-align: center; border: 1px solid black; border-collapse: collapse;">Programación Modificada</td>
-				<td bgcolor="#D5D5D5" style="width: 28%; text-align: center; border: 1px solid black; border-collapse: collapse;">Calendarización Trimestral Modificada</td>
+				<td bgcolor="#D5D5D5" style="width: 24%; text-align: center; border: 1px solid black; border-collapse: collapse;">Calendarización Trimestral Modificada</td>
 			</tr>
 			<tr>
-				<td bgcolor="#D5D5D5" style="width: 7%; text-align: center; border: 1px solid black; border-collapse: collapse;">1</td>
-				<td bgcolor="#D5D5D5" style="width: 7%; text-align: center; border: 1px solid black; border-collapse: collapse;">2</td>
-				<td bgcolor="#D5D5D5" style="width: 7%; text-align: center; border: 1px solid black; border-collapse: collapse;">3</td>
-				<td bgcolor="#D5D5D5" style="width: 7%; text-align: center; border: 1px solid black; border-collapse: collapse;">4</td>
+				<td bgcolor="#D5D5D5" style="width: 6%; text-align: center; border: 1px solid black; border-collapse: collapse;">1</td>
+				<td bgcolor="#D5D5D5" style="width: 6%; text-align: center; border: 1px solid black; border-collapse: collapse;">2</td>
+				<td bgcolor="#D5D5D5" style="width: 6%; text-align: center; border: 1px solid black; border-collapse: collapse;">3</td>
+				<td bgcolor="#D5D5D5" style="width: 6%; text-align: center; border: 1px solid black; border-collapse: collapse;">4</td>
 			</tr>
 		</thead>
 		<tbody>
 			<tr>
 				<td rowspan="3" style="width: 7%; text-align: center; border: 1px solid black; border-collapse: collapse;">&nbsp;<br>&nbsp;<br>Nivel Indicador</td> 
 				<td rowspan="3" style="width: 10%; text-align: center; border: 1px solid black; border-collapse: collapse;">&nbsp;<br>&nbsp;<br>'.$reconduccion['nombre_indicador'].'</td> 
-				<td style="width: 10%; text-align: center; border: 1px solid black; border-collapse: collapse; font-size: 7px">'.$reconduccion['variable_a'].'</td> 
+				<td style="width: 14%; text-align: center; border: 1px solid black; border-collapse: collapse; font-size: 7px">'.$reconduccion['variable_a'].'</td> 
 				<td style="width: 9%; text-align: center; border: 1px solid black; border-collapse: collapse;">&nbsp;<br>&nbsp;<br>'.$reconduccion['umedida_a'].'</td> 
 				<td style="width: 9%; text-align: center; border: 1px solid black; border-collapse: collapse;">&nbsp;<br>&nbsp;<br>'.$reconduccion['tipo_op_a'].'</td> 
 				<td style="width: 9%; text-align: center; border: 1px solid black; border-collapse: collapse;">&nbsp;<br>&nbsp;<br>'.$proginicial_a.'</td> 
 				<td style="width: 9%; text-align: center; border: 1px solid black; border-collapse: collapse;">&nbsp;<br>&nbsp;<br>'.$av_a.'</td> 
 				<td style="width: 9%; text-align: center; border: 1px solid black; border-collapse: collapse;">&nbsp;<br>&nbsp;<br>'.$progfinalfinal_a.'</td> 
-				<td style="width: 7%; text-align: center; border: 1px solid black; border-collapse: collapse;">&nbsp;<br>&nbsp;<br>'.$progfinal_a[0].'</td> 
-				<td style="width: 7%; text-align: center; border: 1px solid black; border-collapse: collapse;">&nbsp;<br>&nbsp;<br>'.$progfinal_a[1].'</td> 
-				<td style="width: 7%; text-align: center; border: 1px solid black; border-collapse: collapse;">&nbsp;<br>&nbsp;<br>'.$progfinal_a[2].'</td> 
-				<td style="width: 7%; text-align: center; border: 1px solid black; border-collapse: collapse;">&nbsp;<br>&nbsp;<br>'.$progfinal_a[3].'</td> 
+				<td style="width: 6%; text-align: center; border: 1px solid black; border-collapse: collapse;">&nbsp;<br>&nbsp;<br>'.$progfinal_a[0].'</td> 
+				<td style="width: 6%; text-align: center; border: 1px solid black; border-collapse: collapse;">&nbsp;<br>&nbsp;<br>'.$progfinal_a[1].'</td> 
+				<td style="width: 6%; text-align: center; border: 1px solid black; border-collapse: collapse;">&nbsp;<br>&nbsp;<br>'.$progfinal_a[2].'</td> 
+				<td style="width: 6%; text-align: center; border: 1px solid black; border-collapse: collapse;">&nbsp;<br>&nbsp;<br>'.$progfinal_a[3].'</td> 
 			</tr>
 			<tr>
-				<td style="width: 10%; text-align: center; border: 1px solid black; border-collapse: collapse; font-size: 7px">'.$reconduccion['variable_b'].'</td> 
+				<td style="width: 14%; text-align: center; border: 1px solid black; border-collapse: collapse; font-size: 7px">'.$reconduccion['variable_b'].'</td> 
 				<td style="width: 9%; text-align: center; border: 1px solid black; border-collapse: collapse;">&nbsp;<br>&nbsp;<br>'.$reconduccion['umedida_b'].'</td> 
 				<td style="width: 9%; text-align: center; border: 1px solid black; border-collapse: collapse;">&nbsp;<br>&nbsp;<br>'.$reconduccion['tipo_op_b'].'</td> 
 				<td style="width: 9%; text-align: center; border: 1px solid black; border-collapse: collapse;">&nbsp;<br>&nbsp;<br>'.$proginicial_b.'</td> 
 				<td style="width: 9%; text-align: center; border: 1px solid black; border-collapse: collapse;">&nbsp;<br>&nbsp;<br>'.$av_b.'</td> 
 				<td style="width: 9%; text-align: center; border: 1px solid black; border-collapse: collapse;">&nbsp;<br>&nbsp;<br>'.$progfinalfinal_b.'</td> 
-				<td style="width: 7%; text-align: center; border: 1px solid black; border-collapse: collapse;">&nbsp;<br>&nbsp;<br>'.$progfinal_b[0].'</td> 
-				<td style="width: 7%; text-align: center; border: 1px solid black; border-collapse: collapse;">&nbsp;<br>&nbsp;<br>'.$progfinal_b[1].'</td> 
-				<td style="width: 7%; text-align: center; border: 1px solid black; border-collapse: collapse;">&nbsp;<br>&nbsp;<br>'.$progfinal_b[2].'</td> 
-				<td style="width: 7%; text-align: center; border: 1px solid black; border-collapse: collapse;">&nbsp;<br>&nbsp;<br>'.$progfinal_b[3].'</td> 
+				<td style="width: 6%; text-align: center; border: 1px solid black; border-collapse: collapse;">&nbsp;<br>&nbsp;<br>'.$progfinal_b[0].'</td> 
+				<td style="width: 6%; text-align: center; border: 1px solid black; border-collapse: collapse;">&nbsp;<br>&nbsp;<br>'.$progfinal_b[1].'</td> 
+				<td style="width: 6%; text-align: center; border: 1px solid black; border-collapse: collapse;">&nbsp;<br>&nbsp;<br>'.$progfinal_b[2].'</td> 
+				<td style="width: 6%; text-align: center; border: 1px solid black; border-collapse: collapse;">&nbsp;<br>&nbsp;<br>'.$progfinal_b[3].'</td> 
 			</tr>
 			<tr>
-				<td colspan="3" style="width: 28%; text-align: rigth; border: 1px solid black; border-collapse: collapse;">Resultado del Indicador: </td> 
+				<td colspan="3" style="width: 32%; text-align: rigth; border: 1px solid black; border-collapse: collapse;">Resultado del Indicador: </td> 
 				<td style="width: 9%; text-align: center; border: 1px solid black; border-collapse: collapse;"></td> 
 				<td style="width: 9%; text-align: center; border: 1px solid black; border-collapse: collapse;"></td> 
 				<td style="width: 9%; text-align: center; border: 1px solid black; border-collapse: collapse;"></td> 
-				<td style="width: 7%; text-align: center; border: 1px solid black; border-collapse: collapse;">'.$tab1.'</td> 
-				<td style="width: 7%; text-align: center; border: 1px solid black; border-collapse: collapse;">'.$tab2.'</td> 
-				<td style="width: 7%; text-align: center; border: 1px solid black; border-collapse: collapse;">'.$tab3.'</td> 
-				<td style="width: 7%; text-align: center; border: 1px solid black; border-collapse: collapse;">'.$tab4.'</td> 
+				<td style="width: 6%; text-align: center; border: 1px solid black; border-collapse: collapse;">'.$tab1.'</td> 
+				<td style="width: 6%; text-align: center; border: 1px solid black; border-collapse: collapse;">'.$tab2.'</td> 
+				<td style="width: 6%; text-align: center; border: 1px solid black; border-collapse: collapse;">'.$tab3.'</td> 
+				<td style="width: 6%; text-align: center; border: 1px solid black; border-collapse: collapse;">'.$tab4.'</td> 
 			</tr>
 		</tbody>
 	</table>

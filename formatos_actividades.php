@@ -76,19 +76,19 @@ require_once 'Controllers/reportes_actividades_Controller.php';
                     <div class="items-start p-4 ml-2 mr-2 mb-4 text-center  bg-white rounded-lg border border-gray-400 shadow-md dark:bg-gray-800 dark:border-gray-700">
                         <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white"> <?= $area['nombre_area'] ?> </h5>
                         <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Seleccione el Trimestre a Imprimir.</p>
-                        <form action="sources/TCPDF-main/examples/example_006.php" method="POST">
-                            <input type="hidden" name="id_area" value="<?= $area['id_area'] ?>">
-                            <?php if (TieneDirector($con, $id_dependencia) && TienePuestoMedio($con, $area['id_area'])) : ?>
+                        <?php if (TieneDirector($con, $id_dependencia) && TienePuestoMedio($con, $area['id_area'])) : ?>
+                            <form action="sources/TCPDF-main/examples/08c.php" method="POST">
+                                <input type="hidden" name="id_area" value="<?= $area['id_area'] ?>">
                                 <div class="inline-flex rounded-md shadow-sm" role="group">
                                     <?= Botones($con, $area['id_area']) ?>
                                 </div>
                                 <div class="inline-flex rounded-md shadow-sm" role="group">
                                     <?= BotonesFirmados($con, $area['id_area']) ?>
                                 </div>
-                        </form>
-                    <?php else : ?>
-                        <a href="mis_areas.php" class="py-2 px-3 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Necesitas Registrar Encargado</a>
-                    <?php endif ?>
+                            </form>
+                        <?php else : ?>
+                            <a href="mis_areas.php" class="py-2 px-3 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Necesitas Registrar Encargado</a>
+                        <?php endif ?>
                     </div>
 
                 <?php endforeach ?>
@@ -98,10 +98,10 @@ require_once 'Controllers/reportes_actividades_Controller.php';
 
 
         <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
-<br>
+            <br>
             <h3 class="text-3xl font-bold dark:text-white">Formatos oficiales OSFEM</h3>
 
-<br>
+            <br>
 
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg my'3">
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">

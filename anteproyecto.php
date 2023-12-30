@@ -27,7 +27,7 @@ if ($_SESSION['sistema'] == 'pbrm') {
     <body>
         <div class="container mx-auto">
             <br>
-            <?= breadcrumbs(array("Inicio" => "index.php", "Anteproyecto 2024" => "anteproyecto.php")) ?>
+            <?= breadcrumbs(array("Inicio" => "index.php", "Proyecto 2024" => "anteproyecto.php")) ?>
             <br>
             <?php if ($_GET) : ?>
                 <?php if (isset($_GET['tipo']) && $_GET['tipo'] == 'b') : ?>
@@ -882,7 +882,10 @@ if ($_SESSION['sistema'] == 'pbrm') {
                             <?= boton1b($con, $permisos['id_dependencia']) ?>
                             <?= boton01c($con, $permisos['id_dependencia']) ?>
                             <?= boton01d($con, $permisos['id_dependencia']) ?>
-                            <button type="button" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">01e</button>
+                            <form action="sources/TCPDF-main/examples/ante_01e.php" method="post">
+                                <input type="hidden" name="id_dependencia" value="<?= $permisos['id_dependencia'] ?>">
+                                <button type="submit" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">01e</button>
+                            </form>
                             <?= boton02a($con, $permisos['id_dependencia']) ?>
                         </div>
                         <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
@@ -943,6 +946,31 @@ if ($_SESSION['sistema'] == 'pbrm') {
                         </div>
                     <?php endif ?> <!--Hasta aqui se menciona lo relacionado con los anios para reportar -->
                 <?php endif ?>
+            <?php endif ?>
+
+            <?php if($permisos['nivel'] == 1): ?>
+
+
+                <form action="sources\TCPDF-main\examples\ante_01a_todos.php" method="post">
+                    <button type="submit" name="01a" value="01a" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01a</button>
+                </form>
+<br>
+                <form action="sources\TCPDF-main\examples\ante_01b_todos.php" method="post">
+                    <button type="submit" name="01b" value="01b" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01b</button>
+                </form>
+<br>
+                <form action="sources\TCPDF-main\examples\ante_01c_todos.php" method="post">
+                    <button type="submit" name="01c" value="01c" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01c</button>
+                </form>
+<br>
+                <form action="sources\TCPDF-main\examples\ante_01d_todos.php" method="post">
+                    <button type="submit" name="01d" value="01d" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01d</button>
+                </form>
+<br>
+                <form action="sources\TCPDF-main\examples\ante_02a_todos.php" method="post">
+                    <button type="submit" name="02a" value="02a" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">02a</button>
+                </form>
+
             <?php endif ?>
         </div>
     </body>

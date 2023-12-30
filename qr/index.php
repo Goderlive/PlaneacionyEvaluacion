@@ -1,8 +1,15 @@
 <?php
 require_once '../Controllers/qrController.php';
 
-$id_dependencia = $_GET['d'];
-$trimestre = $_GET['t'];
+if(isset($_GET['d']) && isset($_GET['t'])){
+    $id_dependencia = $_GET['d'];
+    $trimestre = $_GET['t'];
+}else{
+    print "Por favor escane un codigo QR";
+    die();
+}
+
+
 
 if (!$dependencia = Dependencia($con, $id_dependencia)) {
     print "Información Incorrecta";
@@ -13,7 +20,7 @@ $areas = TraeAreas($con, $id_dependencia);
 $mes_maximo = $trimestre * 3;
 $mes_minimo = $mes_maximo - 2;
 $meses = array("Sin Mes", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");
-
+$logos = logos($con);
 ?>
 
 
@@ -33,8 +40,9 @@ $meses = array("Sin Mes", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
 
     <nav class="border-gray-200 bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-            <a href="#" class="flex items-center">
-                <img src="../img/metepec_logoc.png" class="" alt="Metepec Logo" />
+            <a href="" class="flex items-center">
+                <img src="<?= $logos['path_logo_ayuntamiento'] ?>" class="" alt="Escudo" />
+                <img src="<?= $logos['path_logo_administracion'] ?>" class="" alt="Logo" />
                 <b class="ml-3"><?= $dependencia['nombre_dependencia'] ?></b>
             </a>
             <button data-collapse-toggle="navbar-solid-bg" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-solid-bg" aria-expanded="false">

@@ -220,11 +220,11 @@ foreach($areas as $a){
         <td style="font-size: 8px; width: 33%; border: 1px solid gray;"> ELABORÓ </td>
         <td style="font-size: 8px; width: 33%; border: 1px solid gray;"> REVISÓ </td>
         <td style="font-size: 8px; width: 33%; border: 1px solid gray;"> AUTORIZÓ </td>
-    </tr>	
+    </tr>
     <tr>
-    <td style="font-size: 8px; width: 33%; border: 1px solid gray;"><br><br><br><br><br><br>'. $a['gradoa'] .' '. $a['nombre'] ." ". $a['apellidos'] .'<br>'. $a['cargo'] .' </td>
-	<td style="font-size: 8px; width: 33%; border: 1px solid gray;"><br><br><br><br><br><br> '. $Director['gradoa'] .' '. $Director['nombre'] ." ". $Director['apellidos'] .'<br>'. $Director['cargo'] .'</td>
-	<td style="font-size: 8px; width: 33%; border: 1px solid gray;"><br><br><br><br><br><br>'. $DirectorUIPPE['gradoa'] .' '. $DirectorUIPPE['nombre'] ." ". $DirectorUIPPE['apellidos'] .'<br>'. $DirectorUIPPE['cargo'] .'</td>
+        <td style="font-size: 8px; width: 33%; border: 1px solid gray;"><br><br><br><br><br><br>'. mb_strtoupper($a['gradoa'],'utf-8') .' '. mb_strtoupper($a['nombre'],'utf-8') ." ". mb_strtoupper($a['apellidos'],'utf-8') .'<br>'. mb_strtoupper($a['cargo'],'utf-8') .' </td>
+        <td style="font-size: 8px; width: 33%; border: 1px solid gray;"><br><br><br><br><br><br> '. mb_strtoupper($Director['gradoa'],'utf-8') .' '. mb_strtoupper($Director['nombre'],'utf-8') ." ". mb_strtoupper($Director['apellidos'],'utf-8') .'<br>'. mb_strtoupper($Director['cargo'],'utf-8') .'</td>
+        <td style="font-size: 8px; width: 33%; border: 1px solid gray;"><br><br><br><br><br><br>'. mb_strtoupper($DirectorUIPPE['gradoa'],'utf-8') .' '. mb_strtoupper($DirectorUIPPE['nombre'],'utf-8') ." ". mb_strtoupper($DirectorUIPPE['apellidos'],'utf-8') .'<br>'. mb_strtoupper($DirectorUIPPE['cargo'],'utf-8') .'</td>
     </tr>	
     </table>&nbsp; <br> &nbsp; <br>&nbsp;';
 

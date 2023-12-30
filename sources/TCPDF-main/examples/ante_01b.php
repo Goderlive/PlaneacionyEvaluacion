@@ -176,10 +176,10 @@ $html3 = '<table style="padding: 2px;">
 
 $html4 = '<table style="width: 100%; text-align: center; border-spacing: 3px; margin-top: 2px">
 <tr>
-    <td style="font-size: 8px; width: 33%; border: 1px solid gray;"><br><br><br><br>'. $a['gradoa'] .' '. $a['nombre'] ." ". $a['apellidos'] .'<br>'. $a['cargo'] .' </td>
-    <td style="font-size: 8px; width: 33%; border: 1px solid gray;"><br><br><br><br>'. $responsable['gradoa'] .' '. $responsable['nombre'] ." ". $responsable['apellidos'] .'<br>'. $responsable['cargo'] .'</td>
-    <td style="font-size: 8px; width: 33%; border: 1px solid gray;"><br><br><br><br>'. $Director['gradoa'] .' '. $Director['nombre'] ." ". $Director['apellidos'] .'<br>'. $Director['cargo'] .'</td>
-</tr>	
+    <td style="font-size: 8px; width: 33%; border: 1px solid gray;"><br><br><br><br>'. mb_strtoupper($a['gradoa'],'utf-8') .' '.mb_strtoupper($a['nombre'],'utf-8') ." ".mb_strtoupper($a['apellidos'],'utf-8') .'<br>'.mb_strtoupper($a['cargo'],'utf-8') .' </td>
+    <td style="font-size: 8px; width: 33%; border: 1px solid gray;"><br><br><br><br>'.mb_strtoupper($responsable['gradoa'],'utf-8') .' '.mb_strtoupper($responsable['nombre'],'utf-8') ." ".mb_strtoupper($responsable['apellidos'],'utf-8') .'<br>'.mb_strtoupper($responsable['cargo'],'utf-8') .'</td>
+    <td style="font-size: 8px; width: 33%; border: 1px solid gray;"><br><br><br><br>'.mb_strtoupper($Director['gradoa'],'utf-8') .' '. mb_strtoupper($Director['nombre'],'utf-8') ." ".mb_strtoupper($Director['apellidos'],'utf-8') .'<br>'.mb_strtoupper($Director['cargo'],'utf-8') .'</td>
+</tr>
 </table>&nbsp; <br> &nbsp; <br>&nbsp;';
 
 $html = $html0 . $html1 . $html3 . $html4;

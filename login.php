@@ -1,6 +1,10 @@
 <?php
 session_start();
 session_destroy();
+require_once 'models/conection.php';
+
+$stm = $con->query("SELECT * FROM setings");
+$ajustes = $stm->fetch(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -77,7 +81,7 @@ session_destroy();
 		<div class="container-fluid h-custom">
 			<div class="row d-flex justify-content-center align-items-center h-100">
 				<div class="col-md-9 col-lg-6 col-xl-5">
-					<img src="./img/logo_ayuntamiento.png" class="img-fluid" alt="">
+					<img src="<?= $ajustes['path_logo_login'] ?>" class="img-fluid" alt="">
 				</div>
 				<div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
 					<h3 class="text-center">Sistema de Monitoreo, Tablero de Control y Seguimiento del PbRM <br><b>(SIMONTS)</b></h3>
@@ -96,8 +100,8 @@ session_destroy();
 						</div>
 
 						<div class="form-check">
-							<input class="form-check-input" onclick="ver_contrasena()" type="checkbox" value="" id="" />
-							<label class="form-check-label" for="">Mostrar Contraseña</label>
+							<input class="form-check-input" onclick="ver_contrasena()" type="checkbox" value="" id="showpass" />
+							<label class="form-check-label" for="showpass">Mostrar Contraseña</label>
 						</div>
 						<div class="text-center text-lg-center mt-4 pt-2">
 							<button type="submit" class="btn text-white btn-lg" style="padding-left: 1.5rem; padding-right: 1.5rem; background-color:#a184bc;">Ingresar</button>
