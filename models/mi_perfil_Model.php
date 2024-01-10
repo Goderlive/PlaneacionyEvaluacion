@@ -21,7 +21,7 @@ function buscacincos($con, $id_usuario){
     $sql = "SELECT u.nombre, u.apellidos, u.id_usuario, u.correo_electronico, a.nombre_area FROM usuarios u
             JOIN permisos p ON p.id_usuario = u.id_usuario
             JOIN areas a ON a.id_area = p.id_area
-            WHERE u.id_registro = $id_usuario AND p.anio = $anio AND u.activo = 1
+            WHERE u.id_registro = $id_usuario AND u.activo = 1
     ";
     $stm = $con->query($sql);
     $dependientes = $stm->fetchAll(PDO::FETCH_ASSOC);
@@ -34,7 +34,7 @@ function buscacuatros($con, $id_usuario){
     $sql = "SELECT u.nombre, u.apellidos, u.id_usuario, u.correo_electronico, d.nombre_dependencia FROM usuarios u
             JOIN permisos p ON p.id_usuario = u.id_usuario
             JOIN dependencias d ON d.id_dependencia = p.id_dependencia
-            WHERE u.id_registro = $id_usuario AND p.anio = $anio AND u.activo = 1
+            WHERE u.id_registro = $id_usuario AND u.activo = 1
     ";
     $stm = $con->query($sql);
     $dependientes = $stm->fetchAll(PDO::FETCH_ASSOC);

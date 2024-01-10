@@ -14,7 +14,8 @@ $ajustes = $stm->fetch(PDO::FETCH_ASSOC);
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="./css/styles.css">
-	<!-- MDB --><link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.6/flowbite.min.css" rel="stylesheet" />
+	<!-- MDB -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.6/flowbite.min.css" rel="stylesheet" />
 
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.0.0/mdb.min.css" rel="stylesheet" />
 	<script src="https://www.google.com/recaptcha/api.js?render=6LcZfqElAAAAADzerIJUYxVVssVh6IMposVwupF2"></script>
@@ -87,6 +88,15 @@ $ajustes = $stm->fetch(PDO::FETCH_ASSOC);
 					<h3 class="text-center">Sistema de Monitoreo, Tablero de Control y Seguimiento del PbRM <br><b>(SIMONTS)</b></h3>
 					<br>
 					<form action="validar_login.php" id="loginsimonts" method="POST">
+						<div>
+							<label for="anio" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Año fiscal</label>
+							<select id="anio" name="anio" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+								<option selected value="2023">2023</option>
+								<option value="2024">2024</option>
+							</select>
+
+						</div>
+						<br>
 						<!-- Email input -->
 						<div class="form-outline mb-4">
 							<input autofocus type="email" name="correo_electronico" class="form-control form-control-lg" placeholder="Ingresa tu correo electrónico" required />

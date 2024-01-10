@@ -13,10 +13,14 @@ if (!isset($_POST['id_area'])){
     if(isset($_POST['mes'])){
         $el_mes = $_POST['mes'];
     }else{
-        if(date('d') > 24){
-            $el_mes = intval(date('m'));
+        if($_SESSION['anio'] == date('Y')){
+            if(date('d') > 24){
+                $el_mes = intval(date('m'));
+            }else{
+                $el_mes = intval(date('m')-1);
+            }
         }else{
-            $el_mes = intval(date('m')-1);
+            $el_mes = 12;
         }
     }
 }

@@ -145,7 +145,7 @@ $html3 = '<table style="padding: 2px;">
 	    <td style="width:100%; text-align: left; border:1px solid gray; font-size: 9px"><b>Diagnóstico de Programa Presupuestario elaborado usando Analisis FODA: </b></td>
 	</tr>
     <tr>
-        <td style="width:100%; text-align: left; border:1px solid gray; font-size: 6px">'. $a['diagnostico_fortaleza'] .'<br>'. $a['diagnostico_oportunidad'] .'<br>'. $a['diagnostico_debilidad'] .'<br>'. $a['diagnostico_amenaza'] .'</td>
+        <td style="width:100%; text-align: left; border:1px solid gray; font-size: 6px">Fortaleza: '. $a['diagnostico_fortaleza'] .'<br>Oportunidad: '. $a['diagnostico_oportunidad'] .'<br>Debilidad: '. $a['diagnostico_debilidad'] .'<br> Amenaza: '. $a['diagnostico_amenaza'] .'</td>
     </tr>
 	<tr>
 		<td style="width:100%; text-align: left; border:1px solid gray; font-size: 9px"><b>Objetivos del Programa presupuestario: </b></td>

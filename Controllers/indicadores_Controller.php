@@ -27,12 +27,19 @@ function MenuTrimestre($id_dependencia, $this_mes){
 }
 
 function CreaBotones($id_indicador, $trimestre_actual, $con){
-    $mes = ceil(date('m')/3)+1;
+
+    if($_SESSION['anio'] == date('Y')){
+        $mes = ceil(date('m')/3)+1;
+    }else{
+        $mes = 5;
+    }
+
     if($mes <= $trimestre_actual){
         $boton = '<button data-modal-toggle="mymodal'.$id_indicador.'" disabled class="text-white bg-blue-400 dark:bg-blue-500 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="button" >Reportar</button>';
         return $boton;
     }
     $tieneAvance = Fetch($con, "SELECT id_avance, validado FROM avances_indicadores WHERE id_indicador = $id_indicador AND trimestre = $trimestre_actual");
+
     if($tieneAvance){
         if($tieneAvance['validado']){
             $boton = '<button data-modal-toggle="mymodal'.$id_indicador.'" disabled class="text-white bg-green-400 dark:bg-green-500 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="button" >Reportado</button>';
@@ -41,6 +48,7 @@ function CreaBotones($id_indicador, $trimestre_actual, $con){
         $boton = '<button data-modal-toggle="mymodal'.$id_indicador.'" disabled class="text-white bg-yellow-300 dark:bg-yellow-500 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="button" >Revisión</button>';
         return $boton;
     }
+    
     $boton = '<button data-modal-toggle="mymodal'.$id_indicador.'" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"" type="button" >Reportar</button>';
     return $boton;
 }

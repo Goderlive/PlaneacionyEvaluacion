@@ -15,6 +15,14 @@ function traeFoda($con, $id_area){
     return $foda = $stm->fetch(PDO::FETCH_ASSOC);
 }
 
+
+function AreasAntep($con, $anio){
+    $aux = FetchAll2($con, "SELECT * FROM dependencias_auxiliares WHERE anio = $anio");
+    $gen = FetchAll2($con, "SELECT * FROM dependencias_generales WHERE anio = $anio");
+    $mix = array_merge($aux, $gen);
+    return $mix;    
+}
+
 function traeobjetivoPDM($con, $id_objetivo){
     $sentencia = "SELECT * FROM pdm_objetivos WHERE id_objetivo = $id_objetivo";
     $stm = $con->query($sentencia);

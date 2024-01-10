@@ -9,10 +9,10 @@ if(!$_SESSION['sistema'] == "pbrm"){
 
 $id_usuario = $_SESSION['id_usuario'];
 require_once 'models/inicio_modelo.php';
-$permisos = getPermisos($con, $_SESSION['id_usuario']);
+$permisos = getPermisos($con, $_SESSION);
 $mi_permiso = $permisos['nivel'];
 $aniosiguiente = intval(date('Y')+1);
-
+$ajustes = traeAjustes($con);
 
 // Aqui estan las variables de los Menus
 $actual = $_SERVER['PHP_SELF'];
@@ -27,6 +27,45 @@ $indicadores = array("indicadores.php", "reconduccion_indicadores.php", "matrice
 $valida_indicadores = array("indicadores.php", "reconduccion_indicadores.php", "matrices.php", "formatos_indicadores.php", "indicadores_avance.php");
 $pdm = array("pdm_admin.php");
 $anteproyecto = array("anteproyecto.php");
+
+
+function DefineEstatusProyecto($ajustes){
+    $ante = explode(";", $ajustes['anteproyectoFechas']);
+    $anteInicio = explode(",", $ante[0]);
+    $anteFin = explode(",", $ante[1]);
+
+    $proyecto = explode(";", $ajustes['proyectoFechas']);
+    $proyectoInicio = explode(",", $proyecto[0]);
+    $proyectoFin = explode(",", $proyecto[1]);
+
+    $programa = explode(";", $ajustes['programaAFechas']);
+    $programaInicio = explode(",", $programa[0]);
+    $programaFin = explode(",", $programa[1]);
+
+    if(date('m') >= $anteInicio[1] && date('m') <= $anteFin[1]){
+        if(date('d') >= $anteInicio[0] && date('d') <= $anteFin[0]){
+            return "Anteproyecto " . $_SESSION['anio'] + 1;
+        }
+    }
+    if(date('m') >= $proyectoInicio[1] && date('m') <= $proyectoFin[1]){
+        if(date('d') >= $proyectoInicio[0] && date('d') <= $proyectoFin[0]){
+            return "Proyecto " . $_SESSION['anio'] + 1;
+        }
+    }
+
+    if(date('m') >= $programaInicio[1] && date('m') <= $programaFin[1]){
+        if(date('d') >= $programaInicio[0] && date('d') <= $programaFin[0]){
+            return "Programa Anual " . ($_SESSION['anio'] + 1);
+        }
+    }
+
+}
+
+
+$menuProyecto = DefineEstatusProyecto($ajustes);
+
+
+
 
 
 if(in_array($actual, $inicio)){
@@ -82,7 +121,7 @@ function item_principal($actual, $buscador, $texto, $destino, $permisos, $mi_per
                         ?></a>
                     </li>
                     <?= item_principal($actual, $inicio, "Inicio", "index.php", array(1,2,3,4,5), $mi_permiso) ?>
-                    <?= item_principal($actual, $anteproyecto, "Proyecto " . $aniosiguiente, "anteproyecto.php", array(1,2,3,4,5), $mi_permiso) ?>
+                    <?= item_principal($actual, $anteproyecto, $menuProyecto, "anteproyecto.php", array(1,2,3,4,5), $mi_permiso) ?>
                     <?= item_principal($actual, $pdm, "PDM", "pdm_admin.php", array(1,2,3,4), $mi_permiso) ?>
                     <?= item_principal($actual, $actividades, "Actividades", "actividades.php", array(3,4,5), $mi_permiso) ?>
                     <?= item_principal($actual, $valida_actividades, "Valida Actividades", "actividades_avances.php", array(1,2), $mi_permiso) ?>

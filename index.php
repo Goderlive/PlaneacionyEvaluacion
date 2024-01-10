@@ -30,9 +30,9 @@ include 'head.php';
                     <span class="sr-only">Info</span>
                     <div class="ml-3 text-sm font-medium">
                         <form action="sources\TCPDF-main\examples\FUAT.php" method="post">
-                            Felicidades! Ya puedes imprimir tu Formato Único Trimestral correspondiente al 3er Trimestre.
+                            Felicidades! Ya puedes imprimir tu Formato Único Trimestral correspondiente al 4to Trimestre.
                             <input type="hidden" name="id_dependencia" value="<?= $permisos['id_dependencia'] ?>">
-                            <input type="hidden" name="trimestre" value="3">
+                            <input type="hidden" name="trimestre" value="4">
                             <button type="submit" class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
                                 <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                                     <path d="M5 20h10a1 1 0 0 0 1-1v-5H4v5a1 1 0 0 0 1 1Z"/>

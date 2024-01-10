@@ -50,8 +50,6 @@ function unArea($con, $dep){
     return $areas;
 }
 
-
-
 function areas_con($con, $dep){
     $sql = "SELECT * FROM areas a
         INNER JOIN dependencias_generales dp ON a.id_dependencia_general = dp.id_dependencia
@@ -70,16 +68,12 @@ function dependencias($con, $anio){
     return $dependencias;
 }
 
-
 function DependenciasAuxiliares($con, $anio){
     $aux = FetchAll2($con, "SELECT * FROM dependencias_auxiliares WHERE anio = $anio");
     $gen = FetchAll2($con, "SELECT * FROM dependencias_generales WHERE anio = $anio");
     $mix = array_merge($aux, $gen);
-    return $mix;
-
-    
+    return $mix;    
 }
-
 
 function TraeUnidades_Medida($con){
     $sql = "SELECT * FROM unidades_medida"; 
@@ -88,13 +82,10 @@ function TraeUnidades_Medida($con){
     return $unidades;
 }
 
-
 function TraeDepsGen($con, $anio){ // Trae las dependencias generales de centralizados y no centralizados
     $sentencia = "SELECT * FROM dependencias_generales WHERE anio = $anio";
     return FetchAll($con, $sentencia);
 }
-
-
 
 if(isset($_POST)){
     if(isset($_POST['guardar'])){

@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION["id_usuario"] = $usuario["id_usuario"];
                 $_SESSION["sistema"] = "pbrm";
                 $_SESSION['correo_electronico'] = $usuario['correo_electronico'];
-                $_SESSION['anio'] = date('Y');
+                $_SESSION['anio'] = $_POST['anio'];
                 header("Location: index.php");
                 exit();
             } else {

@@ -223,7 +223,7 @@ if ($_SESSION['sistema'] == "pbrm") :
                 </thead>
 
                 <tbody>
-                    <form action="models/ajustes_model.php" method="post">
+                    <form action="" method="post">
                         <?php
                         if ($ajustes["anteproyectoFechas"]) :
                             $anteproyecto = SeparadorFechas($ajustes["anteproyectoFechas"]);
@@ -250,7 +250,7 @@ if ($_SESSION['sistema'] == "pbrm") :
                             </td>
                         </tr>
                     </form>
-                    <form action="models/ajustes_model.php" method="post">
+                    <form action="" method="post">
                         <?php
                         if ($ajustes["anteproyectoFechas"]) :
                             $anteproyecto = SeparadorFechas($ajustes["proyectoFechas"]);
@@ -277,14 +277,14 @@ if ($_SESSION['sistema'] == "pbrm") :
                             </td>
                         </tr>
                     </form>
-                    <form action="models/ajustes_model.php" method="post">
+                    <form action="" method="post">
                         <?php
                         if ($ajustes["programaAFechas"]) :
                             $programa = SeparadorFechas($ajustes["programaAFechas"]);
                         endif ?>
                         <tr class="bg-white dark:bg-gray-800">
                             <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                Programa
+                                Programa Anual
                             </th>
                             <td class="py-4 px-6">
                                 <?= DayPiker($programa[0], 1) ?>

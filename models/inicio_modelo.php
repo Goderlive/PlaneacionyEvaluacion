@@ -4,6 +4,14 @@ use FontLib\Table\Type\post;
 
 require_once 'conection.php';
 
+function traeAjustes($con){
+    $stm = $con->query("SELECT * FROM setings");
+    $ajustes = $stm->fetch(PDO::FETCH_ASSOC);
+    return $ajustes;
+}
+
+
+
 function CuentaAvancesFUAT($con, $id_dependencia, $mesI, $mesF){
     $stm = $con->query("SELECT COUNT(av.id_avance) FROM avances av
     LEFT JOIN actividades ac ON ac.id_actividad = av.id_actividad
@@ -72,8 +80,9 @@ function traeinconsistencias($con){
     return $inconsistencias;
 }
 
-function getPermisos($con, $id_usuario){
-    $anio = date("Y");
+function getPermisos($con, $permisos){
+    $anio = $permisos['anio'];
+    $id_usuario = $permisos['id_usuario'];
     $stm = $con->query("SELECT * FROM permisos WHERE id_usuario = $id_usuario AND anio = $anio");
     $permiso = $stm->fetch(PDO::FETCH_ASSOC);
     return $permiso;

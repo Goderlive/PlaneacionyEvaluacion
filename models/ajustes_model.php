@@ -18,13 +18,6 @@ function TraerUippe($con, $id_uippe)
     return $uippe;
 }
 
-function TraeAjustes($con)
-{
-    $stm = $con->query("SELECT * FROM setings");
-    $ajustes = $stm->fetch(PDO::FETCH_ASSOC);
-    return $ajustes;
-}
-
 
 function TraeDirectores($con)
 {
@@ -88,21 +81,18 @@ if ($_POST) {
         $sql = "UPDATE setings SET anteproyectoFechas = '$text'";
         $sqlr = $con->prepare($sql);
         $sqlr->execute();
-        header("Location: ../ajustes.php");
     }
     if (isset($_POST['proyecto'])) {
         $text = armaFechas($_POST["dia1"], $_POST["mes1"], $_POST["dia2"], $_POST["mes2"]);
         $sql = "UPDATE setings SET proyectoFechas = '$text'";
         $sqlr = $con->prepare($sql);
         $sqlr->execute();
-        header("Location: ../ajustes.php");
     }
     if (isset($_POST['programa'])) {
         $text = armaFechas($_POST["dia1"], $_POST["mes1"], $_POST["dia2"], $_POST["mes2"]);
         $sql = "UPDATE setings SET programaAFechas = '$text'";
         $sqlr = $con->prepare($sql);
         $sqlr->execute();
-        header("Location: ../ajustes.php");
     }
 
     if (isset($_POST['logo_principal']) && $_FILES['imagen_principal']['error'] == 0) {
