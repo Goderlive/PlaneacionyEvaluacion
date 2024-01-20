@@ -8,7 +8,6 @@ $user = get_usuario($id_usuario,$con);
 function verificaFuat($con, $permiso){
 	if($permiso['id_dependencia']){
 		if (date('Y') == $_SESSION['anio']) {
-			# code...
 			$mes = date('m') - 1;
 			$trimestre = ceil($mes/3);
 			$mes_permitido = (($trimestre*3) + 1);

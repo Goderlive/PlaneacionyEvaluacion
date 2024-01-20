@@ -53,7 +53,8 @@ if ($_SESSION['sistema'] == "pbrm") :
 
             <div class="border-b mb-4"></div>
             <br>
-            <h2 class="mx-3 text-2xl font-bold dark:text-white mr-auto">Logotipo Principal Inicio (JPG o PNG)</h2>
+            <h2 class="mx-3 text-2xl font-bold dark:text-white mr-auto">Logotipo Principal Inicio (JPG o PNG) </h2>
+            <h2 class="mx-3 text-xl font-bold dark:text-white mr-auto">Todos los años</h2>
             <br>
             <form action="" method="post" enctype="multipart/form-data">
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -72,6 +73,7 @@ if ($_SESSION['sistema'] == "pbrm") :
 
             <br>
             <h2 class="mx-3 text-2xl font-bold dark:text-white mr-auto">Escudo Ayuntamiento</h2>
+            <h2 class="mx-3 text-xl font-bold dark:text-white mr-auto">Año <?= $ajustes['year_report'] ?></h2>
             <br>
 
             <form action="" method="post" enctype="multipart/form-data">
@@ -90,6 +92,7 @@ if ($_SESSION['sistema'] == "pbrm") :
             </form>
             <br>
             <h2 class="mx-3 text-2xl font-bold dark:text-white mr-auto">Logo Administración</h2>
+            <h2 class="mx-3 text-xl font-bold dark:text-white mr-auto">Año <?= $ajustes['year_report'] ?></h2>
             <br>
 
             <form action="" method="post" enctype="multipart/form-data">
@@ -111,6 +114,7 @@ if ($_SESSION['sistema'] == "pbrm") :
         <br>
         <br>
         <h2 class="mx-3 text-2xl font-bold dark:text-white mr-auto">Puestos de importancia para impresión de formatos</h2>
+        <h2 class="mx-3 text-xl font-bold dark:text-white mr-auto">Año <?= $ajustes['year_report'] ?></h2>
         <br>
         <!-- Primero vamos a revisar los puestos mas importantes. -->
         <div class="overflow-x-auto relative shadow-md sm:rounded-lg">

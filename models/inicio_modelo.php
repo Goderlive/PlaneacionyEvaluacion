@@ -10,8 +10,6 @@ function traeAjustes($con){
     return $ajustes;
 }
 
-
-
 function CuentaAvancesFUAT($con, $id_dependencia, $mesI, $mesF){
     $stm = $con->query("SELECT COUNT(av.id_avance) FROM avances av
     LEFT JOIN actividades ac ON ac.id_actividad = av.id_actividad

@@ -90,7 +90,6 @@ include 'head.php';
                                 <?php endforeach ?>
                             <?php endif ?>
 
-
                             <?php if ($modificaciones = VerificaModificaciones($con)) : ?>
                                 <?php foreach ($modificaciones as $m) : ?>
                                     <div id="alert-additional-content-1" class="p-4 mb-4 text-purple-800 border border-purple-300 rounded-lg bg-purple-50 dark:bg-gray-800 dark:text-purple-400 dark:border-purple-800" role="alert">
