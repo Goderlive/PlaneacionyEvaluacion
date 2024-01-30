@@ -35,11 +35,13 @@ $pdf->setFont('dejavusans', '', 10);
 
 
 function traeAnteActividades($con, $id_area){
-    $consulta = "SELECT a.*, ap.*, u.*, p.enero as ene, p.febrero as feb, p.marzo as mar, p.abril as abr, p.mayo as may, p.junio as jun, p.julio as jul, p.agosto as ago, p.septiembre as sep, p.octubre as oct, p.noviembre as nov, p.diciembre as dic
+    $consulta = "SELECT li.clave_linea, a.*, ap.*, u.*, p.enero as ene, p.febrero as feb, p.marzo as mar, p.abril as abr, p.mayo as may, p.junio as jun, p.julio as jul, p.agosto as ago, p.septiembre as sep, p.octubre as oct, p.noviembre as nov, p.diciembre as dic
     FROM ante_actividades a
     LEFT JOIN unidades_medida u ON u.id_unidad = a.id_unidad
     LEFT JOIN ante_programaciones ap ON ap.id_actividad = a.id_actividad
     LEFT JOIN programaciones p ON p.id_actividad = a.id_actividad
+    LEFT JOIN lineasactividades la ON la.id_actividad = a.id_actividad
+    LEFT JOIN pdm_lineas li ON li.id_linea = la.id_linea
     WHERE id_area = $id_area";
 
     $stm = $con->query($consulta);
@@ -72,7 +74,7 @@ function generaRenglon($con, $anteActividades){
 
         $renglon .= '<tr>';
         $renglon .= '<td style="text-align: center; border:1px solid gray; font-size: 7px">' . $a['codigo_actividad']. '</td>';
-        $renglon .= '<td style="text-align: left; border:1px solid gray; font-size: 7px">' . $a['nombre_actividad']. '</td>';
+        $renglon .= '<td style="text-align: left; border:1px solid gray; font-size: 7px">' . $a['nombre_actividad']. ' <br> '. $a['clave_linea'].'</td>';
         $renglon .= '<td style="text-align: center; border:1px solid gray; font-size: 7px">' . $a['nombre_unidad']. '</td>';
         $renglon .= '<td style="text-align: center; border:1px solid gray; font-size: 7px">' . $progAnte. '</td>';
         $renglon .= '<td style="text-align: center; border:1px solid gray; font-size: 7px">' . $prog1er. '</td>';

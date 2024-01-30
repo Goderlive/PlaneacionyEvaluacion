@@ -3,8 +3,8 @@ session_start();
 include_once 'models/conection.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = $_POST["correo_electronico"];
-    $password = $_POST["contrasena"];
+    $email = htmlspecialchars(strip_tags($_POST["correo_electronico"]));
+    $password = htmlspecialchars(strip_tags($_POST["contrasena"]));
 
     if (!empty($email) && !empty($password)) {
         $stmt = $con->prepare("SELECT * FROM usuarios WHERE correo_electronico = ? AND activo = 1");
@@ -16,10 +16,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION["sistema"] = "pbrm";
                 $_SESSION['correo_electronico'] = $usuario['correo_electronico'];
                 $_SESSION['anio'] = $_POST['anio'];
+                $_SESSION['inicio_sesion'] = time();
                 header("Location: index.php");
                 exit();
             } else {
-                $_SESSION['error_message'] = 'La contraseña ingresada es incorrecta';
+                $_SESSION['error_message'] = 'El email o contraseña son incorrectos';
             }
         } else {
             $_SESSION['error_message'] = 'Error en la consulta de la base de datos';

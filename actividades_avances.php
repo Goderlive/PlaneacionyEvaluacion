@@ -190,37 +190,38 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                             <h5 class="mb-2 tracking-tight text-gray-900 dark:text-white"> <?= $a['clave_dependencia'] . "-" . $a['clave_dependencia_auxiliar'] . '-' . $a['codigo_proyecto'] ?> </h5>
                             <h5 class="mb-2 tracking-tight text-gray-900 dark:text-white"> <?= $totalActividades ?> Actividades </h5>
                             <div class="flex mt-1 space-x-3">
-                                <?php if(date('m') >= 3): ?>
+                                <?php if (date('m') >= 3) : ?>
                                     <div id="toast-interactive" class="p-1 text-gray-500 bg-white rounded-lg shadow dark:bg-gray-800 dark:text-gray-400" role="alert">
-                                        <span class="mb-1 text-sm font-semibold text-gray-900 dark:text-white"><?= $meses[intval(date('m'))-2] ?></span>
+                                        <span class="mb-1 text-sm font-semibold text-gray-900 dark:text-white"><?= $meses[intval(date('m')) - 2] ?></span>
                                         <br>
-                                        <?php $validadas = ActividadesValidadas($con, $a['id_area'], date('m')-2) ?>
-                                        <?php if($validadas == $totalActividades): ?>
+                                        <?php $validadas = ActividadesValidadas($con, $a['id_area'], date('m') - 2) ?>
+                                        <?php if ($validadas == $totalActividades) : ?>
                                             <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-white bg-green-400 rounded-lg">
                                                 OK!
                                             </div>
-                                        <?php else: ?>
-                                            
+                                        <?php else : ?>
+
                                             <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-white bg-red-600 rounded-lg">
-                                                <?php $sinvalidar = SinValidar($con, $a['id_area'], date('m')-3, $permisos) ?>
+                                                <?php $sinvalidar = SinValidar($con, $a['id_area'], date('m') - 3, $permisos) ?>
                                                 <?= $sinvalidar ?>
                                             </div>
                                             <br>
                                             <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-white bg-yellow-300 rounded-lg">
-                                                <?php $pendientes = PendientesSegunPermisos($con, $a['id_area'], $permisos, date('m')-3) ?>
+                                                <?php $pendientes = PendientesSegunPermisos($con, $a['id_area'], $permisos, date('m') - 3) ?>
                                                 <?= $pendientes ?>
                                             </div>
                                             <br>
                                             <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-white bg-gray-700 rounded-lg">
-                                                <?php //deberia ser una resta simple de las anteriores  ?>
+                                                <?php //deberia ser una resta simple de las anteriores  
+                                                ?>
                                                 <?= $totalActividades - $sinvalidar - $pendientes ?>
                                             </div>
                                         <?php endif ?>
                                     </div>
                                 <?php endif ?>
-                                <?php if(date('m') >= 2): ?>
+                                <?php if (date('m') >= 2) : ?>
                                     <div id="toast-interactive" class="p-1 text-gray-500 bg-white rounded-lg shadow dark:bg-gray-800 dark:text-gray-400" role="alert">
-                                        <span class="mb-1 text-sm font-semibold text-gray-900 dark:text-white"><?= $meses[intval(date('m'))-1] ?></span>
+                                        <span class="mb-1 text-sm font-semibold text-gray-900 dark:text-white"><?= $meses[intval(date('m')) - 1] ?></span>
                                         <br>
                                         <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-white bg-red-300 rounded-lg">
                                             3
@@ -234,7 +235,7 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                                         3
                                     </div>
                                 </div>
-                                
+
 
 
                             </div>
@@ -332,10 +333,12 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                                         <?= $anual ?>
                                     </td>
                                     <td class="px-6 py-4">
-                                        <?= ProcSumaProgramadosmesymes($con, $el_mes, $a['id_actividad']); ?>
+                                        <?= $progsuma = ProcSumaProgramadosmesymes($con, $el_mes, $a['id_actividad']); ?>
                                     </td>
                                     <td class="px-6 py-4">
-                                        <?= SumaAvancesmesymes($con, $el_mes, $a['id_actividad']); ?>
+                                        <?= $repsuma = SumaAvancesmesymes($con, $el_mes, $a['id_actividad']); ?>
+                                        <br>
+                                        <?= ($progsuma != 0) ?  number_format(($repsuma / $progsuma) * 100, 2, '.', '') . "%" : ''?>
                                     </td>
                                     <td class="px-6 py-4">
                                         <?= $a[$mesi] ?>

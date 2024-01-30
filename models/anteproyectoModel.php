@@ -487,10 +487,14 @@ if(isset($_POST['actividad_update'])){
     $id_unidad = $_POST['id_unidad'];
 
     // Aqui traemos la informacion del 08c
-    $p = traeProgramacionesOld($con, $id_actividad);
+    if($p = traeProgramacionesOld($con, $id_actividad)){
+        $programado_anual_anterior = $p['enero'] + $p['febrero'] + $p['marzo'] + $p['abril'] + $p['mayo'] + $p['junio'] + $p['julio'] + $p['agosto'] + $p['septiembre'] + $p['octubre'] + $p['noviembre'] + $p['diciembre'];
+    }else{
+        $programado_anual_anterior = 0;
+    }
     $a = traeAlcanzadoOld($con, $id_actividad);
 
-    $programado_anual_anterior = $p['enero'] + $p['febrero'] + $p['marzo'] + $p['abril'] + $p['mayo'] + $p['junio'] + $p['julio'] + $p['agosto'] + $p['septiembre'] + $p['octubre'] + $p['noviembre'] + $p['diciembre'];
+
     $alcanzado_anual_anterior = $a['suma'];
 
     $enero = $_POST['enero'];
@@ -520,6 +524,7 @@ if(isset($_POST['actividad_update'])){
         <input type="hidden" name="id_area" value="<?=$id_area?>">
         <input type="hidden" name="tipo" value="a">
     </form>
+
     <script type="text/javascript">
         document.getElementById('myForm').submit();
     </script>

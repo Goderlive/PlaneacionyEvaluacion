@@ -112,12 +112,9 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
             <?php endif ?>
 
 
-            <?php if (isset($_POST['id_dependencia'])) :  //Aqui validamos el area
+            <?php if (isset($_POST['id_dependencia'])) :  //Aqui validamos el area 
             ?>
                 <?php $id_dependencia = $_POST['id_dependencia'] ?>
-
-
-
                 <div class="text-center">
                     <nav aria-label="Page navigation example">
                         <ul class="inline-flex -space-x-px">
@@ -125,15 +122,11 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                         </ul>
                     </nav>
                 </div>
-
-<br>
+                <br>
                 <div class="relative overflow-x-auto shadow-md sm:rounded-md">
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                         <thead class="text-xs text-center text-gray-500 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
-                                <th scope="col" class="px-3 py-3">
-                                    #
-                                </th>
                                 <th scope="col" class="px-3 py-3">
                                     Nombre Indicador
                                 </th>
@@ -197,7 +190,6 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                                         </td>
                                         <td align="center">
                                             <?= botonavances($con, $datos['id'], $trimestre); ?>
-
                                         </td>
                                         <td class="px-2 py-4">
                                             <?php print $datos['at1'] + $datos['at2'] + $datos['at3'] + $datos['at4'] . "<br>" . $datos['bt1'] + $datos['bt2'] + $datos['bt3'] + $datos['bt4'];

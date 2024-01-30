@@ -1,6 +1,24 @@
 <?php
 session_start();
-session_destroy();
+
+// Redirigir si ya existe una sesión activa
+if (isset($_SESSION['id_usuario'])) {
+    header("Location: index.php"); // Redirecciona a la página principal
+    exit();
+}
+
+$tiempo_maximo = 28800; // 8 horas
+
+if (isset($_SESSION['inicio_sesion']) && (time() - $_SESSION['inicio_sesion'] > $tiempo_maximo)) {
+    // La sesión es muy vieja
+    session_unset();     // Elimina las variables de sesión
+    session_destroy();   // Destruye la sesión
+    // Aquí podrías redirigir a la página de inicio de sesión o mostrar un mensaje
+} else {
+    // Actualizar el tiempo de inicio de sesión
+    $_SESSION['inicio_sesion'] = time();
+}
+
 require_once 'models/conection.php';
 
 $stm = $con->query("SELECT * FROM setings");
@@ -87,6 +105,14 @@ $ajustes = $stm->fetch(PDO::FETCH_ASSOC);
 				<div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
 					<h3 class="text-center">Sistema de Monitoreo, Tablero de Control y Seguimiento del PbRM <br><b>(SIMONTS)</b></h3>
 					<br>
+					<?php 
+					if (isset($_SESSION['error_message'])) {
+						echo '<div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+						<span class="font-medium">' . htmlspecialchars($_SESSION['error_message']) . '</span></div>';
+						// Limpia el mensaje de error para que no se muestre de nuevo en la próxima carga
+						unset($_SESSION['error_message']);
+					}
+					 ?>
 					<form action="validar_login.php" id="loginsimonts" method="POST">
 						<div>
 							<label for="anio" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Año fiscal</label>

@@ -628,9 +628,9 @@ if ($_SESSION['sistema'] == 'pbrm') {
                                         <td class="px-6 py-4">
                                             <select name="id_unidad" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                                 <option value="">Selecciona</option>
-                                                <?php foreach ($unidades as $id => $nombre) : ?>
-                                                    <option value="<?= $id; ?>">
-                                                        <?php echo $nombre['nombre_unidad']; ?>
+                                                <?php foreach ($unidades as $u) : ?>
+                                                    <option value="<?= $u['id_unidad']; ?>">
+                                                        <?php echo $u['nombre_unidad']; ?>
                                                     </option>
                                                 <?php endforeach; ?>
                                             </select>
