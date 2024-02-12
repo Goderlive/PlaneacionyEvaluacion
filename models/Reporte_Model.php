@@ -80,7 +80,15 @@ function Actividad_DB($con, $id_actividad)
     return $actividades;
 }
 
-function traeudmed($con){
+function traeUnidades($con){ // Trae unidades de Medida registradas
+    $sentencia = "SELECT * FROM unidades_medida";
+    $stm = $con->query($sentencia);
+    $unidades = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $unidades;
+}
+
+
+function traeudmed($con){ // Esta funcion esta duplicada
     $sqlav = "SELECT * FROM udmed_pdm";
     $stma = $con->query($sqlav);
     $unidadesdemedida = $stma->fetchAll(PDO::FETCH_ASSOC);

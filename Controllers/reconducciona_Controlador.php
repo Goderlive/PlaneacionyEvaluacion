@@ -1,7 +1,6 @@
 <?php
 require_once 'models/reconducciones_modelo.php';
 
-
 function Validadas($con, $dep){
     $areas = TraerAreas($con, $dep);
     $existentes = array();

@@ -59,7 +59,7 @@ require_once 'Controllers/ReporteController.php'; ?>
                         </tr>
                     </thead>
                     <tbody>
-                        <?= Actividades($con, $el_mes, $id_area, $meses, $actividadesDB)?>
+                        <?= Actividades($con, $el_mes, $id_area, $meses, $actividadesDB, $unidades)?>
                     </tbody>
             </table>
         </div>

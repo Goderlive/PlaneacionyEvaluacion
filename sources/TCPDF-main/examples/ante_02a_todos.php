@@ -42,7 +42,9 @@ function traeAnteActividades($con, $id_area){
     LEFT JOIN programaciones p ON p.id_actividad = a.id_actividad
     LEFT JOIN lineasactividades la ON la.id_actividad = a.id_actividad
     LEFT JOIN pdm_lineas li ON li.id_linea = la.id_linea
-    WHERE id_area = $id_area";
+    WHERE id_area = $id_area
+    GROUP BY a.id_actividad
+    ORDER BY codigo_actividad ASC";
 
     $stm = $con->query($consulta);
     $actividades = $stm->fetchAll(PDO::FETCH_ASSOC); 

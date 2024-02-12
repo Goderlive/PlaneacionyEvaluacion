@@ -950,7 +950,7 @@ if ($_SESSION['sistema'] == 'pbrm') {
 
             <?php if ($permisos['nivel'] == 1) : // Area de Administradores 
             ?>
-
+                <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white"> Formatos PDF</h5>
                 <div class="grid grid-cols-6">
                     <form action="sources\TCPDF-main\examples\ante_01a_todos.php" method="post">
                         <button type="submit" name="01a" value="01a" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01a</button>
@@ -971,9 +971,30 @@ if ($_SESSION['sistema'] == 'pbrm') {
                         <button type="submit" name="02a" value="02a" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">02a</button>
                     </form>
                 </div>
-
-
-                Enlistaremos todas las actividades por area y las 
+                <br>
+                <h5 class="mt-4 mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white"> Formatos TXT</h5>
+                <div class="grid grid-cols-6">
+                    <form action="sources\TCPDF-main\examples\ante_01a_todos.php" method="post">
+                        <button type="submit" name="01a" value="01a" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01a</button>
+                    </form>
+                    <form action="sources\TCPDF-main\examples\ante_01b_todos.php" method="post">
+                        <button type="submit" name="01b" value="01b" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01b</button>
+                    </form>
+                    <form action="sources\TCPDF-main\examples\ante_01c_todos.php" method="post">
+                        <button type="submit" name="01c" value="01c" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01c</button>
+                    </form>
+                    <form action="sources\TCPDF-main\examples\ante_01d_todos.php" method="post">
+                        <button type="submit" name="01d" value="01d" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01d</button>
+                    </form>
+                    <form action="sources\TCPDF-main\examples\ante_01e_todos.php" method="post">
+                        <button type="submit" name="01e" value="01e" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01e</button>
+                    </form>
+                    <form action="sources\TCPDF-main\examples\ante_02a_todos.php" method="post">
+                        <button type="submit" name="02a" value="02a" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">02a</button>
+                    </form>
+                </div>
+                <br>
+                Enlistaremos todas las actividades por area y las
             <?php endif ?>
         </div>
     </body>

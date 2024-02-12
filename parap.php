@@ -33,44 +33,6 @@ require_once 'models/conection.php';
 
 
 
-
-    foreach ($indicadores as $i) {
-        $id_indicador = $i['id'];
-        $avances = avanceIndicadores($con, $id_indicador);
-        $avanceTotalA = 0;
-        $avanceTotalB = 0;
-        foreach ($avances as $a) {
-            $avanceTotalA += $a['avance_a'];
-            $avanceTotalB += $a['avance_b'];
-        }
-        $programacionAnualA = $i['at1'] + $i['at2'] + $i['at3'] + $i['at4'];
-        $programacionAnualB = $i['bt1'] + $i['bt2'] + $i['bt3'] + $i['bt4'];
-        print $i['nombre_dependencia']. '<br>';
-        print $i['nombre_indicador']. '<br>';
-
-
-        // Verificación para evitar división por cero y para imprimir solo si está fuera del rango .91 a 1.09
-        if ($programacionAnualA != 0) {
-            $resultadoA = $avanceTotalA / $programacionAnualA;
-            if ($resultadoA < 0.90 || $resultadoA > 1.10) {
-                print $resultadoA . '<br>';
-            }
-        } else {
-            print "N/A (programación anual A es 0)<br>";
-        }
-    
-        if ($programacionAnualB != 0) {
-            $resultadoB = $avanceTotalB / $programacionAnualB;
-            if ($resultadoB < 0.90 || $resultadoB > 1.10) {
-                print $resultadoB . '<br>';
-            }
-        } else {
-            print "N/A (programación anual B es 0)<br>";
-        }
-    
-        print '<br>';
-    }
-    
     
 
 

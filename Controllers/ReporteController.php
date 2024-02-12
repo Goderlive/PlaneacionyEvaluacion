@@ -25,7 +25,7 @@ if (!isset($_POST['id_area'])){
     }
 }
 $meses = array("Sin Mes", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");
-
+$unidades = traeUnidades($con);
 $actividadesDB = Actividades_DB($con, $id_area);
 
 function MenuMes($el_mes, $id_area){
@@ -451,7 +451,7 @@ function ModalesEvidencias($con, $actividades, $mes){
 
 
 
-function Actividades($con, $mes, $id_area, $meses, $actividadesDB){
+function Actividades($con, $mes, $id_area, $meses, $actividadesDB, $unidades){
     $resp = '';
     foreach ($actividadesDB as $a){
         $avance = AvanceMes($con, $a['id_actividad'], $mes);
@@ -468,6 +468,12 @@ function Actividades($con, $mes, $id_area, $meses, $actividadesDB){
         
         $botonAvance = BotonAvance($avanceThisMes, $a['id_actividad']);
 
+        if($a['id_unidad']){
+            $unidad = $unidades[$a['id_unidad'] -1]['nombre_unidad'];
+        }else{
+            $unidad = $a['unidad'];
+        }
+
         $resp .= 
         '<tr class="bg-white text-center border-b dark:bg-gray-800 dark:border-gray-700">
             <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">'.
@@ -477,7 +483,7 @@ function Actividades($con, $mes, $id_area, $meses, $actividadesDB){
                 $a['nombre_actividad']
             .'</td>
             <td class="px-6 py-4">'.
-                $a['unidad']
+                $unidad
             .'</td>
             <td class="px-6 py-4">'.
                 $anual

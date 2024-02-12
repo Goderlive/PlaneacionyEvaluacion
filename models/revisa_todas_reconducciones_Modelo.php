@@ -78,11 +78,12 @@ function DefineTipo($con, $pInicial, $pFinal){
 
 }
 
+
+
+
 function EncabezadoMeses(){
     $data = "";
-
     $meses = array("1er T", "2do T", "3er T", "4to T");
-
     foreach ($meses as $mes):
         $data .= '<th scope="col" class="py-3 px-6 bg-gray-50 dark:bg-gray-800">
             '. $mes .'
