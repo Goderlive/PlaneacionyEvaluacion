@@ -73,6 +73,7 @@ if($_SESSION['sistema'] == "pbrm"){
 
                 <h3 class="font-normal text-gray-900 dark:text-white">Director o Equivalente</h3>
                 <br>
+                <h3 class="font-normal text-gray-900 dark:text-white"><?= $director['gradoa'] ?></h3>
                 <h3 class="font-normal text-gray-900 dark:text-white"><?= $director['nombre'] . " " . $director['apellidos'] ?></h3>
                 <h3 class="font-normal text-sm text-gray-900 dark:text-white"><?= $director['cargo']  ?></h3>
                 <form action="models/misareas_Model.php" method="post">
@@ -117,6 +118,7 @@ if($_SESSION['sistema'] == "pbrm"){
 
                 <h3 class="font-normal text-gray-900 dark:text-white"><strong><?= $area['nombre_area']?> </strong></h3>
                 <br>
+                <h3 class="font-normal text-gray-900 dark:text-white"><?= $titular['gradoa'] ?></h3>
                 <h3 class="font-normal text-gray-900 dark:text-white"><?= $titular['nombre'] . " " . $titular['apellidos'] ?></h3>
                 <h3 class="font-normal text-sm text-gray-900 dark:text-white"><?= $titular['cargo']  ?></h3>
                 <form action="models/misareas_Model.php" method="post">

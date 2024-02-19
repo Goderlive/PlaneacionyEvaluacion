@@ -932,6 +932,14 @@ INSERT INTO proyectos (codigo_proyecto, nombre_proyecto, descripcion, id_program
 ("040401010102","Pasivos por contratación de créditos","Integra las acciones que se realizan los ayuntamientos con el objeto de atender el pasivo de los créditos de corto plazo pagaderos en el mismo año, créditos para organismos descentralizados, vencimientos y refinanciamiento.", 148,"2024");
 
 
+
+--tipos
+--1. ayuntamiento
+--2. dif
+--3. agua
+--4. deporte
+--5. juventud
+
 DROP TABLE IF EXISTS dependencias;
 CREATE TABLE dependencias(
   id_dependencia INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -940,6 +948,7 @@ CREATE TABLE dependencias(
   fecha_alta DATETIME DEFAULT CURRENT_TIMESTAMP(),
   active INT,
   anio VARCHAR(4),
+  tipo_dependencia INT,
   id_administrador INT
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
