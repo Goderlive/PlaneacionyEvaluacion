@@ -9,36 +9,37 @@ require_once 'models/conection.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <title>Para Pruebas 1</title>
 </head>
 
 <body>
 
-    <?php
-
-    $consulta = "SELECT * FROM indicadores_uso iu
-    LEFT JOIN dependencias dp ON iu.id_dependencia = dp.id_dependencia
-    ";
-    $stm = $con->query($consulta);
-    $indicadores = $stm->fetchAll(PDO::FETCH_ASSOC);
-
-
-    function avanceIndicadores($con, $id_indicador)
-    {
-        $consulta = "SELECT * FROM avances_indicadores WHERE id_indicador = $id_indicador";
-        $stm = $con->query($consulta);
-        $avances = $stm->fetchAll(PDO::FETCH_ASSOC);
-        return $avances;
-    }
-
-
-
-    
 
 
 
 
-    ?>
+<input type="text" id="rangoFechas" />
+
+
+
+
+
 </body>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script>
+  // Calcular el primer y último día del año actual
+  const fechaActual = new Date();
+  const primerDiaDelAno = new Date(fechaActual.getFullYear(), 0, 1);
+  const ultimoDiaDelAno = new Date(fechaActual.getFullYear(), 11, 31);
+
+  // Inicializar Flatpickr con minDate y maxDate
+  flatpickr("#rangoFechas", {
+    mode: "range",
+    minDate: primerDiaDelAno,
+    maxDate: ultimoDiaDelAno,
+    dateFormat: "Y-m-d"
+  });
+</script>
 
 </html>

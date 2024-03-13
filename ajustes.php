@@ -237,16 +237,28 @@ if ($_SESSION['sistema'] == "pbrm") :
                                 Anteproyecto
                             </th>
                             <td class="py-4 px-6">
-                                <?= DayPiker($anteproyecto[0], 1) ?>
+
+                                <div class="relative max-w-sm">
+                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                        </svg>
+                                    </div>
+                                    <input datepicker type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
+                                </div>
+
                             </td>
                             <td class="py-4 px-6">
-                                <?= MontPiker($anteproyecto[1], 1) ?>
-                            </td>
-                            <td class="py-4 px-6">
-                                <?= DayPiker($anteproyecto[2], 2) ?>
-                            </td>
-                            <td class="py-4 px-6">
-                                <?= MontPiker($anteproyecto[3], 2) ?>
+
+                                <div class="relative max-w-sm">
+                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                        </svg>
+                                    </div>
+                                    <input datepicker type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
+                                </div>
+
                             </td>
                             <td>
                                 <br>
@@ -264,16 +276,7 @@ if ($_SESSION['sistema'] == "pbrm") :
                                 Proyecto
                             </th>
                             <td class="py-4 px-6">
-                                <?= DayPiker($anteproyecto[0], 1) ?>
-                            </td>
-                            <td class="py-4 px-6">
-                                <?= MontPiker($anteproyecto[1], 1) ?>
-                            </td>
-                            <td class="py-4 px-6">
-                                <?= DayPiker($anteproyecto[2], 2) ?>
-                            </td>
-                            <td class="py-4 px-6">
-                                <?= MontPiker($anteproyecto[3], 2) ?>
+
                             </td>
                             <td>
                                 <br>
@@ -291,16 +294,6 @@ if ($_SESSION['sistema'] == "pbrm") :
                                 Programa Anual
                             </th>
                             <td class="py-4 px-6">
-                                <?= DayPiker($programa[0], 1) ?>
-                            </td>
-                            <td class="py-4 px-6">
-                                <?= MontPiker($programa[1], 1) ?>
-                            </td>
-                            <td class="py-4 px-6">
-                                <?= DayPiker($programa[2], 2) ?>
-                            </td>
-                            <td class="py-4 px-6">
-                                <?= MontPiker($programa[3], 2) ?>
                             </td>
                             <td>
                                 <br>
@@ -411,11 +404,14 @@ if ($_SESSION['sistema'] == "pbrm") :
 
 
         <?php include 'footer.php'; ?>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/datepicker.min.js"></script>
     </body>
 
     </html>
 <?php else : ?>
+
     <script>
+        
         window.location.href = 'login.php';
     </script>
 <?php endif ?>

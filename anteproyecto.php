@@ -995,6 +995,15 @@ if ($_SESSION['sistema'] == 'pbrm') {
                 </div>
                 <br>
                 Enlistaremos todas las actividades por area y las
+
+                <div class="mt-5">
+                    <b>Exportar Programa Anual a SIMONTS <?= $permisos['anio'] +1 ?></b> <br>
+                    <form action="exporta_programa_anual.php" method="post">
+                        <button type="submit" name="export_programa_anual" class="mt-2 focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Exportar</button>
+                    </form>
+
+                </div>
+
             <?php endif ?>
         </div>
     </body>

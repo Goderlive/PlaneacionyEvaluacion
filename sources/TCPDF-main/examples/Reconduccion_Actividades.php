@@ -217,7 +217,7 @@ if($a == 1 && $b == 0 && $c == 0 && $d == 0){
 				<td style="width: 48%; border: 1px solid black; border-collapse: collapse;"></td> 
 			</tr>
 			<tr>
-				<td style="width: 48%; border: 1px solid black; border-collapse: collapse;">Objetivo: '.$objetivo_programa.'</td> 
+				<td style="width: 48%; border: 1px solid black; border-collapse: collapse; font-size: 6px;">Objetivo: '.$objetivo_programa.'</td> 
 				<td style="width: 4%"></td>
 				<td style="width: 48%; border: 1px solid black; border-collapse: collapse;"></td> 
 			</tr>
@@ -256,7 +256,7 @@ if($b == 1 || $c == 1 || $d == 1){
 			<tr>
 				<td style="width: 48%; border: 1px solid black; border-collapse: collapse;"></td> 
 				<td style="width: 4%"></td>
-				<td style="width: 48%; border: 1px solid black; border-collapse: collapse;">Objetivo: '.$objetivo_programa.'</td> 
+				<td style="width: 48%; border: 1px solid black; border-collapse: collapse; font-size: 6px;">Objetivo: '.$objetivo_programa.'</td> 
 			</tr>
 		</tbody>
 	</table>	
@@ -472,7 +472,7 @@ $justificacion = '&nbsp;
 <br>
 <table style="width: 100%; border: 1px solid black; border-collapse: collapse;">
 	<tr>
-		<td>Justificación: '.$justificaciones.'</td>
+		<td style="font-size: 6px;">Justificación: '.$justificaciones.'</td>
 	</tr>
 
 </table>

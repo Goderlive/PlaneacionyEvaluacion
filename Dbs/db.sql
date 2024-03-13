@@ -133,6 +133,9 @@ INSERT INTO dependencias_generales (clave_dependencia, nombre_dependencia_genera
 
 
 
+
+
+
 DROP TABLE IF EXISTS dependencias_auxiliares;
 CREATE TABLE dependencias_auxiliares(
   id_dependencia_auxiliar INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -540,7 +543,7 @@ CREATE TABLE proyectos(
   anio VARCHAR(4),
   CONSTRAINT FK_programa FOREIGN KEY (id_programa) REFERENCES programas_presupuestarios(id_programa) ON DELETE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-INSERT INTO proyectos (codigo_proyecto, nombre_proyecto, conac, descripcion, id_programa, anio) VALUES
+INSERT INTO proyectos (codigo_proyecto, nombre_proyecto, descripcion, conac, id_programa, anio) VALUES
 ("010204010101","Investigación, capacitación, promoción y divulgación de los derechos humanos","Comprende las actividades de investigación y docencia, como mecanismos para fortalecer la capacitación, promoción, difusión y divulgación entre la sociedad civil y las instituciones públicas que consoliden el conocimiento en derechos humanos y los servicios que se ofrecen en la materia.","E",1,"2023"),
 ("010204010102","Protección y defensa de los derechos humanos","Contempla las acciones encaminadas a atender oportuna y diligentemente los actos u omisiones de naturaleza administrativa que impliquen presuntas violaciones a los derechos humanos integrando el desarrollo de supervisiones, revisiones y visitas a centros e instituciones del sistema penitenciario, sector salud, justicia, localidades de alto y muy alto nivel de marginación y zonas de tránsito de migrantes, emitiendo, si fuere necesario las recomendaciones conducentes a una mejor protección de los derechos humanos y brindando orientación y asesoría a la población.","E",1,"2023"),
 ("010301010101","Relaciones públicas","Contiene las acciones dirigidas a establecer y mantener sistemas de comunicación directa para el despacho de los asuntos de responsabilidad de los presidentes municipales.","E",2,"2023"),
@@ -948,7 +951,7 @@ CREATE TABLE dependencias(
   fecha_alta DATETIME DEFAULT CURRENT_TIMESTAMP(),
   active INT,
   anio VARCHAR(4),
-  tipo_dependencia INT,
+  tipo INT,
   id_administrador INT
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 

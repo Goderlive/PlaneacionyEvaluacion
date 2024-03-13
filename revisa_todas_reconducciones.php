@@ -21,17 +21,14 @@ if (isset($_SESSION) && isset($_SESSION['sistema']) && $_SESSION['sistema'] == "
     </head>
 
     <body>
-        <br>
         <?php $reconducciones = Traelasreconducciones($con) ?>
 
         <div class="container text-center mx-auto">
 
             <?php foreach ($reconducciones as $r) : ?>
-                <br>
-                <br>
-                <div role="status" class="mt-5 rounded border border-gray-200 shadow md:p-6 dark:border-gray-700">
-                    <div class=" justify-center mb-4 bg-blue-100 rounded dark:bg-blue-100">
-                        <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white"> <?= $r['nombre_dependencia'] ?></h5>
+                <div role="status" class=" rounded border border-gray-200 shadow md:p-6 dark:border-gray-700">
+                    <div class=" justify-center bg-blue-100 rounded dark:bg-blue-100">
+                        <h5 class="text-xl font-medium text-gray-900 dark:text-white"> <?= $r['nombre_dependencia'] ?></h5>
                         <p><?= "Oficio: " . $r['no_oficio'] . " <br>Dep. Gen: " . $r['dep_general'] . " -- Dep. Aux: " . $r['dep_aux'] . " -- Programa: " . $r['programa'] ?></p>
                         <?= $r['fecha'] ?>
                         <?= "id: " . $r['id_reconduccion_actividades'] ?>
@@ -73,12 +70,9 @@ if (isset($_SESSION) && isset($_SESSION['sistema']) && $_SESSION['sistema'] == "
                                 </tbody>
                             </table>
                         </div>
-
-                        <br>
                     <?php endforeach ?>
 
-                </div><br>
-
+                </div>
             <?php endforeach ?>
         </div>
 

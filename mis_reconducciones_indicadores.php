@@ -12,8 +12,10 @@ if (!$_SESSION['sistema'] == "pbrm") {
 }
 if ($permisos['id_dependencia'] != NULL) {
     $dep = $permisos['id_dependencia'];
-} else {
-    print " Tu cuenta no permite realizar esta acción";
+} elseif(isset($_POST['id_dependencia'])) {
+    $dep = $_POST['id_dependencia'];
+}else{
+    print "Tu cuenta no permite esta accion";
     die();
 }
 
@@ -46,102 +48,105 @@ $thismes = ceil(date('m'));
         <br>
         <h3 class="mb-2 center text-2xl font-bold text-gray-900 dark:text-white">Reconducciones de <b>Indicadores</b></h3>
         <br>
+        <?php if (($rec_pendientes = TraeReconduccionesporvalidarInd($con, $dep)) || ($rec_validadas = TraeReconduccionesValidadasInd($con, $dep))) : ?>
+            <span>Reconducciones Pendientes de Validación</span>
 
-        <?php
-        if (!$_POST) : ?>
-            <?php if (($rec_pendientes = TraeReconduccionesporvalidarInd($con, $dep)) || ($rec_validadas = TraeReconduccionesValidadasInd($con, $dep))) : ?>
-                <span>Reconducciones Pendientes de Validación</span>
-
-                <div class="p-5 font-light border border-b-0 border-gray-200 dark:border-gray-700 dark:bg-gray-900">
-                    <?php foreach ($rec_pendientes as $p) : ?>
-                        <div class="overflow-x-auto relative">
-                            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
-                                    <tr>
-                                        <th scope="col" class="py-3 px-6">
-                                            No. Oficio
-                                        </th>
-                                        <th scope="col" class="py-3 px-6">
-                                            Fecha
-                                        </th>
-                                        <th scope="col" class="py-3 px-6">
-                                            Estado
-                                        </th>
-                                    </tr>
-                                </thead>
+            <div class="p-5 font-light border border-b-0 border-gray-200 dark:border-gray-700 dark:bg-gray-900">
+                <?php foreach ($rec_pendientes as $p) : ?>
+                    <div class="overflow-x-auto relative">
+                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
                                     <th scope="col" class="py-3 px-6">
-                                        <?= $p['no_oficio'] ?>
+                                        No. Oficio
                                     </th>
                                     <th scope="col" class="py-3 px-6">
-                                        <?= $p['fecha'] ?>
+                                        Fecha
                                     </th>
                                     <th scope="col" class="py-3 px-6">
-                                        <p class="text-yellow-600">Pendiente de Revisión</p>
+                                        Estado
                                     </th>
                                 </tr>
-                                </tbody>
-                            </table>
-                            <br>
-                        </div>
+                            </thead>
+                            <tr>
+                                <th scope="col" class="py-3 px-6">
+                                    <?= $p['no_oficio'] ?>
+                                </th>
+                                <th scope="col" class="py-3 px-6">
+                                    <?= $p['fecha'] ?>
+                                </th>
+                                <th scope="col" class="py-3 px-6">
+                                    <p class="text-yellow-600">Pendiente de Revisión</p>
+                                </th>
+                            </tr>
+                            </tbody>
+                        </table>
                         <br>
-                    <?php endforeach ?>
-                </div>
+                    </div>
+                    <br>
+                <?php endforeach ?>
+            </div>
 
 
-                <span>Reconducciones Realizadas</span>
+            <span>Reconducciones Realizadas</span>
 
-                <div class="my-2 p-5 font-light border border-b-0 border-gray-200 dark:border-gray-700">
-                    <?php $rec_validadas = TraeReconduccionesValidadasInd($con, $dep) ?>
-                    <?php foreach ($rec_validadas as $v) : ?>
-                        <div class="overflow-x-auto relative">
-                            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                    <tr>
-                                        <th scope="col" class="py-3 px-6">
-                                            No. Oficio
-                                        </th>
-                                        <th scope="col" class="py-3 px-6">
-                                            Fecha
-                                        </th>
-                                        <th scope="col" class="py-3 px-6">
-                                            Estado
-                                        </th>
-                                        <th scope="col" class="py-3 px-6">
-                                            Acción
-                                        </th>
-                                    </tr>
-                                </thead>
+            <div class="my-2 p-5 font-light border border-b-0 border-gray-200 dark:border-gray-700">
+                <?php $rec_validadas = TraeReconduccionesValidadasInd($con, $dep) ?>
+                <?php foreach ($rec_validadas as $v) : ?>
+                    <div class="overflow-x-auto relative">
+                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
-
                                     <th scope="col" class="py-3 px-6">
-                                        <?= $v['no_oficio'] ?>
+                                        No. Oficio
                                     </th>
                                     <th scope="col" class="py-3 px-6">
-                                        <?= $v['fecha'] ?>
+                                        Indicador
                                     </th>
                                     <th scope="col" class="py-3 px-6">
-                                        Validada
+                                        Fecha
                                     </th>
                                     <th scope="col" class="py-3 px-6">
-                                        <form action="sources/TCPDF-main/examples/Reconduccion_Indicadores.php" method="POST">
-                                            <input type="hidden" name="id_reconduccion" value="<?= $v['id_reconduccion_indicadores'] ?>">
-                                            <input type="submit" formtarget="_blank" value="Imprimir" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                                        </form>
+                                        Estado
+                                    </th>
+                                    <th scope="col" class="py-3 px-6">
+                                        Acción
                                     </th>
                                 </tr>
-                                </tbody>
-                            </table>
-                            <br>
-                            <table>
-                        </div>
+                            </thead>
+                            <tr>
+
+                                <th scope="col" class="py-3 px-6">
+                                    <?= $v['no_oficio'] ?>
+                                </th>
+                                <th scope="col" class="py-3 px-6">
+                                    <?= $v['nombre_indicador'] ?>
+                                </th>
+                                <th scope="col" class="py-3 px-6">
+                                    <?= $v['fecha'] ?>
+                                </th>
+                                <th scope="col" class="py-3 px-6">
+                                    Validada
+                                </th>
+                                <th scope="col" class="py-3 px-6">
+                                    <form action="sources/TCPDF-main/examples/Reconduccion_Indicadores.php" method="POST">
+                                        <input type="hidden" name="id_reconduccion" value="<?= $v['id_reconduccion_indicadores'] ?>">
+                                        <input type="submit" formtarget="_blank" value="Imprimir" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                                    </form>
+                                </th>
+                            </tr>
+                            </tbody>
+                        </table>
                         <br>
-                    <?php endforeach ?>
-                </div>
+                        <table>
+                    </div>
+                    <br>
+                <?php endforeach ?>
+            </div>
 
     </div>
 
-<?php endif ?>
+
 <?php endif ?> <!-- Aqui terminamos el area de reconducciones realizadas -->
 
 

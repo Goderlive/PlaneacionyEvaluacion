@@ -58,7 +58,6 @@ function DefineEstatusProyecto($ajustes){
             return "Programa Anual " . ($_SESSION['anio'] + 1);
         }
     }
-
 }
 
 

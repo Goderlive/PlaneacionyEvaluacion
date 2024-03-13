@@ -67,6 +67,29 @@ function TraeReconduccionesValidadas($con, $id_dependencia){
 }
 
 
+function TraeDependencias($con, $id_usuario){
+    $stm = $con->query("SELECT * FROM dependencias dp
+    JOIN indicadores_uso iu ON iu.id_dependencia = dp.id_dependencia 
+    WHERE id_administrador = $id_usuario
+    GROUP BY dp.id_dependencia
+    ");
+    $dependencias = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $dependencias;
+}
+
+function TraeTodasDependencias($con){
+    $stm = $con->query("SELECT * FROM dependencias dp
+    JOIN indicadores_uso iu ON iu.id_dependencia = dp.id_dependencia 
+    GROUP BY dp.id_dependencia
+    ");
+    $dependencias = $stm->fetchAll(PDO::FETCH_ASSOC);
+    //var_dump($dependencias);
+    return $dependencias;
+}
+
+
+
+
 function TraeDatosIndicador($con, $id_indicador){
     $sentencia = "SELECT *  FROM indicadores_uso iu
     LEFT JOIN dependencias_generales dg ON dg.id_dependencia = iu.id_dep_general
