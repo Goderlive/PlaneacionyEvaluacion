@@ -1,3 +1,11 @@
+<?php 
+require_once 'models/conection.php';
+
+$stm = $con->query("SELECT path_logo_login FROM setings");
+$logo = $stm->fetch(PDO::FETCH_ASSOC);
+
+$logo = $logo['path_logo_login'];
+?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -5,7 +13,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://unpkg.com/flowbite@1.5.0/dist/flowbite.min.css" />
-        <title>Sistema</title>
+        <title>Página no encontrada</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,7 +29,7 @@
         <div class="container-fluid h-custom">
           <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-md-9 col-lg-6 col-xl-5">
-            <img src="./img/logo_ayuntamiento.png" class="img-fluid" alt="">
+            <img src="<?= $logo ?>" class="img-fluid" alt="">
             </div>
             <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
                 <h1>Error 404 - Página no encontrada</h1>

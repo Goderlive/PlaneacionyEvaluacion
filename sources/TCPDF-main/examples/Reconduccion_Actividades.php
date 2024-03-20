@@ -371,7 +371,8 @@ function CreaTabla($data, $con){
 	if(count($data) != 0){
 		foreach($data as $d){
 		//var_dump($d);
-		$tavances = traeavances($con, $d['id_actividad']);
+		//$tavances = traeavances($con, $d['id_actividad']);
+		$tavances = $d['act_realizadas_sofar'];
 		$totalold = SumaAnual($d['programacion_inicial']);
 		$totalnew = SumaAnual($d['programacion_final']);
 		$trimestral = Trimestres($d['programacion_final']);

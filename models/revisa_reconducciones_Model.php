@@ -153,11 +153,11 @@ if(isset($_POST['valida_reconduccion_act']) && ($_POST['valida_reconduccion_act'
     foreach($programaciones as $a){
         //limpiamos la programacion inicial y la ponemos en un array
         $prog_inicial = $a['programacion_inicial'];
-
+        $id_actividad = $a['id_actividad'];
         //Gardamos en la tabla de cosas eliminadas
-        $sql = "INSERT INTO programaciones_eliminadas (programacion) VALUES (?)";
+        $sql = "INSERT INTO programaciones_eliminadas (programacion, id_actividad) VALUES (?,?)";
         $sqlr = $con->prepare($sql);
-        $sqlr->execute(array($prog_inicial));
+        $sqlr->execute(array($prog_inicial,$id_actividad));
 
         //armamos la nueva programacion
         $prog_final = str_replace('"', '', $a['programacion_final']);

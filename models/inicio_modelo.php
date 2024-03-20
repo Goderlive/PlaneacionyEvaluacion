@@ -81,7 +81,7 @@ function traeinconsistencias($con){
 function getPermisos($con, $permisos){
     $anio = $permisos['anio'];
     $id_usuario = $permisos['id_usuario'];
-    $stm = $con->query("SELECT * FROM permisos WHERE id_usuario = $id_usuario AND anio = $anio");
+    $stm = $con->query("SELECT * FROM permisos WHERE id_usuario = $id_usuario");
     $permiso = $stm->fetch(PDO::FETCH_ASSOC);
     return $permiso;
 }

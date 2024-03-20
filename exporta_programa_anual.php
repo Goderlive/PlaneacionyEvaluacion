@@ -49,15 +49,13 @@ function caInserta
 
 function CreaAreas($con, $anioobjetivo){
 
-
     $sentencia = "SELECT * FROM ante_areas WHERE anio = $anioobjetivo";
     $stm = $con->query($sentencia);
     $ante_areas = $stm->fetchAll(PDO::FETCH_ASSOC);
 
     foreach ($ante_areas as $a) {
-
+        
     }
-
 
     $sql_areas = "INSERT INTO areas (nombre_area, id_dependencia, id_dependencia_general, id_dependencia_aux, id_proyecto, fecha_alta, anio) 
     SELECT 
