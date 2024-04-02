@@ -154,7 +154,7 @@ if ($_SESSION['sistema'] == "pbrm") {
                                         <?= $i++; ?>
                                     </th>
                                     <td class="px-2 py-4">
-                                        <?= $datos['nombre_indicador']; ?>
+                                        <?= $datos['nombre']; ?>
                                     </td>
                                     <td class="px-2 py-4" align="left">
                                         <?= "- " . $datos['variable_a'] . "<br>" ?>
@@ -293,7 +293,7 @@ if ($_SESSION['sistema'] == "pbrm") {
                                         <input type="hidden" name="proyecto" value="<?= $data['codigo_proyecto'] ?>">
                                         <input type="hidden" name="proyecto_name" value="<?= $data['nombre_proyecto'] ?>">
                                         <input type="hidden" name="id_indicador" value="<?= $data['id'] ?>">
-                                        <input type="hidden" name="nombre_indicador" value="<?= $data['nombre_indicador'] ?>">
+                                        <input type="hidden" name="nombre_indicador" value="<?= $data['nombre'] ?>">
                                         <input type="hidden" name="id_indicador" value="<?= $data['id'] ?>">
                                         <input type="hidden" name="id_reporta" value="<?= $id_usuario ?>">
 
@@ -338,7 +338,7 @@ if ($_SESSION['sistema'] == "pbrm") {
                                     <tr>
 
                                         <td class="px-2 py-2">
-                                            <?= $data['nombre_indicador'] ?>
+                                            <?= $data['nombre'] ?>
                                         </td>
                                         <td class="px-2 py-2">
                                             <?= $data['variable_a'] . "<br>" . $data['variable_b'] . "<br>" . $data['variable_c'] ?>

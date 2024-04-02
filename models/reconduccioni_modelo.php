@@ -44,8 +44,9 @@ function Fetch($con, $string){
 
 
 function TraeIndicadores($con, $id_dependencia){
-        $resp = FetchAll($con, "SELECT * FROM indicadores_uso 
-        WHERE id_dependencia = $id_dependencia");
+        $resp = FetchAll($con, "SELECT * FROM indicadores_uso iu 
+        LEFT JOIN indicadores i ON i.id_indicador = iu.id_indicador_gaceta 
+        WHERE iu.id_dependencia = $id_dependencia");
         return $resp;
 }
 
@@ -92,6 +93,7 @@ function TraeTodasDependencias($con){
 
 function TraeDatosIndicador($con, $id_indicador){
     $sentencia = "SELECT *  FROM indicadores_uso iu
+    LEFT JOIN indicadores i ON i.id_indicador = iu.id_indicador_gaceta 
     LEFT JOIN dependencias_generales dg ON dg.id_dependencia = iu.id_dep_general
     LEFT JOIN dependencias_auxiliares da ON da.id_dependencia_auxiliar = iu.id_dep_aux
     LEFT JOIN proyectos py ON iu.id_proyecto = py.id_proyecto
