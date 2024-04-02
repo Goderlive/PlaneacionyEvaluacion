@@ -81,7 +81,7 @@ function traeinconsistencias($con){
 function getPermisos($con, $permisos){
     $anio = $permisos['anio'];
     $id_usuario = $permisos['id_usuario'];
-    $stm = $con->query("SELECT * FROM permisos WHERE id_usuario = $id_usuario");
+    $stm = $con->query("SELECT * FROM permisos WHERE id_usuario = $id_usuario AND anio = $anio");
     $permiso = $stm->fetch(PDO::FETCH_ASSOC);
     return $permiso;
 }
@@ -108,12 +108,13 @@ function VerificaAvancesIndicadores($con){
 
 
 function VerificaModificaciones($con){
+    $anio = $_SESSION['anio'];
     $stm = $con->query("SELECT * FROM modificaciones_actividades ma
     JOIN avances av ON av.id_avance = ma.id_avance
     JOIN actividades ac ON ac.id_actividad = av.id_actividad
     LEFT JOIN areas ar ON ar.id_area = ac.id_area
     LEFT JOIN dependencias dp ON dp.id_dependencia = ar.id_dependencia
-    WHERE ma.atendida = 0 LIMIT 5");
+    WHERE ma.atendida = 0 AND dp.anio = $anio LIMIT 5");
     $modificaciones = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $modificaciones;
 }

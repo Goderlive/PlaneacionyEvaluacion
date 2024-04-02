@@ -43,46 +43,50 @@ function FetchAll($con, $string){
 
 function Indicadores($con, $trimestre, $id_dependencia, $permisos){
 
-
     if($permisos['id_area'] != ''){
         $id_area = $permisos['id_area'];
-
 
         if($trimestre == "1" || $trimestre == "3"){
             $thesql = "SELECT * FROM indicadores_uso iu 
             LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador 
-            WHERE iu.id_area = $id_area AND (iu.periodicidad = 'Trimestral' OR iu.periodicidad = 'Mensual')
+            LEFT JOIN indicadores i ON i.id_indicador = iu.id_indicador_gaceta
+            WHERE iu.id_area = $id_area AND (i.frecuencia = 'Trimestral' OR i.frecuencia = 'Mensual')
             GROUP BY iu.id";
         }
         if($trimestre == "2"){
             $thesql = "SELECT * FROM indicadores_uso iu 
             LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador 
-            WHERE iu.id_area = $id_area AND (iu.periodicidad = 'Trimestral' OR iu.periodicidad = 'Mensual' OR iu.periodicidad = 'Semestral')
+            LEFT JOIN indicadores i ON i.id_indicador = iu.id_indicador_gaceta
+            WHERE iu.id_area = $id_area AND (i.frecuencia = 'Trimestral' OR i.frecuencia = 'Mensual' OR i.frecuencia = 'Semestral')
             GROUP BY iu.id";
         }
         if($trimestre == "4"){
             $thesql = "SELECT * FROM indicadores_uso iu 
             LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador 
-            WHERE iu.id_area = $id_area AND (iu.periodicidad = 'Trimestral' OR iu.periodicidad = 'Mensual' OR iu.periodicidad = 'Semestral' OR iu.periodicidad = 'Anual')
+            LEFT JOIN indicadores i ON i.id_indicador = iu.id_indicador_gaceta
+            WHERE iu.id_area = $id_area AND (i.frecuencia = 'Trimestral' OR i.frecuencia = 'Mensual' OR i.frecuencia = 'Semestral' OR i.frecuencia = 'Anual')
             GROUP BY iu.id";
         }
     }else{
         if($trimestre == "1" || $trimestre == "3"){
             $thesql = "SELECT * FROM indicadores_uso iu 
             LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador 
-            WHERE iu.id_dependencia = $id_dependencia AND (iu.periodicidad = 'Trimestral' OR iu.periodicidad = 'Mensual')
+            LEFT JOIN indicadores i ON i.id_indicador = iu.id_indicador_gaceta
+            WHERE iu.id_dependencia = $id_dependencia AND (i.frecuencia = 'Trimestral' OR i.frecuencia = 'Mensual')
             GROUP BY iu.id";
         }
         if($trimestre == "2"){
             $thesql = "SELECT * FROM indicadores_uso iu 
             LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador 
-            WHERE iu.id_dependencia = $id_dependencia AND (iu.periodicidad = 'Trimestral' OR iu.periodicidad = 'Mensual' OR iu.periodicidad = 'Semestral')
+            LEFT JOIN indicadores i ON i.id_indicador = iu.id_indicador_gaceta
+            WHERE iu.id_dependencia = $id_dependencia AND (i.frecuencia = 'Trimestral' OR i.frecuencia = 'Mensual' OR i.frecuencia = 'Semestral')
             GROUP BY iu.id";
         }
         if($trimestre == "4"){
             $thesql = "SELECT * FROM indicadores_uso iu 
             LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador 
-            WHERE iu.id_dependencia = $id_dependencia AND (iu.periodicidad = 'Trimestral' OR iu.periodicidad = 'Mensual' OR iu.periodicidad = 'Semestral' OR iu.periodicidad = 'Anual')
+            LEFT JOIN indicadores i ON i.id_indicador = iu.id_indicador_gaceta
+            WHERE iu.id_dependencia = $id_dependencia AND (i.frecuencia = 'Trimestral' OR i.frecuencia = 'Mensual' OR i.frecuencia = 'Semestral' OR i.frecuencia = 'Anual')
             GROUP BY iu.id";
         }
     }

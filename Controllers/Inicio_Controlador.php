@@ -6,6 +6,10 @@ $user = get_usuario($id_usuario,$con);
 
 
 function verificaFuat($con, $permiso){
+	if (date('Y') != $_SESSION['anio']) {
+		return false;
+	}
+
 	if($permiso['id_dependencia']){
 		if (date('Y') == $_SESSION['anio']) {
 			$mes = date('m') - 1;

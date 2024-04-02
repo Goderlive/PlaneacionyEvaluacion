@@ -38,7 +38,7 @@ if ($_SESSION['sistema'] == "pbrm") {
     <body>
         <br>
         <div class="container mx-auto">
-            <?= breadcrumbs(array("Inicio" => "index,php", "Indicadores" => "")); ?>
+            <?= breadcrumbs(array("Inicio" => "index.php", "Indicadores" => "")); ?>
             <br>
             <?php if ($permisos['nivel'] > 3) : ?>
 

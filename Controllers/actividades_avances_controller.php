@@ -47,13 +47,13 @@ function SinValidar($con, $id_area, $mes, $permisos){
 
 function TraeDependenciasController($con, $permisos){
     if($permisos['nivel'] == 1 ){
-        $dependencias = TraeTodasDependencias($con);
+        $dependencias = TraeTodasDependencias($con, $_SESSION['anio']);
     }
     if($permisos['nivel'] == 2){
-        $dependencias = TraeDependencias($con, $permisos['id_usuario']);
+        $dependencias = TraeDependencias($con, $permisos['id_usuario'], $permisos['anio']);
     }
     if($permisos['rol'] == 2){
-        $dependencias = TraeDependenciasPDM($con, $permisos);
+        $dependencias = TraeDependenciasPDM($con, $permisos, $permisos['anio']);
     }
     
     return $dependencias;

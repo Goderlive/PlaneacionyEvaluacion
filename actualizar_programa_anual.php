@@ -78,7 +78,6 @@ function actualizaAreas($con,$anioobjetivo){
     $stm = $con->query($sentencia);
     $proyectos = $stm->fetchAll(PDO::FETCH_ASSOC);
 
-
     foreach($ante_anreas as $d){
         $dg_ante = $d['clave_dependencia'];
         $encontrado_dependencias_generales = 0;
@@ -88,7 +87,6 @@ function actualizaAreas($con,$anioobjetivo){
 
         $py_ante = $d['codigo_proyecto'];
         $encontrado_proyectos = 0;
-
 
         //Busca Dependencias Generales
         foreach($dependencias_generales as $g){
@@ -111,8 +109,6 @@ function actualizaAreas($con,$anioobjetivo){
             }
         }
 
-
-
         if($encontrado_dependencias_generales != 0 && $encontrado_dependencias_auxiliares != 0 && $encontrado_proyectos != 0){
             $id = $d['id_area'];
             $sql = "UPDATE ante_areas SET id_dependencia_general = ?, id_dependencia_aux = ?, id_proyecto = ? WHERE id_area = $id";
@@ -129,6 +125,45 @@ function actualizaAreas($con,$anioobjetivo){
 
     }
 }
+
+
+function actualizaIndicadores($con, $anioobjetivo){
+    $sentencia = "SELECT * FROM ante_indicadores_uso ai 
+    LEFT JOIN dependencias_generales dg ON dg.id_dependencia = ai.id_dep_general
+    LEFT JOIN dependencias_auxiliares da ON da.id_dependencia_auxiliar = ai.id_dep_aux
+    LEFT JOIN proyectos p ON p.id_proyecto = ai.id_proyecto
+    WHERE ai.anio = $anioobjetivo";
+    $stm = $con->query($sentencia);
+    $ante_indicadores = $stm->fetchAll(PDO::FETCH_ASSOC);
+
+
+    foreach($ante_indicadores as $a){
+        $id = $a['id'];
+
+
+        $general = $a['clave_dependencia'];
+        $stm = $con->query("SELECT * FROM dependencias_generales WHERE clave_dependencia = '$general' AND anio = $anioobjetivo");
+        $generales = $stm->fetch(PDO::FETCH_ASSOC);
+        $generales = $generales['id_dependencia'];
+        
+        $auxiliar = $a['clave_dependencia_auxiliar'];
+        $stm = $con->query("SELECT * FROM dependencias_auxiliares WHERE clave_dependencia_auxiliar = '$auxiliar' AND anio = $anioobjetivo");
+        $auxiliares = $stm->fetch(PDO::FETCH_ASSOC);
+        $auxiliares = $auxiliares['id_dependencia_auxiliar'];
+
+        $proyecto = $a['codigo_proyecto'];
+        $stm = $con->query("SELECT * FROM proyectos WHERE codigo_proyecto = '$proyecto' AND anio = $anioobjetivo");
+        $proyectos = $stm->fetch(PDO::FETCH_ASSOC);
+        $proyectos = $proyectos['id_proyecto'];
+
+        $sql = "UPDATE ante_indicadores_uso SET id_dep_general = ?, id_dep_aux = ?, id_proyecto = ? WHERE id = $id";
+        $sqlr = $con->prepare($sql);
+        $sqlr->execute(array($generales, $auxiliares, $proyectos));
+    }
+}
+
+
+
 ?>
 
 <body>
@@ -138,6 +173,7 @@ function actualizaAreas($con,$anioobjetivo){
 
         <?php actualizaAnteDependencias($con, $anioobjetivo); ?>
         <?php actualizaAreas($con, $anioobjetivo); ?>
+        <?php actualizaIndicadores($con, $anioobjetivo); ?>
 
        
     </div>

@@ -4890,7 +4890,8 @@ CREATE TABLE lineasactividades(
   id_actividad INT,
   id_linea INT,
   esprincipal INT,
-  udmed VARCHAR(255)
+  udmed VARCHAR(255),
+  anio VARCHAR(4)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 INSERT INTO lineasactividades (id_actividad, id_linea) VALUES
@@ -8771,6 +8772,15 @@ INSERT INTO ante_actividades(codigo_actividad, nombre_actividad, unidad, id_unid
 ("13","Realizar entrenamientos deportivos a Personas con Discapacidad en la Disciplina de Activación Física en los Centros de Inclusión y Desarrollo del Muni","Sesiones",NULL,"0","0",305,1,1,1),
 ("14","Asignar y entregar estímulos económicos a deportistas, entrenadores, activadores físicos, jueces, árbitros en el ámbito deportivo","Beca",61,"0","0",305,1,1,1);
 
+DROP TABLE IF EXISTS ante_lineasactividades;
+CREATE TABLE ante_lineasactividades(
+  lineaactividad INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  id_actividad INT,
+  id_linea INT,
+  esprincipal INT,
+  udmed VARCHAR(255),
+  anio VARCHAR(4)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 
 

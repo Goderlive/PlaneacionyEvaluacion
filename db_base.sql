@@ -1450,7 +1450,8 @@ CREATE TABLE lineasactividades(
   id_actividad INT,
   id_linea INT,
   esprincipal INT,
-  udmed VARCHAR(255)
+  udmed VARCHAR(255),
+  anio VARCHAR(4)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 INSERT INTO lineasactividades (id_actividad, id_linea) VALUES
@@ -1490,9 +1491,14 @@ DROP TABLE IF EXISTS indicadores;
 CREATE TABLE indicadores(
   id_indicador INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
   clave_indicador VARCHAR(15),
-  variable_a TEXT,
-  variable_b TEXT,
-  variable_c TEXT,
+  variable_a TEXT DEFAULT NULL,
+  variable_b TEXT DEFAULT NULL,
+  variable_c TEXT DEFAULT NULL,
+  corto_a VARCHAR(55) DEFAULT NULL, 
+  corto_b VARCHAR(55) DEFAULT NULL,
+  corto_c VARCHAR(55) DEFAULT NULL,
+  nivel_indicador VARCHAR(12),
+  sub_nivel	varchar(3),
   resumen VARCHAR(255),
   nombre VARCHAR(255),
   formula TEXT,
@@ -1501,6 +1507,7 @@ CREATE TABLE indicadores(
   medios_verificacion VARCHAR(255),
   supuestos VARCHAR(255),
   id_programa_presupuestario INT,
+  anio VARCHAR(4),
   CONSTRAINT FK_indicador_programa FOREIGN KEY (id_programa_presupuestario) REFERENCES programas_presupuestarios(id_programa) ON DELETE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
@@ -1509,6 +1516,7 @@ CREATE TABLE indicadores(
 DROP TABLE IF EXISTS indicadores_uso;
 CREATE TABLE indicadores_uso(
   id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  id_indicador_gaceta INT, 
   anio VARCHAR(4),
   id_dep_general INT,
   id_dep_aux INT,
@@ -2273,6 +2281,15 @@ INSERT INTO ante_actividades(codigo_actividad, nombre_actividad, unidad, id_unid
 ("1", "Planeación de la agenda del Presidente Municipal","Bitácora", 64, "0", "0", 1, 1, 1, 1);
 
 
+DROP TABLE IF EXISTS ante_lineasactividades;
+CREATE TABLE ante_lineasactividades(
+  lineaactividad INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  id_actividad INT,
+  id_linea INT,
+  esprincipal INT,
+  udmed VARCHAR(255),
+  anio VARCHAR(4)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 
 DROP TABLE IF EXISTS ante_programaciones;

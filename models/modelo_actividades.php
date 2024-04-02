@@ -52,13 +52,15 @@ function unArea($con, $dep){
 
 function areas_con($con, $dep){
     $sql = "SELECT * FROM areas a
-        INNER JOIN dependencias_generales dp ON a.id_dependencia_general = dp.id_dependencia
-        INNER JOIN dependencias_auxiliares da ON a.id_dependencia_aux = da.id_dependencia_auxiliar
-        INNER JOIN proyectos py ON a.id_proyecto = py.id_proyecto
-        INNER JOIN programas_presupuestarios pp ON py.id_programa = pp.id_programa
+        LEFT JOIN dependencias_generales dp ON a.id_dependencia_general = dp.id_dependencia
+        LEFT JOIN dependencias_auxiliares da ON a.id_dependencia_aux = da.id_dependencia_auxiliar
+        LEFT JOIN proyectos py ON a.id_proyecto = py.id_proyecto
+        LEFT JOIN programas_presupuestarios pp ON py.id_programa = pp.id_programa
+        LEFT JOIN dependencias d ON d.id_dependencia = a.id_dependencia
         WHERE a.id_dependencia = $dep";
     $stm = $con->query($sql);
     $areas = $stm->fetchAll(PDO::FETCH_ASSOC);
+
     return $areas;
 }
 

@@ -17,11 +17,11 @@ $actividades = $data + $actividades;
 try {
     // Consulta SQL
     $sql_query = "
-        SELECT * 
-        FROM ante_indicadores_uso ai 
+        SELECT *
+        FROM ante_indicadores_uso ai
         LEFT JOIN dependencias_generales dg ON dg.id_dependencia = ai.id_dep_general
         LEFT JOIN dependencias_auxiliares da ON ai.id_dep_aux = da.id_dependencia_auxiliar
-        LEFT JOIN proyectos py ON py.id_proyecto = ai.id_proyecto 
+        LEFT JOIN proyectos py ON py.id_proyecto = ai.id_proyecto
         LEFT JOIN programas_presupuestarios pp ON pp.id_programa = py.id_programa
         ORDER BY pp.codigo_programa ASC
     ";

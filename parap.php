@@ -16,30 +16,29 @@ require_once 'models/conection.php';
 <body>
 
 
+<?php 
+
+$email = 'desarrollosocial@metepec.gob.mx';
+
+$stm = $con->query("SELECT * FROM dependencias WHERE anio = $anio ORDER BY nombre_dependencia ASC");
+$dependencias = $stm->fetchAll(PDO::FETCH_ASSOC);
+return $dependencias;
+
+$sentencia = "SELECT * FROM usuarios u
+WHERE u.correo_electronico = ? AND u.activo = 1";
+$stmt = $con->prepare($sentencia);
+$stmt->execute(array($email));
+$usuario = $stmt->fetch();
 
 
+print '<pre>';
+var_dump($usuario);
+die();
 
-<input type="text" id="rangoFechas" />
 
-
+?>
 
 
 
 </body>
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script>
-  // Calcular el primer y último día del año actual
-  const fechaActual = new Date();
-  const primerDiaDelAno = new Date(fechaActual.getFullYear(), 0, 1);
-  const ultimoDiaDelAno = new Date(fechaActual.getFullYear(), 11, 31);
-
-  // Inicializar Flatpickr con minDate y maxDate
-  flatpickr("#rangoFechas", {
-    mode: "range",
-    minDate: primerDiaDelAno,
-    maxDate: ultimoDiaDelAno,
-    dateFormat: "Y-m-d"
-  });
-</script>
-
 </html>

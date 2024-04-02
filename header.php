@@ -10,7 +10,7 @@ if(!$_SESSION['sistema'] == "pbrm"){
 $id_usuario = $_SESSION['id_usuario'];
 require_once 'models/inicio_modelo.php';
 $permisos = getPermisos($con, $_SESSION);
-$mi_permiso = $permisos['nivel'];
+$mi_permiso = $_SESSION['nivel'];
 $aniosiguiente = intval(date('Y')+1);
 $ajustes = traeAjustes($con);
 
@@ -121,7 +121,7 @@ function item_principal($actual, $buscador, $texto, $destino, $permisos, $mi_per
                     </li>
                     <?= item_principal($actual, $inicio, "Inicio", "index.php", array(1,2,3,4,5), $mi_permiso) ?>
                     <?= item_principal($actual, $anteproyecto, $menuProyecto, "anteproyecto.php", array(1,2,3,4,5), $mi_permiso) ?>
-                    <?= item_principal($actual, $pdm, "PDM", "pdm_admin.php", array(1,2,3,4), $mi_permiso) ?>
+                    <?php //item_principal($actual, $pdm, "PDM", "pdm_admin.php", array(1,2,3,4), $mi_permiso) ?>
                     <?= item_principal($actual, $actividades, "Actividades", "actividades.php", array(3,4,5), $mi_permiso) ?>
                     <?= item_principal($actual, $valida_actividades, "Valida Actividades", "actividades_avances.php", array(1,2), $mi_permiso) ?>
                     <?= item_principal($actual, $indicadores, "Indicadores", "indicadores.php", array(3,4,5), $mi_permiso) ?>

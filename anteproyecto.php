@@ -997,6 +997,15 @@ if ($_SESSION['sistema'] == 'pbrm') {
                 Enlistaremos todas las actividades por area y las
 
                 <div class="mt-5">
+
+                    <?php if(revisaAreas($con, $permisos['anio'] +1)): //Se revisan las areas, si tiene datos del 2023 avisa que todo chido, podemos continuar, si no, else?>
+                        <b>Usted cumple con los requisitos para exportar el programa anual </b> <br><br><br>
+                    <?php else: ?>
+                        <b>Usted NO cumple con los requisitos para exportar el programa anual </b> <br>
+                        <b>Las áreas aun no realizan actualizacion al año <?= $permisos['anio'] +1 ?></b><br><br>
+                        <a href="actualizar_programa_anual.php" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Actualizar Áreas</a>
+                        <br><br><br>
+                    <?php endif ?>
                     <b>Exportar Programa Anual a SIMONTS <?= $permisos['anio'] +1 ?></b> <br>
                     <form action="exporta_programa_anual.php" method="post">
                         <button type="submit" name="export_programa_anual" class="mt-2 focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Exportar</button>
