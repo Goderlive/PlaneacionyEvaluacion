@@ -19,9 +19,10 @@ function TraeSubAreas($con, $id_dependencia){
 function buscacincos($con, $id_usuario){
     $anio = date('Y');
     $sql = "SELECT u.nombre, u.apellidos, u.id_usuario, u.correo_electronico, a.nombre_area FROM usuarios u
-            JOIN permisos p ON p.id_usuario = u.id_usuario
-            JOIN areas a ON a.id_area = p.id_area
+            LEFT JOIN permisos p ON p.id_usuario = u.id_usuario
+            LEFT JOIN areas a ON a.id_area = p.id_area
             WHERE u.id_registro = $id_usuario AND u.activo = 1
+            GROUP BY u.id_usuario
     ";
     $stm = $con->query($sql);
     $dependientes = $stm->fetchAll(PDO::FETCH_ASSOC);
@@ -32,9 +33,10 @@ function buscacincos($con, $id_usuario){
 function buscacuatros($con, $id_usuario){
     $anio = date('Y');
     $sql = "SELECT u.nombre, u.apellidos, u.id_usuario, u.correo_electronico, d.nombre_dependencia FROM usuarios u
-            JOIN permisos p ON p.id_usuario = u.id_usuario
-            JOIN dependencias d ON d.id_dependencia = p.id_dependencia
+            LEFT JOIN permisos p ON p.id_usuario = u.id_usuario
+            LEFT JOIN dependencias d ON d.id_dependencia = p.id_dependencia
             WHERE u.id_registro = $id_usuario AND u.activo = 1
+            GROUP BY u.id_usuario
     ";
     $stm = $con->query($sql);
     $dependientes = $stm->fetchAll(PDO::FETCH_ASSOC);

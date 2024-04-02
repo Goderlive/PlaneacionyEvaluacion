@@ -119,7 +119,7 @@ $id_dependencia = $permisos['id_dependencia'];
                 <div class="grid grid-cols-4">
                     <?php foreach ($cuatros as $dep) : ?>
 
-                        <div class="items-start p-4 ml-2 mr-2 mb-4 text-center  bg-white rounded-lg border border-gray-400 shadow-md dark:bg-gray-800 dark:border-gray-700"">
+                        <div class="items-start p-4 ml-2 mr-2 mb-4 text-center  bg-white rounded-lg border border-gray-400 shadow-md dark:bg-gray-800 dark:border-gray-700">
                         <div class=" flex flex-col items-center pb-10">
                             <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white"><?= $dep['nombre_dependencia'] ?></h5>
                             <span class="text-md text-gray-500 dark:text-gray-400"><?= $dep['nombre'] . " " . $dep['apellidos'] ?></span>
