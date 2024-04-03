@@ -18,22 +18,28 @@ require_once 'models/conection.php';
 
 <?php 
 
-$email = 'desarrollosocial@metepec.gob.mx';
+require_once 'sources/phpqrcode/qrlib.php'; // Asegúrate de ajustar la ruta
 
-$stm = $con->query("SELECT * FROM dependencias WHERE anio = $anio ORDER BY nombre_dependencia ASC");
-$dependencias = $stm->fetchAll(PDO::FETCH_ASSOC);
-return $dependencias;
+$param = $_GET['id']; // remember to sanitize that - it is user input!
+    
+// we need to be sure ours script does not output anything!!!
+// otherwise it will break up PNG binary!
 
-$sentencia = "SELECT * FROM usuarios u
-WHERE u.correo_electronico = ? AND u.activo = 1";
-$stmt = $con->prepare($sentencia);
-$stmt->execute(array($email));
-$usuario = $stmt->fetch();
+ob_start("callback");
+
+// here DB request or some processing
+$codeText = 'DEMO - '.$param;
+
+// end of processing here
+$debugLog = ob_get_contents();
+ob_end_clean();
+
+// outputs image directly into browser, as PNG stream
+QRcode::png($codeText);
 
 
-print '<pre>';
-var_dump($usuario);
-die();
+
+
 
 
 ?>

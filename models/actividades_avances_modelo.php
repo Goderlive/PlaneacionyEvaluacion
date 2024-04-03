@@ -49,10 +49,12 @@ function CuentaActividadesArea($con, $id_area)
 
 function TraeDependenciasPDM($con, $permiso)
 {
+    $anio = $permiso['anio'];
     $stm = $con->query("SELECT dp.* FROM dependencias dp 
     LEFT JOIN areas ar ON ar.id_dependencia = dp.id_dependencia
     LEFT JOIN actividades ac ON ac.id_area = ar.id_area
     LEFT JOIN lineasactividades li ON li.id_actividad = ac.id_actividad
+    WHERE dp.anio = $anio
     GROUP BY dp.id_dependencia
     ");
     $dependencias = $stm->fetchAll(PDO::FETCH_ASSOC);

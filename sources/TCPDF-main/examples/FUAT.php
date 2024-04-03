@@ -1,6 +1,4 @@
 <?php
-
-
 if(!$_POST['id_dependencia'] || !$_POST['trimestre']){
     header("Location: ../../../index.php");
 }
@@ -375,7 +373,7 @@ $qr_code = '
             </p>
         </td>
         <td style="width:20%;">
-        <img src="https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl='.$codigo.'" alt="">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='.$codigo.'" alt="qrcode" width="150" height="150">
         </td>
     </tr>
 </table>

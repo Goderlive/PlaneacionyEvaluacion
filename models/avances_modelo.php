@@ -71,8 +71,8 @@ function traeavance($con, $id_indicador, $trimestre){
 if($_POST){
     $tipo = '';
     $data = $_POST;
-    $id_area = $_POST['id_area'];
-    $mes = $_POST['mes'];
+    $id_area = (isset($_POST['id_area'])) ? $_POST['id_area'] : null;
+    $mes = (isset($_POST['mes'])) ? $_POST['mes'] : null;
 
     if(isset($_POST['valida_actividad'])){
 
