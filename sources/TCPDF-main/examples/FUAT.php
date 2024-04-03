@@ -126,6 +126,48 @@ $stm = $con->query($sql);
 $areas = $stm->fetchAll(PDO::FETCH_ASSOC);
 
 
+
+
+$andtrimestr = '&t=' . $trimestre;
+$texto_original = '/index.php?d=' . $id_dependencia . $andtrimestr;
+$texto_oculto = base64_encode($texto_original);
+$server_url = $_SERVER['HTTP_HOST'];
+// Si necesitas incluir el protocolo (HTTP o HTTPS)
+$protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
+$server_url_with_protocol = $protocol . '://' . $server_url;
+
+$codigo = $server_url_with_protocol . '/qr' . urlencode($texto_original);
+
+
+
+
+
+
+$qr_code = '
+<table style="width:100%; padding: 2px; padding-left: 2px; border: 1px solid gray; keep-together:always;" nobr="true">
+    <tr>
+        <td style="width:80%; padding-left: 70px;">
+            <p>
+            Id_acuse: '.$texto_oculto.'
+            </p>
+            <br>
+            <br>
+            <br>
+            <p>
+            Al firmar este comprobante de entrega, confirmo que he revisado los documentos mencionados y no requeriré versiones impresas de los mismos, contribuyendo así al esfuerzo por reducir el uso de papel.
+            </p>
+        </td>
+        <td style="width:20%;">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='.$codigo.'" alt="qrcode" width="150" height="150">
+        </td>
+    </tr>
+</table>
+';
+
+
+
+
+
 $promediosActividades = '';
 foreach($areas as $ar){ //Recorremos las areas y buscamos sus actividades
     $id_area = $ar['id_area'];
@@ -343,41 +385,8 @@ $firmas = '
 <br>
 ';
 
-$andtrimestr = '&t=' . $trimestre;
-$texto_original = '/index.php?d=' . $id_dependencia . $andtrimestr;
-$texto_oculto = base64_encode($texto_original);
-$server_url = $_SERVER['HTTP_HOST'];
-// Si necesitas incluir el protocolo (HTTP o HTTPS)
-$protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
-$server_url_with_protocol = $protocol . '://' . $server_url;
-
-$codigo = $server_url_with_protocol . '/qr' . urlencode($texto_original);
 
 
-
-
-
-
-$qr_code = '
-<table style="width:100%; padding: 2px; padding-left: 2px; border: 1px solid gray; keep-together:always;" nobr="true">
-    <tr>
-        <td style="width:80%; padding-left: 70px;">
-            <p>
-            Id_acuse: '.$texto_oculto.'
-            </p>
-            <br>
-            <br>
-            <br>
-            <p>
-            Al firmar este comprobante de entrega, confirmo que he revisado los documentos mencionados y no requeriré versiones impresas de los mismos, contribuyendo así al esfuerzo por reducir el uso de papel.
-            </p>
-        </td>
-        <td style="width:20%;">
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='.$codigo.'" alt="qrcode" width="150" height="150">
-        </td>
-    </tr>
-</table>
-';
 
 
 // output the HTML content
