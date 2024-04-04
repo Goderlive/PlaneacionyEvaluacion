@@ -7,7 +7,7 @@ session_start();
 <?php include 'header.php'; ?>
 <?php require_once 'Controllers/ReporteController.php'; ?>
 <?php include 'Controllers/breadcrumbs.php'; ?>
-<?php if ($permisos['nivel'] == 4 || $permisos['nivel'] == 5) { ?>
+<?php if ($_SESSION['nivel'] == 4 || $_SESSION['nivel'] == 5) { ?>
 
     <body>
         <br>
@@ -132,7 +132,6 @@ session_start();
                                         <select id="udmed" name="udmed" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                             <option disabled>Seleccione su unidad</option>
                                             <?php $udmed = traeudmed($con) ?>
-                                            <?php var_dump($udmed) ?>
                                             <?php foreach($udmed as $u): ?>
                                                 <option value="<?= $u['nombre'] ?>"><?= $u['nombre'] ?></option>
                                             <?php endforeach ?>

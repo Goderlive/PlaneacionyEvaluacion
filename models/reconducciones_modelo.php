@@ -73,7 +73,10 @@ function TraerAreas($con, $dep)
 
 function TraerActividades($con, $area)
 {
-    $stm = $con->query("SELECT * FROM actividades WHERE id_area = $area");
+    $sentencia = "SELECT * FROM actividades a  
+    LEFT JOIN unidades_medida u ON u.id_unidad = a.id_unidad
+    WHERE id_area = $area";
+    $stm = $con->query($sentencia);
     $actividades = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $actividades;
 }
@@ -81,7 +84,10 @@ function TraerActividades($con, $area)
 
 function NombreActividad($con, $actividad)
 {
-    $stm = $con->query("SELECT * FROM actividades WHERE id_actividad = $actividad");
+    $sentencia = "SELECT * FROM actividades a  
+    LEFT JOIN unidades_medida u ON u.id_unidad = a.id_unidad
+    WHERE a.id_actividad = $actividad";
+    $stm = $con->query($sentencia);
     $actividad = $stm->fetch(PDO::FETCH_ASSOC);
     return $actividad;
 }
@@ -289,6 +295,10 @@ if (isset($_POST) && $_POST) {
             $stm = $con->query("SELECT SUM(avance) FROM avances WHERE id_actividad = $actividad");
             $avance_actual = $stm->fetch(PDO::FETCH_ASSOC);
             $avance_actual = $avance_actual['SUM(avance)'];
+
+            if(!$avance_actual){
+                $avance_actual = 0;
+            }
 
 
             // ******************************** OLD Programacion **************************

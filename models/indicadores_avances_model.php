@@ -12,8 +12,10 @@ function TraeDependencias($con, $id_usuario){
 }
 
 function TraeTodasDependencias($con){
+    $anio = $_SESSION['anio'];
     $stm = $con->query("SELECT * FROM dependencias dp
     JOIN indicadores_uso iu ON iu.id_dependencia = dp.id_dependencia 
+    WHERE dp.anio = $anio
     GROUP BY dp.id_dependencia
     ");
     $dependencias = $stm->fetchAll(PDO::FETCH_ASSOC);
@@ -48,27 +50,32 @@ function tieneavances($con, $id_indicador, $trimestre){
 
 
 function Indicadores($con, $trimestre, $id_dependencia){
-    if($trimestre == "1" || $trimestre == "3"){
+    $trimestre = intval($trimestre);
+    if($trimestre == 1 || $trimestre == 3){
         $thesql = "SELECT * FROM indicadores_uso iu 
         LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador 
-        WHERE iu.id_dependencia = $id_dependencia AND (iu.periodicidad = 'trimestral' OR iu.periodicidad = 'mensual')
+        LEFT JOIN indicadores i ON i.id_indicador = iu.id_indicador_gaceta
+            WHERE iu.id_dependencia = $id_dependencia AND (i.frecuencia = 'Trimestral' OR i.frecuencia = 'Mensual')
         GROUP BY iu.id";
     }
-    if($trimestre == "2"){
+    if($trimestre == 2){
         $thesql = "SELECT * FROM indicadores_uso iu 
         LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador 
-        WHERE iu.id_dependencia = $id_dependencia AND (iu.periodicidad = 'trimestral' OR iu.periodicidad = 'mensual' OR iu.periodicidad = 'semestral')
+        LEFT JOIN indicadores i ON i.id_indicador = iu.id_indicador_gaceta
+            WHERE iu.id_dependencia = $id_dependencia AND (i.frecuencia = 'Trimestral' OR i.frecuencia = 'Mensual' OR i.frecuencia = 'Semestral')
         GROUP BY iu.id";
     }
-    if($trimestre == "4"){
+    if($trimestre == 4){
         $thesql = "SELECT * FROM indicadores_uso iu 
         LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador 
-        WHERE iu.id_dependencia = $id_dependencia AND (iu.periodicidad = 'trimestral' OR iu.periodicidad = 'mensual' OR iu.periodicidad = 'semestral' OR iu.periodicidad = 'anual')
+        LEFT JOIN indicadores i ON i.id_indicador = iu.id_indicador_gaceta
+            WHERE iu.id_dependencia = $id_dependencia AND (i.frecuencia = 'Trimestral' OR i.frecuencia = 'Mensual' OR i.frecuencia = 'Semestral' OR i.frecuencia = 'Anual')
         GROUP BY iu.id";
     }
 
     $stm = $con->query($thesql);
     $data = $stm->fetchAll(PDO::FETCH_ASSOC);
+
 
     return $data;
 }
