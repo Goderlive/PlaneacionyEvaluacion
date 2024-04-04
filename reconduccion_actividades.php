@@ -167,7 +167,14 @@ if ($_SESSION['sistema'] == "pbrm") {
 														</td>
 														<td class="py-4 px-6">
 															<label for="<?= $id_actividad ?>">
-																<?= $value['unidad'] ?>
+																<?php
+																if ($value['id_unidad']) {
+																	$unidad_medida = $value['nombre_unidad'];
+																} else {
+																	$unidad_medida = $value['unidad'];
+																}
+																?>
+																<?= $unidad_medida ?>
 															</label>
 														</td>
 														<td class="py-4 px-6">
@@ -199,13 +206,13 @@ if ($_SESSION['sistema'] == "pbrm") {
 
 				<!-- Aqui comienza el codigo cuando estamos ya en la reconduccion. -->
 
-				<?php if (isset($_POST['nueva_actividad'])): ?>
+				<?php if (isset($_POST['nueva_actividad'])) : ?>
 					<?php $id_area = $_POST['id_area'] ?>
 					<?php $data = TraeDatosReconduccion($con, $id_area); ?>
-                    <?php $unidades = traeUnidades($con) ?>
-                    <div class="relative overflow-x-auto">
-                        <form action="" method="post">
-                            <input type="hidden" name="id_area" value="<?= $id_area ?>">
+					<?php $unidades = traeUnidades($con) ?>
+					<div class="relative overflow-x-auto">
+						<form action="" method="post">
+							<input type="hidden" name="id_area" value="<?= $id_area ?>">
 							<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
 								<thead class="text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
 									<tr>
@@ -258,124 +265,124 @@ if ($_SESSION['sistema'] == "pbrm") {
 								</tbody>
 							</table>
 
-                            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                    <th scope="col" class="px-2 py-2">
-                                        Actividad
-                                    </th>
-                                    <th scope="col" class="px-2 py-2">
-                                        Unidad de Medida
-                                    </th>
-                                </thead>
-                                <tbody>
-                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                        <th scope="row" class="px-6 py-4">
-                                            <input type="text" maxlength="250" id="nombre_actividad" name="nombre_actividad" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                                        </th>
-                                        <td class="px-6 py-4">
-                                            <select name="id_unidad" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                <option value="">Selecciona</option>
-                                                <?php foreach ($unidades as $u) : ?>
-                                                    <option value="<?= $u['id_unidad']; ?>">
-                                                        <?php echo $u['nombre_unidad']; ?>
-                                                    </option>
-                                                <?php endforeach; ?>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <br>
-                            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                    <th scope="col" class="px-2 py-2">
-                                        Ene
-                                    </th>
-                                    <th scope="col" class="px-2 py-2">
-                                        Feb
-                                    </th>
-                                    <th scope="col" class="px-2 py-2">
-                                        Mar
-                                    </th>
-                                    <th scope="col" class="px-2 py-2">
-                                        Abr
-                                    </th>
-                                    <th scope="col" class="px-2 py-2">
-                                        May
-                                    </th>
-                                    <th scope="col" class="px-2 py-2">
-                                        Jun
-                                    </th>
-                                    <th scope="col" class="px-2 py-2">
-                                        Jul
-                                    </th>
-                                    <th scope="col" class="px-2 py-2">
-                                        Ago
-                                    </th>
-                                    <th scope="col" class="px-2 py-2">
-                                        Sep
-                                    </th>
-                                    <th scope="col" class="px-2 py-2">
-                                        Oct
-                                    </th>
-                                    <th scope="col" class="px-2 py-2">
-                                        Nov
-                                    </th>
-                                    <th scope="col" class="px-2 py-2">
-                                        Dic
-                                    </th>
-                                </thead>
-                                <tbody>
-                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                        <td class="px-6 py-4">
-                                            <input type="number" id="enero" name="enero" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <input type="number" id="febrero" name="febrero" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <input type="number" id="marzo" name="marzo" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <input type="number" id="abril" name="abril" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <input type="number" id="mayo" name="mayo" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <input type="number" id="junio" name="junio" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <input type="number" id="julio" name="julio" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <input type="number" id="agosto" name="agosto" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <input type="number" id="septiembre" name="septiembre" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <input type="number" id="octubre" name="octubre" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <input type="number" id="noviembre" name="noviembre" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <input type="number" id="diciembre" name="diciembre" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <br>
-                                            <button type="submit" name="reg_nueva_actividad" value="reg_nueva_actividad" class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Registrar</button>
-                                        </td>
+							<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+								<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+									<th scope="col" class="px-2 py-2">
+										Actividad
+									</th>
+									<th scope="col" class="px-2 py-2">
+										Unidad de Medida
+									</th>
+								</thead>
+								<tbody>
+									<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+										<th scope="row" class="px-6 py-4">
+											<input type="text" maxlength="250" id="nombre_actividad" name="nombre_actividad" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+										</th>
+										<td class="px-6 py-4">
+											<select name="id_unidad" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+												<option value="">Selecciona</option>
+												<?php foreach ($unidades as $u) : ?>
+													<option value="<?= $u['id_unidad']; ?>">
+														<?php echo $u['nombre_unidad']; ?>
+													</option>
+												<?php endforeach; ?>
+											</select>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<br>
+							<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+								<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+									<th scope="col" class="px-2 py-2">
+										Ene
+									</th>
+									<th scope="col" class="px-2 py-2">
+										Feb
+									</th>
+									<th scope="col" class="px-2 py-2">
+										Mar
+									</th>
+									<th scope="col" class="px-2 py-2">
+										Abr
+									</th>
+									<th scope="col" class="px-2 py-2">
+										May
+									</th>
+									<th scope="col" class="px-2 py-2">
+										Jun
+									</th>
+									<th scope="col" class="px-2 py-2">
+										Jul
+									</th>
+									<th scope="col" class="px-2 py-2">
+										Ago
+									</th>
+									<th scope="col" class="px-2 py-2">
+										Sep
+									</th>
+									<th scope="col" class="px-2 py-2">
+										Oct
+									</th>
+									<th scope="col" class="px-2 py-2">
+										Nov
+									</th>
+									<th scope="col" class="px-2 py-2">
+										Dic
+									</th>
+								</thead>
+								<tbody>
+									<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+										<td class="px-6 py-4">
+											<input type="number" id="enero" name="enero" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+										</td>
+										<td class="px-6 py-4">
+											<input type="number" id="febrero" name="febrero" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+										</td>
+										<td class="px-6 py-4">
+											<input type="number" id="marzo" name="marzo" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+										</td>
+										<td class="px-6 py-4">
+											<input type="number" id="abril" name="abril" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+										</td>
+										<td class="px-6 py-4">
+											<input type="number" id="mayo" name="mayo" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+										</td>
+										<td class="px-6 py-4">
+											<input type="number" id="junio" name="junio" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+										</td>
+										<td class="px-6 py-4">
+											<input type="number" id="julio" name="julio" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+										</td>
+										<td class="px-6 py-4">
+											<input type="number" id="agosto" name="agosto" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+										</td>
+										<td class="px-6 py-4">
+											<input type="number" id="septiembre" name="septiembre" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+										</td>
+										<td class="px-6 py-4">
+											<input type="number" id="octubre" name="octubre" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+										</td>
+										<td class="px-6 py-4">
+											<input type="number" id="noviembre" name="noviembre" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+										</td>
+										<td class="px-6 py-4">
+											<input type="number" id="diciembre" name="diciembre" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<br>
+											<button type="submit" name="reg_nueva_actividad" value="reg_nueva_actividad" class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Registrar</button>
+										</td>
 
-                                    </tr>
-                                </tbody>
-                            </table><br>
+									</tr>
+								</tbody>
+							</table><br>
 
-                        </form>
-                    </div>
+						</form>
+					</div>
 
 
 				<?php endif ?>
@@ -466,13 +473,21 @@ if ($_SESSION['sistema'] == "pbrm") {
 							<br>
 							<!-- Aqui imprimimos la tabla donde nos permitira visualizar la programacion y los posibles cambios -->
 							<?php foreach ($_POST['actividad'] as $actividad) :
-								$dataActividad = NombreActividad($con, $actividad); ?>
+								$dataActividad = NombreActividad($con, $actividad) ?>
+
 								<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
 
 									<thead class="text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
 										<tr>
 											<th colspan="12" center>
-												<?= $dataActividad['codigo_actividad'] . " - " . $dataActividad['nombre_actividad'] . " - " . $dataActividad['unidad'] ?>
+												<?php
+												if ($dataActividad['id_unidad']) {
+													$unidad_medida = $dataActividad['nombre_unidad'];
+												} else {
+													$unidad_medida = $dataActividad['unidad'];
+												}
+												?>
+												<?= $dataActividad['codigo_actividad'] . " - " . $dataActividad['nombre_actividad'] . " - " . $unidad_medida ?>
 											</th>
 										</tr>
 										<tr>
@@ -492,7 +507,7 @@ if ($_SESSION['sistema'] == "pbrm") {
 											<input type="hidden" name="actividades[]" value="<?= $actividad ?>">
 											<input type="hidden" name="<?= $actividad ?>[]" value="<?= $dataActividad['codigo_actividad'] ?>">
 											<input type="hidden" name="<?= $actividad ?>[]" value="<?= $dataActividad['nombre_actividad'] ?>">
-											<input type="hidden" name="<?= $actividad ?>[]" value="<?= $dataActividad['unidad'] ?>">
+											<input type="hidden" name="<?= $actividad ?>[]" value="<?= $unidad_medida ?>">
 
 
 											<?php $mensual = ProgramaMensual($con, $actividad); // La funcion limita lo 12 campos solamente de los 15 que tiene

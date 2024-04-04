@@ -158,12 +158,11 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                             <?php $ta = TextoTrimestre($trimestre) ?>
                             <?php $indicadores = Indicadores($con, $trimestre, $id_dependencia, $permisos);
                             if ($indicadores) :
-                                $i = 1;
                                 foreach ($indicadores as $datos) : ?>
 
                                     <tr class="bg-white text-center border-b dark:bg-gray-800 dark:border-gray-700">
                                         <th scope="row" class="px-2 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                            <?= $i++; ?>
+                                            <?= $datos['id'] ?>
                                         </th>
                                         <td class="px-2 py-4">
                                             <?= $datos['nombre_indicador']; ?>

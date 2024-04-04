@@ -31,7 +31,7 @@ function uneIndicadores($indicadores_gaceta, $indicadores_osfem)
             similar_text($programa_osfem, $programa_gaceta, $percent_programa);
 
             // Definir un umbral de similitud, por ejemplo, 80%
-            if ($percent_nombre > 80 && $percent_programa > 80) {
+            if ($percent_nombre > 90 && $percent_programa > 90) {
                 $find = $o;
                 break; // Rompe el bucle si encuentra una coincidencia
             }
@@ -140,7 +140,7 @@ function actualizaIndicadores($con){
 
 
 //uneIndicadores($indicadores_gaceta, $indicadores_osfem);
-//IdPrograma($con, $indicadores_totales);
+IdPrograma($con, $indicadores_totales);
 //indicadores_uso($con);
 
-actualizaIndicadores($con);
+//actualizaIndicadores($con);

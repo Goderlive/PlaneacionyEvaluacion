@@ -325,7 +325,7 @@ if ($_SESSION['sistema'] == "pbrm") {
                             <tbody>
                                 <tr class="bg-white dark:bg-gray-800">
                                     <th scope="row" rowspan="2" class="py-2 px-6" align="center" valign="top">
-                                        <?= $a['nombre_indicador'] ?>
+                                        <?= $a['nombrei'] ?>
                                     </th>
                                     <td class="py-2 px-6" align="center" valign="top">
                                         <?= $a['variable_a'] ?>
