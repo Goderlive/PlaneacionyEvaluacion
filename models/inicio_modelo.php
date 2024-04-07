@@ -29,6 +29,15 @@ function traeinconsistencias($con){
     return $inconsistencias;
 }
 
+function traeinconsistenciasi($con){
+    $stm = $con->query("SELECT id, trimestre, COUNT(*) as cantidad
+    FROM avances_indicadores
+    GROUP BY id, trimestre,
+    HAVING COUNT(*) > 1");
+    $inconsistencias = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $inconsistencias;
+}
+
 function getPermisos($con, $permisos){
     $anio = $permisos['anio'];
     $id_usuario = $permisos['id_usuario'];

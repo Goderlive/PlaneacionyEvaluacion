@@ -198,6 +198,7 @@ include 'head.php';
         // Aqui va lo que pasa si eres nivel 2 (osea de la wipe o gobierno digital)
         if ($permisos['nivel']  == 1 || $permisos['nivel']  == 2) {
             print revisainconsistencias($con);
+            print revisainconsistenciasi($con);
         }
         ?>
         <br>
