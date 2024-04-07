@@ -50,11 +50,17 @@ function CuentaAvancesIndFUAT($con, $id_dependencia, $trimestre){
 
 function CuentaActividadesIndFUAT($con, $id_dependencia, $trimestre){
     if($trimestre == 1 || $trimestre == 3){
-        $stm = $con->query("SELECT COUNT(id) FROM indicadores_uso WHERE id_dependencia = $id_dependencia AND (periodicidad = 'Trimestral' OR periodicidad = 'Mensual')");
+        $stm = $con->query("SELECT COUNT(id) FROM indicadores_uso iu 
+        LEFT JOIN indicadores i ON i.id_indicador = iu.id_indicador_gaceta
+        WHERE id_dependencia = $id_dependencia AND (frecuencia = 'Trimestral' OR frecuencia = 'Mensual')");
     }elseif($trimestre == 2){
-        $stm = $con->query("SELECT COUNT(id) FROM indicadores_uso WHERE id_dependencia = $id_dependencia AND periodicidad != 'Anual'");
+        $stm = $con->query("SELECT COUNT(id) FROM indicadores_uso iu 
+        LEFT JOIN indicadores i ON i.id_indicador = iu.id_indicador_gaceta
+        WHERE id_dependencia = $id_dependencia AND frecuencia != 'Anual'");
     }else{
-        $stm = $con->query("SELECT COUNT(id) FROM indicadores_uso WHERE id_dependencia = $id_dependencia");
+        $stm = $con->query("SELECT COUNT(id) FROM indicadores_uso iu 
+        LEFT JOIN indicadores i ON i.id_indicador = iu.id_indicador_gaceta
+        WHERE id_dependencia = $id_dependencia");
     }
     $c_avance = $stm->fetch(PDO::FETCH_ASSOC);
     $c_avance = ($c_avance['COUNT(id)']) ? $c_avance['COUNT(id)'] : NULL;

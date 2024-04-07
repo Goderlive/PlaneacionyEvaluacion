@@ -165,7 +165,7 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                                             <?= $datos['id'] ?>
                                         </th>
                                         <td class="px-2 py-4">
-                                            <?= $datos['nombre_indicador']; ?>
+                                            <?= $datos['nombre']; ?>
                                         </td>
                                         <td class="px-2 py-4" align="left">
                                             <?= "- " . $datos['variable_a'] . "<br>" ?>

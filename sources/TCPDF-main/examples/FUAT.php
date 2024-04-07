@@ -208,37 +208,30 @@ foreach($areas as $ar){ //Recorremos las areas y buscamos sus actividades
 
 
 
-if($trimestre == 1 || $trimestre == 3){
-    $periodicidad = "periodicidad = 'Trimestral' OR periodicidad = 'Mensual' ";
-}
-if($trimestre == 2){
-    $periodicidad = "periodicidad = 'Trimestral' OR periodicidad = 'Mensual' OR periodicidad = 'Semestral'";
-}
-if($trimestre == 4){
-    $periodicidad = "periodicidad = 'Trimestral' OR periodicidad = 'Mensual' OR periodicidad = 'Semestral' || periodicidad = 'Anual'";
-}
-
 
 if($trimestre == 1 || $trimestre == 3){
     $sqlInd = "SELECT * FROM indicadores_uso iu
+    LEFT JOIN indicadores i ON i.id_indicador = iu.id_indicador_gaceta
     LEFT JOIN proyectos py ON py.id_proyecto = iu.id_proyecto
     LEFT JOIN programas_presupuestarios pp ON pp.id_programa = py.id_programa
     WHERE iu.id_dependencia = $id_dependencia
-    AND (iu.periodicidad != 'Anual' AND iu.periodicidad != 'Semestral')
+    AND (i.frecuencia != 'Anual' AND i.frecuencia != 'Semestral')
     GROUP BY iu.id
     ORDER BY py.id_programa
 ";
 }elseif($trimestre == 2){
     $sqlInd = "SELECT * FROM indicadores_uso iu
+    LEFT JOIN indicadores i ON i.id_indicador = iu.id_indicador_gaceta
     LEFT JOIN proyectos py ON py.id_proyecto = iu.id_proyecto
     LEFT JOIN programas_presupuestarios pp ON pp.id_programa = py.id_programa
     WHERE iu.id_dependencia = $id_dependencia
-    AND (iu.periodicidad != 'Anual')
+    AND (i.frecuencia != 'Anual')
     GROUP BY iu.id
     ORDER BY py.id_programa
 ";
 }else{
     $sqlInd = "SELECT * FROM indicadores_uso iu
+    LEFT JOIN indicadores i ON i.id_indicador = iu.id_indicador_gaceta
     LEFT JOIN proyectos py ON py.id_proyecto = iu.id_proyecto
     LEFT JOIN programas_presupuestarios pp ON pp.id_programa = py.id_programa
     WHERE iu.id_dependencia = $id_dependencia
@@ -259,7 +252,7 @@ $arrayDef = array();
 $arrayTemp = array();
 if($indicadores){
     foreach ($indicadores as $key => $value) { // Recorremos cada uno de los indicadores y operaremos
-        $nombre_indicador = preg_replace('([^A-Za-z0-9 ])', ' ', $value['nombre_indicador']);
+        $nombre_indicador = preg_replace('([^A-Za-z0-9 ])', ' ', $value['nombre']);
 
         // Sacamos el porcentaje de cumplimiento de cada indicador
         $programaciona = (((($trimestre == 1) ? $value['at1'] : ($trimestre == 2)) ? $value['at2'] : ($trimestre == 3)) ? $value['at3'] : $value['at4']);
