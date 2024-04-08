@@ -88,7 +88,7 @@ if ($_SESSION['sistema'] == "pbrm") {
                         <tbody>
                             <?php $ta = TextoTrimestre($trimestre_actual) ?>
                             <?php $indicadores = Indicadores($con, $trimestre_actual, $id_dependencia, $permisos);
-                            //var_dump($indicadores);
+                            var_dump($id_dependencia);
                             if ($indicadores) :
                                 $i = 1;
                                 foreach ($indicadores as $datos) : ?>
