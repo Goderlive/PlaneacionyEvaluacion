@@ -68,7 +68,7 @@ function TraeReconduccionesValidadas($con, $id_dependencia){
 }
 
 
-function TraeDependencias($con, $id_usuario){
+function TraeDependencias($con, $id_usuario, $anio){
     $stm = $con->query("SELECT * FROM dependencias dp
     JOIN indicadores_uso iu ON iu.id_dependencia = dp.id_dependencia 
     WHERE id_administrador = $id_usuario
@@ -78,9 +78,10 @@ function TraeDependencias($con, $id_usuario){
     return $dependencias;
 }
 
-function TraeTodasDependencias($con){
+function TraeTodasDependencias($con, $anio){
     $stm = $con->query("SELECT * FROM dependencias dp
     JOIN indicadores_uso iu ON iu.id_dependencia = dp.id_dependencia 
+    WHERE dp.anio = $anio
     GROUP BY dp.id_dependencia
     ");
     $dependencias = $stm->fetchAll(PDO::FETCH_ASSOC);

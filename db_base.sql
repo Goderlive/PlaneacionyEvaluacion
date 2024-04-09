@@ -2138,7 +2138,10 @@ CREATE TABLE setings(
   proyectoFechas VARCHAR(13),
   programaAFechas VARCHAR(13),
   nombre_ente VARCHAR(80),
-  numero_ente VARCHAR(5)
+  numero_ente VARCHAR(5),
+  enlaces_08c int(11) NOT NULL,
+  enlace_08b int(11) NOT NULL,
+  fuat int(11) NOT NULL
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 INSERT INTO setings (id_setings, year_report, id_tesoreria, id_uippe, anteproyectoFechas, proyectoFechas, programaAFechas) VALUES
 (1, '2023', 279, 71, '01,09;25,10', '01,11;20,12', '01,01;01,01');

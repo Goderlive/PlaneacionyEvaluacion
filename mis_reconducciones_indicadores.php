@@ -89,7 +89,6 @@ $thismes = ceil(date('m'));
 
 
             <span>Reconducciones Realizadas</span>
-
             <div class="my-2 p-5 font-light border border-b-0 border-gray-200 dark:border-gray-700">
                 <?php $rec_validadas = TraeReconduccionesValidadasInd($con, $dep) ?>
                 <?php foreach ($rec_validadas as $v) : ?>
