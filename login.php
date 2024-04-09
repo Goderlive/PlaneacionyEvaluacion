@@ -100,7 +100,9 @@ $ajustes = $stm->fetch(PDO::FETCH_ASSOC);
 		<div class="container-fluid h-custom">
 			<div class="row d-flex justify-content-center align-items-center h-100">
 				<div class="col-md-9 col-lg-6 col-xl-5">
+					<?php if($ajustes['path_logo_login']): ?>
 					<img src="<?= $ajustes['path_logo_login'] ?>" class="img-fluid" alt="">
+					<?php endif ?>
 				</div>
 				<div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
 					<h3 class="text-center">Sistema de Monitoreo, Tablero de Control y Seguimiento del PbRM <br><b>(SIMONTS)</b></h3>
