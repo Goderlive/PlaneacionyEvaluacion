@@ -25,9 +25,13 @@ function ActividadesValidadas($con, $id_area, $mes){
 }
 
 function Fetch($con, $sentencia){
-    $stm = $con->query($sentencia);
-    $validadas = $stm->fetch(PDO::FETCH_ASSOC);
-    return $validadas;
+    if($sentencia){
+        $stm = $con->query($sentencia);
+        $validadas = $stm->fetch(PDO::FETCH_ASSOC);
+        return $validadas;
+    }else{
+        return null;
+    }
 }
 
 function NoReportadas($con, $id_area, $mes){
