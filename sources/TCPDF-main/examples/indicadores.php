@@ -8,9 +8,6 @@ $id_dependencia = $_POST['id_dependencia'];
 $trimestre = $_POST['trimestre'];
 $num_trimestre = QueTrimestreEs($trimestre);
 
-print '<pre>';
-var_dump($_POST);
-die();
 // Include the main TCPDF library (search for installation path).
 require_once('tcpdf_include.php');
 require_once '../../../models/conection.php';
