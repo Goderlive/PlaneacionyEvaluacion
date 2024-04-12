@@ -34,7 +34,6 @@ function armaFechas($d1, $m1, $d2, $m2)
 }
 
 if ($_POST) {
-    session_start();
     if ($_SESSION['sistema'] != 'pbrm') {
         header("Location: ../login.php");
         die();

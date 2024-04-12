@@ -6,7 +6,7 @@ if ($_SESSION['sistema'] != "pbrm" || !isset($_POST['trimestre'])) {
 }
 $id_area = $_POST['id_area'];
 $trimestre = $_POST['trimestre'];
-
+$anio = $_SESSION['anio'];
 // Include the main TCPDF library (search for installation path).
 require_once('tcpdf_include.php');
 require_once '../../../models/conection.php';
@@ -57,6 +57,10 @@ $id_dependencia = $dependencia['id_dependencia'];
 
 $stm = $con->query("SELECT * FROM titulares WHERE id_dependencia = $id_dependencia");
 $titular_dependencia = $stm->fetch(PDO::FETCH_ASSOC);
+
+
+$stm = $con->query("SELECT * FROM setings WHERE year_report = $anio");
+$setings = $stm->fetch(PDO::FETCH_ASSOC);
 
 
 $stm = $con->query("SELECT * FROM titulares WHERE id_area = $id_area ");
@@ -461,7 +465,7 @@ if ($seguimiento) : // Condicion de cumplimiento lineas de acción.
     <tr>
       <td style="width: 15%" rowspan="3"><img src="./img/pdm.png" height="70"/></td>
       <td style="width: 67%; text-align: center"></td>
-      <td style="width: 18%;text-align: center " rowspan="3"><img src="images/metepec_logoc.jpg" width="100px"/></td>
+      <td style="width: 18%;text-align: center " rowspan="3"><img src="../../../'.$logos['path_logo_administracion'].'" width="100px"/></td>
     </tr>
     <tr>
       <td style="text-align: center"><br>Informe de Acciones y Resultados de la Ejecución del Plan de Desarrollo Municipal</td>
@@ -699,8 +703,8 @@ $html = '
   <tbody>
     <tr>
       <td style="width: 15%" rowspan="3"><img src="images/logo_metepec.jpg" height="70"/></td>
-      <td style="width: 67%; text-align: center"><br><br>Reporte de Evidencias correspondiente al ' . $trimestreNombre . '</td>
-      <td style="width: 18%;text-align: center " rowspan="3"> <img src="images/metepec_logoc.jpg"/></td>
+      <td style="width: 67%; text-align: center"><br><br>Reporte de Evidencias correspondiente al '. $trimestreNombre.'</td>
+      <td style="width: 18%;text-align: center " rowspan="3"> <img src="../../../'.$logos['path_logo_administracion'].'" width="100px"/></td>
     </tr>
   </tbody>
 </table>
