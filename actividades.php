@@ -6,7 +6,7 @@ if (!$_SESSION) { ?>
     </script>
 <?php
 }
-if ($_SESSION['sistema'] == 'pbrm') {
+if (isset($_SESSION['sistema']) == 'pbrm') {
     require_once 'Controllers/Actividades_Controlador.php';
     $real_anio = $_SESSION['anio'];
     $anio = $_SESSION['anio'];

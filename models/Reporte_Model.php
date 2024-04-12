@@ -175,7 +175,6 @@ function tieneReconduccion($con, $id_actividad){
 
 if (isset($_POST['jfnkasjnkasdf34q345']) && $_POST['jfnkasjnkasdf34q345'] == "Enviar") {
     if ($_SESSION['sistema'] == 'pbrm') {
-
         $year = date('Y');
         $mes = $_POST['mes'];
         $id_actividad = $_POST['id_actividad'];

@@ -403,7 +403,7 @@ function ModalesEvidencias($con, $actividades, $mes){
                                         <b>'. $avance['avance'].' <b>
                                     </td>
                                     <td class="py-2 px-6" align="center" valign="top">'. 
-                                        intval($avance['avance']) - $a[$mesi]
+                                        (intval($avance['avance']) - $a[$mesi])
                                     .'</td>
                                     <td class="py-2 px-6" align="center">'.
                                         $evidencia

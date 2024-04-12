@@ -6,7 +6,7 @@ if ($_SESSION['sistema'] != "pbrm" || !isset($_POST['trimestre'])) {
 }
 $id_area = $_POST['id_area'];
 $trimestre = $_POST['trimestre'];
-$anio = $_SESSION['anio'];
+
 // Include the main TCPDF library (search for installation path).
 require_once('tcpdf_include.php');
 require_once '../../../models/conection.php';
@@ -57,10 +57,6 @@ $id_dependencia = $dependencia['id_dependencia'];
 
 $stm = $con->query("SELECT * FROM titulares WHERE id_dependencia = $id_dependencia");
 $titular_dependencia = $stm->fetch(PDO::FETCH_ASSOC);
-
-
-$stm = $con->query("SELECT * FROM setings WHERE year_report = $anio");
-$setings = $stm->fetch(PDO::FETCH_ASSOC);
 
 
 $stm = $con->query("SELECT * FROM titulares WHERE id_area = $id_area ");
@@ -194,7 +190,7 @@ function calcularPorcentaje($numerador, $denominador)
 
 $total_actividades = 0;
 foreach ($actividades as $actividad) {
-	$total_actividades_i = (strlen($actividad['nombre_actividad']) > 160) ? 3 : ((strlen($actividad['nombre_actividad']) > 80) ? 2 : 1);
+	$total_actividades_i = (strlen($actividad['nombre_actividad']) > 140) ? 3 : ((strlen($actividad['nombre_actividad']) > 70) ? 2 : 1);
 	$total_actividades += $total_actividades_i;
 	$sumaAnual = Sumador($actividad, 0);
 	$metaTrimestral = Sumador($actividad, $trimestre);
@@ -291,8 +287,17 @@ $html = $membretes . '
 	
 	</td>
 	<td style="width:65%">
-	&nbsp;<br>
 		<table style="width:100%;">
+			<tr>
+				<td style="width:30%; text-align: right; font-size: 8px">Dependencia </td>
+				<td style="width:20%; text-align: center; border:1px solid gray; font-size: 8px">' . $dependencia['id_dependencia'] . '</td>
+				<td style="width:50%; text-align: left; border:1px solid gray; font-size: 8px">' . $dependencia['nombre_dependencia'] . '</td>
+			</tr>
+			<tr>
+				<td style="width:30%; text-align: right; font-size: 8px">Área</td>
+				<td style="width:20%; text-align: center; border:1px solid gray; font-size: 8px">' . $dependencia['id_area'] . '</td>
+				<td style="width:50%; text-align: left; border:1px solid gray; font-size: 8px">' . $dependencia['nombre_area'] . '</td>
+			</tr>
 			<tr>
 				<td style="width:30%; text-align: right; font-size: 8px">Dependencia General</td>
 				<td style="width:20%; text-align: center; border:1px solid gray; font-size: 8px">' . $dependencia['clave_dependencia'] . '</td>
@@ -400,7 +405,7 @@ $seguimiento = $stmmag->fetchAll(PDO::FETCH_ASSOC);
 
 
 if ($seguimiento) : // Condicion de cumplimiento lineas de acción.
-	//$pdf->AddPage('L', 'LETTER');
+	$pdf->AddPage('L', 'LETTER');
 
 
 
@@ -465,7 +470,7 @@ if ($seguimiento) : // Condicion de cumplimiento lineas de acción.
     <tr>
       <td style="width: 15%" rowspan="3"><img src="./img/pdm.png" height="70"/></td>
       <td style="width: 67%; text-align: center"></td>
-      <td style="width: 18%;text-align: center " rowspan="3"><img src="../../../'.$logos['path_logo_administracion'].'" width="100px"/></td>
+      <td style="width: 18%;text-align: center " rowspan="3"><img src="images/metepec_logoc.jpg" width="100px"/></td>
     </tr>
     <tr>
       <td style="text-align: center"><br>Informe de Acciones y Resultados de la Ejecución del Plan de Desarrollo Municipal</td>
@@ -584,12 +589,12 @@ if ($seguimiento) : // Condicion de cumplimiento lineas de acción.
 </table>";
 
 	$magg .= $tabseg . $firmas;
-	//$pdf->writeHTML($magg, true, false, true, false, '');
+	$pdf->writeHTML($magg, true, false, true, false, '');
 endif; // If de seguimiento
 
 // ================================================== Aqui comienza la pagina 3 ===================================
 
-//$pdf->AddPage('P', 'LETTER');
+$pdf->AddPage('P', 'LETTER');
 
 
 // ================== Obtenemos las evidencias ==================
@@ -703,8 +708,8 @@ $html = '
   <tbody>
     <tr>
       <td style="width: 15%" rowspan="3"><img src="images/logo_metepec.jpg" height="70"/></td>
-      <td style="width: 67%; text-align: center"><br><br>Reporte de Evidencias correspondiente al '. $trimestreNombre.'</td>
-      <td style="width: 18%;text-align: center " rowspan="3"> <img src="../../../'.$logos['path_logo_administracion'].'" width="100px"/></td>
+      <td style="width: 67%; text-align: center"><br><br>Reporte de Evidencias correspondiente al ' . $trimestreNombre . '</td>
+      <td style="width: 18%;text-align: center " rowspan="3"> <img src="images/metepec_logoc.jpg"/></td>
     </tr>
   </tbody>
 </table>
@@ -765,7 +770,7 @@ $html = '
 ';
 
 
-//$pdf->writeHTML($html, true, false, true, false, '');
+$pdf->writeHTML($html, true, false, true, false, '');
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -777,7 +782,7 @@ $nombrecito = substr($dependencia['nombre_area'], 0, 12);
 //Close and output PDF document
 
 //$pdf->Output($nombrecito. "_" .$dependencia['clave_dependencia'] . "-" . $dependencia['clave_dependencia_auxiliar'] . "-" . $dependencia['codigo_proyecto'] . "_". $trimestre .' trimestre.pdf', 'D');
-$pdf->Output($nombrecito . "_" . $dependencia['clave_dependencia'] . "-" . $dependencia['clave_dependencia_auxiliar'] . "-" . $dependencia['codigo_proyecto'] . "_" . $trimestre . ' trimestre.pdf', 'D');
+$pdf->Output($nombrecito . "_" . $dependencia['clave_dependencia'] . "-" . $dependencia['clave_dependencia_auxiliar'] . "-" . $dependencia['codigo_proyecto'] . "_" . $trimestre . ' trimestre.pdf', 'I');
 //============================================================+
 // END OF FILE
 //============================================================+

@@ -1,5 +1,5 @@
 <?php
-if(!$_SESSION['sistema'] == "pbrm"){
+if(!isset($_SESSION['sistema']) == "pbrm"){
     ?>
     <script>
         window.location.href = 'login.php';
@@ -44,12 +44,12 @@ function DefineEstatusProyecto($ajustes){
 
     if(date('m') >= $anteInicio[1] && date('m') <= $anteFin[1]){
         if(date('d') >= $anteInicio[0] && date('d') <= $anteFin[0]){
-            return "Anteproyecto " . $_SESSION['anio'] + 1;
+            return "Anteproyecto " . ($_SESSION['anio'] + 1);
         }
     }
     if(date('m') >= $proyectoInicio[1] && date('m') <= $proyectoFin[1]){
         if(date('d') >= $proyectoInicio[0] && date('d') <= $proyectoFin[0]){
-            return "Proyecto " . $_SESSION['anio'] + 1;
+            return "Proyecto " . ($_SESSION['anio'] + 1);
         }
     }
 
