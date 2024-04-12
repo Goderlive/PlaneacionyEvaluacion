@@ -7,7 +7,7 @@ session_start();
 <?php include 'header.php';
 require_once 'Controllers/ReporteController.php'; ?>
 <?php include 'Controllers/breadcrumbs.php';?>
-<?php if($permisos['nivel'] == 4 || $permisos['nivel'] == 5){?>
+<?php if($_SESSION['nivel'] == 4 || $_SESSION['nivel'] == 5){?>
 
 <body>
     <br>

@@ -18,29 +18,16 @@ require_once 'models/conection.php';
 
 <?php 
 
-require_once 'sources/phpqrcode/qrlib.php'; // Asegúrate de ajustar la ruta
+$sentencia = "Organización e imparticion de actividades de sensibilización y fomento de valores
+para promover la integración social. (9.1.2) (9.1.3)";
 
-$param = $_GET['id']; // remember to sanitize that - it is user input!
-    
-// we need to be sure ours script does not output anything!!!
-// otherwise it will break up PNG binary!
-
-ob_start("callback");
-
-// here DB request or some processing
-$codeText = 'DEMO - '.$param;
-
-// end of processing here
-$debugLog = ob_get_contents();
-ob_end_clean();
-
-// outputs image directly into browser, as PNG stream
-QRcode::png($codeText);
+$sentencia = "Supervision a las sesiones ordinarias, extraordinarias y plenarias con Delegados";
 
 
 
 
 
+print strlen($sentencia);
 
 ?>
 

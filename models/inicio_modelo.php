@@ -30,10 +30,7 @@ function traeinconsistencias($con){
 }
 
 function traeinconsistenciasi($con){
-    $stm = $con->query("SELECT id, trimestre, COUNT(*) as cantidad
-    FROM avances_indicadores
-    GROUP BY id, trimestre,
-    HAVING COUNT(*) > 1");
+    $stm = $con->query("SELECT id_avance, id_indicador, trimestre, COUNT(*) as cantidad FROM avances_indicadores GROUP BY id_indicador, trimestre HAVING COUNT(*) > 1");
     $inconsistencias = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $inconsistencias;
 }
