@@ -8,9 +8,6 @@ $id_dependencia = $_POST['id_dependencia'];
 $trimestre = $_POST['trimestre'];
 $num_trimestre = QueTrimestreEs($trimestre);
 
-print '<pre>';
-var_dump($_POST);
-die();
 // Include the main TCPDF library (search for installation path).
 require_once('tcpdf_include.php');
 require_once '../../../models/conection.php';
@@ -78,6 +75,11 @@ $indicadores = $stm->fetchAll(PDO::FETCH_ASSOC);  //
 // ******************************************  Area de Titulares ****************************************** 
 $stm = $con->query("SELECT * FROM titulares WHERE id_dependencia = $id_dependencia");
 $titular_dependencia = $stm->fetch(PDO::FETCH_ASSOC);
+
+
+$anio = $_SESSION['anio'];
+$stm = $con->query("SELECT * FROM setings WHERE year_report = $anio");
+$setings = $stm->fetch(PDO::FETCH_ASSOC);
 
 
 $stm = $con->query("SELECT * FROM setings a
@@ -183,12 +185,14 @@ foreach ($indicadores as $indica) : // Aqui deberia comenzar el foreach ////////
 		$metaAnual_b = intval($indica['bt1']);
 	}
 
+	print "../../../".$setings['path_logo_ayuntamiento'];
+
 
 	$membretes = '
 	<table class="GeneratedTable" style="width: 100%;">
 	<tbody>
 		<tr>
-		<td style="width: 15%"><img src="images/logo_metepec.jpg" height="50"/></td>
+		<td style="width: 15%"><img src="../../../'.$setings['path_logo_ayuntamiento'].'" height="50"/></td>
 		<td style="width: 67%; text-align: center">&nbsp; <br>&nbsp; <br>Presupuesto Basado en Resultados Municipal</td>
 		<td style="width: 18%;text-align: center "><img src="images/metepec_logoc.jpg" height="50px"/></td>
 		</tr>
@@ -253,7 +257,7 @@ foreach ($indicadores as $indica) : // Aqui deberia comenzar el foreach ////////
 		</tr>
 		<tr>
 			<td style="width:18%; text-align: left; font-size: 8px">NOMBRE DEL INDICADOR</td>
-			<td style="width:82%; text-align: left; font-size: 8px">' . $indica['nombre_indicador'] . '</td>
+			<td style="width:82%; text-align: left; font-size: 8px">' . $indica['nombre'] . '</td>
 		</tr>
 		<tr>
 			<td style="width:18%; text-align: left; font-size: 8px">FORMULA DE CALCULO:</td>
@@ -267,7 +271,7 @@ foreach ($indicadores as $indica) : // Aqui deberia comenzar el foreach ////////
 			<td style="width:18%; text-align: left; font-size: 8px">DIMENCION QUE ATIENDE:</td>
 			<td style="width:32%; text-align: left; font-size: 8px">' . $indica['dimension'] . '</td>
 			<td style="width:18%; text-align: left; font-size: 8px">FRECUENCIA DE MEDICION:</td>
-			<td style="width:32%; text-align: left; font-size: 8px">' . $indica['periodicidad'] . '</td>
+			<td style="width:32%; text-align: left; font-size: 8px">' . $indica['frecuencia'] . '</td>
 		</tr>
 		<tr>
 			<td style="width:18%; text-align: left; font-size: 8px">FACTOR DE COMPARACION:</td>
