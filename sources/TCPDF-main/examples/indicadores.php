@@ -177,15 +177,22 @@ foreach ($indicadores as $indica) : // Aqui deberia comenzar el foreach ////////
 	if ($indica['tipo_op_a'] == 'Sumable') {
 		$metaAnual_a = intval($indica['at1']) + intval($indica['at2']) + intval($indica['at3']) + intval($indica['at4']);
 	} else {
-		$metaAnual_a = intval($indica['at1']);
+		$metaAnual_a = intval($indica['at4']);
 	}
 	if ($indica['tipo_op_b'] == 'Sumable') {
 		$metaAnual_b = intval($indica['bt1']) + intval($indica['bt2']) + intval($indica['bt3']) + intval($indica['bt4']);
 	} else {
-		$metaAnual_b = intval($indica['bt1']);
+		if($indica['bt4'] != 0){
+			$metaAnual_b = intval($indica['bt4']);
+		}elseif($indica['bt1'] != 0){
+			$metaAnual_b = intval($indica['bt1']);
+		}elseif($indica['bt2'] != 0){
+			$metaAnual_b = intval($indica['bt2']);
+		}elseif($indica['bt3'] != 0){
+			$metaAnual_b = intval($indica['bt3']);
+		}
 	}
 
-	print "../../../".$setings['path_logo_ayuntamiento'];
 
 
 	$membretes = '
@@ -194,7 +201,7 @@ foreach ($indicadores as $indica) : // Aqui deberia comenzar el foreach ////////
 		<tr>
 		<td style="width: 15%"><img src="../../../'.$setings['path_logo_ayuntamiento'].'" height="50"/></td>
 		<td style="width: 67%; text-align: center">&nbsp; <br>&nbsp; <br>Presupuesto Basado en Resultados Municipal</td>
-		<td style="width: 18%;text-align: center "><img src="images/metepec_logoc.jpg" height="50px"/></td>
+		<td style="width: 18%;text-align: center "><img src="../../../'.$setings['path_logo_administracion'].'" height="50px"/></td>
 		</tr>
 	</tbody>
 	</table>
@@ -204,8 +211,8 @@ foreach ($indicadores as $indica) : // Aqui deberia comenzar el foreach ////////
 	<table class="GeneratedTable" style="width: 100%; padding: 2px;">
 	<tbody>
 		<tr>
-		<td style="width:20%; text-align: center; border:1px solid gray; font-size: 8px">ENTE PUBLICO: METEPEC</td>
-		<td style="width:10%; text-align: left; border:1px solid gray; font-size: 8px">No.: 103</td>
+		<td style="width:20%; text-align: center; border:1px solid gray; font-size: 8px">ENTE PUBLICO: '.$setings['nombre_ente'].'</td>
+		<td style="width:10%; text-align: left; border:1px solid gray; font-size: 8px">No.: '.$setings['numero_ente'].'</td>
 		<td style="width:40%; text-align: center; border:1px solid gray; font-size: 8px">' . $indica['nombre_dependencia'] . '</td>
 		<td style="width:10%; text-align: rigth; border:1px solid gray; font-size: 8px">Trimestre :</td>
 		<td style="width:20%; text-align: left; border:1px solid gray; font-size: 8px">' . $trimestreNombre . '</td>
@@ -390,7 +397,7 @@ foreach ($indicadores as $indica) : // Aqui deberia comenzar el foreach ////////
 		$eficienciatrimetral = "N/A";
 	}
 
-	if (($eficienciatrimetral > 90) && ($eficienciatrimetral < 110) || $eficienciatrimetral == "N/A") {
+	if (($eficienciatrimetral > 89) && ($eficienciatrimetral < 111) || $eficienciatrimetral == "N/A") {
 		$color = "color:green;";
 		$semaforotrimestral = "Aceptable";
 	} else {

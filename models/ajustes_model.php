@@ -38,12 +38,12 @@ if ($_POST) {
         header("Location: ../login.php");
         die();
     }
-
+    $anio = $_SESSION['anio'];
 
     if (isset($_POST['nombre_municipio']) && isset($_POST['numero_municipio'])) {
         $nombre = $_POST['nombre_municipio'];
         $numero = $_POST['numero_municipio'];
-        $sql = "UPDATE setings SET nombre_ente = '$nombre', numero_ente = '$numero' WHERE id_setings =1";
+        $sql = "UPDATE setings SET nombre_ente = '$nombre', numero_ente = '$numero' WHERE year_report = $anio";
         $sqlr = $con->prepare($sql);
         $sqlr->execute();
     }
@@ -52,10 +52,10 @@ if ($_POST) {
     if (isset($_POST['agregar'])) {
         if (isset($_POST['id_uippe']) && $_POST['id_uippe']) {
             $id_uippe = $_POST['id_uippe'];
-            $sql = "UPDATE setings SET id_uippe = $id_uippe WHERE id_setings =1";
+            $sql = "UPDATE setings SET id_uippe = $id_uippe WHERE year_report = $anio";
         } elseif (isset($_POST['id_teso']) && $_POST['id_teso']) {
             $id_tesoreria = $_POST['id_teso'];
-            $sql = "UPDATE setings SET id_tesoreria = $id_tesoreria WHERE id_setings =1";
+            $sql = "UPDATE setings SET id_tesoreria = $id_tesoreria WHERE year_report = $anio";
         }
         $sqlr = $con->prepare($sql);
         $sqlr->execute();
@@ -66,10 +66,10 @@ if ($_POST) {
     if (isset($_POST['delete'])) {
         if (isset($_POST['uippe']) && $_POST['uippe']) {
             $id_uippe = $_POST['id_uippe'];
-            $sql = "UPDATE setings SET id_uippe = NULL";
+            $sql = "UPDATE setings SET id_uippe = NULL WHERE year_report = $anio";
         } elseif (isset($_POST['teso']) && $_POST['teso']) {
             $id_tesoreria = $_POST['id_teso'];
-            $sql = "UPDATE setings SET id_tesoreria = NULL";
+            $sql = "UPDATE setings SET id_tesoreria = NULL WHERE year_report = $anio";
         }
         $sqlr = $con->prepare($sql);
         $sqlr->execute();
@@ -78,19 +78,19 @@ if ($_POST) {
 
     if (isset($_POST['anteproyecto'])) {
         $text = armaFechas($_POST["dia1"], $_POST["mes1"], $_POST["dia2"], $_POST["mes2"]);
-        $sql = "UPDATE setings SET anteproyectoFechas = '$text'";
+        $sql = "UPDATE setings SET anteproyectoFechas = '$text' WHERE year_report = $anio";
         $sqlr = $con->prepare($sql);
         $sqlr->execute();
     }
     if (isset($_POST['proyecto'])) {
         $text = armaFechas($_POST["dia1"], $_POST["mes1"], $_POST["dia2"], $_POST["mes2"]);
-        $sql = "UPDATE setings SET proyectoFechas = '$text'";
+        $sql = "UPDATE setings SET proyectoFechas = '$text' WHERE year_report = $anio";
         $sqlr = $con->prepare($sql);
         $sqlr->execute();
     }
     if (isset($_POST['programa'])) {
         $text = armaFechas($_POST["dia1"], $_POST["mes1"], $_POST["dia2"], $_POST["mes2"]);
-        $sql = "UPDATE setings SET programaAFechas = '$text'";
+        $sql = "UPDATE setings SET programaAFechas = '$text' WHERE year_report = $anio";
         $sqlr = $con->prepare($sql);
         $sqlr->execute();
     }
@@ -118,9 +118,9 @@ if ($_POST) {
                 $idRegistro = 1; // Reemplaza con el ID del registro que deseas actualizar
                 $rutaImagenDB = 'img/' . $_FILES['imagen_principal']['name'];
 
-                $consulta = $con->prepare("UPDATE setings SET path_logo_login = :ruta WHERE id_setings = :id");
+                $consulta = $con->prepare("UPDATE setings SET path_logo_login = :ruta WHERE year_report = :anio");
                 $consulta->bindParam(':ruta', $rutaImagenDB);
-                $consulta->bindParam(':id', $idRegistro);
+                $consulta->bindParam(':anio', $anio);
                 $consulta->execute();
 
                 echo 'Imagen subida y registro actualizado correctamente.';
@@ -156,9 +156,9 @@ if ($_POST) {
                 $idRegistro = 1; // Reemplaza con el ID del registro que deseas actualizar
                 $rutaImagenDB = 'img/' . $_FILES['escudo_municipio']['name'];
 
-                $consulta = $con->prepare("UPDATE setings SET path_logo_ayuntamiento = :ruta WHERE id_setings = :id");
+                $consulta = $con->prepare("UPDATE setings SET path_logo_ayuntamiento = :ruta WHERE year_report = :anio");
                 $consulta->bindParam(':ruta', $rutaImagenDB);
-                $consulta->bindParam(':id', $idRegistro);
+                $consulta->bindParam(':anio', $anio);
                 $consulta->execute();
 
                 echo 'Imagen subida y registro actualizado correctamente.';
@@ -194,9 +194,9 @@ if ($_POST) {
                 $idRegistro = 1; // Reemplaza con el ID del registro que deseas actualizar
                 $rutaImagenDB = 'img/' . $_FILES['path_logo_administracion']['name'];
 
-                $consulta = $con->prepare("UPDATE setings SET path_logo_administracion = :ruta WHERE id_setings = :id");
+                $consulta = $con->prepare("UPDATE setings SET path_logo_administracion = :ruta WHERE year_report = :anio");
                 $consulta->bindParam(':ruta', $rutaImagenDB);
-                $consulta->bindParam(':id', $idRegistro);
+                $consulta->bindParam(':anio', $anio);
                 $consulta->execute();
 
                 echo 'Imagen subida y registro actualizado correctamente.';

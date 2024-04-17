@@ -193,9 +193,17 @@ function calcularPorcentaje($numerador, $denominador)
 }
 
 $total_actividades = 0;
+$total_dependencia_i = (strlen($dependencia['nombre_dependencia_general']) > 80) ? 2 : ((strlen($dependencia['nombre_dependencia_general']) > 40) ? 1 : 0);
+$total_actividades += $total_dependencia_i;
+
+$total_dependencia_ai = (strlen($dependencia['nombre_dependencia_auxiliar']) > 80) ? 2 : ((strlen($dependencia['nombre_dependencia_auxiliar']) > 40) ? 1 : 0);
+$total_actividades += $total_dependencia_ai;
+
 foreach ($actividades as $actividad) {
+
 	$total_actividades_i = (strlen($actividad['nombre_actividad']) > 160) ? 3 : ((strlen($actividad['nombre_actividad']) > 80) ? 2 : 1);
 	$total_actividades += $total_actividades_i;
+
 	$sumaAnual = Sumador($actividad, 0);
 	$metaTrimestral = Sumador($actividad, $trimestre);
 	$alcanzadoTrimestre = BuscaAvances($con, $actividad['id_actividad'], $trimestre);

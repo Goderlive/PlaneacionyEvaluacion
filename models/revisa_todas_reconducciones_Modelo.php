@@ -5,8 +5,9 @@ require_once 'conection.php';
 function Traelasreconducciones($con){
     $stm = $con->query("SELECT * FROM reconducciones_atividades ra
     LEFT JOIN areas ar ON ar.id_area = ra.id_area
+    LEFT JOIN proyectos pr ON pr. id_proyecto = ar.id_proyecto
     LEFT JOIN dependencias dp ON dp.id_dependencia = ar.id_dependencia
-    WHERE ra.validado = 1  AND ra.id_reconduccion_actividades > 267
+    WHERE ra.validado = 1  AND ra.id_reconduccion_actividades > 325
     ");
     $reconducciones = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $reconducciones;
@@ -83,7 +84,7 @@ function DefineTipo($con, $pInicial, $pFinal){
 
 function EncabezadoMeses(){
     $data = "";
-    $meses = array("1er T", "2do T", "3er T", "4to T");
+    $meses = array("enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");
     foreach ($meses as $mes):
         $data .= '<th scope="col" class="py-3 px-6 bg-gray-50 dark:bg-gray-800">
             '. $mes .'
@@ -97,18 +98,19 @@ function EncabezadoMeses(){
 function Programacion($dataIN){
     $dataINa = LimpiaProgramaciones($dataIN);
 
-    $primer = $dataINa[0] + $dataINa[1] + $dataINa[2];
-    $segun = $dataINa[3] + $dataINa[4] + $dataINa[5];
-    $tercer = $dataINa[6] + $dataINa[7] + $dataINa[8];
-    $cuarto = $dataINa[9] + $dataINa[10] + $dataINa[11];
-    $data = '
-        <td class="py-2 px-2"> '.$primer.' </td>
-        <td class="py-2 px-2"> '.$segun.' </td>
-        <td class="py-2 px-2"> '.$tercer.' </td>
-        <td class="py-2 px-2"> '.$cuarto.' </td>
-        
-        ';
-    return $data;
+    return '
+    <td class="py-2 px-2"> '. $dataINa[0] . ' </td>
+    <td class="py-2 px-2"> '. $dataINa[1] . ' </td>
+    <td class="py-2 px-2"> '. $dataINa[2] . ' </td>
+    <td class="py-2 px-2"> '. $dataINa[3] . ' </td>
+    <td class="py-2 px-2"> '. $dataINa[4] . ' </td>
+    <td class="py-2 px-2"> '. $dataINa[5] . ' </td>
+    <td class="py-2 px-2"> '. $dataINa[6] . ' </td>
+    <td class="py-2 px-2"> '. $dataINa[7] . ' </td>
+    <td class="py-2 px-2"> '. $dataINa[8] . ' </td>
+    <td class="py-2 px-2"> '. $dataINa[9] . ' </td>
+    <td class="py-2 px-2"> '. $dataINa[10] . ' </td>
+    <td class="py-2 px-2"> '. $dataINa[11] . ' </td>';
 }
 
 

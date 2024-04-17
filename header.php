@@ -12,7 +12,7 @@ require_once 'models/inicio_modelo.php';
 $permisos = getPermisos($con, $_SESSION);
 $mi_permiso = $_SESSION['nivel'];
 $aniosiguiente = intval(date('Y')+1);
-$ajustes = traeAjustes($con);
+$ajustes = traeAjustes($con, $_SESSION['anio']);
 
 // Aqui estan las variables de los Menus
 $actual = $_SERVER['PHP_SELF'];
