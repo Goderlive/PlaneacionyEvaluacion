@@ -50,7 +50,7 @@ if (isset($_SESSION) && isset($_SESSION['sistema']) && $_SESSION['sistema'] == "
                                 <thead class="text-xs text-gray-700 uppercase dark:text-gray-400 ' . $bg_table. '">
                                     <tr>
                                         <td scope="col" colspan="12" class="py-2 px-2 bg-gray-50 dark:bg-gray-800">
-                                            <?= $dataActividad['codigo_actividad'] . " - " . $dataActividad['nombre_actividad'] . " - " . $dataActividad['unidad'] ?>
+                                            <?= $dataActividad['codigo_actividad'] . " - " . $dataActividad['nombre_actividad'] . " - " . $dataActividad['nombre_unidad'] ?>
                                         </td>
                                     </tr>
                                     <tr>

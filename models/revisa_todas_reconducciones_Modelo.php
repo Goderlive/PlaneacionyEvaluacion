@@ -21,7 +21,9 @@ function CalendarizacionesdeReconduccionAct($con, $id_reconduccion){
 }
 
 function datosdeActividad($con, $id_actividad){
-    $stm = $con->query("SELECT * FROM actividades WHERE id_actividad = $id_actividad");
+    $stm = $con->query("SELECT * FROM actividades a 
+    LEFT JOIN unidades_medida u ON u.id_unidad = a.id_unidad 
+    WHERE a.id_actividad = $id_actividad");
     $dataActividad = $stm->fetch(PDO::FETCH_ASSOC);
     return $dataActividad;
 }
