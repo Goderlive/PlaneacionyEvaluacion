@@ -68,9 +68,9 @@ $membretes = '
 <table class="GeneratedTable" style="width: 100%;">
   <tbody>
     <tr>
-      <td style="width: 15%" rowspan="3"><img src="images/logo_metepec.jpg" height="50"/></td>
+      <td style="width: 15%" rowspan="3"><img src="../../../'.$logos['path_logo_ayuntamiento'].'" height="50"/></td>
       <td style="width: 67%; text-align: center">SISTEMA DE COORDINACIÓN HACENDARIA DEL ESTADO DE MÉXICO CON SUS MUNICIPIOS<br>FORMATO DE RECONDUCCIÓN DE INDICADORES ESTRATÉGICOS Y/O DE GESTIÓN </td>
-      <td style="width: 18%;text-align: center " rowspan="3"><img src="images/metepec_logoc.jpg" height="50"/></td>
+      <td style="width: 18%;text-align: center " rowspan="3"><img src="../../../'.$logos['path_logo_administracion'].'" height="50"/></td>
     </tr>
   </tbody>
 </table>

@@ -92,9 +92,9 @@ $html0 = '
 <table style="width:100%;">
     <tbody>
         <tr>
-            <td style="width:15%; text-align: center;" rowspan="3"><img src="images/logo_metepec.jpg" style="width: 60px;" class="img-fluid" alt="" align="left"></td>    
+            <td style="width:15%; text-align: center;" rowspan="3"><img src="../../../'.$logos['path_logo_ayuntamiento'].'" style="width: 60px;" class="img-fluid" alt="" align="left"></td>    
             <td style="width:70%; text-align: center; font-size: 12px">Sistema de Coordinación Hacendaria del Estado de México con sus Municipios</td>
-            <td style="width:15%; text-align: center;" rowspan="3"> <img src="images/metepec_logoc.jpg" class="img-fluid" alt="" align="right"></td>
+            <td style="width:15%; text-align: center;" rowspan="3"> <img src="../../../'.$logos['path_logo_administracion'].'" alt="" align="right"></td>
         </tr>
         <tr>
             <td style="text-align: center; font-size: 12px"> Manual para la Planeación, Programación y Presupuesto de Egresos Municipal 2024</td>
@@ -119,8 +119,8 @@ $html1= '
             <td>
                 <table>
                     <tr>
-                        <td style="width:60%; text-align: center; border:1px solid gray; font-size: 8px">&nbsp; ENTE PUBLICO: METEPEC</td>
-                        <td style="width:40%; text-align: center; border:1px solid gray; font-size: 8px">No.: 0103</td>
+                        <td style="width:60%; text-align: center; border:1px solid gray; font-size: 8px">&nbsp; ENTE PUBLICO: ////</td>
+                        <td style="width:40%; text-align: center; border:1px solid gray; font-size: 8px">No.: ////</td>
                     </tr>
                     <tr>
                         <td style="width:30%; text-align: center; border:1px solid gray; font-size: 8px">PbRM-01d</td> 
