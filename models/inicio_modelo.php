@@ -4,8 +4,8 @@ use FontLib\Table\Type\post;
 
 require_once 'conection.php';
 
-function traeAjustes($con){
-    $stm = $con->query("SELECT * FROM setings");
+function traeAjustes($con, $anio){
+    $stm = $con->query("SELECT * FROM setings WHERE year_report = $anio");
     $ajustes = $stm->fetch(PDO::FETCH_ASSOC);
     return $ajustes;
 }

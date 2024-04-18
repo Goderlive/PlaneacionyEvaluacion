@@ -6,7 +6,6 @@ if ($_SESSION['sistema'] == "pbrm") :
     require_once 'Controllers/ajustes_controller.php';
     include 'Controllers/breadcrumbs.php';
 
-    $ajustes = TraeAjustes($con);
     if ($permisos['nivel'] > 3) {
         header("Location: ../index.php");
     }

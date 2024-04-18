@@ -29,7 +29,7 @@ if (isset($_SESSION) && isset($_SESSION['sistema']) && $_SESSION['sistema'] == "
                 <div role="status" class=" rounded border border-gray-200 shadow md:p-6 dark:border-gray-700">
                     <div class=" justify-center bg-blue-100 rounded dark:bg-blue-100">
                         <h5 class="text-xl font-medium text-gray-900 dark:text-white"> <?= $r['nombre_dependencia'] ?></h5>
-                        <p><?= "Oficio: " . $r['no_oficio'] . " <br>Dep. Gen: " . $r['dep_general'] . " -- Dep. Aux: " . $r['dep_aux'] . " -- Programa: " . $r['programa'] ?></p>
+                        <p><?= "Oficio: " . $r['no_oficio'] . " <br>Dep. Gen: " . $r['dep_general'] . " -- Dep. Aux: " . $r['dep_aux'] . " -- Proyecto: " . $r['codigo_proyecto'] ?></p>
                         <?= $r['fecha'] ?>
                         <?= "id: " . $r['id_reconduccion_actividades'] ?>
                     </div>
@@ -50,7 +50,7 @@ if (isset($_SESSION) && isset($_SESSION['sistema']) && $_SESSION['sistema'] == "
                                 <thead class="text-xs text-gray-700 uppercase dark:text-gray-400 ' . $bg_table. '">
                                     <tr>
                                         <td scope="col" colspan="12" class="py-2 px-2 bg-gray-50 dark:bg-gray-800">
-                                            <?= $dataActividad['codigo_actividad'] . " - " . $dataActividad['nombre_actividad'] . " - " . $dataActividad['unidad'] ?>
+                                            <?= $dataActividad['codigo_actividad'] . " - " . $dataActividad['nombre_actividad'] . " - " . $dataActividad['nombre_unidad'] ?>
                                         </td>
                                     </tr>
                                     <tr>
@@ -66,6 +66,9 @@ if (isset($_SESSION) && isset($_SESSION['sistema']) && $_SESSION['sistema'] == "
                                     </tr>
                                     <tr class="border-b border-gray-200 dark:border-gray-700">
                                         <?= Programacion($programacion['programacion_final']) ?>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="12"><?= $programacion['justificacion'] ?></td>
                                     </tr>
                                 </tbody>
                             </table>

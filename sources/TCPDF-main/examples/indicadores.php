@@ -77,6 +77,11 @@ $stm = $con->query("SELECT * FROM titulares WHERE id_dependencia = $id_dependenc
 $titular_dependencia = $stm->fetch(PDO::FETCH_ASSOC);
 
 
+$anio = $_SESSION['anio'];
+$stm = $con->query("SELECT * FROM setings WHERE year_report = $anio");
+$setings = $stm->fetch(PDO::FETCH_ASSOC);
+
+
 $stm = $con->query("SELECT * FROM setings a
 JOIN titulares t ON t.id_titular = a.id_uippe");
 $Director_gobierno_por_resultados = $stm->fetch(PDO::FETCH_ASSOC);
@@ -172,22 +177,31 @@ foreach ($indicadores as $indica) : // Aqui deberia comenzar el foreach ////////
 	if ($indica['tipo_op_a'] == 'Sumable') {
 		$metaAnual_a = intval($indica['at1']) + intval($indica['at2']) + intval($indica['at3']) + intval($indica['at4']);
 	} else {
-		$metaAnual_a = intval($indica['at1']);
+		$metaAnual_a = intval($indica['at4']);
 	}
 	if ($indica['tipo_op_b'] == 'Sumable') {
 		$metaAnual_b = intval($indica['bt1']) + intval($indica['bt2']) + intval($indica['bt3']) + intval($indica['bt4']);
 	} else {
-		$metaAnual_b = intval($indica['bt1']);
+		if($indica['bt4'] != 0){
+			$metaAnual_b = intval($indica['bt4']);
+		}elseif($indica['bt1'] != 0){
+			$metaAnual_b = intval($indica['bt1']);
+		}elseif($indica['bt2'] != 0){
+			$metaAnual_b = intval($indica['bt2']);
+		}elseif($indica['bt3'] != 0){
+			$metaAnual_b = intval($indica['bt3']);
+		}
 	}
+
 
 
 	$membretes = '
 	<table class="GeneratedTable" style="width: 100%;">
 	<tbody>
 		<tr>
-		<td style="width: 15%"><img src="images/logo_metepec.jpg" height="50"/></td>
+		<td style="width: 15%"><img src="../../../'.$setings['path_logo_ayuntamiento'].'" height="50"/></td>
 		<td style="width: 67%; text-align: center">&nbsp; <br>&nbsp; <br>Presupuesto Basado en Resultados Municipal</td>
-		<td style="width: 18%;text-align: center "><img src="images/metepec_logoc.jpg" height="50px"/></td>
+		<td style="width: 18%;text-align: center "><img src="../../../'.$setings['path_logo_administracion'].'" height="50px"/></td>
 		</tr>
 	</tbody>
 	</table>
@@ -197,8 +211,8 @@ foreach ($indicadores as $indica) : // Aqui deberia comenzar el foreach ////////
 	<table class="GeneratedTable" style="width: 100%; padding: 2px;">
 	<tbody>
 		<tr>
-		<td style="width:20%; text-align: center; border:1px solid gray; font-size: 8px">ENTE PUBLICO: METEPEC</td>
-		<td style="width:10%; text-align: left; border:1px solid gray; font-size: 8px">No.: 103</td>
+		<td style="width:20%; text-align: center; border:1px solid gray; font-size: 8px">ENTE PUBLICO: '.$setings['nombre_ente'].'</td>
+		<td style="width:10%; text-align: left; border:1px solid gray; font-size: 8px">No.: '.$setings['numero_ente'].'</td>
 		<td style="width:40%; text-align: center; border:1px solid gray; font-size: 8px">' . $indica['nombre_dependencia'] . '</td>
 		<td style="width:10%; text-align: rigth; border:1px solid gray; font-size: 8px">Trimestre :</td>
 		<td style="width:20%; text-align: left; border:1px solid gray; font-size: 8px">' . $trimestreNombre . '</td>
@@ -250,7 +264,7 @@ foreach ($indicadores as $indica) : // Aqui deberia comenzar el foreach ////////
 		</tr>
 		<tr>
 			<td style="width:18%; text-align: left; font-size: 8px">NOMBRE DEL INDICADOR</td>
-			<td style="width:82%; text-align: left; font-size: 8px">' . $indica['nombre_indicador'] . '</td>
+			<td style="width:82%; text-align: left; font-size: 8px">' . $indica['nombre'] . '</td>
 		</tr>
 		<tr>
 			<td style="width:18%; text-align: left; font-size: 8px">FORMULA DE CALCULO:</td>
@@ -264,7 +278,7 @@ foreach ($indicadores as $indica) : // Aqui deberia comenzar el foreach ////////
 			<td style="width:18%; text-align: left; font-size: 8px">DIMENCION QUE ATIENDE:</td>
 			<td style="width:32%; text-align: left; font-size: 8px">' . $indica['dimension'] . '</td>
 			<td style="width:18%; text-align: left; font-size: 8px">FRECUENCIA DE MEDICION:</td>
-			<td style="width:32%; text-align: left; font-size: 8px">' . $indica['periodicidad'] . '</td>
+			<td style="width:32%; text-align: left; font-size: 8px">' . $indica['frecuencia'] . '</td>
 		</tr>
 		<tr>
 			<td style="width:18%; text-align: left; font-size: 8px">FACTOR DE COMPARACION:</td>
@@ -383,7 +397,7 @@ foreach ($indicadores as $indica) : // Aqui deberia comenzar el foreach ////////
 		$eficienciatrimetral = "N/A";
 	}
 
-	if (($eficienciatrimetral > 90) && ($eficienciatrimetral < 110) || $eficienciatrimetral == "N/A") {
+	if (($eficienciatrimetral > 89) && ($eficienciatrimetral < 111) || $eficienciatrimetral == "N/A") {
 		$color = "color:green;";
 		$semaforotrimestral = "Aceptable";
 	} else {
