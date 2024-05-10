@@ -59,7 +59,7 @@ if ($_POST) {
         }
         $sqlr = $con->prepare($sql);
         $sqlr->execute();
-        header("Location: ../ajustes.php");
+        header("Location: ajustes.php");
     }
 
 
@@ -67,13 +67,12 @@ if ($_POST) {
         if (isset($_POST['uippe']) && $_POST['uippe']) {
             $id_uippe = $_POST['id_uippe'];
             $sql = "UPDATE setings SET id_uippe = NULL WHERE year_report = $anio";
-        } elseif (isset($_POST['teso']) && $_POST['teso']) {
+        } elseif (isset($_POST['id_teso']) && $_POST['id_teso']) {
             $id_tesoreria = $_POST['id_teso'];
             $sql = "UPDATE setings SET id_tesoreria = NULL WHERE year_report = $anio";
         }
         $sqlr = $con->prepare($sql);
         $sqlr->execute();
-        header("Location: ../ajustes.php");
     }
 
     if (isset($_POST['anteproyecto'])) {
