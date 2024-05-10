@@ -20,6 +20,11 @@ function CalendarizacionesdeReconduccionAct($con, $id_reconduccion){
     return $programacion_nueva;
 }
 
+function traeReconduccionesIndicadores($con){
+    $stm = $con->query("SELECT * FROM reconducciones_indicadores WHERE id_reconduccion_indicadores > 96");
+    $dataActividad = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $dataActividad;
+}
 function datosdeActividad($con, $id_actividad){
     $stm = $con->query("SELECT * FROM actividades a 
     LEFT JOIN unidades_medida u ON u.id_unidad = a.id_unidad 
@@ -86,7 +91,7 @@ function DefineTipo($con, $pInicial, $pFinal){
 
 function EncabezadoMeses(){
     $data = "";
-    $meses = array("enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");
+    $meses = array("enero", "Febrero", "Marzo", "1er Trimestre", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" , "Anual");
     foreach ($meses as $mes):
         $data .= '<th scope="col" class="py-3 px-6 bg-gray-50 dark:bg-gray-800">
             '. $mes .'
@@ -99,11 +104,13 @@ function EncabezadoMeses(){
 
 function Programacion($dataIN){
     $dataINa = LimpiaProgramaciones($dataIN);
-
+    $trim1 = $dataINa[0]+ $dataINa[1]+ $dataINa[2];
+    $total = $dataINa[0]+ $dataINa[1]+ $dataINa[2]+ $dataINa[3]+ $dataINa[4]+ $dataINa[5]+ $dataINa[6]+ $dataINa[7]+ $dataINa[8]+ $dataINa[9]+ $dataINa[10]+ $dataINa[11];
     return '
     <td class="py-2 px-2"> '. $dataINa[0] . ' </td>
     <td class="py-2 px-2"> '. $dataINa[1] . ' </td>
     <td class="py-2 px-2"> '. $dataINa[2] . ' </td>
+    <td class="py-2 px-2"> '. $trim1 . ' </td>
     <td class="py-2 px-2"> '. $dataINa[3] . ' </td>
     <td class="py-2 px-2"> '. $dataINa[4] . ' </td>
     <td class="py-2 px-2"> '. $dataINa[5] . ' </td>
@@ -112,7 +119,8 @@ function Programacion($dataIN){
     <td class="py-2 px-2"> '. $dataINa[8] . ' </td>
     <td class="py-2 px-2"> '. $dataINa[9] . ' </td>
     <td class="py-2 px-2"> '. $dataINa[10] . ' </td>
-    <td class="py-2 px-2"> '. $dataINa[11] . ' </td>';
+    <td class="py-2 px-2"> '. $dataINa[11] . ' </td>
+    <td class="py-2 px-2"> '. $total . ' </td>';
 }
 
 
