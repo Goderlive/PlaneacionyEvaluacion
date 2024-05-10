@@ -468,9 +468,9 @@ if ($seguimiento) : // Condicion de cumplimiento lineas de acción.
 <table class="GeneratedTable" style="width: 100%;">
   <tbody>
     <tr>
-      <td style="width: 15%" rowspan="3"><img src="./img/pdm.png" height="70"/></td>
+      <td style="width: 15%" rowspan="3"><img src="../../../'.$logos['path_logo_ayuntamiento'].'" height="70"/></td>
       <td style="width: 67%; text-align: center"></td>
-      <td style="width: 18%;text-align: center " rowspan="3"><img src="images/metepec_logoc.jpg" width="100px"/></td>
+      <td style="width: 18%;text-align: center " rowspan="3"><img src="../../../'.$logos['path_logo_administracion'].'" width="100px"/></td>
     </tr>
     <tr>
       <td style="text-align: center"><br>Informe de Acciones y Resultados de la Ejecución del Plan de Desarrollo Municipal</td>
@@ -707,9 +707,9 @@ $html = '
 <table class="GeneratedTable" style="width: 100%;">
   <tbody>
     <tr>
-      <td style="width: 15%" rowspan="3"><img src="images/logo_metepec.jpg" height="70"/></td>
+      <td style="width: 15%" rowspan="3"><img src="../../../'.$logos['path_logo_ayuntamiento'].'" height="70"/></td>
       <td style="width: 67%; text-align: center"><br><br>Reporte de Evidencias correspondiente al ' . $trimestreNombre . '</td>
-      <td style="width: 18%;text-align: center " rowspan="3"> <img src="images/metepec_logoc.jpg"/></td>
+      <td style="width: 18%;text-align: center " rowspan="3"> <img src="../../../'.$logos['path_logo_administracion'].'"/></td>
     </tr>
   </tbody>
 </table>

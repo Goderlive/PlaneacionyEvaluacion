@@ -76,9 +76,9 @@ $pdf->AddPage();
 $html0 = '<table style="width:100%;">
     <tbody>
         <tr>
-            <td style="width:15%; text-align: center;" rowspan="3"><img src="images/logo_metepec.jpg" style="width: 60px;" class="img-fluid" alt="" align="left"></td>    
+            <td style="width:15%; text-align: center;" rowspan="3"><img src="../../../'.$logos['path_logo_ayuntamiento'].'" style="width: 60px;" class="img-fluid" alt="" align="left"></td>    
             <td style="width:70%; text-align: center; font-size: 12px">Sistema de Coordinación Hacendaria del Estado de México con sus Municipios</td>
-            <td style="width:15%; text-align: center;" rowspan="3"> <img src="images/metepec_logoc.jpg" class="img-fluid" alt="" align="right"></td>
+            <td style="width:15%; text-align: center;" rowspan="3"> <img src="../../../'.$logos['path_logo_administracion'].'" class="img-fluid" alt="" align="right"></td>
         </tr>
         <tr>
             <td style="text-align: center; font-size: 12px"> Manual para la Planeación, Programación y Presupuesto de Egresos Municipal 2024</td>

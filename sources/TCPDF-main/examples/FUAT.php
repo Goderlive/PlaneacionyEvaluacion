@@ -1,10 +1,12 @@
 <?php
+session_start();
 if(!$_POST['id_dependencia'] || !$_POST['trimestre']){
     header("Location: ../../../index.php");
 }
 require_once('tcpdf_include.php');
 require_once '../../../models/conection.php';
 
+setlocale(LC_TIME, 'es_MX.UTF-8', 'Spanish_Mexico.1252');
 
 $id_dependencia = $_POST['id_dependencia'];
 $trimestre = $_POST['trimestre'];
@@ -58,6 +60,10 @@ $sqldependencia = "SELECT * FROM dependencias WHERE id_dependencia = $id_depende
 $stmdependencia = $con->query($sqldependencia);
 $dependencia = $stmdependencia->fetch(PDO::FETCH_ASSOC);
 
+$anio = $_SESSION['anio'];
+$sql = "SELECT * FROM setings WHERE year_report = $anio";
+$stm = $con->query($sql);
+$ajustes = $stm->fetch(PDO::FETCH_ASSOC);
 
 
 function traeAvanceIndicador($con, $id_indicador, $trimestre){
@@ -192,7 +198,11 @@ foreach($areas as $ar){ //Recorremos las areas y buscamos sus actividades
     // Obtener longitud
     $cantidadDeElementos = count($actvidadesSuma);
     // Dividir, y listo
-    $promedio = $suma / $cantidadDeElementos;
+    if($cantidadDeElementos > 0){
+        $promedio = $suma / $cantidadDeElementos;
+    }else{
+        $promedio = 0;
+    }
 
 
     $promediosActividades .= '  
@@ -293,9 +303,9 @@ if($indicadores){
 $membrete = '<table style="width:100%;">
 <tbody>
     <tr>
-        <td style="width:15%; text-align: center;" rowspan="3"><img src="images/logo_metepec.jpg" style="width: 60px;" class="img-fluid" alt="" align="left"></td>    
-        <td style="width:70%; text-align: center; font-size: 12px">Sistema de Monitoreo, Tablero de Control y Seguimiento del PbRM</td>
-        <td style="width:15%; text-align: center;" rowspan="3"> <img src="images/metepec_logoc.jpg" class="img-fluid" alt="" align="right"></td>
+        <td style="width:15%; text-align: center;" rowspan="3"><img src="../../../'.$ajustes['path_logo_ayuntamiento'].'" style="width: 60px;" class="img-fluid" alt="" align="left"></td>    
+        <td style="width:70%; text-align: center; font-size: 12px">'.$ajustes['nombre_sistema'].'</td>
+        <td style="width:15%; text-align: center;" rowspan="3"> <img src="../../../'.$ajustes['path_logo_administracion'].'" class="img-fluid" alt="" align="right"></td>
     </tr>
     <tr>
         <td style="text-align: center; font-size: 12px"></td>
@@ -309,7 +319,7 @@ $membrete = '<table style="width:100%;">
 
 
 $titulos = '
-    <p style="text-align: right;">Fecha y Hora de impresión: '. date("F j, Y, g:i a") .'</p>
+    <p style="text-align: right;">Fecha y Hora de impresión: '. strftime("%B %d, %Y, %I:%M %p") .'</p>
     <p style="text-align: Left;">Dependencia: '. $dependencia['nombre_dependencia'] .' <br>Trimestre: '.$trimestre.'</p>
 ';
 

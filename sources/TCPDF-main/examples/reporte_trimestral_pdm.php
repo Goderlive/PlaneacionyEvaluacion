@@ -8,9 +8,6 @@ class MYPDF extends TCPDF {
 
 	//Page header
 	public function Header() {
-		// Logo
-		$image_file = K_PATH_IMAGES.'metepec_logoc.jpg';
-		$this->Image($image_file, 10, 10, 15, '', 'JPG', '', 'T', false, 300, '', false, false, 0, false, false, false);
 		// Set font
 		$this->setFont('helvetica', 'B', 15);
 		// Title

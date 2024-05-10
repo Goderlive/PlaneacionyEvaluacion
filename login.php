@@ -105,7 +105,7 @@ $ajustes = $stm->fetch(PDO::FETCH_ASSOC);
 					<?php endif ?>
 				</div>
 				<div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-					<h3 class="text-center">Sistema de Monitoreo, Tablero de Control y Seguimiento del PbRM <br><b>(SIMONTS)</b></h3>
+					<h3 class="text-center"> <?= $ajustes['nombre_sistema'] ?> <br><b>(SIMONTS)</b></h3>
 					<br>
 					<?php 
 					if (isset($_SESSION['error_message'])) {
