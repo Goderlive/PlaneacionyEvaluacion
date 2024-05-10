@@ -8,12 +8,14 @@ if (!(isset($_SESSION) && isset($_SESSION['sistema']) && $_SESSION['sistema'] ==
     header("Location: ../index.php");
 }
 
+$stm = $con->query("SELECT * FROM programas_presupuestarios WHERE anio = '2024'");
+$programas = $stm->fetchAll(PDO::FETCH_ASSOC);
 
 
-function uneIndicadores($indicadores_gaceta, $indicadores_osfem)
+function uneIndicadores($indicadores_gaceta, $indicadores_osfem, $programas)
 {
-
-
+    
+    print 'INSERT INTO indicadores (clave_indicador, variable_a, variable_b, corto_a, corto_b, nivel_indicador, sub_nivel, resumen, nombre, formula, frecuencia, tipo, medios_verificacion, supuestos, id_programa_presupuestario, anio) VALUES ';
 
     foreach ($indicadores_gaceta as $i) {
         $nombre_gaceta = mb_strtolower($i[8]);
@@ -21,6 +23,8 @@ function uneIndicadores($indicadores_gaceta, $indicadores_osfem)
         $programa_gaceta = mb_strtolower($i[0]);
         $programa_gaceta = rtrim($programa_gaceta, '.');
         $find = 0;
+        $porcent_actual_nombre = 90;
+        $porcent_actual_programa = 90;
         foreach ($indicadores_osfem as $o) {
             $nombre_osfem = mb_strtolower($o[3]);
             $nombre_osfem = rtrim($nombre_osfem, '.');
@@ -28,38 +32,52 @@ function uneIndicadores($indicadores_gaceta, $indicadores_osfem)
             $programa_osfem = rtrim($programa_osfem, '.');
 
             similar_text($nombre_osfem, $nombre_gaceta, $percent_nombre);
-            similar_text($programa_osfem, $programa_gaceta, $percent_programa);
-
-            // Definir un umbral de similitud, por ejemplo, 80%
-            if ($percent_nombre > 90 && $percent_programa > 90) {
+            
+            // Definir un umbral de similitud, por ejemplo, 
+            if ($percent_nombre > $porcent_actual_nombre) {
                 $find = $o;
-                break; // Rompe el bucle si encuentra una coincidencia
+                $porcent_actual_nombre = $percent_nombre;
             }
         }
 
 
-        if ($find != 0) {
+        $nombre_programa_gaceta = $i[0];
+        $percent_nombre = 80;
+        $find_nombre_programa = 0;
+        foreach($programas as $p){
+            $nombre_programas = mb_strtolower($p['nombre_programa']);
+            $nombre_programas = rtrim($nombre_programas, '.');
+
+            similar_text($nombre_programa_gaceta, $nombre_programas, $percent_nombre_actual);
+
+            if ($percent_nombre_actual > $percent_nombre) {
+                $find_nombre_programa = $p;
+                $percent_nombre = $percent_nombre_actual;
+            }
+        }
+
+        if ($find != 0 && $find_nombre_programa !=0) {
             $varA = mb_strtolower($find[6]);
             $varA = mb_strtoupper(mb_substr($varA, 0, 1)) . mb_substr($varA, 1);
             $varB = mb_strtolower($find[7]);
             $varB = mb_strtoupper(mb_substr($varB, 0, 1)) . mb_substr($varB, 1);
 
-            print
-                $find[2] . "|" .
-                $varA . "|" .
-                $varB . "|" .
-                $find[4] . "|" .
-                $find[5] . "|" .
-                $i[5] . "|" .
-                $i[6] . "|" .
-                $i[7] . "|" .
-                $i[8] . "|" .
-                $i[9] . "|" .
-                $i[10] . "|" .
-                $i[11] . "|" .
-                $i[12] . "|" .
-                $i[13] . "|" .
-                $i[0] . "|";
+            print '("' . 
+                $find[2] . '","' .
+                $varA . '","' .
+                $varB . '","' .
+                $find[4] . '","' .
+                $find[5] . '","' .
+                $i[5] . '","' .
+                $i[6] . '","' .
+                $i[7] . '","' .
+                $i[8] . '","' .
+                $i[9] . '","' .
+                $i[10] . '","' .
+                $i[11] . '","' .
+                $i[12] . '","' .
+                $i[13] . '",' .
+                $find_nombre_programa['id_programa'] . ',"2024"),';
             print "<br>";
         } else {
             print $i[8] . "//////////////////////////////////////////////////////<br>";
@@ -139,8 +157,8 @@ function actualizaIndicadores($con){
 
 
 
-//uneIndicadores($indicadores_gaceta, $indicadores_osfem);
-IdPrograma($con, $indicadores_totales);
+uneIndicadores($indicadores_gaceta, $indicadores_osfem, $programas);
+//IdPrograma($con, $indicadores_totales);
 //indicadores_uso($con);
 
 //actualizaIndicadores($con);
