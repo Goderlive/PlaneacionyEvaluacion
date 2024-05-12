@@ -36,8 +36,7 @@ $ajustes = $stm->fetch(PDO::FETCH_ASSOC);
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.6/flowbite.min.css" rel="stylesheet" />
 
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.0.0/mdb.min.css" rel="stylesheet" />
-	<script src="https://www.google.com/recaptcha/api.js?render=6LcZfqElAAAAADzerIJUYxVVssVh6IMposVwupF2"></script>
-	<script>
+  <script src="https://www.google.com/recaptcha/enterprise.js?render=6LfNPbUpAAAAAF6Nhssi2r0uUbjMbCcNCMX0AtYt"></script>	<script>
 		function onClick(e) {
 			e.preventDefault();
 			grecaptcha.ready(function() {
