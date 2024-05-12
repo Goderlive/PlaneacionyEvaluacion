@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION["id_usuario"] = $usuario["id_usuario"];
                 $_SESSION["sistema"] = "pbrm";
                 $_SESSION['correo_electronico'] = $usuario['correo_electronico'];
-                $_SESSION['anio'] = $usuario['anio'];
+                $_SESSION['anio'] = $anio;
                 $_SESSION['inicio_sesion'] = time();
                 $_SESSION['nivel'] = $usuario['nivel'];
                 $_SESSION['rol'] = ($usuario['rol'] ? $usuario['rol'] : NULL);

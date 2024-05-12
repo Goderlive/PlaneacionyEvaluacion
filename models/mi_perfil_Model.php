@@ -2,8 +2,8 @@
 require_once 'conection.php';
 
 
-function TraeDependencias($con){
-    $stm = $con->query("SELECT id_dependencia, nombre_dependencia FROM dependencias ORDER BY nombre_dependencia ASC");
+function TraeDependencias($con, $anio){
+    $stm = $con->query("SELECT id_dependencia, nombre_dependencia FROM dependencias WHERE anio = $anio ORDER BY nombre_dependencia ASC");
     $areas = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $areas;
 }

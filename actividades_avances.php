@@ -23,7 +23,7 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
 
 <body>
     <?php
-    if ($permisos['nivel'] != 1 && $permisos['nivel'] != 2) : ?>
+    if ($_SESSION['nivel'] != 1 && $_SESSION['nivel'] != 2) : ?>
         <script>
             window.location.href = 'index.php';
         </script>
@@ -141,10 +141,10 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
 
 
 
-        <?php if ($permisos['nivel'] == 1 || $permisos['nivel'] == 2) : // Esta es la primer condicion para los permisos que permiten validar
+        <?php if ($_SESSION['nivel'] == 1 || $_SESSION['nivel'] == 2) : // Esta es la primer condicion para los permisos que permiten validar
         ?>
             <?php if (!$_POST) : //Si no hay un post va a elistar las dependencias que nos corresponden segun el permiso
-                $dependencias = TraeDependenciasController($con, $permisos); ?>
+                $dependencias = TraeDependenciasController($con, $_SESSION); ?>
                 <div class="grid grid-cols-4">
                     <?php foreach ($dependencias as $dp) : ?>
                         <div class="items-start p-4 ml-2 mr-2 mb-4 text-center  bg-white rounded-lg border border-gray-400 shadow-md dark:bg-gray-800 dark:border-gray-700">
@@ -202,12 +202,12 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                                         <?php else : ?>
 
                                             <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-white bg-red-600 rounded-lg">
-                                                <?php $sinvalidar = SinValidar($con, $a['id_area'], date('m') - 3, $permisos) ?>
+                                                <?php $sinvalidar = SinValidar($con, $a['id_area'], date('m') - 3, $_SESSION) ?>
                                                 <?= $sinvalidar ?>
                                             </div>
                                             <br>
                                             <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-white bg-yellow-300 rounded-lg">
-                                                <?php $pendientes = PendientesSegunPermisos($con, $a['id_area'], $permisos, date('m') - 3) ?>
+                                                <?php $pendientes = PendientesSegunPermisos($con, $a['id_area'], $_SESSION, date('m') - 3) ?>
                                                 <?= $pendientes ?>
                                             </div>
                                             <br>
@@ -345,7 +345,7 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                                     </td>
                                     <td class="px-6 py-4 text-center">
                                         <?php if ($avanceMensual) {
-                                            echo Botonavance($avanceMensual, $permisos);
+                                            echo Botonavance($avanceMensual, $_SESSION);
                                         } else {
                                             print "Sin Avance";
                                         } ?>
@@ -507,7 +507,7 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                                             </tr>
                                         </table>
                                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                            <?= BotonPBRM($avanceMensual, $permisos, $m['id_area'], $el_mes) ?>
+                                            <?= BotonPBRM($avanceMensual, $_SESSION, $m['id_area'], $el_mes) ?>
                                         </table>
                                         <?php if (GetModificaciones($con, $avanceMensual['id_avance'])) : ?>
                                             <button type="submit" disabled name="valida_actividad" value="1" class="cursor-not-allowed focus:outline-none text-white bg-purple-300 hover:bg-purple-350 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">Edición Pendiente</button>

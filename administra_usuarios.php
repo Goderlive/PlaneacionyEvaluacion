@@ -352,10 +352,10 @@ $id_dependencia = $permisos['id_dependencia'];
 
                     <?php if ($permisos['nivel'] == 2 ||  $permisos['nivel'] == 1) : ?>
                         <div>
-                            <label for="small" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Direccion</label>
+                            <label for="small" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Dependencia</label>
                             <select name="id_dependencia" id="small" class="block p-2 mb-6 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected>Seleccione una Dependencia</option>
-                                <?php $dependencias = TraeDependencias($con);
+                                <?php $dependencias = TraeDependencias($con, $_SESSION['anio']);
                                 foreach ($dependencias as $dependencia) : ?>
                                     <option value="<?= $dependencia['id_dependencia'] ?>"><?= $dependencia['nombre_dependencia'] ?></option>
                                 <?php endforeach ?>

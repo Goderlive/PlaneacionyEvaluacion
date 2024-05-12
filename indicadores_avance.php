@@ -191,9 +191,9 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                                             <?= botonavances($con, $datos['id'], $trimestre); ?>
                                         </td>
                                         <td class="px-2 py-4">
-                                            <?php print $datos['at1'] + $datos['at2'] + $datos['at3'] + $datos['at4'] . "<br>" . $datos['bt1'] + $datos['bt2'] + $datos['bt3'] + $datos['bt4'];
+                                            <?php print ($datos['at1'] + $datos['at2'] + $datos['at3'] + $datos['at4']) . "<br>" . ($datos['bt1'] + $datos['bt2'] + $datos['bt3'] + $datos['bt4']);
                                             if ($datos['ct1']) {
-                                                print "<br>" . $datos['at1'] + $datos['at2'] + $datos['at3'] + $datos['at4'];
+                                                print "<br>" . ($datos['at1'] + $datos['at2'] + $datos['at3'] + $datos['at4']);
                                             }
                                             ?>
                                         </td>

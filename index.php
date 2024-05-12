@@ -3,18 +3,18 @@ session_start();
 
 if (!isset($_SESSION['id_usuario'])) {
     header("Location: login.php");
+    die();
 }else{
     $id_usuario = $_SESSION['id_usuario'];
 }
 
 if (!isset($_SESSION) || !isset($_SESSION['sistema']) || !$_SESSION['sistema'] == "pbrm") {
     header("Location: login.php");
+    die();
 }
 require_once 'Controllers/Inicio_Controlador.php';
 include 'header.php';
 include 'head.php';
-
-$id_usuario = $_SESSION['id_usuario'];
 
 $user = get_usuario($id_usuario,$con);
 ?>

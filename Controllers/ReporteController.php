@@ -241,7 +241,7 @@ function imgsmall($data){
 
 function imgmd($data){
     $img = Imagenes($data);
-    if($img){
+    if($img){   
         return '<img src="' . $img . '" alt="evidencia" style="max-width: 150px; max-height: 150px;">';
     }
 }
@@ -302,7 +302,7 @@ function ModalesEvidencias($con, $actividades, $mes){
                 $tablepdm = '';
             }
             if (isset($avance['path_evidenia_evidencia'])){
-                $imgd = imgmd($avance['path_evidenia_evidencia']);
+                $imgd = imgmd($avance['path_evidenia_evidencia_mini']);
                 $evidencia = '
                 <a target="_blank" href="'.Imagenes($avance['path_evidenia_evidencia']).'">
                 '.$imgd .'
