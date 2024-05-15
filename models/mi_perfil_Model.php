@@ -106,7 +106,7 @@ if(isset($_POST['contrasenia'])){
 }
 
 
-if(isset($_POST['registro'])){
+if(isset($_POST['registro'])){ // el registro de primera vez
     $nombre = $_POST["nombre"];    
     $apellidos = $_POST["apellidos"];    
     $email = $_POST["email"];    

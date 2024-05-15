@@ -171,6 +171,10 @@ function tieneReconduccion($con, $id_actividad){
     return $avance;
 }
 
+function cleanFileName($fileName) {
+    return preg_replace("/[^a-zA-Z0-9\.-_]/", "_", $fileName);
+}
+
 
 
 if (isset($_POST['jfnkasjnkasdf34q345']) && $_POST['jfnkasjnkasdf34q345'] == "Enviar") {
@@ -236,6 +240,10 @@ if (isset($_POST['jfnkasjnkasdf34q345']) && $_POST['jfnkasjnkasdf34q345'] == "En
                         $uno = rand(10000, 99999); // Genera un número aleatorio
                         $extension = pathinfo($_FILES['evidencia_de_evidencia']['name'], PATHINFO_EXTENSION); // Obtiene la extensión del archivo
                     
+                         // Limpia el nombre del archivo
+                         $original_name = pathinfo($_FILES['evidencia_de_evidencia']['name'], PATHINFO_FILENAME);
+                         $cleaned_name = cleanFileName($original_name);
+                         
                         // Crea un nombre de archivo seguro y único
                         $nombre_evidencia_de_evidencia = $timestamp . '_' . $uno . '.' . $extension;
                     
