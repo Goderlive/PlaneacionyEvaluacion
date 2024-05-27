@@ -1,7 +1,13 @@
 <?php
 require_once 'models/inicio_modelo.php';
 
-
+function controllerrevisaDependencias($session, $con){
+	if($session['nivel'] == 1){
+		if(revisaDependencias($con, $session['anio'])){
+			return true;
+		}
+	}
+}
 
 function verificaFuat($con, $permiso){
 	if (date('Y') != $_SESSION['anio']) {

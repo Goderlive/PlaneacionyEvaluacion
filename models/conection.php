@@ -8,7 +8,7 @@ $dbpass = '';
 
 
 // metepec.simontspbrm.com
-$conect = 'mysql:host=localhost;dbname=simontsp_metepec;charset=utf8';
+$conect = 'mysql:host=localhost;dbname=simontsp_tenango;charset=utf8';
 //$username = 'simontsp_supermetepec';
 //$dbpass = 'Stokes170390??';
 
