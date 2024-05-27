@@ -1,6 +1,18 @@
 <?php 
 require_once 'conection.php';
 
+
+function traeEvidencia($con, $id_actividad, $mes){
+    $sentencia = "SELECT path_evidenia_evidencia FROM avances WHERE id_actividad = $id_actividad AND mes = $mes";
+    $stm = $con->query($sentencia);
+    $evidencias = $stm->fetch(PDO::FETCH_ASSOC);
+    if($evidencias['path_evidenia_evidencia'] != NULL){
+        return $evidencias['path_evidenia_evidencia'];
+    }else{
+        return NULL;
+    }
+}
+
 function logos($con){
     $sentencia = "SELECT path_logo_ayuntamiento, path_logo_administracion FROM setings";
     $stm = $con->query($sentencia);

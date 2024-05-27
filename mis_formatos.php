@@ -63,37 +63,41 @@ require_once 'Controllers/mis_formatos_Controller.php';
                     } else {
                         $id_dependencia = $_POST['id_dependencia'];
                     } ?>
+
+
                     <div class="items-start p-4 ml-2 mr-2 mb-4 text-center  bg-white rounded-lg border border-gray-400 shadow-md dark:bg-gray-800 dark:border-gray-700">
-                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">FUAT</p>
-                        <?php if (TieneDirector($con, $id_dependencia)) : ?>
-                            <?php if (verificaFuat($con, $permisos)) : ?>
-                                <?php if ($permisos['id_dependencia']) : ?>
-                                    <form action="sources\TCPDF-main\examples\FUAT.php" method="post">
-                                        Imprimir tu Formato Único Trimestral.
-                                        <input type="hidden" name="id_dependencia" value="<?= $permisos['id_dependencia'] ?>">
-                                        <input type="hidden" name="trimestre" value="1">
-                                        <button type="submit" class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-                                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                                <path d="M5 20h10a1 1 0 0 0 1-1v-5H4v5a1 1 0 0 0 1 1Z" />
-                                                <path d="M18 7H2a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2v-3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2Zm-1-2V2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v3h14Z" />
-                                            </svg>
-                                        </button>
-                                    </form>
-                                <?php endif ?>
+                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Seleccione el Trimestre.</p>
+                        <form action="sources\TCPDF-main\examples\FUAT.php" method="post">
+                            <input type="hidden" name="id_dependencia" value="<?= $permisos['id_dependencia'] ?>">
+                            <?php if ((verificaFuat($con, $permisos, 1))) : ?>
+                                <div class="inline-flex rounded-md shadow-sm" role="group">
+                                    <input name="trimestre" formtarget="_blank" type="submit" class="py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-l-lg border border-gray-400 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white" value="1">
+                                </div>
                             <?php endif ?>
-
-                        <?php else : ?>
-                            <a href="mis_areas.php" class="py-2 px-3 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Necesitas Registrar Encargado</a>
-                        <?php endif ?>
+                            <?php if ((verificaFuat($con, $permisos, 2))) : ?>
+                                <div class="inline-flex rounded-md shadow-sm" role="group">
+                                    <input name="trimestre" formtarget="_blank" type="submit" class="py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-l-lg border border-gray-400 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white" value="2">
+                                </div>
+                            <?php endif ?>
+                            <?php if ((verificaFuat($con, $permisos, 3))) : ?>
+                                <div class="inline-flex rounded-md shadow-sm" role="group">
+                                    <input name="trimestre" formtarget="_blank" type="submit" class="py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-l-lg border border-gray-400 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white" value="3">
+                                </div>
+                            <?php endif ?>
+                            <?php if ((verificaFuat($con, $permisos, 4))) : ?>
+                                <div class="inline-flex rounded-md shadow-sm" role="group">
+                                    <input name="trimestre" formtarget="_blank" type="submit" class="py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-l-lg border border-gray-400 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white" value="4">
+                                </div>
+                            <?php endif ?>
+                        </form>
                     </div>
-
                 </div>
             <?php endif ?>
         <?php endif ?>
 
 
 
-            <?php include 'footer.php'; ?>
+        <?php include 'footer.php'; ?>
 </body>
 
 </html>
