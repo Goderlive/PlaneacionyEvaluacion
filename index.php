@@ -27,6 +27,9 @@ $user = get_usuario($id_usuario,$con);
         <br>
         <h3 class="font-bold text-4xl text-gray-800 border-b-3 border-gray-100 p-2 mb-2">Bienvenido(a) <?= $user['nombre'] . " " . $user['apellidos'] ?></h3>
         <br>
+        <?php if(!controllerrevisaDependencias($_SESSION, $con)): ?>
+            No haz registrado dependencias ni areas, contacta con tu proveedor o captura <a href="exports/registranuevo.php"> Aqui</a>
+        <?php endif ?>
         <section class="bg-white dark:bg-gray-900">
             <div class="mx-auto">
                 <div class="grid md:grid-cols-2 gap-4">

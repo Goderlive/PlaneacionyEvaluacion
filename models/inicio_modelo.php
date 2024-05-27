@@ -44,6 +44,13 @@ function getPermisos($con, $permisos){
 }
 
 
+function revisaDependencias($con, $anio){
+    $stm = $con->query("SELECT id_dependencia FROM dependencias WHERE anio = $anio");
+    $dependencias = $stm->fetch(PDO::FETCH_ASSOC);
+    return $dependencias;
+}
+
+
 function VerificaAvancesActividades($con){
     $stm = $con->query("SELECT * FROM avances a
     LEFT JOIN actividades p ON p.id_actividad = a.id_actividad
