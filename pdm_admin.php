@@ -14,9 +14,18 @@ include 'head.php';
 <html lang="es">
 
 <body>
-    
-<h1>Área en construcción</h1>
-    <?php include 'footer.php'; ?>
+
+
+<section class="bg-white dark:bg-gray-900 m-4">
+
+
+
+
+
+
+<?php include 'footer.php'; ?>
+
+</section>
 </body>
 
 </html>

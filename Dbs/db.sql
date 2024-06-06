@@ -11799,3 +11799,23 @@ INSERT INTO risks_probabilidad (valor_probabilidad, nombre_probabilidad, descrip
 ("10", "Cierta probabilidad", "El evento es inevitable y seguro que ocurrirá.");
 
 
+
+
+
+-- Historial de cambios en la base de datos.
+-- Se crea la tabla:
+
+
+DROP TABLE IF EXISTS actualizacionFoda;
+CREATE TABLE actualizacionFoda(
+  id_actualizacionFoda INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  anio INT,
+  1t_txt TEXT,
+  2t_txt TEXT,
+  3t_txt TEXT,
+  4t_txt TEXT,
+  id_programa_presupuestario INT,
+  txt_problematica TEXT,
+  id_dependencia_responsable INT
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
