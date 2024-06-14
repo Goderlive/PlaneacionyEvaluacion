@@ -11819,3 +11819,56 @@ CREATE TABLE actualizacionFoda(
   id_dependencia_responsable INT
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+
+
+DROP TABLE IF EXISTS diagnosticoPrograma;
+CREATE TABLE diagnosticoPrograma(
+  id_diagnosticoPrograma INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  id_programa INT,
+  id_dependencia INT
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+INSERT INTO diagnosticoPrograma(id_dependencia, id_programa) VALUES
+(52,75),
+(70,76),
+(63,78),
+(72,79),
+(72,80),
+(74,81),
+(66,82),
+(63,83),
+(74,84),
+(80,86),
+(73,88),
+(80,91),
+(63,92),
+(79,93),
+(82,94),
+(74,96),
+(73,97),
+(65,98),
+(51,99),
+(81,100),
+(65,101),
+(69,102),
+(68,104),
+(67,106),
+(70,107),
+(69,109),
+(69,111),
+(68,112),
+(70,113),
+(76,115),
+(70,116),
+(77,117),
+(77,118),
+(77,119),
+(77,120),
+(70,122),
+(83,128),
+(70,129),
+(75,130),
+(75,133),
+(75,140),
+(75,143),
+(75,145);

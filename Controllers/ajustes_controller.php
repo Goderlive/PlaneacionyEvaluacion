@@ -59,14 +59,17 @@ function MontPiker($data, $numero){
 
 function SeparadorFechas($dato){
     if($dato){
+        $dato = json_decode($dato);
 
-        $endos = explode(';' , $dato);
-        $endos1 = explode(',' , $endos[0]);
-        $endos2 = explode(',' , $endos[1]);
+        $dia1 = substr($dato[0], -2);
+        $mes1 = substr($dato[0], 4,-2);
         
-        unset($dato);
-        $dato = array_merge($endos1, $endos2);
-        return $dato;
+        $dia2 = substr($dato[1], -2);
+        $mes2 = substr($dato[1], 4,-2);
+        
+
+        $datoEnd = array($dia1,$mes1,$dia2,$mes2);
+        return $datoEnd;
     }else{
         $dato = array("01","01","01","01");
     }
