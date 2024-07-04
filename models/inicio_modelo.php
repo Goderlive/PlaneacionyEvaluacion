@@ -4,60 +4,11 @@ use FontLib\Table\Type\post;
 
 require_once 'conection.php';
 
-function traeAjustes($con){
-    $stm = $con->query("SELECT * FROM setings");
+function traeAjustes($con, $anio){
+    $stm = $con->query("SELECT * FROM setings WHERE year_report = $anio");
     $ajustes = $stm->fetch(PDO::FETCH_ASSOC);
     return $ajustes;
 }
-
-function CuentaAvancesFUAT($con, $id_dependencia, $mesI, $mesF){
-    $stm = $con->query("SELECT COUNT(av.id_avance) FROM avances av
-    LEFT JOIN actividades ac ON ac.id_actividad = av.id_actividad
-    LEFT JOIN areas ar ON ar.id_area = ac.id_area
-    WHERE ar.id_dependencia = $id_dependencia AND av.mes > $mesI-1 AND av.mes < $mesF+1 AND av.validado = 1 AND validado_2 = 1");
-    $c_avance = $stm->fetch(PDO::FETCH_ASSOC);
-    $c_avance = ($c_avance['COUNT(av.id_avance)']) ? $c_avance['COUNT(av.id_avance)'] : NULL;
-    return $c_avance;
-}
-
-function CuentaActividadesFUAT($con, $id_dependencia){
-    $stm = $con->query("SELECT COUNT(id_actividad) FROM actividades ac
-    LEFT JOIN areas ar ON ar.id_area = ac.id_area
-    WHERE ar.id_dependencia = $id_dependencia");
-    $c_avance = $stm->fetch(PDO::FETCH_ASSOC);
-    $c_avance = ($c_avance['COUNT(id_actividad)']) ? $c_avance['COUNT(id_actividad)'] : NULL;
-    return $c_avance*3;
-}
-
-
-
-function CuentaAvancesIndFUAT($con, $id_dependencia, $trimestre){
-    $stm = $con->query("SELECT COUNT(ai.id_avance) FROM avances_indicadores ai
-    LEFT JOIN indicadores_uso iu ON iu.id = ai.id_indicador
-    WHERE iu.id_dependencia = $id_dependencia AND ai.trimestre = $trimestre AND validado = 1");
-    $c_avance = $stm->fetch(PDO::FETCH_ASSOC);
-    $c_avance = ($c_avance['COUNT(ai.id_avance)']) ? $c_avance['COUNT(ai.id_avance)'] : NULL;
-
-    return $c_avance;
-}
-
-function CuentaActividadesIndFUAT($con, $id_dependencia, $trimestre){
-    if($trimestre == 1 || $trimestre == 3){
-        $stm = $con->query("SELECT COUNT(id) FROM indicadores_uso WHERE id_dependencia = $id_dependencia AND (periodicidad = 'Trimestral' OR periodicidad = 'Mensual')");
-    }elseif($trimestre == 2){
-        $stm = $con->query("SELECT COUNT(id) FROM indicadores_uso WHERE id_dependencia = $id_dependencia AND periodicidad != 'Anual'");
-    }else{
-        $stm = $con->query("SELECT COUNT(id) FROM indicadores_uso WHERE id_dependencia = $id_dependencia");
-    }
-    $c_avance = $stm->fetch(PDO::FETCH_ASSOC);
-    $c_avance = ($c_avance['COUNT(id)']) ? $c_avance['COUNT(id)'] : NULL;
-
-    return $c_avance;
-}
-
-
-
-
 
 function get_usuario($id_usuario,$con){
     $stm = $con->query("SELECT * FROM usuarios u
@@ -78,12 +29,25 @@ function traeinconsistencias($con){
     return $inconsistencias;
 }
 
+function traeinconsistenciasi($con){
+    $stm = $con->query("SELECT id_avance, id_indicador, trimestre, COUNT(*) as cantidad FROM avances_indicadores GROUP BY id_indicador, trimestre HAVING COUNT(*) > 1");
+    $inconsistencias = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $inconsistencias;
+}
+
 function getPermisos($con, $permisos){
     $anio = $permisos['anio'];
     $id_usuario = $permisos['id_usuario'];
     $stm = $con->query("SELECT * FROM permisos WHERE id_usuario = $id_usuario AND anio = $anio");
     $permiso = $stm->fetch(PDO::FETCH_ASSOC);
     return $permiso;
+}
+
+
+function revisaDependencias($con, $anio){
+    $stm = $con->query("SELECT id_dependencia FROM dependencias WHERE anio = $anio");
+    $dependencias = $stm->fetch(PDO::FETCH_ASSOC);
+    return $dependencias;
 }
 
 
@@ -108,12 +72,13 @@ function VerificaAvancesIndicadores($con){
 
 
 function VerificaModificaciones($con){
+    $anio = $_SESSION['anio'];
     $stm = $con->query("SELECT * FROM modificaciones_actividades ma
     JOIN avances av ON av.id_avance = ma.id_avance
     JOIN actividades ac ON ac.id_actividad = av.id_actividad
     LEFT JOIN areas ar ON ar.id_area = ac.id_area
     LEFT JOIN dependencias dp ON dp.id_dependencia = ar.id_dependencia
-    WHERE ma.atendida = 0 LIMIT 5");
+    WHERE ma.atendida = 0 AND dp.anio = $anio LIMIT 5");
     $modificaciones = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $modificaciones;
 }

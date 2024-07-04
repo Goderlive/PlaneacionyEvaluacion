@@ -1,12 +1,12 @@
 <?php
-
-
+session_start();
 if(!$_POST['id_dependencia'] || !$_POST['trimestre']){
     header("Location: ../../../index.php");
 }
 require_once('tcpdf_include.php');
 require_once '../../../models/conection.php';
 
+setlocale(LC_TIME, 'es_MX.UTF-8', 'Spanish_Mexico.1252');
 
 $id_dependencia = $_POST['id_dependencia'];
 $trimestre = $_POST['trimestre'];
@@ -60,6 +60,10 @@ $sqldependencia = "SELECT * FROM dependencias WHERE id_dependencia = $id_depende
 $stmdependencia = $con->query($sqldependencia);
 $dependencia = $stmdependencia->fetch(PDO::FETCH_ASSOC);
 
+$anio = $_SESSION['anio'];
+$sql = "SELECT * FROM setings WHERE year_report = $anio";
+$stm = $con->query($sql);
+$ajustes = $stm->fetch(PDO::FETCH_ASSOC);
 
 
 function traeAvanceIndicador($con, $id_indicador, $trimestre){
@@ -128,6 +132,48 @@ $stm = $con->query($sql);
 $areas = $stm->fetchAll(PDO::FETCH_ASSOC);
 
 
+
+
+$andtrimestr = '&t=' . $trimestre;
+$texto_original = '/index.php?d=' . $id_dependencia . $andtrimestr;
+$texto_oculto = base64_encode($texto_original);
+$server_url = $_SERVER['HTTP_HOST'];
+// Si necesitas incluir el protocolo (HTTP o HTTPS)
+$protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
+$server_url_with_protocol = $protocol . '://' . $server_url;
+
+$codigo = $server_url_with_protocol . '/qr' . urlencode($texto_original);
+
+
+
+
+
+
+$qr_code = '
+<table style="width:100%; padding: 2px; padding-left: 2px; border: 1px solid gray; keep-together:always;" nobr="true">
+    <tr>
+        <td style="width:80%; padding-left: 70px;">
+            <p>
+            Id_acuse: '.$texto_oculto.'
+            </p>
+            <br>
+            <br>
+            <br>
+            <p>
+            Al firmar este comprobante de entrega, confirmo que he revisado los documentos mencionados y no requeriré versiones impresas de los mismos, contribuyendo así al esfuerzo por reducir el uso de papel.
+            </p>
+        </td>
+        <td style="width:20%;">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='.$codigo.'" alt="qrcode" width="150" height="150">
+        </td>
+    </tr>
+</table>
+';
+
+
+
+
+
 $promediosActividades = '';
 foreach($areas as $ar){ //Recorremos las areas y buscamos sus actividades
     $id_area = $ar['id_area'];
@@ -152,7 +198,11 @@ foreach($areas as $ar){ //Recorremos las areas y buscamos sus actividades
     // Obtener longitud
     $cantidadDeElementos = count($actvidadesSuma);
     // Dividir, y listo
-    $promedio = $suma / $cantidadDeElementos;
+    if($cantidadDeElementos > 0){
+        $promedio = $suma / $cantidadDeElementos;
+    }else{
+        $promedio = 0;
+    }
 
 
     $promediosActividades .= '  
@@ -168,37 +218,30 @@ foreach($areas as $ar){ //Recorremos las areas y buscamos sus actividades
 
 
 
-if($trimestre == 1 || $trimestre == 3){
-    $periodicidad = "periodicidad = 'Trimestral' OR periodicidad = 'Mensual' ";
-}
-if($trimestre == 2){
-    $periodicidad = "periodicidad = 'Trimestral' OR periodicidad = 'Mensual' OR periodicidad = 'Semestral'";
-}
-if($trimestre == 4){
-    $periodicidad = "periodicidad = 'Trimestral' OR periodicidad = 'Mensual' OR periodicidad = 'Semestral' || periodicidad = 'Anual'";
-}
-
 
 if($trimestre == 1 || $trimestre == 3){
     $sqlInd = "SELECT * FROM indicadores_uso iu
+    LEFT JOIN indicadores i ON i.id_indicador = iu.id_indicador_gaceta
     LEFT JOIN proyectos py ON py.id_proyecto = iu.id_proyecto
     LEFT JOIN programas_presupuestarios pp ON pp.id_programa = py.id_programa
     WHERE iu.id_dependencia = $id_dependencia
-    AND (iu.periodicidad != 'Anual' AND iu.periodicidad != 'Semestral')
+    AND (i.frecuencia != 'Anual' AND i.frecuencia != 'Semestral')
     GROUP BY iu.id
     ORDER BY py.id_programa
 ";
 }elseif($trimestre == 2){
     $sqlInd = "SELECT * FROM indicadores_uso iu
+    LEFT JOIN indicadores i ON i.id_indicador = iu.id_indicador_gaceta
     LEFT JOIN proyectos py ON py.id_proyecto = iu.id_proyecto
     LEFT JOIN programas_presupuestarios pp ON pp.id_programa = py.id_programa
     WHERE iu.id_dependencia = $id_dependencia
-    AND (iu.periodicidad != 'Anual')
+    AND (i.frecuencia != 'Anual')
     GROUP BY iu.id
     ORDER BY py.id_programa
 ";
 }else{
     $sqlInd = "SELECT * FROM indicadores_uso iu
+    LEFT JOIN indicadores i ON i.id_indicador = iu.id_indicador_gaceta
     LEFT JOIN proyectos py ON py.id_proyecto = iu.id_proyecto
     LEFT JOIN programas_presupuestarios pp ON pp.id_programa = py.id_programa
     WHERE iu.id_dependencia = $id_dependencia
@@ -219,7 +262,7 @@ $arrayDef = array();
 $arrayTemp = array();
 if($indicadores){
     foreach ($indicadores as $key => $value) { // Recorremos cada uno de los indicadores y operaremos
-        $nombre_indicador = preg_replace('([^A-Za-z0-9 ])', ' ', $value['nombre_indicador']);
+        $nombre_indicador = preg_replace('([^A-Za-z0-9 ])', ' ', $value['nombre']);
 
         // Sacamos el porcentaje de cumplimiento de cada indicador
         $programaciona = (((($trimestre == 1) ? $value['at1'] : ($trimestre == 2)) ? $value['at2'] : ($trimestre == 3)) ? $value['at3'] : $value['at4']);
@@ -260,9 +303,9 @@ if($indicadores){
 $membrete = '<table style="width:100%;">
 <tbody>
     <tr>
-        <td style="width:15%; text-align: center;" rowspan="3"><img src="images/logo_metepec.jpg" style="width: 60px;" class="img-fluid" alt="" align="left"></td>    
-        <td style="width:70%; text-align: center; font-size: 12px">Sistema de Monitoreo, Tablero de Control y Seguimiento del PbRM</td>
-        <td style="width:15%; text-align: center;" rowspan="3"> <img src="images/metepec_logoc.jpg" class="img-fluid" alt="" align="right"></td>
+        <td style="width:15%; text-align: center;" rowspan="3"><img src="../../../'.$ajustes['path_logo_ayuntamiento'].'" style="width: 60px;" class="img-fluid" alt="" align="left"></td>    
+        <td style="width:70%; text-align: center; font-size: 12px">'.$ajustes['nombre_sistema'].'</td>
+        <td style="width:15%; text-align: center;" rowspan="3"> <img src="../../../'.$ajustes['path_logo_administracion'].'" class="img-fluid" alt="" align="right"></td>
     </tr>
     <tr>
         <td style="text-align: center; font-size: 12px"></td>
@@ -276,7 +319,7 @@ $membrete = '<table style="width:100%;">
 
 
 $titulos = '
-    <p style="text-align: right;">Fecha y Hora de impresión: '. date("F j, Y, g:i a") .'</p>
+    <p style="text-align: right;">Fecha y Hora de impresión: '. strftime("%B %d, %Y, %I:%M %p") .'</p>
     <p style="text-align: Left;">Dependencia: '. $dependencia['nombre_dependencia'] .' <br>Trimestre: '.$trimestre.'</p>
 ';
 
@@ -345,41 +388,8 @@ $firmas = '
 <br>
 ';
 
-$andtrimestr = '&t=' . $trimestre;
-$texto_original = '/index.php?d=' . $id_dependencia . $andtrimestr;
-$texto_oculto = base64_encode($texto_original);
-$server_url = $_SERVER['HTTP_HOST'];
-// Si necesitas incluir el protocolo (HTTP o HTTPS)
-$protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
-$server_url_with_protocol = $protocol . '://' . $server_url;
-
-$codigo = $server_url_with_protocol . '/qr' . urlencode($texto_original);
 
 
-
-
-
-
-$qr_code = '
-<table style="width:100%; padding: 2px; padding-left: 2px; border: 1px solid gray; keep-together:always;" nobr="true">
-    <tr>
-        <td style="width:80%; padding-left: 70px;">
-            <p>
-            Id_acuse: '.$texto_oculto.'
-            </p>
-            <br>
-            <br>
-            <br>
-            <p>
-            Al firmar este comprobante de entrega, confirmo que he revisado los documentos mencionados y no requeriré versiones impresas de los mismos, contribuyendo así al esfuerzo por reducir el uso de papel.
-            </p>
-        </td>
-        <td style="width:20%;">
-        <img src="https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl='.$codigo.'" alt="">
-        </td>
-    </tr>
-</table>
-';
 
 
 // output the HTML content

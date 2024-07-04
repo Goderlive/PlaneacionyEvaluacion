@@ -8,10 +8,6 @@ class MYPDF extends TCPDF {
 
 	//Page header
 	public function Header() {
-		// Logo
-		$image_file = K_PATH_IMAGES.'metepec_logoc.jpg';
-		$this->Image($image_file, 10, 10, 15, '', 'JPG', '', 'T', false, 300, '', false, false, 0, false, false, false);
-		// Set font
 		$this->setFont('helvetica', 'B', 15);
 		// Title
 		$this->Cell(0, 15, 'Reporte de maggy', 0, false, 'C', 0, '', 0, false, 'M', 'M');
@@ -79,7 +75,7 @@ $txt = "";
 $stm = $con->query("SELECT * FROM localidades");
 $localidades = $stm->fetchAll();
 
-$trimestre = 2;
+$trimestre = 4;
 $sql = " SELECT * FROM lineasactividades la
 LEFT JOIN actividades ac ON ac.id_actividad = la.id_actividad
 LEFT JOIN pdm_lineas pl ON pl.id_linea = la.id_linea

@@ -9,9 +9,8 @@ function TraeDependencias($con, $id_usuario)
     return $dependencias;
 }
 
-function TraeTodasDependencias($con)
-{
-    $stm = $con->query("SELECT * FROM dependencias dp");
+function TraeTodasDependencias($con, $anio){
+    $stm = $con->query("SELECT * FROM dependencias dp WHERE dp.anio = $anio");
     $dependencias = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $dependencias;
 }
@@ -26,9 +25,13 @@ function ActividadesValidadas($con, $id_area, $mes){
 }
 
 function Fetch($con, $sentencia){
-    $stm = $con->query($sentencia);
-    $validadas = $stm->fetch(PDO::FETCH_ASSOC);
-    return $validadas;
+    if($sentencia){
+        $stm = $con->query($sentencia);
+        $validadas = $stm->fetch(PDO::FETCH_ASSOC);
+        return $validadas;
+    }else{
+        return null;
+    }
 }
 
 function NoReportadas($con, $id_area, $mes){
@@ -50,10 +53,12 @@ function CuentaActividadesArea($con, $id_area)
 
 function TraeDependenciasPDM($con, $permiso)
 {
+    $anio = $permiso['anio'];
     $stm = $con->query("SELECT dp.* FROM dependencias dp 
-    JOIN areas ar ON ar.id_dependencia = dp.id_dependencia
-    JOIN actividades ac ON ac.id_area = ar.id_area
-    JOIN lineasactividades li ON li.id_actividad = ac.id_actividad
+    LEFT JOIN areas ar ON ar.id_dependencia = dp.id_dependencia
+    LEFT JOIN actividades ac ON ac.id_area = ar.id_area
+    LEFT JOIN lineasactividades li ON li.id_actividad = ac.id_actividad
+    WHERE dp.anio = $anio
     GROUP BY dp.id_dependencia
     ");
     $dependencias = $stm->fetchAll(PDO::FETCH_ASSOC);

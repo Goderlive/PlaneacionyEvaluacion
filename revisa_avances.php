@@ -325,7 +325,7 @@ if ($_SESSION['sistema'] == "pbrm") {
                             <tbody>
                                 <tr class="bg-white dark:bg-gray-800">
                                     <th scope="row" rowspan="2" class="py-2 px-6" align="center" valign="top">
-                                        <?= $a['nombre_indicador'] ?>
+                                        <?= $a['nombrei'] ?>
                                     </th>
                                     <td class="py-2 px-6" align="center" valign="top">
                                         <?= $a['variable_a'] ?>
@@ -348,7 +348,8 @@ if ($_SESSION['sistema'] == "pbrm") {
                                         <?= "<b>" . $a['avance_a'] . "<b>" ?>
                                     </td>
                                     <td class="py-2 px-6" align="center" valign="top">
-                                        <?= intval($a['avance_a']) - $programado_trimestre ?>
+                                        <?= intval($a['avance_a']) - $programado_trimestre . "<br>" ?>
+                                        <?= ($programado_trimestre > 0) ? number_format(($a['avance_a']/$programado_trimestre) * 100, 2) . "%" : "0%" ?>
                                     </td>
                                     <td rowspan=2 class="py-2 px-6" align="center">
                                         <?php if (!$a['path_evidenia_evidencia']) : ?>
@@ -380,7 +381,8 @@ if ($_SESSION['sistema'] == "pbrm") {
                                         <?= "<b>" . $a['avance_b'] . "<b>" ?>
                                     </td>
                                     <td class="py-2 px-6" align="center" valign="top">
-                                        <?= intval($a['avance_b']) - $programado_trimestre ?>
+                                        <?= intval($a['avance_b']) - $programado_trimestre  . "<br>"?>
+                                        <?= ($programado_trimestre > 0) ? number_format(($a['avance_b']/$programado_trimestre) * 100, 2) . "%" : "0%" ?>
                                     </td>
                                     <td rowspan=2 class="py-2 px-6" align="center">
                                     </td>

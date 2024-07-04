@@ -43,46 +43,50 @@ function FetchAll($con, $string){
 
 function Indicadores($con, $trimestre, $id_dependencia, $permisos){
 
-
     if($permisos['id_area'] != ''){
         $id_area = $permisos['id_area'];
-
 
         if($trimestre == "1" || $trimestre == "3"){
             $thesql = "SELECT * FROM indicadores_uso iu 
             LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador 
-            WHERE iu.id_area = $id_area AND (iu.periodicidad = 'Trimestral' OR iu.periodicidad = 'Mensual')
+            LEFT JOIN indicadores i ON i.id_indicador = iu.id_indicador_gaceta
+            WHERE iu.id_area = $id_area AND (i.frecuencia = 'Trimestral' OR i.frecuencia = 'Mensual')
             GROUP BY iu.id";
         }
         if($trimestre == "2"){
             $thesql = "SELECT * FROM indicadores_uso iu 
             LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador 
-            WHERE iu.id_area = $id_area AND (iu.periodicidad = 'Trimestral' OR iu.periodicidad = 'Mensual' OR iu.periodicidad = 'Semestral')
+            LEFT JOIN indicadores i ON i.id_indicador = iu.id_indicador_gaceta
+            WHERE iu.id_area = $id_area AND (i.frecuencia = 'Trimestral' OR i.frecuencia = 'Mensual' OR i.frecuencia = 'Semestral')
             GROUP BY iu.id";
         }
         if($trimestre == "4"){
             $thesql = "SELECT * FROM indicadores_uso iu 
             LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador 
-            WHERE iu.id_area = $id_area AND (iu.periodicidad = 'Trimestral' OR iu.periodicidad = 'Mensual' OR iu.periodicidad = 'Semestral' OR iu.periodicidad = 'Anual')
+            LEFT JOIN indicadores i ON i.id_indicador = iu.id_indicador_gaceta
+            WHERE iu.id_area = $id_area AND (i.frecuencia = 'Trimestral' OR i.frecuencia = 'Mensual' OR i.frecuencia = 'Semestral' OR i.frecuencia = 'Anual')
             GROUP BY iu.id";
         }
     }else{
         if($trimestre == "1" || $trimestre == "3"){
             $thesql = "SELECT * FROM indicadores_uso iu 
             LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador 
-            WHERE iu.id_dependencia = $id_dependencia AND (iu.periodicidad = 'Trimestral' OR iu.periodicidad = 'Mensual')
+            LEFT JOIN indicadores i ON i.id_indicador = iu.id_indicador_gaceta
+            WHERE iu.id_dependencia = $id_dependencia AND (i.frecuencia = 'Trimestral' OR i.frecuencia = 'Mensual')
             GROUP BY iu.id";
         }
         if($trimestre == "2"){
             $thesql = "SELECT * FROM indicadores_uso iu 
             LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador 
-            WHERE iu.id_dependencia = $id_dependencia AND (iu.periodicidad = 'Trimestral' OR iu.periodicidad = 'Mensual' OR iu.periodicidad = 'Semestral')
+            LEFT JOIN indicadores i ON i.id_indicador = iu.id_indicador_gaceta
+            WHERE iu.id_dependencia = $id_dependencia AND (i.frecuencia = 'Trimestral' OR i.frecuencia = 'Mensual' OR i.frecuencia = 'Semestral')
             GROUP BY iu.id";
         }
         if($trimestre == "4"){
             $thesql = "SELECT * FROM indicadores_uso iu 
             LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador 
-            WHERE iu.id_dependencia = $id_dependencia AND (iu.periodicidad = 'Trimestral' OR iu.periodicidad = 'Mensual' OR iu.periodicidad = 'Semestral' OR iu.periodicidad = 'Anual')
+            LEFT JOIN indicadores i ON i.id_indicador = iu.id_indicador_gaceta
+            WHERE iu.id_dependencia = $id_dependencia AND (i.frecuencia = 'Trimestral' OR i.frecuencia = 'Mensual' OR i.frecuencia = 'Semestral' OR i.frecuencia = 'Anual')
             GROUP BY iu.id";
         }
     }
@@ -96,9 +100,10 @@ function TraeConfiguracion($con){
     return Fetch($con, "SELECT * FROM setings");
 }
 
+
 if(isset($_POST['reportar']) and $_POST['reportar']){
     session_start();
-    if($_SESSION['sistema'] = 'pbrm'){
+    if($_SESSION['sistema'] == 'pbrm'){
         $extensiones = array('image/jpg','image/jpeg','image/png');
         $anio = date('Y');
         $id_dependencia = $_POST['id_dependencia'];
@@ -117,33 +122,46 @@ if(isset($_POST['reportar']) and $_POST['reportar']){
         $descripcion_evidencia = $_POST['descripcion_evidencia'];
         $imagen = NULL;
 
-        if(isset($_FILES['path_evidencia']) && in_array($_FILES['path_evidencia']['type'], $extensiones) && $_FILES['path_evidencia']['error'] == 0 ) {
-            $imagen = str_replace(array(' ', 'php','js','phtml','php3'), '_', date('Ymd_His') . '_' . $_FILES['path_evidencia']['name']);
-            if( move_uploaded_file( $_FILES['path_evidencia']['tmp_name'] , $ruta_base . $imagen ) ) {
-                $rutacompleta = $ruta_base . $imagen;
-            } else {
-                ?>
-                <script>
-                    alert('Ha ocurrido un error al mover el archivo, intenta nuevamente');
-                    window.location.href = '../indicadores.php';
-                </script>
-                <?php   
+        // Validar duplicidad
+        $sql_check = "SELECT * FROM avances_indicadores WHERE trimestre='$trimestre' AND id_dependencia='$id_dependencia'";
+        $result_check = $con->query($sql_check);
+
+        if ($result_check) {
+            ?>
+            <script>
+                alert('Indicador Actualizador.');
+                window.location.href = '../indicadores.php';
+            </script>
+            <?php
+        } else {
+            if(isset($_FILES['path_evidencia']) && in_array($_FILES['path_evidencia']['type'], $extensiones) && $_FILES['path_evidencia']['error'] == 0 ) {
+                $imagen = str_replace(array(' ', 'php','js','phtml','php3'), '_', date('Ymd_His') . '_' . $_FILES['path_evidencia']['name']);
+                if( move_uploaded_file( $_FILES['path_evidencia']['tmp_name'] , $ruta_base . $imagen ) ) {
+                    $rutacompleta = $ruta_base . $imagen;
+                } else {
+                    ?>
+                    <script>
+                        alert('Ha ocurrido un error al mover el archivo, intenta nuevamente');
+                        window.location.href = '../indicadores.php';
+                    </script>
+                    <?php   
+                }
             }
+           
+            $sql = "INSERT INTO avances_indicadores(id_indicador,year,trimestre,avance_a,avance_b,avance_c,descripcion_evidencia,justificacion,id_usuario_reporta,path_evidenia_evidencia) 
+                    VALUES ($id_indicador,'$anio','$trimestre','$avance_a','$avance_b','$avance_c','$descripcion_evidencia ','$justificacion','$id_usuario_reporta','$rutacompleta')";
+            $con->query($sql);
+            ?>
+            <form id="myForm" action="../indicadores.php" method="post">
+                <input type="hidden" name="id_dependencia" value="<?=$id_dependencia?>">
+                <input type="hidden" name="trimestre" value="<?=$trimestre?>">
+            </form>
+            <script type="text/javascript">
+                alert("Indicador Actualizado")
+                document.getElementById('myForm').submit();
+            </script>
+            <?php
         }
-       
-        $sql = "INSERT INTO avances_indicadores(id_indicador,year,trimestre,avance_a,avance_b,avance_c,descripcion_evidencia,justificacion,id_usuario_reporta,path_evidenia_evidencia) 
-                VALUES ($id_indicador,'$anio','$trimestre','$avance_a','$avance_b','$avance_c','$descripcion_evidencia ','$justificacion','$id_usuario_reporta','$rutacompleta')";
-        $con->query($sql);
-        ?>
-        <form id="myForm" action="../indicadores.php" method="post">
-            <input type="hidden" name="id_dependencia" value="<?=$id_dependencia?>">
-            <input type="hidden" name="trimestre" value="<?=$trimestre?>">
-        </form>
-        <script type="text/javascript">
-            alert("Indicador Actualizado")
-            document.getElementById('myForm').submit();
-        </script>
-        <?php
     } else{
         ?>
         <script>
@@ -152,6 +170,5 @@ if(isset($_POST['reportar']) and $_POST['reportar']){
         <?php
     }
 }
-
 ?>
 

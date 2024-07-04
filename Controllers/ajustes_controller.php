@@ -10,21 +10,6 @@ function ListadeTitulares($titulares){
 }
 
 
-function SeparadorFechas($dato){
-    if($dato){
-
-        $endos = explode(';' , $dato);
-        $endos1 = explode(',' , $endos[0]);
-        $endos2 = explode(',' , $endos[1]);
-        
-        unset($dato);
-        $dato = array_merge($endos1, $endos2);
-        return $dato;
-    }else{
-        $dato = array("01","01","01","01");
-    }
-}
-
 
 function DayPiker($data, $numero){
     if(!$data){
@@ -32,7 +17,7 @@ function DayPiker($data, $numero){
     }
     $texto = '<label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione un Día</label> <select name="dia'.$numero.'" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">';
     $str = '';
-    for ($i=01; $i < 31; $i++) { 
+    for ($i=01; $i < 31; $i++) {
         if($i == $data){
             $value = "selected";
         }
@@ -70,6 +55,26 @@ function MontPiker($data, $numero){
 
     return $text;
 }
+
+
+function SeparadorFechas($dato){
+    if($dato){
+        $dato = json_decode($dato);
+
+        $dia1 = substr($dato[0], -2);
+        $mes1 = substr($dato[0], 4,-2);
+        
+        $dia2 = substr($dato[1], -2);
+        $mes2 = substr($dato[1], 4,-2);
+        
+
+        $datoEnd = array($dia1,$mes1,$dia2,$mes2);
+        return $datoEnd;
+    }else{
+        $dato = array("01","01","01","01");
+    }
+}
+
 
 
 

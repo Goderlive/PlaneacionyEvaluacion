@@ -34,66 +34,81 @@ function armaFechas($d1, $m1, $d2, $m2)
 }
 
 if ($_POST) {
+
+
     if ($_SESSION['sistema'] != 'pbrm') {
         header("Location: ../login.php");
         die();
     }
-
+    $anio = $_SESSION['anio'];
 
     if (isset($_POST['nombre_municipio']) && isset($_POST['numero_municipio'])) {
         $nombre = $_POST['nombre_municipio'];
         $numero = $_POST['numero_municipio'];
-        $sql = "UPDATE setings SET nombre_ente = '$nombre', numero_ente = '$numero' WHERE id_setings =1";
+        $sql = "UPDATE setings SET nombre_ente = '$nombre', numero_ente = '$numero' WHERE year_report = $anio";
         $sqlr = $con->prepare($sql);
         $sqlr->execute();
+        echo "<script>window.location.href = 'ajustes.php';</script>";
+
     }
 
 
     if (isset($_POST['agregar'])) {
         if (isset($_POST['id_uippe']) && $_POST['id_uippe']) {
             $id_uippe = $_POST['id_uippe'];
-            $sql = "UPDATE setings SET id_uippe = $id_uippe WHERE id_setings =1";
+            $sql = "UPDATE setings SET id_uippe = $id_uippe WHERE year_report = $anio";
         } elseif (isset($_POST['id_teso']) && $_POST['id_teso']) {
             $id_tesoreria = $_POST['id_teso'];
-            $sql = "UPDATE setings SET id_tesoreria = $id_tesoreria WHERE id_setings =1";
+            $sql = "UPDATE setings SET id_tesoreria = $id_tesoreria WHERE year_report = $anio";
         }
         $sqlr = $con->prepare($sql);
         $sqlr->execute();
-        header("Location: ../ajustes.php");
+        echo "<script>window.location.href = 'ajustes.php';</script>";
     }
 
 
     if (isset($_POST['delete'])) {
-        if (isset($_POST['uippe']) && $_POST['uippe']) {
-            $id_uippe = $_POST['id_uippe'];
-            $sql = "UPDATE setings SET id_uippe = NULL";
-        } elseif (isset($_POST['teso']) && $_POST['teso']) {
-            $id_tesoreria = $_POST['id_teso'];
-            $sql = "UPDATE setings SET id_tesoreria = NULL";
-        }
+        if (isset($_POST['uippe'])) {
+            $quien = "id_uippe";
+        } elseif (isset($_POST['id_teso'])) {
+            $quien = "id_tesoreria";
+            }
+        $sql = "UPDATE setings SET $quien = NULL WHERE year_report = $anio";
         $sqlr = $con->prepare($sql);
         $sqlr->execute();
-        header("Location: ../ajustes.php");
+        echo "<script>window.location.href = 'ajustes.php';</script>";
     }
 
-    if (isset($_POST['anteproyecto'])) {
-        $text = armaFechas($_POST["dia1"], $_POST["mes1"], $_POST["dia2"], $_POST["mes2"]);
-        $sql = "UPDATE setings SET anteproyectoFechas = '$text'";
+    if (isset($_POST['anteproyecto']) || isset($_POST['proyecto']) || isset($_POST['programa'])) {
+        $d1 = $_SESSION['anio'];
+        $d1 .= (strlen($_POST['mes1'])) < 2 ? "0".$_POST['mes1'] : $_POST['mes1'];  
+        $d1 .= (strlen($_POST['dia1'])) < 2 ? "0".$_POST['dia1'] : $_POST['dia1'];
+
+        $d2 = $_SESSION['anio'];
+        $d2 .= (strlen($_POST['mes2'])) < 2 ? "0".$_POST['mes2'] : $_POST['mes2'];  
+        $d2 .= (strlen($_POST['dia2'])) < 2 ? "0".$_POST['dia2'] : $_POST['dia2'];  
+
+        $date = array("$d1", "$d2");        
+        $date = json_encode($date);
+
+        if(isset($_POST['anteproyecto'])){
+            $sql = "UPDATE setings SET anteproyectoFechas = '$date' WHERE year_report = $anio";
+        }
+        if(isset($_POST['proyecto'])){
+            $sql = "UPDATE setings SET proyectoFechas = '$date' WHERE year_report = $anio";
+        }
+        if(isset($_POST['programa'])){
+            $sql = "UPDATE setings SET programaAFechas = '$date' WHERE year_report = $anio";
+        }
+
+
+
         $sqlr = $con->prepare($sql);
         $sqlr->execute();
+        echo "<script>window.location.href = 'ajustes.php';</script>";
+
     }
-    if (isset($_POST['proyecto'])) {
-        $text = armaFechas($_POST["dia1"], $_POST["mes1"], $_POST["dia2"], $_POST["mes2"]);
-        $sql = "UPDATE setings SET proyectoFechas = '$text'";
-        $sqlr = $con->prepare($sql);
-        $sqlr->execute();
-    }
-    if (isset($_POST['programa'])) {
-        $text = armaFechas($_POST["dia1"], $_POST["mes1"], $_POST["dia2"], $_POST["mes2"]);
-        $sql = "UPDATE setings SET programaAFechas = '$text'";
-        $sqlr = $con->prepare($sql);
-        $sqlr->execute();
-    }
+    
 
     if (isset($_POST['logo_principal']) && $_FILES['imagen_principal']['error'] == 0) {
         // Directorio donde se guardarán las imágenes
@@ -118,9 +133,9 @@ if ($_POST) {
                 $idRegistro = 1; // Reemplaza con el ID del registro que deseas actualizar
                 $rutaImagenDB = 'img/' . $_FILES['imagen_principal']['name'];
 
-                $consulta = $con->prepare("UPDATE setings SET path_logo_login = :ruta WHERE id_setings = :id");
+                $consulta = $con->prepare("UPDATE setings SET path_logo_login = :ruta WHERE year_report = :anio");
                 $consulta->bindParam(':ruta', $rutaImagenDB);
-                $consulta->bindParam(':id', $idRegistro);
+                $consulta->bindParam(':anio', $anio);
                 $consulta->execute();
 
                 echo 'Imagen subida y registro actualizado correctamente.';
@@ -130,6 +145,8 @@ if ($_POST) {
         } else {
             echo '<script>alert("Formato de archivo no válido. Solo se permiten archivos jpg y png.")</script>';
         }
+        echo "<script>window.location.href = 'ajustes.php';</script>";
+
     }
 
 
@@ -156,9 +173,9 @@ if ($_POST) {
                 $idRegistro = 1; // Reemplaza con el ID del registro que deseas actualizar
                 $rutaImagenDB = 'img/' . $_FILES['escudo_municipio']['name'];
 
-                $consulta = $con->prepare("UPDATE setings SET path_logo_ayuntamiento = :ruta WHERE id_setings = :id");
+                $consulta = $con->prepare("UPDATE setings SET path_logo_ayuntamiento = :ruta WHERE year_report = :anio");
                 $consulta->bindParam(':ruta', $rutaImagenDB);
-                $consulta->bindParam(':id', $idRegistro);
+                $consulta->bindParam(':anio', $anio);
                 $consulta->execute();
 
                 echo 'Imagen subida y registro actualizado correctamente.';
@@ -168,6 +185,8 @@ if ($_POST) {
         } else {
             echo '<script>alert("Formato de archivo no válido. Solo se permiten archivos jpg y png.")</script>';
         }
+        echo "<script>window.location.href = 'ajustes.php';</script>";
+
     }
 
 
@@ -194,9 +213,9 @@ if ($_POST) {
                 $idRegistro = 1; // Reemplaza con el ID del registro que deseas actualizar
                 $rutaImagenDB = 'img/' . $_FILES['path_logo_administracion']['name'];
 
-                $consulta = $con->prepare("UPDATE setings SET path_logo_administracion = :ruta WHERE id_setings = :id");
+                $consulta = $con->prepare("UPDATE setings SET path_logo_administracion = :ruta WHERE year_report = :anio");
                 $consulta->bindParam(':ruta', $rutaImagenDB);
-                $consulta->bindParam(':id', $idRegistro);
+                $consulta->bindParam(':anio', $anio);
                 $consulta->execute();
 
                 echo 'Imagen subida y registro actualizado correctamente.';
@@ -206,5 +225,7 @@ if ($_POST) {
         } else {
             echo '<script>alert("Formato de archivo no válido. Solo se permiten archivos jpg y png.")</script>';
         }
+        echo "<script>window.location.href = 'ajustes.php';</script>";
+
     }
 }

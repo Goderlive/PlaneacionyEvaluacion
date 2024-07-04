@@ -1,6 +1,12 @@
 <?php
 require_once 'conection.php';
 
+function traeSettings($con, $anio){
+    $stm = $con->query("SELECT * FROM setings WHERE year_report = $anio");
+    $setings = $stm->fetch(PDO::FETCH_ASSOC);
+    return $setings;
+}
+
 function TraeTodasDepencias($con){
     $stm = $con->query("SELECT id_dependencia, nombre_dependencia FROM dependencias");
     $dependencias = $stm->fetchAll(PDO::FETCH_ASSOC);
@@ -56,4 +62,8 @@ function traeporDependenciasytrim($con, $id_dependencia, $trimestre){
     $formatos = $stm->fetch(PDO::FETCH_ASSOC);
     return $formatos;
 }
+
+
+
+
 ?>

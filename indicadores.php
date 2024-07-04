@@ -38,7 +38,7 @@ if ($_SESSION['sistema'] == "pbrm") {
     <body>
         <br>
         <div class="container mx-auto">
-            <?= breadcrumbs(array("Inicio" => "index,php", "Indicadores" => "")); ?>
+            <?= breadcrumbs(array("Inicio" => "index.php", "Indicadores" => "")); ?>
             <br>
             <?php if ($permisos['nivel'] > 3) : ?>
 
@@ -88,7 +88,6 @@ if ($_SESSION['sistema'] == "pbrm") {
                         <tbody>
                             <?php $ta = TextoTrimestre($trimestre_actual) ?>
                             <?php $indicadores = Indicadores($con, $trimestre_actual, $id_dependencia, $permisos);
-                            //var_dump($indicadores);
                             if ($indicadores) :
                                 $i = 1;
                                 foreach ($indicadores as $datos) : ?>
@@ -98,7 +97,7 @@ if ($_SESSION['sistema'] == "pbrm") {
                                             <?= $datos['id'] ?>
                                         </th>
                                         <td class="px-2 py-4">
-                                            <?= $datos['nombre_indicador']; ?>
+                                            <?= $datos['nombre']; ?>
                                         </td>
                                         <td class="px-2 py-4" align="left">
                                             <?= "- " . $datos['variable_a'] . "<br>" ?>

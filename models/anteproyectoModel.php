@@ -64,6 +64,19 @@ function traeIndicador($con, $id_indicador){
     return $indicadores = $stm->fetch(PDO::FETCH_ASSOC);
 }
 
+function revisaAreas($con, $anio){
+    $sentencia = "SELECT * FROM ante_areas a
+    LEFT JOIN proyectos p ON p.id_proyecto = a.id_proyecto
+    WHERE p.anio = $anio";
+    $stm = $con->query($sentencia);
+    $areas = $stm->fetchAll(PDO::FETCH_ASSOC);
+    if($areas){
+        return true;
+    }else{
+        return false;
+    }
+}
+
 function traeLineas($con, $id_estrategia){
     $sentencia = "SELECT * FROM pdm_lineas WHERE id_estrategia = $id_estrategia";
     $stm = $con->query($sentencia);

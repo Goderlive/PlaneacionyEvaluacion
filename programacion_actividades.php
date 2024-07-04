@@ -32,7 +32,9 @@ include 'Controllers/breadcrumbs.php';
         
         <br>
 
-        <h1 class="mb-4 text-2xl font-extrabold tracking-tight leading-none text-gray-800 md:text-5xl lg:text-6xl dark:text-white">Programación Mensual</h1>
+        <h3 class="text-3xl font-bold dark:text-white my-4">Programación Mensual <?= $_SESSION['anio'] ?></h3>
+        <h5 class="text-xl font-bold dark:text-white mb-5"><?= area($con, $id_area) ?></h5>
+
 
         <div class="relative overflow-x-auto shadow-md sm:rounded-md">
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -100,10 +102,16 @@ include 'Controllers/breadcrumbs.php';
                         <td class="py-4 px-5">
                             <?= $actividad['nombre_actividad']?>
                         </td>
-                        <td class="py-4 px-5">
-                            <?= $actividad['unidad']?>
+                        <td class="py-4 px-5 text-center">
+                            <?php if($actividad['id_unidad']){
+                                $unidad_medida = $actividad['nombre_unidad'];
+                            } else{
+                                $unidad_medida = $actividad['unidad'];
+                            }
+                            ?>
+                            <?= $unidad_medida?>
                         </td>
-                        <td class="py-4 px-5">
+                        <td class="py-4 px-5 text-center">
                             <?= SumaAnual($actividad)?>
                         </td>
                         <td class="py-4 px-2">

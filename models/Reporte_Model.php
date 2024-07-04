@@ -80,7 +80,15 @@ function Actividad_DB($con, $id_actividad)
     return $actividades;
 }
 
-function traeudmed($con){
+function traeUnidades($con){ // Trae unidades de Medida registradas
+    $sentencia = "SELECT * FROM unidades_medida";
+    $stm = $con->query($sentencia);
+    $unidades = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $unidades;
+}
+
+
+function traeudmed($con){ // Esta funcion esta duplicada
     $sqlav = "SELECT * FROM udmed_pdm";
     $stma = $con->query($sqlav);
     $unidadesdemedida = $stma->fetchAll(PDO::FETCH_ASSOC);
@@ -163,6 +171,10 @@ function tieneReconduccion($con, $id_actividad){
     return $avance;
 }
 
+function cleanFileName($fileName) {
+    return preg_replace("/[^a-zA-Z0-9\.-_]/", "_", $fileName);
+}
+
 
 
 if (isset($_POST['jfnkasjnkasdf34q345']) && $_POST['jfnkasjnkasdf34q345'] == "Enviar") {
@@ -179,6 +191,7 @@ if (isset($_POST['jfnkasjnkasdf34q345']) && $_POST['jfnkasjnkasdf34q345'] == "En
         $justificacion = isset($_POST['justificacion']) ? $_POST['justificacion'] : NULL;
         $recursos_propios = isset($_POST['recursos_propios']) ? $_POST['recursos_propios'] : NULL;
         $actividad_trimestral = isset($_POST['actividad_trimestral']) ? $_POST['actividad_trimestral'] : NULL;
+        $path_evidencia_evidencia_mini = NULL;  // Inicializa la variable
 
         if ($recursos_federales || $recursos_estatales || $recursos_propios) {
             $recursos = '';
@@ -214,24 +227,104 @@ if (isset($_POST['jfnkasjnkasdf34q345']) && $_POST['jfnkasjnkasdf34q345'] == "En
             mkdir($dir, 0741, true);
         }
 
-        $path_evidencia_evidencia = NULL;
 
-        if (isset($_FILES['evidencia_de_evidencia']) && $_FILES['evidencia_de_evidencia']['error'] == 0 && in_array($_FILES['evidencia_de_evidencia']['type'], array('image/jpg', 'image/jpeg', 'image/png'))) {
-            if ($_FILES["evidencia_de_evidencia"]["error"] == UPLOAD_ERR_OK) {
-                $imagen = str_replace(array(' ', 'php', 'js', 'phtml', 'php3', 'exe'), '_', date('Ymd_His') . '_' . $_FILES['evidencia_de_evidencia']['name']);
-                $uno = rand(1, 99);
-                $nombre_evidencia_de_evidencia = basename("ede" . $uno . $imagen);
-                $full_evidencia_evidencia = $dir . $nombre_evidencia_de_evidencia;
-
-                if (move_uploaded_file($_FILES['evidencia_de_evidencia']['tmp_name'], $full_evidencia_evidencia)) {
-                    $path_evidencia_evidencia = $full_evidencia_evidencia;
+        if (isset($_FILES['evidencia_de_evidencia'])) {
+            // Lista de tipos MIME permitidos
+            $allowed_types = ['image/jpg', 'image/jpeg', 'image/png'];
+            
+            if ($_FILES['evidencia_de_evidencia']['error'] == 0) {
+                // Comprobar que el archivo es del tipo permitido
+                if (in_array($_FILES['evidencia_de_evidencia']['type'], $allowed_types)) {
+                    if ($_FILES["evidencia_de_evidencia"]["error"] == UPLOAD_ERR_OK) {
+                        $timestamp = date('Ymd_His'); // Obtiene la fecha y hora actual
+                        $uno = rand(10000, 99999); // Genera un número aleatorio
+                        $extension = pathinfo($_FILES['evidencia_de_evidencia']['name'], PATHINFO_EXTENSION); // Obtiene la extensión del archivo
+                    
+                         // Limpia el nombre del archivo
+                         $original_name = pathinfo($_FILES['evidencia_de_evidencia']['name'], PATHINFO_FILENAME);
+                         $cleaned_name = cleanFileName($original_name);
+                         
+                        // Crea un nombre de archivo seguro y único
+                        $nombre_evidencia_de_evidencia = $timestamp . '_' . $uno . '.' . $extension;
+                    
+                        // Ruta completa donde se guardará el archivo
+                        $full_evidencia_evidencia = $dir . $nombre_evidencia_de_evidencia;
+                    
+                        // Mueve el archivo subido a la nueva ubicación
+                        if (move_uploaded_file($_FILES['evidencia_de_evidencia']['tmp_name'], $full_evidencia_evidencia)) {
+                            $path_evidencia_evidencia = $full_evidencia_evidencia;
+                        
+                            // Carga la imagen original
+                            switch ($extension) {
+                                case 'jpg':
+                                case 'jpeg':
+                                    $img_original = imagecreatefromjpeg($full_evidencia_evidencia);
+                                    break;
+                                case 'png':
+                                    $img_original = imagecreatefrompng($full_evidencia_evidencia);
+                                    break;
+                            }
+                        
+                            // Obtiene las dimensiones de la imagen original
+                            $width_orig = imagesx($img_original);
+                            $height_orig = imagesy($img_original);
+                        
+                            // Define el tamaño de la miniatura mayor
+                            $max_width = 800; // Ancho máximo más grande
+                            $max_height = ($height_orig / $width_orig) * $max_width; // Alto proporcional
+                        
+                            if ($width_orig > $max_width) {
+                                // Si el ancho original es mayor que el máximo, escala la imagen
+                                $ratio_orig = $width_orig / $height_orig;
+                                if ($max_width / $max_height > $ratio_orig) {
+                                    $max_width = $max_height * $ratio_orig;
+                                } else {
+                                    $max_height = $max_width / $ratio_orig;
+                                }
+                            } else {
+                                // Si el ancho original es menor, usa las dimensiones originales
+                                $max_width = $width_orig;
+                                $max_height = $height_orig;
+                            }
+                        
+                            // Crea una imagen para la miniatura
+                            $img_miniatura = imagecreatetruecolor($max_width, $max_height);
+                        
+                            // Copia y redimensiona la imagen original en la miniatura
+                            imagecopyresampled($img_miniatura, $img_original, 0, 0, 0, 0, $max_width, $max_height, $width_orig, $height_orig);
+                        
+                            // Guarda la miniatura con calidad reducida
+                            $calidad = 90; // Inicia con una calidad alta
+                            $temp_file = $dir . 'mini_' . $nombre_evidencia_de_evidencia;
+                            do {
+                                imagejpeg($img_miniatura, $temp_file, $calidad);
+                                $file_size = filesize($temp_file);
+                                $calidad -= 5; // Reduce la calidad en decrementos del 5%
+                            } while ($file_size > 200 * 1024 && $calidad > 10); // Detente si el archivo es menor de 200 KB o la calidad es demasiado baja
+                        
+                            // Libera la memoria
+                            $path_evidencia_evidencia_mini = $temp_file;
+                            imagedestroy($img_original);
+                            imagedestroy($img_miniatura);
+                        }
+                        
+                        
+                    }
+                } else {
+                    // Si el archivo no es una imagen, emitir un mensaje de error
+                    echo '<script>alert("Solo se permiten archivos de imagen.");</script>';
+                    die(); // Detiene la ejecución del script
                 }
+            } else {
+                // Manejo de errores al subir el archivo
+                echo '<script>alert("Error al subir el archivo. Código de error: ' . $_FILES['evidencia_de_evidencia']['error'] . '");</script>';
+                die(); // Detiene la ejecución del script
             }
         }
 
-        $sql = "INSERT INTO avances (mes, avance, justificacion, path_evidenia_evidencia, descripcion_evidencia, id_actividad, id_usuario_avance, localidades, beneficiarios, recursos, actividad_trimestral) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+        $sql = "INSERT INTO avances (mes, avance, justificacion, path_evidenia_evidencia, path_evidenia_evidencia_mini, descripcion_evidencia, id_actividad, id_usuario_avance, localidades, beneficiarios, recursos, actividad_trimestral) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
         $sqlr = $con->prepare($sql);
-        $sqlr->execute(array($mes, $_POST['avance'], $justificacion, $path_evidencia_evidencia, $_POST['descripcion_evidencia'], $id_actividad, $_POST['id_usuario'], $localidades, $beneficiarios, $recursos, $actividad_trimestral));
+        $sqlr->execute(array($mes, $_POST['avance'], $justificacion, $path_evidencia_evidencia, $path_evidencia_evidencia_mini, $_POST['descripcion_evidencia'], $id_actividad, $_POST['id_usuario'], $localidades, $beneficiarios, $recursos, $actividad_trimestral));
 
 
         if(isset($_POST['udmed'])) {

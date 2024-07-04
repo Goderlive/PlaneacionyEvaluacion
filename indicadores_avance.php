@@ -158,15 +158,14 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                             <?php $ta = TextoTrimestre($trimestre) ?>
                             <?php $indicadores = Indicadores($con, $trimestre, $id_dependencia, $permisos);
                             if ($indicadores) :
-                                $i = 1;
                                 foreach ($indicadores as $datos) : ?>
 
                                     <tr class="bg-white text-center border-b dark:bg-gray-800 dark:border-gray-700">
                                         <th scope="row" class="px-2 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                            <?= $i++; ?>
+                                            <?= $datos['id'] ?>
                                         </th>
                                         <td class="px-2 py-4">
-                                            <?= $datos['nombre_indicador']; ?>
+                                            <?= $datos['nombre']; ?>
                                         </td>
                                         <td class="px-2 py-4" align="left">
                                             <?= "- " . $datos['variable_a'] . "<br>" ?>
@@ -192,9 +191,9 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                                             <?= botonavances($con, $datos['id'], $trimestre); ?>
                                         </td>
                                         <td class="px-2 py-4">
-                                            <?php print $datos['at1'] + $datos['at2'] + $datos['at3'] + $datos['at4'] . "<br>" . $datos['bt1'] + $datos['bt2'] + $datos['bt3'] + $datos['bt4'];
+                                            <?php print ($datos['at1'] + $datos['at2'] + $datos['at3'] + $datos['at4']) . "<br>" . ($datos['bt1'] + $datos['bt2'] + $datos['bt3'] + $datos['bt4']);
                                             if ($datos['ct1']) {
-                                                print "<br>" . $datos['at1'] + $datos['at2'] + $datos['at3'] + $datos['at4'];
+                                                print "<br>" . ($datos['at1'] + $datos['at2'] + $datos['at3'] + $datos['at4']);
                                             }
                                             ?>
                                         </td>

@@ -23,10 +23,6 @@ require_once 'Controllers/reportes_actividades_Controller.php';
 
 <body>
 
-    <?php if ($permisos['id_dependencia'] == NULL) {
-        print "<br><h1>Tu cuenta no permite imprimir formatos</h1>";
-        die();
-    } ?>
     <div class="container mx-auto"><!--Este es el contenedor principal -->
 
         <br>
@@ -41,7 +37,6 @@ require_once 'Controllers/reportes_actividades_Controller.php';
             $dependencias = TraeTodasDepencias($con); ?> <!-- Si no tenemos dependencia, somos admins y podemos ver todos los formatos -->
             <div class="grid grid-cols-4">
                 <?php foreach ($dependencias as $dependencia) : ?>
-
                     <div class="items-start p-4 ml-2 mr-2 mb-4 text-center  bg-white rounded-lg border border-gray-400 shadow-md dark:bg-gray-800 dark:border-gray-700">
                         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"> <?= $dependencia['nombre_dependencia'] ?> </h5>
                         <form action="formatos_actividades.php" method="POST">
@@ -56,50 +51,52 @@ require_once 'Controllers/reportes_actividades_Controller.php';
             </div>
         <?php endif ?>
 
+        <?php if ($permisos['id_dependencia'] || $_POST) : ?>
+            <?php $setings = traeSettings($con, $_SESSION['anio']); ?>
+            <?php if ($setings['enlaces_08c'] == 1) : ?>
+                <!-- Si tenemos post y un Id_dependencia, ya tenemos de que queremos ver, mostramos las areas de las que podemos imprimir formatos  -->
+                <div class="grid grid-cols-4">
+                    <?php
+                    if (isset($permisos['id_dependencia'])) {
+                        $id_dependencia = $permisos['id_dependencia'];
+                    } else {
+                        $id_dependencia = $_POST['id_dependencia'];
+                    }
 
-        <div class="grid grid-cols-4">
 
-            <!-- Si tenemos post y un Id_dependencia, ya tenemos de que queremos ver, mostramos las areas de las que podemos imprimir formatos  -->
+                    $areas = TraeAreasDependencias($con, $id_dependencia) ?>
 
-            <?php
-            if ($permisos['id_dependencia'] || $_POST) :
+                    <?php foreach ($areas as $area) : ?>
+                        <div class="items-start p-4 ml-2 mr-2 mb-4 text-center  bg-white rounded-lg border border-gray-400 shadow-md dark:bg-gray-800 dark:border-gray-700">
+                            <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white"> <?= $area['nombre_area'] ?> </h5>
+                            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Seleccione el Trimestre a Imprimir.</p>
+                            <?php if (TieneDirector($con, $id_dependencia) && TienePuestoMedio($con, $area['id_area'])) : ?>
+                                <form action="sources/TCPDF-main/examples/08c.php" method="POST">
+                                    <input type="hidden" name="id_area" value="<?= $area['id_area'] ?>">
+                                    <div class="inline-flex rounded-md shadow-sm" role="group">
+                                        <?= Botones($con, $area['id_area']) ?>
+                                    </div>
+                                    <div class="inline-flex rounded-md shadow-sm" role="group">
+                                        <?= BotonesFirmados($con, $area['id_area']) ?>
+                                    </div>
+                                </form>
+                            <?php else : ?>
+                                <a href="mis_areas.php" class="py-2 px-3 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Necesitas Registrar Encargado</a>
+                            <?php endif ?>
+                        </div>
 
-                if (isset($permisos['id_dependencia'])) {
-                    $id_dependencia = $permisos['id_dependencia'];
-                } else {
-                    $id_dependencia = $_POST['id_dependencia'];
-                }
-
-                $areas = TraeAreasDependencias($con, $id_dependencia) ?>
-
-                <?php foreach ($areas as $area) : ?>
-                    <div class="items-start p-4 ml-2 mr-2 mb-4 text-center  bg-white rounded-lg border border-gray-400 shadow-md dark:bg-gray-800 dark:border-gray-700">
-                        <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white"> <?= $area['nombre_area'] ?> </h5>
-                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Seleccione el Trimestre a Imprimir.</p>
-                        <?php if (TieneDirector($con, $id_dependencia) && TienePuestoMedio($con, $area['id_area'])) : ?>
-                            <form action="sources/TCPDF-main/examples/08c.php" method="POST">
-                                <input type="hidden" name="id_area" value="<?= $area['id_area'] ?>">
-                                <div class="inline-flex rounded-md shadow-sm" role="group">
-                                    <?= Botones($con, $area['id_area']) ?>
-                                </div>
-                                <div class="inline-flex rounded-md shadow-sm" role="group">
-                                    <?= BotonesFirmados($con, $area['id_area']) ?>
-                                </div>
-                            </form>
-                        <?php else : ?>
-                            <a href="mis_areas.php" class="py-2 px-3 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Necesitas Registrar Encargado</a>
-                        <?php endif ?>
-                    </div>
-
-                <?php endforeach ?>
+                    <?php endforeach ?>
+                </div>
             <?php endif ?>
+        <?php endif ?>
 
-        </div>
+
+
 
 
         <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
             <br>
-            <h3 class="text-3xl font-bold dark:text-white">Formatos oficiales OSFEM</h3>
+            <h3 class="text-3xl font-bold dark:text-white">Formatos OSFEM Firmados</h3>
 
             <br>
 

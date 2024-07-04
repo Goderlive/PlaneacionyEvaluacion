@@ -1,0 +1,204 @@
+<?php
+session_start();
+if (!isset($_SESSION) || !isset($_SESSION['sistema']) || !$_SESSION['sistema'] == "pbrm") {
+    header("Location: /index.php");
+}
+
+
+// Include the main TCPDF library (search for installation path).
+require_once('../../tcpdf_include.php');
+require_once '../../../../../models/conection.php';
+
+// create new PDF document
+$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+// set document information
+$pdf->setAuthor('');
+$pdf->setTitle('1a');
+$pdf->setSubject('');
+$pdf->setKeywords('TCPDF, PDF, example, test, guide');
+
+// set default header data
+$pdf->SetPrintHeader(false);
+$pdf->SetPrintFooter(false);
+// set header and footer fonts
+
+// set default monospaced font
+$pdf->setDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+
+// set auto page breaks
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+
+// set font
+$pdf->setFont('dejavusans', '', 10);
+
+
+
+
+$consulta = "SELECT *, ante_dependencias.id_antedependencia as id_dependencia, ante_areas.id_area as id_area FROM ante_areas 
+LEFT JOIN dependencias_generales ON ante_areas.id_dependencia_general = dependencias_generales.id_dependencia 
+LEFT JOIN dependencias_auxiliares ON ante_areas.id_dependencia_aux = dependencias_auxiliares.id_dependencia_auxiliar 
+LEFT JOIN proyectos ON ante_areas.id_proyecto = proyectos.id_proyecto 
+LEFT JOIN ante_dependencias ON ante_areas.id_dependencia = ante_dependencias.id_antedependencia
+LEFT JOIN programas_presupuestarios ON proyectos.id_programa = programas_presupuestarios.id_programa 
+LEFT JOIN titulares ON titulares.id_area = ante_areas.id_area 
+GROUP BY ante_areas.id_area";
+
+$stm = $con->query($consulta);
+$areas = $stm->fetchAll(PDO::FETCH_ASSOC);
+
+
+$stm = $con->query("SELECT * FROM setings a
+JOIN titulares t ON t.id_titular = a.id_tesoreria");
+$tesorero = $stm->fetch(PDO::FETCH_ASSOC);
+
+
+function traeDirector($con, $id_dependencia){
+    $stm = $con->query("SELECT * FROM titulares WHERE id_dependencia = $id_dependencia");
+    $Director = $stm->fetch(PDO::FETCH_ASSOC);
+    if($Director){
+        return $Director;
+    }else{
+        return array("id_titular"=>0,"nombre"=>" ","apellidos"=>" ","cargo"=>" ","gradoa"=>" ","id_area"=>NULL,"id_registrante"=>0,"fecha_alta"=>"","id_dependencia"=>0);
+    }
+}
+
+
+$stm = $con->query("SELECT * FROM setings a
+JOIN titulares t ON t.id_titular = a.id_uippe");
+$DirectorUIPPE = $stm->fetch(PDO::FETCH_ASSOC);
+
+
+$anio = $_SESSION['anio'];
+$sqlajustes = $con->query("SELECT * FROM setings WHERE year_report = $anio");
+$ajustes = $sqlajustes->fetch(PDO::FETCH_ASSOC);
+$escudo = '../../../../../' . $ajustes['path_logo_ayuntamiento'];
+$administracion = '../../../../../' . $ajustes['path_logo_administracion'];
+
+// add a pages
+foreach($areas as $a){
+    $Director = traeDirector($con, $a['id_dependencia']);
+    
+    $pdf->AddPage();
+    $html0 = '
+    <table style="width:100%;">
+        <tbody>
+            <tr>
+                <td style="width:15%; text-align: center;" rowspan="3"><img src="'.$escudo.'" style="width: 60px;" class="img-fluid" alt="" align="left"></td>    
+                <td style="width:70%; text-align: center; font-size: 12px">Sistema de Coordinación Hacendaria del Estado de México con sus Municipios</td>
+                <td style="width:15%; text-align: center;" rowspan="3"> <img src="'.$administracion.'" class="img-fluid" alt="" align="right"></td>
+            </tr>
+            <tr>
+                <td style="text-align: center; font-size: 12px"> Manual para la Planeación, Programación y Presupuesto de Egresos Municipal '.$anio.'</td>
+            </tr>
+            <tr>
+                <td style="text-align: center; font-size: 12px">&nbsp; <br> Presupuesto Basado en Resultados Municipal <br></td>
+            </tr>
+        </tbody>
+    </table> 
+    <br>
+    <table style="width:100%; padding: 2px;">
+        <tr>
+            <td style="width:80%; text-align: rigth;" rowspan="3"></td>
+            <td style="width:10%; text-align: center; border:1px solid gray; font-size: 10px"> Ejercicio Fiscal:</td>
+            <td style="width:10%; text-align: center; border:1px solid gray; font-size: 10px" rowspan="3">'.$anio.'</td>
+        </tr>
+    </table> &nbsp; <br> &nbsp;';
+
+    $html1= '
+    <table style="width:100%;">
+        <tr>
+            <td style="width:35%;">
+                <table style="width:100%; padding: 2px;">
+                    <tr>
+                        <td style="width:50%; text-align: center; border:1px solid gray; font-size: 10px">Municipio: '.$ajustes['nombre_ente'].'</td>
+                        <td style="width:50%; text-align: center; border:1px solid gray; font-size: 10px">No.: '.$ajustes['numero_ente'].'</td>
+                    </tr>
+                    <tr>
+                        <td style="width:20%; text-align: center; border:1px solid gray; font-size: 10px">PbRM-01a</td> 
+                        <td style="width:80%; text-align: center; border:1px solid gray; font-size: 10px">PROGRAMA ANUAL DIMENSION ADMINISTRATIVA DEL GASTO</td> 
+                    </tr>
+                </table>
+            </td>
+            <td style="width:65%;">
+                <table style="width:100%; padding: 2px;">
+                    <tr>
+                        <td style="width:25%; text-align: right; font-size: 10px"></td>
+                        <td style="width:15%; text-align: center; border:1px solid gray; font-size: 10px"> Identificador</td>
+                        <td style="width:60%; text-align: left; border:1px solid gray; font-size: 10px"> Denominacion</td>
+                    </tr>
+                    <tr>
+                        <td style="width:25%; text-align: right; font-size: 10px">PROGRAMA PRESUPUESTARIO:</td>
+                        <td style="width:15%; text-align: center; border:1px solid gray; font-size: 10px">'. $a['codigo_programa'] .'</td>
+                        <td style="width:60%; text-align: left; border:1px solid gray; font-size: 10px">'. $a['nombre_programa'] .'</td>
+                    </tr>
+                    <tr>
+                        <td style="width:25%; text-align: right; font-size: 10px">DEPENDENCIA GENERAL:</td>
+                        <td style="width:15%; text-align: center; border:1px solid gray; font-size: 10px">'. $a['clave_dependencia'] .'</td>
+                        <td style="width:60%; text-align: left; border:1px solid gray; font-size: 10px">'. $a['nombre_dependencia_general'] .'</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>&nbsp; <br> &nbsp; <br>&nbsp;';
+
+    $html3 = '<table style="width:100%; padding: 3 px; border:1px solid gray;">
+    <tr>
+        <td rowspan="2" style="width:10%; text-align: center; border:1px solid gray; font-size: 10px">Código dependencia auxiliar</td>
+        <td rowspan="2" style="width:30%; text-align: center; border:1px solid gray; font-size: 10px">Denominación Dependencia Auxiliar </td>
+        <td colspan="2" style="width:40%; text-align: center; border:1px solid gray; font-size: 10px">Proyectos Ejecutados</td>
+        <td rowspan="2" style="width:20%; text-align: center; border:1px solid gray; font-size: 10px">Presupuesto autorizado por Proyecto.</td>
+    </tr>
+    <tr>
+        <td style="width:15%; text-align: center; border:1px solid gray; font-size: 10px">Clave del Proyecto</td>
+        <td style="width:25%; text-align: center; border:1px solid gray; font-size: 10px">Denominacion del Proyecto</td>
+    </tr>	
+        <tr>
+        <td style="width:10%; text-align: center; border:1px solid gray; font-size: 10px">'. $a['clave_dependencia_auxiliar'] .' <br><br><br><br><br><br></td>
+        <td style="width:30%; text-align: center; border:1px solid gray; font-size: 10px">'. $a['nombre_dependencia_auxiliar'] .'</td>
+        <td style="width:15%; text-align: center; border:1px solid gray; font-size: 10px">'. $a['codigo_proyecto'] .'</td>
+        <td style="width:25%; text-align: center; border:1px solid gray; font-size: 10px">'. $a['nombre_proyecto'] .'</td>
+        </tr>
+    </table>&nbsp; <br> &nbsp; <br>&nbsp;
+    <table style="width:100%; padding: 3 px;">
+        <tbody>
+            <tr>
+                <td style="width:60%; text-align: right;" rowspan="3"></td>
+                <td style="width:20%; text-align: center; border:1px solid gray; font-size: 10px">Presupuesto total</td>
+                <td style="width:20%; text-align: center; border:1px solid gray; font-size: 10px"></td>
+            </tr>
+        </tbody>
+    </table>&nbsp; <br> &nbsp; <br>&nbsp;';
+
+    $html4 = '<table style="width: 100%; text-align: center; border-spacing: 3px">
+    <tr>
+        <td style="font-size: 10px; width: 33%; border: 1px solid gray;"> ELABORÓ </td>
+        <td style="font-size: 10px; width: 33%; border: 1px solid gray;"> REVISÓ </td>
+        <td style="font-size: 10px; width: 33%; border: 1px solid gray;"> AUTORIZÓ </td>
+    </tr>
+    <tr>
+        <td style="font-size: 10px; width: 33%; border: 1px solid gray;"><br><br><br><br><br><br> '. mb_strtoupper($Director['gradoa'],'utf-8') .' '. mb_strtoupper($Director['nombre'],'utf-8') ." ". mb_strtoupper($Director['apellidos'],'utf-8') .'<br>'. mb_strtoupper($Director['cargo'],'utf-8') .'</td>
+        <td style="font-size: 10px; width: 33%; border: 1px solid gray;"><br><br><br><br><br><br>'. mb_strtoupper($tesorero['gradoa'],'utf-8') .' '. mb_strtoupper($tesorero['nombre'],'utf-8') ." ". mb_strtoupper($tesorero['apellidos'],'utf-8') .'<br>'. mb_strtoupper($tesorero['cargo'],'utf-8') .'</td>
+        <td style="font-size: 10px; width: 33%; border: 1px solid gray;"><br><br><br><br><br><br>'. mb_strtoupper($DirectorUIPPE['gradoa'],'utf-8') .' '. mb_strtoupper($DirectorUIPPE['nombre'],'utf-8') ." ". mb_strtoupper($DirectorUIPPE['apellidos'],'utf-8') .'<br>'. mb_strtoupper($DirectorUIPPE['cargo'],'utf-8') .'</td>
+    </tr>	
+    </table>&nbsp; <br> &nbsp; <br>&nbsp;';
+
+    $html = $html0 . $html1 . $html3 . $html4;
+
+    $pdf->writeHTML($html);
+} 
+// reset pointer to the last page
+$pdf->lastPage();
+
+//Close and output PDF document
+$pdf->Output('01a.pdf', 'I');
+
+//============================================================+
+// END OF FILE
+//============================================================+

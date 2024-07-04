@@ -36,8 +36,7 @@ $ajustes = $stm->fetch(PDO::FETCH_ASSOC);
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.6/flowbite.min.css" rel="stylesheet" />
 
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.0.0/mdb.min.css" rel="stylesheet" />
-	<script src="https://www.google.com/recaptcha/api.js?render=6LcZfqElAAAAADzerIJUYxVVssVh6IMposVwupF2"></script>
-	<script>
+  <script src="https://www.google.com/recaptcha/enterprise.js?render=6LfNPbUpAAAAAF6Nhssi2r0uUbjMbCcNCMX0AtYt"></script>	<script>
 		function onClick(e) {
 			e.preventDefault();
 			grecaptcha.ready(function() {
@@ -100,10 +99,12 @@ $ajustes = $stm->fetch(PDO::FETCH_ASSOC);
 		<div class="container-fluid h-custom">
 			<div class="row d-flex justify-content-center align-items-center h-100">
 				<div class="col-md-9 col-lg-6 col-xl-5">
+					<?php if($ajustes['path_logo_login']): ?>
 					<img src="<?= $ajustes['path_logo_login'] ?>" class="img-fluid" alt="">
+					<?php endif ?>
 				</div>
 				<div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-					<h3 class="text-center">Sistema de Monitoreo, Tablero de Control y Seguimiento del PbRM <br><b>(SIMONTS)</b></h3>
+					<h3 class="text-center"> <?= $ajustes['nombre_sistema'] ?> <br><b>(SIMONTS)</b></h3>
 					<br>
 					<?php 
 					if (isset($_SESSION['error_message'])) {
@@ -117,8 +118,8 @@ $ajustes = $stm->fetch(PDO::FETCH_ASSOC);
 						<div>
 							<label for="anio" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Año fiscal</label>
 							<select id="anio" name="anio" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-								<option selected value="2023">2023</option>
-								<option value="2024">2024</option>
+								<option value="2023">2023</option>
+								<option selected value="2024">2024</option>
 							</select>
 
 						</div>

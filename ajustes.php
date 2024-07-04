@@ -1,30 +1,30 @@
 <?php
 session_start();
+
 if ($_SESSION['sistema'] == "pbrm") :
     include 'header.php';
     include 'head.php';
     require_once 'Controllers/ajustes_controller.php';
     include 'Controllers/breadcrumbs.php';
 
-    $ajustes = TraeAjustes($con);
     if ($permisos['nivel'] > 3) {
         header("Location: ../index.php");
     }
+    ob_start();
 
 ?>
     <!DOCTYPE html>
     <html lang="es">
 
     <body>
-
         <div class="container text-center mx-auto">
             <br>
-            <?= breadcrumbs(array("Inicio" => "index,php", "Ajustes" => "ajustes.php")); ?>
+            <?= breadcrumbs(array("Inicio" => "index.php", "Ajustes" => "ajustes.php")); ?>
             <br>
             <br>
             <h2 class="mx-3 text-2xl font-bold dark:text-white mr-auto">Nombre y Numero de Ente Público</h2>
             <br>
-            <form action="" method="post">
+            <form  action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <tr style="text-align: center;" class="bg-white dark:bg-gray-800 dark:border-gray-700 ">
                         <td>
@@ -56,7 +56,7 @@ if ($_SESSION['sistema'] == "pbrm") :
             <h2 class="mx-3 text-2xl font-bold dark:text-white mr-auto">Logotipo Principal Inicio (JPG o PNG) </h2>
             <h2 class="mx-3 text-xl font-bold dark:text-white mr-auto">Todos los años</h2>
             <br>
-            <form action="" method="post" enctype="multipart/form-data">
+            <form  action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" enctype="multipart/form-data">
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <tbody>
                         <input type="hidden" name="logo_principal" value="logo_principal">
@@ -76,7 +76,7 @@ if ($_SESSION['sistema'] == "pbrm") :
             <h2 class="mx-3 text-xl font-bold dark:text-white mr-auto">Año <?= $ajustes['year_report'] ?></h2>
             <br>
 
-            <form action="" method="post" enctype="multipart/form-data">
+            <form  action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" enctype="multipart/form-data">
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <tbody>
                         <input type="hidden" name="escudo" value="escudo">
@@ -95,7 +95,7 @@ if ($_SESSION['sistema'] == "pbrm") :
             <h2 class="mx-3 text-xl font-bold dark:text-white mr-auto">Año <?= $ajustes['year_report'] ?></h2>
             <br>
 
-            <form action="" method="post" enctype="multipart/form-data">
+            <form  action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" enctype="multipart/form-data">
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <tbody>
                         <input type="hidden" name="logo" value="logo">
@@ -157,7 +157,7 @@ if ($_SESSION['sistema'] == "pbrm") :
                                         </svg> Agregar
                                     </button>
                                 <?php else : ?>
-                                    <form action="models/ajustes_model.php" method="POST">
+                                    <form  action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
                                         <input type="hidden" name="uippe" value="true">
                                         <input type="submit" name="delete" value="Eliminar" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
                                     </form>
@@ -190,8 +190,8 @@ if ($_SESSION['sistema'] == "pbrm") :
                                         </svg> Agregar
                                     </button>
                                 <?php else : ?>
-                                    <form action="models/ajustes_model.php" method="POST">
-                                        <input type="hidden" name="teso" value="true">
+                                    <form  action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+                                        <input type="hidden" name="id_teso" value="true">
                                         <input type="submit" name="delete" value="Eliminar" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
                                     </form>
                                 <?php endif ?>
@@ -204,7 +204,7 @@ if ($_SESSION['sistema'] == "pbrm") :
         </div>
 
         <hr class="my-8 h-px bg-gray-200 border-0 dark:bg-gray-700">
-        <h2 class="mt-2 text-2xl font-bold dark:text-white mr-auto">Fechas: Anteproyecto / Proyecto / Programa Anual</h2>
+        <h2 class="text-2xl font-bold dark:text-white mr-auto">Fechas: Anteproyecto / Proyecto / Programa Anual</h2>
         <br>
         <div class="overflow-x-auto relative">
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -227,7 +227,7 @@ if ($_SESSION['sistema'] == "pbrm") :
                 </thead>
 
                 <tbody>
-                    <form action="" method="post">
+                    <form  action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                         <?php
                         if ($ajustes["anteproyectoFechas"]) :
                             $anteproyecto = SeparadorFechas($ajustes["anteproyectoFechas"]);
@@ -254,7 +254,7 @@ if ($_SESSION['sistema'] == "pbrm") :
                             </td>
                         </tr>
                     </form>
-                    <form action="" method="post">
+                    <form  action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                         <?php
                         if ($ajustes["anteproyectoFechas"]) :
                             $anteproyecto = SeparadorFechas($ajustes["proyectoFechas"]);
@@ -281,14 +281,14 @@ if ($_SESSION['sistema'] == "pbrm") :
                             </td>
                         </tr>
                     </form>
-                    <form action="" method="post">
+                    <form  action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                         <?php
                         if ($ajustes["programaAFechas"]) :
                             $programa = SeparadorFechas($ajustes["programaAFechas"]);
                         endif ?>
                         <tr class="bg-white dark:bg-gray-800">
                             <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                Programa Anual
+                                Programa
                             </th>
                             <td class="py-4 px-6">
                                 <?= DayPiker($programa[0], 1) ?>
@@ -310,10 +310,6 @@ if ($_SESSION['sistema'] == "pbrm") :
                     </form>
                 </tbody>
             </table>
-            <br>
-        </div>
-
-        <br>
         </div>
 
 
@@ -344,7 +340,7 @@ if ($_SESSION['sistema'] == "pbrm") :
                         $titulares = TraeDirectores($con);
                         ?>
                         Elige entre las opciones existentes <br>
-                        <form action="models/ajustes_model.php" method="POST">
+                        <form  action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
 
                             <select name="id_uippe" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
 
@@ -388,7 +384,7 @@ if ($_SESSION['sistema'] == "pbrm") :
                         $titulares = TraeDirectores($con);
                         ?>
                         Elige entre las opciones existentes <br>
-                        <form action="models/ajustes_model.php" method="POST">
+                        <form  action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
 
                             <select name="id_teso" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
 
@@ -411,10 +407,16 @@ if ($_SESSION['sistema'] == "pbrm") :
 
 
         <?php include 'footer.php'; ?>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/datepicker.min.js"></script>
     </body>
-
+<br><br>
     </html>
+    <?php
+// Termina el buffer de salida y envía el contenido
+ob_end_flush();
+?>
 <?php else : ?>
+
     <script>
         window.location.href = 'login.php';
     </script>

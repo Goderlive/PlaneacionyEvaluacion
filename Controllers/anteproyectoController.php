@@ -104,8 +104,4 @@ function controller_ante_actividadesValidadas($con, $id_area){
         return 1;
     }
 }
-
-
-
-
 ?>

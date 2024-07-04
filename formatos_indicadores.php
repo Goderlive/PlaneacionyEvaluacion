@@ -34,7 +34,11 @@ if(!$_SESSION['sistema'] == 'pbrm'):?>
 <?= breadcrumbs(array("Inicio"=> "index.php", "Imprime Formatos Indicadores"=>""))?>
     <br>
 
+    
 
+    <?php if($permisos['nivel'] ==1): ?>
+        
+    <?php endif ?>
 
 
     <?php if($permisos['nivel'] <= 2 && !$_POST):

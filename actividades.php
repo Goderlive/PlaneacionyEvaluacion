@@ -6,9 +6,9 @@ if (!$_SESSION) { ?>
     </script>
 <?php
 }
-if ($_SESSION['sistema'] == 'pbrm') {
+if (isset($_SESSION['sistema']) == 'pbrm') {
     require_once 'Controllers/Actividades_Controlador.php';
-    $real_anio = date('Y');
+    $real_anio = $_SESSION['anio'];
     $anio = $_SESSION['anio'];
 ?>
     <!DOCTYPE html>
@@ -30,13 +30,12 @@ if ($_SESSION['sistema'] == 'pbrm') {
 
 
 
-            <?php if ($permisos['nivel'] > 3) :  // Primero veridicamos el permiso... EN CASO DE ENLACE ?>
+            <?php if ($_SESSION['nivel'] > 3) :  // Primero veridicamos el permiso... EN CASO DE ENLACE ?>
                 <div class="grid grid-cols-4">
                     <?php
                     $all = '';
                     if ($permisos['id_dependencia'] != '') {
-                        $dep = $permisos['id_dependencia'];
-                        $areas = areas_con($con, $dep, $real_anio);
+                        $areas = areas_con($con, $_SESSION['id_dependencia']);
                     } else { // En caso de que el permiso se encuentre en 
                         $dep = $permisos['id_area'];
                         $areas = unArea($con, $dep, $real_anio);

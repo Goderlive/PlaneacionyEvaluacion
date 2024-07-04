@@ -14,9 +14,6 @@ class MYPDF extends TCPDF {
 
 	//Page header
 	public function Header() {
-		// Logo
-		$image_file = K_PATH_IMAGES.'logo_metepec.jpg';
-		$this->Image($image_file, 10, 10, 15, '', 'JPG', '', 'T', false, 300, '', false, false, 0, false, false, false);
 		// Set font
 		$this->setFont('helvetica', 'B', 10);
 		// Title
@@ -103,10 +100,6 @@ LEFT JOIN proyectos py ON py.id_proyecto = ar.id_proyecto
 
 $stm = $con->query($sql);
 $actividades = $stm->fetchAll();
-
-print '<pre>';
-var_dump($actividades);
-die();
 
 
 // print a block of text using Write()

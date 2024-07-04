@@ -7,7 +7,8 @@
 /dataSources/
 /archivos/
 /dataSources.local.xml
-
+/img/
 /parap.php
 /parap2.php
 # Personales
+models/conection.php

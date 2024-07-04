@@ -162,9 +162,9 @@ $membretes = '
 <table class="GeneratedTable" style="width: 100%;">
   <tbody>
     <tr>
-      <td style="width: 15%" rowspan="3"><img src="images/logo_metepec.jpg" height="50"/></td>
+      <td style="width: 15%" rowspan="3"><img <img src="../../../'.$logos['path_logo_ayuntamiento'].'" height="50"/></td>
       <td style="width: 67%; text-align: center">SISTEMA DE COORDINACIÓN HACENDARIA DEL ESTADO DE MÉXICO CON SUS MUNICIPIOS</td>
-      <td style="width: 18%;text-align: center " rowspan="3"><img src="images/metepec_logoc.jpg" height="50"/></td>
+      <td style="width: 18%;text-align: center " rowspan="3"><img src="../../../'.$logos['path_logo_administracion'].'" height="50"/>'.$reconduccion['id_reconduccion_actividades'].'</td>
     </tr>
     <tr>
       <td style="text-align: center">DICTAMEN DE RECONDUCCIÓN Y ACTUALIZACIÓN PROGRAMATÍCA - PRESUPUESTAL PARA RESULTADOS</td>
@@ -217,7 +217,7 @@ if($a == 1 && $b == 0 && $c == 0 && $d == 0){
 				<td style="width: 48%; border: 1px solid black; border-collapse: collapse;"></td> 
 			</tr>
 			<tr>
-				<td style="width: 48%; border: 1px solid black; border-collapse: collapse;">Objetivo: '.$objetivo_programa.'</td> 
+				<td style="width: 48%; border: 1px solid black; border-collapse: collapse; font-size: 6px;">Objetivo: '.$objetivo_programa.'</td> 
 				<td style="width: 4%"></td>
 				<td style="width: 48%; border: 1px solid black; border-collapse: collapse;"></td> 
 			</tr>
@@ -256,7 +256,7 @@ if($b == 1 || $c == 1 || $d == 1){
 			<tr>
 				<td style="width: 48%; border: 1px solid black; border-collapse: collapse;"></td> 
 				<td style="width: 4%"></td>
-				<td style="width: 48%; border: 1px solid black; border-collapse: collapse;">Objetivo: '.$objetivo_programa.'</td> 
+				<td style="width: 48%; border: 1px solid black; border-collapse: collapse; font-size: 6px;">Objetivo: '.$objetivo_programa.'</td> 
 			</tr>
 		</tbody>
 	</table>	
@@ -371,7 +371,8 @@ function CreaTabla($data, $con){
 	if(count($data) != 0){
 		foreach($data as $d){
 		//var_dump($d);
-		$tavances = traeavances($con, $d['id_actividad']);
+		//$tavances = traeavances($con, $d['id_actividad']);
+		$tavances = $d['act_realizadas_sofar'];
 		$totalold = SumaAnual($d['programacion_inicial']);
 		$totalnew = SumaAnual($d['programacion_final']);
 		$trimestral = Trimestres($d['programacion_final']);
@@ -472,7 +473,7 @@ $justificacion = '&nbsp;
 <br>
 <table style="width: 100%; border: 1px solid black; border-collapse: collapse;">
 	<tr>
-		<td>Justificación: '.$justificaciones.'</td>
+		<td style="font-size: 6px;">Justificación: '.$justificaciones.'</td>
 	</tr>
 
 </table>
