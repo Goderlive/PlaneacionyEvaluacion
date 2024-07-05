@@ -169,6 +169,7 @@ function TraeEncargados($con, $id_area, $id_dependencia)
 
 if (isset($_POST) && $_POST) {
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['reg_nueva_actividad'])) {
+
         // Validar y limpiar entradas
         $idArea = filter_input(INPUT_POST, 'id_area', FILTER_VALIDATE_INT);
         $idUsuario = filter_input(INPUT_POST, 'id_usuario', FILTER_SANITIZE_STRING);
@@ -176,6 +177,8 @@ if (isset($_POST) && $_POST) {
         $depGeneral = filter_input(INPUT_POST, 'general', FILTER_SANITIZE_STRING);
         $depAuxiliar = filter_input(INPUT_POST, 'auxiliar', FILTER_SANITIZE_STRING);
         $programa = filter_input(INPUT_POST, 'programa', FILTER_SANITIZE_STRING);
+        $desc_actividad = filter_input(INPUT_POST, 'nombre_actividad', FILTER_SANITIZE_STRING);
+
 
         if ($idArea && $idUsuario && $noOficio && $depGeneral && $depAuxiliar && $programa) {
             // Preparar la consulta
@@ -203,23 +206,32 @@ if (isset($_POST) && $_POST) {
         $last = $stm->fetch(PDO::FETCH_ASSOC);
         $last = $last['LAST_INSERT_ID()'];
 
-        $last = 0;
         $suma_old = 0;
-        $desc_actividad = filter_input(INPUT_POST, 'nombre_actividad', FILTER_VALIDATE_INT);
         $id_unidad = filter_input(INPUT_POST, 'id_unidad', FILTER_VALIDATE_INT);
-        $nombre_actividad = $_POST['nombre_actividad'];
-        $id_unidad = $_POST['id_unidad'];
-        $meta_anual_actual = 0;
-        $meta_anual_actual = sumaMeses($_POST);
+        $justificacion = filter_input(INPUT_POST, 'justificacion', FILTER_VALIDATE_INT);
         $avance_actual = 0;
-        $programacion_old = array("0");
+        $programacion_old = '"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"';
+        $meta_anual_actual = 0;
+
+        $programacion_nueva = '"'.$_POST['enero'].'", "'.$_POST['febrero'].'", "'.$_POST['marzo'].'", "'.$_POST['abril'].'", "'.$_POST['mayo'].'", "'.$_POST['junio'].'", "'.$_POST['julio'].'", "'.$_POST['agosto'].'", "'.$_POST['septiembre'].'", "'.$_POST['octubre'].'", "'.$_POST['noviembre'].'", "'.$_POST['diciembre'].'"';
 
 
 
-        $sql = "INSERT INTO programacion_reconducciones (id_reconduccion, desc_actividad, u_medida, meta_anual_anterior, meta_anual_actual, act_realizadas_sofar, programacion_inicial, programacion_final, justificacion) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+        // Vamos a traer todas las actividades y eligiremos el ultimo numero
+        $stm = $con->query("SELECT codigo_actividad FROM actividades WHERE id_area = $idArea ORDER BY codigo_actividad DESC");
+        $actividades_area = $stm->fetch(PDO::FETCH_ASSOC);
+        $no_actividad = $actividades_area['codigo_actividad'] + 1;
+        
+        $stm = $con->query("SELECT nombre_unidad FROM unidades_medida WHERE id_unidad = $id_unidad");
+        $unidad = $stm->fetch(PDO::FETCH_ASSOC);
+        $nombre_unidad = $unidad['nombre_unidad']; 
+
+        $sql = "INSERT INTO programacion_reconducciones (id_reconduccion, no_actividad, desc_actividad, u_medida, id_u_medida, meta_anual_anterior, meta_anual_actual, act_realizadas_sofar, programacion_inicial, programacion_final, justificacion) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
         $sqlr = $con->prepare($sql);
-        $sqlr->execute(array($last, $desc_actividad, $id_unidad, $suma_old, $meta_anual_actual, $avance_actual, $programacion_old, $programacion_nueva, $justificacion));
-        header("Location: ../reconduccion_actividades.php");
+        $sqlr->execute(array($last, $no_actividad, $desc_actividad, $nombre_unidad, $id_unidad, $suma_old, $meta_anual_actual, $avance_actual, $programacion_old, $programacion_nueva, $justificacion));
+        echo "<script>window.location.href = 'reconduccion_actividades.php';</script>";
+
+        die();
     }
 
 

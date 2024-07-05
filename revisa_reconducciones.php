@@ -38,7 +38,13 @@ if($_SESSION['sistema'] == "pbrm" || $_SESSION['id_permiso'] != 1){
                 <?php 
                 $programaciones = CalendarizacionesdeReconduccionAct($con, $reconduccion['id_reconduccion_actividades']);
                 foreach($programaciones as $programacion):   // Tenemos una vista de cada programacion dentro de cada reconduccion.
-                    $dataActividad = datosdeActividad($con, $programacion['id_actividad']);
+
+                    if($programacion['id_actividad'] != NULL){
+                        $dataActividad = datosdeActividad($con, $programacion['id_actividad']);
+                    }else{
+                        $dataActividad = array("codigo_actividad" => $programacion['no_actividad'], "nombre_actividad" => $programacion['desc_actividad'], "unidad" => $programacion['u_medida']);
+                    }
+
                     if(DefineTipo($con, $programacion['programacion_inicial'], $programacion['programacion_final']) == "Externa"){
                         $bg_table = "bg-blue-200 ";
                     }else{

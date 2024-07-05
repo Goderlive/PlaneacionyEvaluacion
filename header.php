@@ -24,7 +24,7 @@ if (!isset($_SESSION['sistema']) == "pbrm") {
     $actividades = array("actividades.php", "reconduccion_actividades.php", "actividades_todas.php", "formatos_actividades.php", "reportes.php", "reportes_cont.php", "programacion_actividades.php", "mis_reconducciones_actividades.php");
     $valida_actividades = array("validaediciones.php", "reconduccion_actividades.php", "actividades_avances.php", "admin_formatos_actividades.php");
     $indicadores = array("indicadores.php", "reconduccion_indicadores.php", "matrices.php", "formatos_indicadores.php");
-    $valida_indicadores = array("indicadores.php", "reconduccion_indicadores.php", "matrices.php", "formatos_indicadores.php", "indicadores_avance.php");
+    $valida_indicadores = array("indicadores.php", "reconduccion_indicadores.php", "matrices.php", "formatos_indicadores.php", "indicadores_avance.php", "admin_formatos_actividades_i.php");
     $pdm = array("pdm_admin.php");
     $anteproyecto = array("anteproyecto.php");
 
@@ -167,7 +167,7 @@ if (!isset($_SESSION['sistema']) == "pbrm") {
                                     <?= item_context("actividades.php", "Actividades por Área", array(1, 2, 3, 4, 5), $mi_permiso) ?>
                                     <?php
                                     if ($mi_permiso != 5) {
-                                        echo item_context("reconduccion_actividades.php", "Reconducciónes de Actividades", array(1, 2, 3, 4, 5), $mi_permiso);
+                                        echo item_context("reconduccion_actividades.php", "Reconducciónes de Actividades", array(1, 2, 3, 4), $mi_permiso);
                                         echo item_context("admin_formatos_actividades.php", "Formatos Impresos", array(1, 2), $mi_permiso);
                                     }
                                     ?>
@@ -187,7 +187,9 @@ if (!isset($_SESSION['sistema']) == "pbrm") {
                             <div id="dropdownNavbar" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                                 <ul class="py-1 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownNavbarButton">
                                     <?= item_context("reconduccion_indicadores.php", "Reconducción de Indicadores", array(1, 2, 3, 4), $mi_permiso) ?>
-                                    <?= item_context("formatos_indicadores.php", "Formatos Impresos", array(1, 2, 3, 4), $mi_permiso) ?>
+                                    <?= item_context("formatos_indicadores.php", "Formatos Impresos", array(3, 4), $mi_permiso) ?>
+                                    <?= item_context("admin_formatos_actividades_i.php", "Formatos Impresos", array(1, 2), $mi_permiso)  ?>
+
                                 </ul>
                             </div> <?php endif ?>
                         <a href="logout.php"><svg class="w-6 h-6 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

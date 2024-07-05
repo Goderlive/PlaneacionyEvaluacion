@@ -12,7 +12,7 @@ if (!$_SESSION['sistema'] == 'pbrm') : ?>
 <?php include 'head.php'; ?>
 <?php include 'header.php'; ?>
 <?php include 'Controllers/breadcrumbs.php'; ?>
-<?php include 'models/admin_formatos_actividades.php'; ?>
+<?php include 'models/admin_formatos_actividades_i.php'; ?>
 
 <?php if ($permisos['nivel'] > 2) {
     header("Location: index.php");
@@ -68,7 +68,7 @@ function BotonSubir($id_dependencia, $trimestre){
 
                         <td class="px-6 py-4">
                             <?php if($formato = traeporDependenciasytrim($con, $dependencia['id_dependencia'], 1)): ?>
-                                <?php $dir = substr($formato['dir_formatoactividades'], 3) ?>
+                                <?php $dir = $formato['dir_formatoindicador'] ?>
                                 <a href="<?= $dir ?>" target="_blank" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"> Imprimir </a>
                             <?php else: ?>
                                 <?= BotonSubir($dependencia['id_dependencia'], '1') ?>
@@ -77,7 +77,7 @@ function BotonSubir($id_dependencia, $trimestre){
                         </td>
                         <td class="px-6 py-4">
                         <?php if($formato = traeporDependenciasytrim($con, $dependencia['id_dependencia'], 2)): ?>
-                            <?php $dir = substr($formato['dir_formatoactividades'], 3) ?>
+                            <?php $dir = $formato['dir_formatoactividades'] ?>
                                 <a href="<?= $dir ?>" target="_blank" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"> Imprimir </a>
                             <?php else: ?>
                                 <?= BotonSubir($dependencia['id_dependencia'], '2') ?>
@@ -86,7 +86,7 @@ function BotonSubir($id_dependencia, $trimestre){
                         </td>
                         <td class="px-6 py-4">
                         <?php if($formato = traeporDependenciasytrim($con, $dependencia['id_dependencia'], 3)): ?>
-                            <?php $dir = substr($formato['dir_formatoactividades'], 3) ?>
+                            <?php $dir = $formato['dir_formatoactividades'] ?>
                                 <a href="<?= $dir ?>" target="_blank" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"> Imprimir </a>
                             <?php else: ?>
                                 <?= BotonSubir($dependencia['id_dependencia'], '3') ?>
@@ -95,7 +95,7 @@ function BotonSubir($id_dependencia, $trimestre){
                         </td>
                         <td class="px-6 py-4">
                         <?php if($formato = traeporDependenciasytrim($con, $dependencia['id_dependencia'], 4)): ?>
-                            <?php $dir = substr($formato['dir_formatoactividades'], 3) ?>
+                            <?php $dir = $formato['dir_formatoactividades'] ?>
                                 <a href="<?= $dir ?>" target="_blank" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"> Imprimir </a>
                             <?php else: ?>
                                 <?= BotonSubir($dependencia['id_dependencia'], '4') ?>
@@ -114,7 +114,7 @@ function BotonSubir($id_dependencia, $trimestre){
             $id_dependencia = $_POST['id_dependencia'];
             $trimestre = $_POST['trimestre'];
                 ?>
-            <form action="models/admin_formatos_actividades.php" method="post" enctype="multipart/form-data">
+            <form action="" method="POST" enctype="multipart/form-data">
                                 
                 <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input">Subir Archivo</label>
 

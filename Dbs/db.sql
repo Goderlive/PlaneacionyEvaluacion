@@ -7113,6 +7113,16 @@ CREATE TABLE firmadosActividades(
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 
+
+DROP TABLE IF EXISTS firmadosIndicadores;
+CREATE TABLE firmadosIndicadores(
+  id_formatoindocador INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  dir_formatoindicador VARCHAR(255),
+  id_dependencia INT, 
+  trimestre VARCHAR(5)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+
 DROP TABLE IF EXISTS udmed_pdm;
 CREATE TABLE udmed_pdm(
   id_udmed_pdm INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -11814,6 +11824,10 @@ CREATE TABLE actualizacionFoda(
   2t_txt TEXT,
   3t_txt TEXT,
   4t_txt TEXT,
+  i1t_txt TEXT,
+  i2t_txt TEXT,
+  i3t_txt TEXT,
+  i4t_txt TEXT,
   id_programa_presupuestario INT,
   txt_problematica TEXT,
   id_dependencia_responsable INT

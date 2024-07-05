@@ -22,3 +22,18 @@ function NombrePrograma($con, $id_programa){
     $programas = $stm->fetch(PDO::FETCH_ASSOC);
     return $programas;
 }
+
+
+if($_POST){
+    if ($_SESSION['sistema'] != 'pbrm') {
+        header("Location: ../login.php");
+        die();
+    }
+
+
+    $anio = $_SESSION['anio'];
+
+    print '<pre>';
+    var_dump($_POST);
+    die();
+}
