@@ -167,6 +167,9 @@ function TraeEncargados($con, $id_area, $id_dependencia)
 }
 
 
+
+
+
 if (isset($_POST) && $_POST) {
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['reg_nueva_actividad'])) {
 
@@ -178,6 +181,7 @@ if (isset($_POST) && $_POST) {
         $depAuxiliar = filter_input(INPUT_POST, 'auxiliar', FILTER_SANITIZE_STRING);
         $programa = filter_input(INPUT_POST, 'programa', FILTER_SANITIZE_STRING);
         $desc_actividad = filter_input(INPUT_POST, 'nombre_actividad', FILTER_SANITIZE_STRING);
+        $justificacion = filter_input(INPUT_POST, 'justificacion', FILTER_SANITIZE_STRING);
 
 
         if ($idArea && $idUsuario && $noOficio && $depGeneral && $depAuxiliar && $programa) {
@@ -206,9 +210,9 @@ if (isset($_POST) && $_POST) {
         $last = $stm->fetch(PDO::FETCH_ASSOC);
         $last = $last['LAST_INSERT_ID()'];
 
+
         $suma_old = 0;
         $id_unidad = filter_input(INPUT_POST, 'id_unidad', FILTER_VALIDATE_INT);
-        $justificacion = filter_input(INPUT_POST, 'justificacion', FILTER_VALIDATE_INT);
         $avance_actual = 0;
         $programacion_old = '"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"';
         $meta_anual_actual = 0;
@@ -230,54 +234,7 @@ if (isset($_POST) && $_POST) {
         $sqlr = $con->prepare($sql);
         $sqlr->execute(array($last, $no_actividad, $desc_actividad, $nombre_unidad, $id_unidad, $suma_old, $meta_anual_actual, $avance_actual, $programacion_old, $programacion_nueva, $justificacion));
         echo "<script>window.location.href = 'reconduccion_actividades.php';</script>";
-
         die();
-    }
-
-
-
-    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['reg_nueva_actividad'])) {
-        $id_area = $_POST['id_area'];
-        $nombre_actividad = $_POST['nombre_actividad'];
-        $id_unidad = $_POST['id_unidad'];
-        $enero = $_POST['enero'];
-        $febrero = $_POST['febrero'];
-        $marzo = $_POST['marzo'];
-        $abril = $_POST['abril'];
-        $mayo = $_POST['mayo'];
-        $junio = $_POST['junio'];
-        $julio = $_POST['julio'];
-        $agosto = $_POST['agosto'];
-        $septiembre = $_POST['septiembre'];
-        $octubre = $_POST['octubre'];
-        $noviembre = $_POST['noviembre'];
-        $diciembre = $_POST['diciembre'];
-        $programado_anual_anterior = 0;
-        $alcanzado_anual_anterior = 0;
-        $validado = 0;
-        // Primero recabamos los datos
-        //Luego complementamos los datos que no tenemos, como el NUMERO DE LA ACTIVIDAD
-
-        $codigo_actividad = traeNumeroActividad($con, $id_area);
-
-
-        $sql = "INSERT INTO actividades (codigo_actividad, nombre_actividad, id_unidad, programado_anual_anterior, alcanzado_anual_anterior, id_area, validado) VALUES (?,?,?,?,?,?,?)";
-        $sqlr = $con->prepare($sql);
-        $sqlr->execute(array($codigo_actividad, $nombre_actividad, $id_unidad, $programado_anual_anterior, $alcanzado_anual_anterior, $id_area, $validado));
-
-        $ultimoId = $con->lastInsertId();
-
-        $sql = "INSERT INTO programaciones (enero, febrero, marzo, abril, mayo, junio, julio, agosto, septiembre, octubre, noviembre, diciembre, id_actividad) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
-        $sqlr = $con->prepare($sql);
-        $sqlr->execute(array($enero, $febrero, $marzo, $abril, $mayo, $junio, $julio, $agosto, $septiembre, $octubre, $noviembre, $diciembre, $ultimoId));
-
-?>
-        <form id="myForm" action="mis_reconducciones_actividades.php" method="get">
-        </form>
-        <script type="text/javascript">
-            document.getElementById('myForm').submit();
-        </script>
-<?php
     }
 
     if (isset($_POST['data'])) {
