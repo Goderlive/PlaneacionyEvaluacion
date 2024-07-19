@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['entrada'])) {
 
     // Limpieza de los datos
     $actividadesTxt = limpiarDatos($lineas);
-    
+
     //Traemos las Actividades
     $sentencia = "SELECT * FROM actividades ac
     JOIN programaciones pr ON pr.id_actividad = ac.id_actividad

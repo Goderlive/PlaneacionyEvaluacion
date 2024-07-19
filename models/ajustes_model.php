@@ -34,6 +34,8 @@ function armaFechas($d1, $m1, $d2, $m2)
 }
 
 if ($_POST) {
+
+
     if ($_SESSION['sistema'] != 'pbrm') {
         header("Location: ../login.php");
         die();
@@ -64,35 +66,46 @@ if ($_POST) {
 
 
     if (isset($_POST['delete'])) {
-        if (isset($_POST['uippe']) && $_POST['uippe']) {
-            $id_uippe = $_POST['id_uippe'];
-            $sql = "UPDATE setings SET id_uippe = NULL WHERE year_report = $anio";
-        } elseif (isset($_POST['id_teso']) && $_POST['id_teso']) {
-            $id_tesoreria = $_POST['id_teso'];
-            $sql = "UPDATE setings SET id_tesoreria = NULL WHERE year_report = $anio";
-        }
+        if (isset($_POST['uippe'])) {
+            $quien = "id_uippe";
+        } elseif (isset($_POST['id_teso'])) {
+            $quien = "id_tesoreria";
+            }
+        $sql = "UPDATE setings SET $quien = NULL WHERE year_report = $anio";
         $sqlr = $con->prepare($sql);
         $sqlr->execute();
+        header("Location: ajustes.php");
+
     }
 
-    if (isset($_POST['anteproyecto'])) {
-        $text = armaFechas($_POST["dia1"], $_POST["mes1"], $_POST["dia2"], $_POST["mes2"]);
-        $sql = "UPDATE setings SET anteproyectoFechas = '$text' WHERE year_report = $anio";
+    if (isset($_POST['anteproyecto']) || isset($_POST['proyecto']) || isset($_POST['programa'])) {
+        $d1 = $_SESSION['anio'];
+        $d1 .= (strlen($_POST['mes1'])) < 2 ? "0".$_POST['mes1'] : $_POST['mes1'];  
+        $d1 .= (strlen($_POST['dia1'])) < 2 ? "0".$_POST['dia1'] : $_POST['dia1'];
+
+        $d2 = $_SESSION['anio'];
+        $d2 .= (strlen($_POST['mes2'])) < 2 ? "0".$_POST['mes2'] : $_POST['mes2'];  
+        $d2 .= (strlen($_POST['dia2'])) < 2 ? "0".$_POST['dia2'] : $_POST['dia2'];  
+
+        $date = array("$d1", "$d2");        
+        $date = json_encode($date);
+
+        if(isset($_POST['anteproyecto'])){
+            $sql = "UPDATE setings SET anteproyectoFechas = '$date' WHERE year_report = $anio";
+        }
+        if(isset($_POST['proyecto'])){
+            $sql = "UPDATE setings SET proyectoFechas = '$date' WHERE year_report = $anio";
+        }
+        if(isset($_POST['programa'])){
+            $sql = "UPDATE setings SET programaAFechas = '$date' WHERE year_report = $anio";
+        }
+
+
+
         $sqlr = $con->prepare($sql);
         $sqlr->execute();
     }
-    if (isset($_POST['proyecto'])) {
-        $text = armaFechas($_POST["dia1"], $_POST["mes1"], $_POST["dia2"], $_POST["mes2"]);
-        $sql = "UPDATE setings SET proyectoFechas = '$text' WHERE year_report = $anio";
-        $sqlr = $con->prepare($sql);
-        $sqlr->execute();
-    }
-    if (isset($_POST['programa'])) {
-        $text = armaFechas($_POST["dia1"], $_POST["mes1"], $_POST["dia2"], $_POST["mes2"]);
-        $sql = "UPDATE setings SET programaAFechas = '$text' WHERE year_report = $anio";
-        $sqlr = $con->prepare($sql);
-        $sqlr->execute();
-    }
+    
 
     if (isset($_POST['logo_principal']) && $_FILES['imagen_principal']['error'] == 0) {
         // Directorio donde se guardarán las imágenes
