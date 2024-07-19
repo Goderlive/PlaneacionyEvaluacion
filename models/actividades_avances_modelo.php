@@ -134,13 +134,14 @@ function Pendientesareaspdm($con, $id_area)
 
 function Actividades_DB($con, $id_area)
 {
-    $sql = "SELECT a.*, p.*, li.* FROM actividades a
-    LEFT JOIN programaciones p ON p.id_actividad = a.id_actividad
-    LEFT JOIN lineasactividades la ON la.id_actividad = a.id_actividad
-    LEFT JOIN pdm_lineas li ON li.id_linea = la.id_linea 
-    WHERE a.id_area = $id_area
-    GROUP BY a.id_actividad
-    ORDER BY a.codigo_actividad ASC
+    $sql = "SELECT a.*, p.*, li.* 
+FROM actividades a
+LEFT JOIN programaciones p ON p.id_actividad = a.id_actividad
+LEFT JOIN lineasactividades la ON la.id_actividad = a.id_actividad
+LEFT JOIN pdm_lineas li ON li.id_linea = la.id_linea 
+WHERE a.id_area = $id_area
+GROUP BY a.id_actividad
+ORDER BY CAST(a.codigo_actividad AS UNSIGNED) ASC
     ";
     $stm = $con->query($sql);
     $actividades = $stm->fetchAll(PDO::FETCH_ASSOC);

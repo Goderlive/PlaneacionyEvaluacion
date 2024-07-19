@@ -15,6 +15,12 @@ function TieneDirector($con, $id_dependencia){
     return $titularDependencia;
 }
 
+function TraeTodasDepencias($con, $anio){
+    $stm = $con->query("SELECT * FROM dependencias WHERE anio = $anio");
+    $dependencias = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $dependencias;
+}
+
 
 function CuentaAvancesFUAT($con, $id_dependencia, $mesI, $mesF){
     $stm = $con->query("SELECT COUNT(av.id_avance) FROM avances av

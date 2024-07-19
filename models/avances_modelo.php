@@ -98,6 +98,14 @@ if($_POST){
         $tipo = "actividades";
     }
 
+    if(isset($_POST['cancela_validacion'])){
+        $sql = "UPDATE avances SET validado = 0, validado_2 = 0 ,id_usuario_validador = NULL, id_usuario_validador_2 = NULL WHERE id_avance = ?";
+        $sqlr = $con->prepare($sql);
+        $sqlr->execute(array($data['id_avance']));
+        $tipo = "actividades";
+    }
+
+    
     if(isset($_POST['valida_indicador'])){
         $sql = "UPDATE avances_indicadores SET validado = 1, id_usuario_valida = ?, fecha_valida = NOW() WHERE id_avance = ?";
         $sqlr = $con->prepare($sql);

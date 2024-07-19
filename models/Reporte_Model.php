@@ -179,6 +179,10 @@ function cleanFileName($fileName) {
 
 if (isset($_POST['jfnkasjnkasdf34q345']) && $_POST['jfnkasjnkasdf34q345'] == "Enviar") {
     if ($_SESSION['sistema'] == 'pbrm') {
+
+        print '<pre>';
+        var_dump($_POST);
+        die();
         $year = date('Y');
         $mes = $_POST['mes'];
         $id_actividad = $_POST['id_actividad'];
@@ -191,6 +195,7 @@ if (isset($_POST['jfnkasjnkasdf34q345']) && $_POST['jfnkasjnkasdf34q345'] == "En
         $justificacion = isset($_POST['justificacion']) ? $_POST['justificacion'] : NULL;
         $recursos_propios = isset($_POST['recursos_propios']) ? $_POST['recursos_propios'] : NULL;
         $actividad_trimestral = isset($_POST['actividad_trimestral']) ? $_POST['actividad_trimestral'] : NULL;
+        $$path_evidencia_evidencia = NULL;  // Inicializa la variable
         $path_evidencia_evidencia_mini = NULL;  // Inicializa la variable
 
         if ($recursos_federales || $recursos_estatales || $recursos_propios) {

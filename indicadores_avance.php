@@ -128,6 +128,9 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                         <thead class="text-xs text-center text-gray-500 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="px-3 py-3">
+                                    #
+                                </th>
+                                <th scope="col" class="px-3 py-3">
                                     Nombre Indicador
                                 </th>
                                 <th scope="col" class="px-3 py-3">

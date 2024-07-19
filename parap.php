@@ -8,82 +8,98 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
 
 </head>
+
 <body class="bg-gray-100 p-6">
 
-<?php if($_POST): ?>
-<?php print '<pre>';
-var_dump($_POST);
-die(); ?>
-<?php endif ?>
-    <form id="dynamic-form" action="" method="POST">
-        <div id="form-container">
-            <div class="field-group mb-4">
-                <label for="localidades" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione múltiples opciones <b title="Usa el botón Ctrl en tu teclado más Click del mouse">Ayuda </b></label> 
-                <select multiple required name="localidades[]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" onchange="calcularSumatoria()">
-                    <option value="1" data-valor="10">Localidad 1</option>
-                    <option value="2" data-valor="20">Localidad 2</option>
-                    <!-- Agrega más opciones aquí -->
-                </select>
-                
-                <label for="beneficiarios" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Beneficiarios Directos</label>
-                <input type="number" required name="beneficiarios[]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-            </div>
-        </div>
+    <?php
+require_once 'models/conection.php';
+$trimestre = 2;
+    $sqldependencia = "SELECT * FROM dependencias dp 
+WHERE dp.anio = '2024'";
+    $stmdependencia = $con->query($sqldependencia);
+    $dependencias = $stmdependencia->fetchAll(PDO::FETCH_ASSOC);
 
-        <button id="add-field-btn" type="button" class="mt-4 bg-blue-500 text-white p-2 rounded">Agregar Nuevo Campo</button>
-        <button type="submit" class="mt-4 bg-green-500 text-white p-2 rounded">Enviar</button>
-    </form>
 
-    <script>
-        document.getElementById('add-field-btn').addEventListener('click', addNewField);
+    function traeAreas($con, $id_dependencia){
+        $sql = "SELECT * FROM areas WHERE id_dependencia = $id_dependencia";
+        $stm = $con->query($sql);
+        $areas = $stm->fetchAll(PDO::FETCH_ASSOC);
+        return $areas;
+    }
 
-        function addNewField() {
-            const formContainer = document.getElementById('form-container');
-            const fieldGroup = document.createElement('div');
-            fieldGroup.className = 'field-group mb-4';
-
-            const selectLabel = document.createElement('label');
-            selectLabel.className = 'block mb-2 text-sm font-medium text-gray-900 dark:text-white';
-            selectLabel.innerHTML = 'Seleccione múltiples opciones <b title="Usa el botón Ctrl en tu teclado más Click del mouse">Ayuda </b>';
-            fieldGroup.appendChild(selectLabel);
-
-            const select = document.createElement('select');
-            select.multiple = true;
-            select.required = true;
-            select.name = 'localidades[]';
-            select.className = 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500';
-            select.innerHTML = document.querySelector('[name="localidades[]"]').innerHTML; // Copia las opciones del primer select
-            fieldGroup.appendChild(select);
-
-            const inputLabel = document.createElement('label');
-            inputLabel.className = 'block mb-2 text-sm font-medium text-gray-900 dark:text-white';
-            inputLabel.innerHTML = 'Beneficiarios Directos';
-            fieldGroup.appendChild(inputLabel);
-
-            const input = document.createElement('input');
-            input.type = 'number';
-            input.required = true;
-            input.name = 'beneficiarios[]';
-            input.className = 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500';
-            fieldGroup.appendChild(input);
-
-            const removeButton = document.createElement('button');
-            removeButton.type = 'button';
-            removeButton.className = 'mt-2 bg-red-500 text-white p-2 rounded';
-            removeButton.innerText = 'Eliminar';
-            removeButton.onclick = () => {
-                formContainer.removeChild(fieldGroup);
-            };
-            fieldGroup.appendChild(removeButton);
-
-            formContainer.appendChild(fieldGroup);
+    
+    function sumaProgramada($a, $trimestre)
+    {
+        if ($trimestre == 1) {
+            return $a['enero'] + $a['febrero'] + $a['marzo'] + $a['abril'] + $a['mayo'] + $a['junio'];
         }
-    </script>
+        if ($trimestre == 2) {
+            return $a['abril'] + $a['mayo'] + $a['junio'];
+        }
+        if ($trimestre == 3) {
+            return $a['julio'] + $a['agosto'] + $a['septiembre'];
+        }
+        if ($trimestre == 4) {
+            return $a['octubre'] + $a['noviembre'] + $a['diciembre'];
+        }
+    }
 
 
+    function traeavances($con, $id_actividad, $mes_maximo, $mes_minimo)
+    {
+        $sql = "SELECT SUM(avance) as avance 
+    FROM avances 
+    WHERE validado = 1 AND validado_2 = 1
+    AND id_actividad = $id_actividad 
+    AND mes BETWEEN $mes_minimo AND $mes_maximo";
+        $stm = $con->query($sql);
+        $avance = $stm->fetch(PDO::FETCH_ASSOC);
+        return $avance['avance'];
+    }
+
+$mes_maximo = 6; 
+$mes_minimo = 1;
+
+    foreach ($dependencias as $d) {
+        $areas = traeAreas($con, $d['id_dependencia']);
+
+        foreach ($areas as $ar) { //Recorremos las areas y buscamos sus actividades
+            $id_area = $ar['id_area'];
+            $sql = "SELECT * FROM actividades a 
+                    LEFT JOIN programaciones p ON p.id_actividad = a.id_actividad
+                    WHERE a.id_area = $id_area";
+            $stm = $con->query($sql);
+            $actividades = $stm->fetchAll(PDO::FETCH_ASSOC);
+            $actvidadesSuma = array();
+            foreach ($actividades as $a) { // Recorremos las actividades en busqueda de sus avances y los sumamos a un total por area
+                $metaActividad = $a['enero'] + $a['febrero'] + $a['marzo'] + $a['abril'] + $a['mayo'] + $a['junio'] + $a['julio'] + $a['agosto'] + $a['septiembre'] + $a['octubre'] + $a['noviembre'] + $a['diciembre'];
+                $id_actividad = $a['id_actividad'];
+                $avancetotal = traeavances($con, $id_actividad, $mes_maximo, $mes_minimo);
+                $resultado_operacion = ($metaActividad != 0) ? ($avancetotal / $metaActividad) * 100 : "100";
+                array_push($actvidadesSuma, $resultado_operacion);
+            }
+
+            $suma = 0;
+            foreach ($actvidadesSuma as $numero) {
+                $suma += $numero;
+            }
+            // Obtener longitud
+            $cantidadDeElementos = count($actvidadesSuma);
+            // Dividir, y listo
+            if ($cantidadDeElementos > 0) {
+                $promedio = $suma / $cantidadDeElementos;
+            } else {
+                $promedio = 0;
+            }
 
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+            print $d['nombre_dependencia'] . "|" . $ar['nombre_area'] . "|" . '100' . "|" . $promediosActividades = number_format($promedio, 2) . '<br>' ;
+        }
+    }
+
+    ?>
+
+
 </body>
 
 </html>

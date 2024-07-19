@@ -1,6 +1,7 @@
 <?php
 session_start();
-if(!$_POST['id_dependencia'] || !$_POST['trimestre']){
+
+if (!$_POST['id_dependencia'] || !$_POST['trimestre']) {
     header("Location: ../../../index.php");
 }
 require_once('tcpdf_include.php');
@@ -29,9 +30,9 @@ $pdf->setAutoPageBreak(TRUE, 10);
 $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
 // set some language-dependent strings (optional)
-if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
-	require_once(dirname(__FILE__).'/lang/eng.php');
-	$pdf->setLanguageArray($l);
+if (@file_exists(dirname(__FILE__) . '/lang/eng.php')) {
+    require_once(dirname(__FILE__) . '/lang/eng.php');
+    $pdf->setLanguageArray($l);
 }
 
 // ---------------------------------------------------------
@@ -49,7 +50,7 @@ $auto_page_break = $pdf->getAutoPageBreak();
 // disable auto-page-break
 $pdf->setAutoPageBreak(false, 0);
 // set bacground image
-$img_file = K_PATH_IMAGES.'back-FUAT2.jpg';
+$img_file = K_PATH_IMAGES . 'back-FUAT2.jpg';
 $pdf->Image($img_file, 0, 0, 0, 297, '', '', '', false, 300, '', false, false, 0);
 // restore auto-page-break status
 $pdf->setAutoPageBreak($auto_page_break, $bMargin);
@@ -66,44 +67,48 @@ $stm = $con->query($sql);
 $ajustes = $stm->fetch(PDO::FETCH_ASSOC);
 
 
-function traeAvanceIndicador($con, $id_indicador, $trimestre){
+function traeAvanceIndicador($con, $id_indicador, $trimestre)
+{
     $sql = "SELECT * FROM avances_indicadores a
     WHERE id_indicador = $id_indicador AND trimestre = $trimestre";
     $stm = $con->query($sql);
     return $stm->fetch(PDO::FETCH_ASSOC);
 }
 
-function espaciador($areas, $indicadores){
-    if($areas < $indicadores){
+function espaciador($areas, $indicadores)
+{
+    if ($areas < $indicadores) {
         $areas = $indicadores;
     }
-    $espaciador = ''; 
+    $espaciador = '';
     $diferencia = 24 - count($areas);
-    if($diferencia > 1){
-        for ($i=0; $i < $diferencia; $i++) { 
+    if ($diferencia > 1) {
+        for ($i = 0; $i < $diferencia; $i++) {
             $espaciador .= '<br>';
         }
     }
     return $espaciador;
 }
 
-function sumaProgramada($a, $trimestre){
-    if($trimestre == 1){
+function sumaProgramada($a, $trimestre)
+{
+    if ($trimestre == 1) {
         return $a['enero'] + $a['febrero'] + $a['marzo'];
     }
-    if($trimestre == 2){
+    if ($trimestre == 2) {
         return $a['abril'] + $a['mayo'] + $a['junio'];
     }
-    if($trimestre == 3){
+    if ($trimestre == 3) {
         return $a['julio'] + $a['agosto'] + $a['septiembre'];
     }
-    if($trimestre == 4){
+    if ($trimestre == 4) {
         return $a['octubre'] + $a['noviembre'] + $a['diciembre'];
     }
 }
 
 
-function traeavances($con, $id_actividad, $mes_maximo, $mes_minimo){
+function traeavances($con, $id_actividad, $mes_maximo, $mes_minimo)
+{
     $sql = "SELECT SUM(avance) as avance 
     FROM avances 
     WHERE validado = 1 AND validado_2 = 1
@@ -154,7 +159,7 @@ $qr_code = '
     <tr>
         <td style="width:80%; padding-left: 70px;">
             <p>
-            Id_acuse: '.$texto_oculto.'
+            Id_acuse: ' . $texto_oculto . '
             </p>
             <br>
             <br>
@@ -164,7 +169,7 @@ $qr_code = '
             </p>
         </td>
         <td style="width:20%;">
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='.$codigo.'" alt="qrcode" width="150" height="150">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $codigo . '" alt="qrcode" width="150" height="150">
         </td>
     </tr>
 </table>
@@ -175,7 +180,7 @@ $qr_code = '
 
 
 $promediosActividades = '';
-foreach($areas as $ar){ //Recorremos las areas y buscamos sus actividades
+foreach ($areas as $ar) { //Recorremos las areas y buscamos sus actividades
     $id_area = $ar['id_area'];
     $sql = "SELECT * FROM actividades a
     LEFT JOIN programaciones p ON p.id_actividad = a.id_actividad
@@ -183,11 +188,11 @@ foreach($areas as $ar){ //Recorremos las areas y buscamos sus actividades
     $stm = $con->query($sql);
     $actividades = $stm->fetchAll(PDO::FETCH_ASSOC);
     $actvidadesSuma = array();
-    foreach($actividades as $a){ // Recorremos las actividades en busqueda de sus avances y los sumamos a un total por area
+    foreach ($actividades as $a) { // Recorremos las actividades en busqueda de sus avances y los sumamos a un total por area
         $metaActividad = sumaProgramada($a, $trimestre);
         $id_actividad = $a['id_actividad'];
         $avancetotal = traeavances($con, $id_actividad, $mes_maximo, $mes_minimo);
-        $resultado_operacion = ($metaActividad != 0) ? ($avancetotal/$metaActividad)*100 : "100";
+        $resultado_operacion = ($metaActividad != 0) ? ($avancetotal / $metaActividad) * 100 : "100";
         array_push($actvidadesSuma, $resultado_operacion);
     }
 
@@ -198,9 +203,9 @@ foreach($areas as $ar){ //Recorremos las areas y buscamos sus actividades
     // Obtener longitud
     $cantidadDeElementos = count($actvidadesSuma);
     // Dividir, y listo
-    if($cantidadDeElementos > 0){
+    if ($cantidadDeElementos > 0) {
         $promedio = $suma / $cantidadDeElementos;
-    }else{
+    } else {
         $promedio = 0;
     }
 
@@ -208,10 +213,10 @@ foreach($areas as $ar){ //Recorremos las areas y buscamos sus actividades
     $promediosActividades .= '  
     <tr>
         <td style="font-size:10px; border: 1px solid gray;">
-            '.$ar['nombre_area'].'
+            ' . $ar['nombre_area'] . '
         </td>
-        <td style="font-size:10px; border: 1px solid gray; text-align: center;">'.
-            number_format($promedio, 2) . '%
+        <td style="font-size:10px; border: 1px solid gray; text-align: center;">' .
+        number_format($promedio, 2) . '%
         </td>
     </tr>';
 }
@@ -219,7 +224,7 @@ foreach($areas as $ar){ //Recorremos las areas y buscamos sus actividades
 
 
 
-if($trimestre == 1 || $trimestre == 3){
+if ($trimestre == 1 || $trimestre == 3) {
     $sqlInd = "SELECT * FROM indicadores_uso iu
     LEFT JOIN indicadores i ON i.id_indicador = iu.id_indicador_gaceta
     LEFT JOIN proyectos py ON py.id_proyecto = iu.id_proyecto
@@ -229,7 +234,7 @@ if($trimestre == 1 || $trimestre == 3){
     GROUP BY iu.id
     ORDER BY py.id_programa
 ";
-}elseif($trimestre == 2){
+} elseif ($trimestre == 2) {
     $sqlInd = "SELECT * FROM indicadores_uso iu
     LEFT JOIN indicadores i ON i.id_indicador = iu.id_indicador_gaceta
     LEFT JOIN proyectos py ON py.id_proyecto = iu.id_proyecto
@@ -239,7 +244,7 @@ if($trimestre == 1 || $trimestre == 3){
     GROUP BY iu.id
     ORDER BY py.id_programa
 ";
-}else{
+} else {
     $sqlInd = "SELECT * FROM indicadores_uso iu
     LEFT JOIN indicadores i ON i.id_indicador = iu.id_indicador_gaceta
     LEFT JOIN proyectos py ON py.id_proyecto = iu.id_proyecto
@@ -260,40 +265,47 @@ $filasIndicadores = '';
 $codigo = '';
 $arrayDef = array();
 $arrayTemp = array();
-if($indicadores){
+if ($indicadores) {
     foreach ($indicadores as $key => $value) { // Recorremos cada uno de los indicadores y operaremos
-        $nombre_indicador = preg_replace('([^A-Za-z0-9 ])', ' ', $value['nombre']);
+
+        $nombre_indicador = preg_replace('([^A-Za-z0-9áéíóúÁÉÍÓÚüÜñÑ ])', ' ', $value['nombre']);
 
         // Sacamos el porcentaje de cumplimiento de cada indicador
-        $programaciona = (((($trimestre == 1) ? $value['at1'] : ($trimestre == 2)) ? $value['at2'] : ($trimestre == 3)) ? $value['at3'] : $value['at4']);
-        $programacionb = (((($trimestre == 1) ? $value['bt1'] : ($trimestre == 2)) ? $value['bt2'] : ($trimestre == 3)) ? $value['bt3'] : $value['bt4']);
-        $avance = traeAvanceIndicador($con, $value['id'], $trimestre); 
+        $programaciona = ($trimestre == 1) ? $value['at1'] :
+                        (($trimestre == 2) ? $value['at2'] :
+                        (($trimestre == 3) ? $value['at3'] : $value['at4']));
+
+        $programacionb = ($trimestre == 1) ? $value['bt1'] :
+                        (($trimestre == 2) ? $value['bt2'] :
+                        (($trimestre == 3) ? $value['bt3'] : $value['bt4']));
+
+        $avance = traeAvanceIndicador($con, $value['id'], $trimestre);
 
         $porcentajea = ($programaciona != 0 && $avance) ?  $avance['avance_a'] / $programaciona * 100 : 100;
         $porcentajeb = ($programacionb != 0 && $avance) ?  $avance['avance_b'] / $programacionb * 100 : 100;
-        $porcentajeI = ($porcentajeb != 0) ? $porcentajea/$porcentajeb * 100 : 100;
+        $porcentajeI = ($porcentajeb != 0) ? $porcentajea / $porcentajeb * 100 : 100;
         // Hasta este punto tenemos el porcentaje total de un indicador
 
         $maxCaracteres = 51; // El número máximo de caracteres que deseas mostrar
 
         if (strlen($nombre_indicador) >= $maxCaracteres) {
-            $nombreIndicador = substr($nombre_indicador, 0, $maxCaracteres) . "..."; // Agrega "..." al final
+            $nombreIndicador = mb_substr($nombre_indicador, 0, $maxCaracteres, "UTF-8") . "..."; // Agrega "..." al final
         } else {
             $nombreIndicador = $nombre_indicador; // No es necesario truncar
-}
+        }
 
         $filasIndicadores .= '
         <tr>
             <td style="font-size:10px; border: 1px solid gray;">
-                '.$nombreIndicador.'
+                ' . $nombreIndicador . '
             </td>
             <td style="font-size:10px; border: 1px solid gray; text-align: center;">
-                '.number_format($porcentajeI,2).'
+                ' . number_format($porcentajeI, 2) . '
             </td>
         </tr>
         ';
     }
-}else{
+} else {
     //sin indicadores
 }
 
@@ -303,9 +315,9 @@ if($indicadores){
 $membrete = '<table style="width:100%;">
 <tbody>
     <tr>
-        <td style="width:15%; text-align: center;" rowspan="3"><img src="../../../'.$ajustes['path_logo_ayuntamiento'].'" style="width: 60px;" class="img-fluid" alt="" align="left"></td>    
-        <td style="width:70%; text-align: center; font-size: 12px">'.$ajustes['nombre_sistema'].'</td>
-        <td style="width:15%; text-align: center;" rowspan="3"> <img src="../../../'.$ajustes['path_logo_administracion'].'" class="img-fluid" alt="" align="right"></td>
+        <td style="width:15%; text-align: center;" rowspan="3"><img src="../../../' . $ajustes['path_logo_ayuntamiento'] . '" style="width: 60px;" class="img-fluid" alt="" align="left"></td>    
+        <td style="width:70%; text-align: center; font-size: 12px">' . $ajustes['nombre_sistema'] . '</td>
+        <td style="width:15%; text-align: center;" rowspan="3"> <img src="../../../' . $ajustes['path_logo_administracion'] . '" class="img-fluid" alt="" align="right"></td>
     </tr>
     <tr>
         <td style="text-align: center; font-size: 12px"></td>
@@ -319,8 +331,8 @@ $membrete = '<table style="width:100%;">
 
 
 $titulos = '
-    <p style="text-align: right;">Fecha y Hora de impresión: '. strftime("%B %d, %Y, %I:%M %p") .'</p>
-    <p style="text-align: Left;">Dependencia: '. $dependencia['nombre_dependencia'] .' <br>Trimestre: '.$trimestre.'</p>
+    <p style="text-align: right;">Fecha y Hora de impresión: ' . strftime("%B %d, %Y, %I:%M %p") . '</p>
+    <p style="text-align: Left;">Dependencia: ' . $dependencia['nombre_dependencia'] . ' <br>Trimestre: ' . $trimestre . '</p>
 ';
 
 
@@ -343,7 +355,7 @@ $principalTable = '
                             <b>%</b>
                         </td>
                     </tr>
-                    '.$promediosActividades.'
+                    ' . $promediosActividades . '
                 </table>
             </td>    
 			<td style="max-width:50%; width:50%; ">
@@ -361,7 +373,7 @@ $principalTable = '
                             <b>%</b>
                         </td>
                     </tr>
-                    '.$filasIndicadores.'
+                    ' . $filasIndicadores . '
                 </table>
             </td>    
         </tr>
@@ -380,8 +392,8 @@ $firmas = '
         <br>
         _______________________________
         <br>
-        '.$titular['gradoa'] . ' '.$titular['nombre'] . ' ' . $titular['apellidos'] .' <br>
-        '.$titular['cargo'] . ' <br>
+        ' . $titular['gradoa'] . ' ' . $titular['nombre'] . ' ' . $titular['apellidos'] . ' <br>
+        ' . $titular['cargo'] . ' <br>
         </td>
     </tr>
 </table>
@@ -393,7 +405,7 @@ $firmas = '
 
 
 // output the HTML content
-$pdf->writeHTML($membrete.$titulos.$principalTable.espaciador($areas, $indicadores).$firmas.$qr_code);
+$pdf->writeHTML($membrete . $titulos . $principalTable . espaciador($areas, $indicadores) . $firmas . $qr_code);
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -403,7 +415,7 @@ $pdf->lastPage();
 
 //Close and output PDF document
 
-$pdf->Output('FUAT - '.$trimestre . ' - ' . $dependencia['nombre_dependencia'].'.pdf', 'D');
+$pdf->Output('FUAT - ' . $trimestre . ' - ' . $dependencia['nombre_dependencia'] . '.pdf', 'D');
 
 //============================================================+
 // END OF FILE

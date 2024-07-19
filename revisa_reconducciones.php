@@ -1,7 +1,8 @@
 <?php
-if(!$_GET['type']){
+if(!isset($_GET['type'])){
     header("Location: index.php");
 }
+
 $tipo = $_GET['type'];
 session_start();
 if($_SESSION['sistema'] == "pbrm" || $_SESSION['id_permiso'] != 1){    

@@ -13,6 +13,13 @@ function traeProgramas($con, $id_dependencia){
 
 
 
+function traeCampos($con, $id_programa, $id_dependencia){
+    $sentencia = "SELECT * FROM actualizacionFoda WHERE id_programa_presupuestario = $id_programa AND id_dependencia_responsable = $id_dependencia ";
+    $stm = $con->query($sentencia);
+    $data = $stm->fetch(PDO::FETCH_ASSOC);
+    return $data;
+}
+
 
 function NombrePrograma($con, $id_programa){
     $sentencia = "SELECT * FROM programas_presupuestarios pp
@@ -30,10 +37,33 @@ if($_POST){
         die();
     }
 
+    $id_programa = $_POST['id_programa'];
+    $id_dependencia = $_POST['id_dependencia'];
+    $diagnostico = $_POST['diagnostico'];
+    $informe = $_POST['informe'];
+    
+    $vdiagnostico = "";
+    $vinforme= "";
+    if($_POST['trimestre'] == 1){
+        $vdiagnostico= "1t_txt";
+        $vinforme = "i1t_txt";
+    }
+    if($_POST['trimestre'] == 2){
+        $vdiagnostico= "2t_txt";
+        $vinforme = "i2t_txt";
+    }
+    if($_POST['trimestre'] == 3){
+        $vdiagnostico= "3t_txt";
+        $vinforme = "i3t_txt";
+    }
+    if($_POST['trimestre'] == 4){
+        $vdiagnostico= "4t_txt";
+        $vinforme = "i4t_txt";
+    }
 
-    $anio = $_SESSION['anio'];
 
-    print '<pre>';
-    var_dump($_POST);
-    die();
+    $sql = "UPDATE actualizacionFoda SET $vdiagnostico = ?, $vinforme = ? WHERE id_programa_presupuestario = ? AND id_dependencia_responsable = ?";
+    $sqlr = $con->prepare($sql);
+    $sqlr->execute(array($diagnostico, $informe, $id_programa, $id_dependencia));
+    
 }

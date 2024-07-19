@@ -123,9 +123,10 @@ if(isset($_POST['reportar']) and $_POST['reportar']){
         $imagen = NULL;
 
         // Validar duplicidad
-        $sql_check = "SELECT * FROM avances_indicadores WHERE trimestre='$trimestre' AND id_dependencia='$id_dependencia'";
-        $result_check = $con->query($sql_check);
-
+        $sql_check = "SELECT * FROM avances_indicadores WHERE trimestre='$trimestre' AND id_indicador='$id_indicador'";
+        $stm = $con->query($sql_check);
+        $result_check = $stm->fetchAll(PDO::FETCH_ASSOC);
+        
         if ($result_check) {
             ?>
             <script>

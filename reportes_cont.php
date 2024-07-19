@@ -85,81 +85,76 @@ session_start();
                         <textarea id="justificacion" required name="justificacion" rows="1" placeholder="Escribir la justificación de la variación" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
                     <?php endif ?>
 
-
                     <?php if ($actividad['lineaactividad']) : ?>
-                        <br><br>
-                        <table style="width: 100%" ;>
+<br><br>
+                        <table>
                             <tr>
-                                <th style="width: 20%" ;>
-                                </th>
-                                <th style="width: 2%" ;>
-                                </th>
-                                <th style="width: 23%" ;>
-                                </th>
-                                <th style="width: 2%" ;>
-                                </th>
-                                <th style="width: 2%" ;>
-                                </th>
-                                <th style="width: 2%" ;>
-                                </th>
-                                <th colspan="5" style="width: 64%; text-align: center;" ;>
-                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"> Origen de los recursos Públicos Aplicados</label>
-                                </th>
+                                <td style="width: 10%" ;>
+                                    <label for="recursos" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Porcentaje Recurso Federal</label>
+                                    <input type="number" min="0" max="100" id="recursos_federales" required name="recursos_federales" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                </td>
+                                <td style="width: 2%" ;>
+                                </td>
+                                <td style="width: 10%" ;>
+                                    <label for="recursos" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Porcentaje Recurso Estatal</label>
+                                    <input type="number" min="0" max="100" id="recursos_estatales" required name="recursos_estatales" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                </td>
+                                <td style="width: 2%" ;>
+                                </td>
+                                <td style="width: 10%" ;>
+                                    <label for="recursos" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Porcentaje Recurso Propio</label>
+                                    <input type="number" min="0" max="100" id="recursos_propios" required name="recursos_propios" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                </td>
                             </tr>
-                            <tr>
-                                <th style="width: 23%" ;>
-                                    <?= lista_localidades($con) ?>
-                                </th>
-                                <th style="width: 2%" ;>
-                                </th>
-                                <th style="width: 8%" ;>
-                                    <label for="beneficiarios" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Beneficiarios Directos</label>
-                                    <input type="number" id="beneficiarios" required name="beneficiarios" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                </th>
-                                <?php if ($actividad['udmed']) : ?>
-                                    <th style="width: 2%" ;>
-                                    </th>
-                                    <th style="width: 15%" ;>
+                        </table>
+                        <br>
+                        <?php if ($actividad['udmed']) : ?>
+                            <table>
+                                <tr>
+                                    <td style="width: 15%" ;>
                                         <label for="udmed" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Unidad de Medida</label>
                                         <input type="text" id="udmed" value="<?= $actividad['udmed'] ?>" disabled required name="udmed" class="cursor-not-allowed bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    </th>
-                                <?php endif ?>
-                                <?php if (!$actividad['udmed']) : ?>
-                                    <th style="width: 2%" ;>
-                                    </th>
-                                    <th style="width: 15%" ;>
+                                    </td>
+                                </tr>
+                            </table>
+                        <?php endif ?>
+                        <?php if (!$actividad['udmed']) : ?>
+                            <table>
+                                <tr>
+                                    <td style="width: 15%" ;>
                                         <label for="udmed" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Unidad de Medida</label>
                                         <select id="udmed" name="udmed" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                             <option disabled>Seleccione su unidad</option>
                                             <?php $udmed = traeudmed($con) ?>
-                                            <?php foreach($udmed as $u): ?>
+                                            <?php foreach ($udmed as $u) : ?>
                                                 <option value="<?= $u['nombre'] ?>"><?= $u['nombre'] ?></option>
                                             <?php endforeach ?>
                                         </select>
-                                    </th>
-                                <?php endif ?>
-                                <th style="width: 2%" ;>
-                                </th>
-                                <th style="width: 10%" ;>
-                                    <label for="recursos" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Recurso Federal</label>
-                                    <input type="number" id="recursos_federales" required placeholder="                %" name="recursos_federales" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                </th>
-                                <th style="width: 2%" ;>
-                                </th>
-                                <th style="width: 10%" ;>
-                                    <label for="recursos" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Recurso Estatal</label>
-                                    <input type="number" id="recursos_estatales" required placeholder="                %" name="recursos_estatales" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                </th>
-                                <th style="width: 2%" ;>
-                                </th>
-                                <th style="width: 10%" ;>
-                                    <label for="recursos" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Recurso Propio</label>
-                                    <input type="number" id="recursos_propios" required placeholder="                %" name="recursos_propios" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                </th>
-                            </tr>
-                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        <?php endif ?>
+                        <br><br>
+
+                        <div id="form-container">
+                            <div class="field-group mb-4">
+                                <label for="localidades" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione una Localidad</label>
+                                <select required name="localidades[]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" onchange="calcularSumatoria()">
+                                    <?php $localidades = traelocalidades($con) ?>
+                                    <?php foreach ($localidades as $localidad) : ?>
+                                        <option value="<?= $localidad['id_localidad'] ?>"><?= $localidad['nombre_localidad'] ?></option>
+                                    <?php endforeach ?>
+                                </select>
+
+                                <label for="beneficiarios" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Beneficiarios Directos</label>
+                                <input type="number" min="0" required name="beneficiarios[]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            </div>
+                        </div>
+
+                        <button id="add-field-btn" type="button" class="mt-4 bg-blue-500 text-white p-2 rounded">Agregar Nuevo Campo</button>
+
                     <?php endif ?>
-<br><br>
+                    <br><br>
                     <input type="submit" value="Enviar" name="jfnkasjnkasdf34q345" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
 
                 </form>
@@ -179,7 +174,51 @@ session_start();
 
             <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
         </div>
+        <script>
+            document.getElementById('add-field-btn').addEventListener('click', addNewField);
 
+            function addNewField() {
+                const formContainer = document.getElementById('form-container');
+                const fieldGroup = document.createElement('div');
+                fieldGroup.className = 'field-group mb-4';
+
+                const selectLabel = document.createElement('label');
+                selectLabel.className = 'block mb-2 text-sm font-medium text-gray-900 dark:text-white';
+                selectLabel.innerHTML = '<br>Seleccione otra localidad';
+                fieldGroup.appendChild(selectLabel);
+
+                const select = document.createElement('select');
+                select.required = true;
+                select.name = 'localidades[]';
+                select.className = 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500';
+                select.innerHTML = document.querySelector('[name="localidades[]"]').innerHTML; // Copia las opciones del primer select
+                fieldGroup.appendChild(select);
+
+                const inputLabel = document.createElement('label');
+                inputLabel.className = 'block mb-2 text-sm font-medium text-gray-900 dark:text-white';
+                inputLabel.innerHTML = 'Beneficiarios Directos';
+                fieldGroup.appendChild(inputLabel);
+
+                const input = document.createElement('input');
+                input.type = 'number';
+                input.min = 0;
+                input.required = true;
+                input.name = 'beneficiarios[]';
+                input.className = 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500';
+                fieldGroup.appendChild(input);
+
+                const removeButton = document.createElement('button');
+                removeButton.type = 'button';
+                removeButton.className = 'mt-2 bg-red-500 text-white p-2 rounded';
+                removeButton.innerText = 'Eliminar';
+                removeButton.onclick = () => {
+                    formContainer.removeChild(fieldGroup);
+                };
+                fieldGroup.appendChild(removeButton);
+
+                formContainer.appendChild(fieldGroup);
+            }
+        </script>
     </body>
 
 </html>

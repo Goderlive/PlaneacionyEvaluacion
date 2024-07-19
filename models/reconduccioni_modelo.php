@@ -140,7 +140,13 @@ if(isset($_POST['reconduccionindicadores'])){
     $umedida_c = isset($_POST['umedida_c']) ? $_POST['umedida_c'] : NULL;
     $programacion_modificada_a = $_POST['at1'] . "|" . $_POST['at2'] . "|" . $_POST['at3'] . "|" . $_POST['at4'];
     $programacion_modificada_b = $_POST['bt1'] . "|" . $_POST['bt2'] . "|" . $_POST['bt3'] . "|" . $_POST['bt4']; 
-    $programacion_modificada_c = $_POST['ct1'] . "|" . $_POST['ct2'] . "|" . $_POST['ct3'] . "|" . $_POST['ct4']; 
+
+    $ct1 = isset($_POST['ct1']) ? $_POST['ct1'] : '';
+    $ct2 = isset($_POST['ct2']) ? $_POST['ct2'] : '';
+    $ct3 = isset($_POST['ct3']) ? $_POST['ct3'] : '';
+    $ct4 = isset($_POST['ct4']) ? $_POST['ct4'] : '';
+    $programacion_modificada_c = $ct1 . "|" . $ct2 . "|" . $ct3 . "|" . $ct4;
+    
     $justificacion_impacto = $_POST['justificacion'];
     $id_dependencia = $_POST['id_dependencia'];
 

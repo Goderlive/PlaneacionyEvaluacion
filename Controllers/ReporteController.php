@@ -505,35 +505,6 @@ function Actividades($con, $mes, $id_area, $meses, $actividadesDB, $unidades){
     return $resp;
 }
 
-function lista_localidades($con){
-    $localidades = traelocalidades($con);
-    $options = '<option selected disabled>Seleccione las Localidades</option>';
-    foreach($localidades as $l){
-        $options .= '<option value="'.$l['id_localidad'].'" data-valor="'.$l['valor'].'">'.$l['nombre_localidad'].'</option>';
-    }
-
-    $script = '
-    <script>
-    function calcularSumatoria() {
-        var select = document.getElementById("localidades");
-        var options = select.selectedOptions;
-        var sumatoria = 0;
-        for (var i = 0; i < options.length; i++) {
-            var valor = parseFloat(options[i].getAttribute("data-valor"));
-            sumatoria += valor;
-        }
-        document.getElementById("sumatoria").textContent = sumatoria;
-    }
-    </script>';
-
-    return '
-    <label for="localidades" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione múltiples opciones <b title="Usa el botón Ctrl en tu teclado más Click del mouse">Ayuda </b></label> 
-    <select multiple id="localidades" required name="localidades[]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" onchange="calcularSumatoria()">
-        '.$options.'
-    </select>
-    <p>Localidades beneficiadas: <span id="sumatoria"></span></p>
-    '.$script;
-}
 
 function buscalineas($con, $id_actividad){
     if ($lineadeaccion = buscaactilistas($con, $id_actividad)){

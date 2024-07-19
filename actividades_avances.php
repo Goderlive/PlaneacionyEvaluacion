@@ -207,7 +207,7 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                                             </div>
                                             <br>
                                             <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-white bg-yellow-300 rounded-lg">
-                                                <?php $pendientes = PendientesSegunPermisos($con, $a['id_area'], $_SESSION, date('m') - 3) ?>
+                                                <?php $pendientes = PendientesSegunPermisos($con, $a['id_area'], $_SESSION, date('m') - 2) ?>
                                                 <?= $pendientes ?>
                                             </div>
                                             <br>
@@ -223,18 +223,58 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                                     <div id="toast-interactive" class="p-1 text-gray-500 bg-white rounded-lg shadow dark:bg-gray-800 dark:text-gray-400" role="alert">
                                         <span class="mb-1 text-sm font-semibold text-gray-900 dark:text-white"><?= $meses[intval(date('m')) - 1] ?></span>
                                         <br>
-                                        <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-white bg-red-300 rounded-lg">
-                                            3
-                                        </div>
+                                        <?php $validadas = ActividadesValidadas($con, $a['id_area'], date('m') - 1) ?>
+                                        <?php if ($validadas == $totalActividades) : ?>
+                                            <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-white bg-green-400 rounded-lg">
+                                                OK!
+                                            </div>
+                                        <?php else : ?>
+
+                                            <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-white bg-red-600 rounded-lg">
+                                                <?php $sinvalidar = SinValidar($con, $a['id_area'], date('m') - 1, $_SESSION) ?>
+                                                <?= $sinvalidar ?>
+                                            </div>
+                                            <br>
+                                            <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-white bg-yellow-300 rounded-lg">
+                                                <?php $pendientes = PendientesSegunPermisos($con, $a['id_area'], $_SESSION, date('m') - 1) ?>
+                                                <?= $pendientes ?>
+                                            </div>
+                                            <br>
+                                            <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-white bg-gray-700 rounded-lg">
+                                                <?php //deberia ser una resta simple de las anteriores  
+                                                ?>
+                                                <?= $totalActividades - $sinvalidar - $pendientes ?>
+                                            </div>
+                                        <?php endif ?>
                                     </div>
                                 <?php endif ?>
                                 <div id="toast-interactive" class="p-1 text-gray-500 bg-white rounded-lg shadow dark:bg-gray-800 dark:text-gray-400" role="alert">
-                                    <span class="mb-1 text-sm font-semibold text-gray-900 dark:text-white"><?= $meses[intval(date('m'))] ?></span>
-                                    <br>
-                                    <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-white bg-red-300 rounded-lg">
-                                        3
+                                        <span class="mb-1 text-sm font-semibold text-gray-900 dark:text-white"><?= $meses[intval(date('m'))] ?></span>
+                                        <br>
+                                        <?php $validadas = ActividadesValidadas($con, $a['id_area'], date('m')) ?>
+                                        <?php if ($validadas == $totalActividades) : ?>
+                                            <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-white bg-green-400 rounded-lg">
+                                                OK!
+                                            </div>
+                                        <?php else : ?>
+
+                                            <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-white bg-red-600 rounded-lg">
+                                                <?php $sinvalidar = SinValidar($con, $a['id_area'], date('m'), $_SESSION) ?>
+                                                <?= $sinvalidar ?>
+                                            </div>
+                                            <br>
+                                            <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-white bg-yellow-300 rounded-lg">
+                                                <?php $pendientes = PendientesSegunPermisos($con, $a['id_area'], $_SESSION, date('m')) ?>
+                                                <?= $pendientes ?>
+                                            </div>
+                                            <br>
+                                            <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-white bg-gray-700 rounded-lg">
+                                                <?php //deberia ser una resta simple de las anteriores  
+                                                ?>
+                                                <?= $totalActividades - $sinvalidar - $pendientes ?>
+                                            </div>
+                                        <?php endif ?>
                                     </div>
-                                </div>
 
 
 
@@ -338,7 +378,7 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                                     <td class="px-6 py-4">
                                         <?= $repsuma = SumaAvancesmesymes($con, $el_mes, $a['id_actividad']); ?>
                                         <br>
-                                        <?= ($progsuma != 0) ?  number_format(($repsuma / $progsuma) * 100, 2, '.', '') . "%" : ''?>
+                                        <?= ($progsuma != 0) ?  number_format(($repsuma / $progsuma) * 100, 2, '.', '') . "%" : '' ?>
                                     </td>
                                     <td class="px-6 py-4">
                                         <?= $a[$mesi] ?>
@@ -517,13 +557,14 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                                                 <button type="submit" name="valida_actividad" value="1" class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">Permitir Editar</button>
                                             </form>
                                         <?php endif ?>
-                                        <?php if ($avanceMensual['validado'] == 1 & $avanceMensual['validado_2'] == 1) : ?>
+                                        <?php if ($avanceMensual['validado'] == 1 || $avanceMensual['validado_2'] == 1) : ?>
                                             <form action="models/avances_modelo.php" method="post">
                                                 <input type="hidden" name="id_avance" value="<?= $avanceMensual['id_avance'] ?>">
                                                 <input type="hidden" name="usuario" value="<?= $_SESSION['id_usuario'] ?>">
                                                 <input type="hidden" name="id_area" value="<?= $m['id_area'] ?>">
                                                 <input type="hidden" name="mes" value="<?= $el_mes ?>">
                                                 <button type="submit" name="cancela_actividad" value="1" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Eliminar Avance Aprobado</button>
+                                                <button type="submit" name="cancela_validacion" value="1" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Eliminar validación</button>
                                             </form>
                                         <?php endif ?>
                                     </div>
