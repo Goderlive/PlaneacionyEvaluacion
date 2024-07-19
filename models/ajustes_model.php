@@ -48,6 +48,8 @@ if ($_POST) {
         $sql = "UPDATE setings SET nombre_ente = '$nombre', numero_ente = '$numero' WHERE year_report = $anio";
         $sqlr = $con->prepare($sql);
         $sqlr->execute();
+        echo "<script>window.location.href = 'ajustes.php';</script>";
+
     }
 
 
@@ -61,7 +63,7 @@ if ($_POST) {
         }
         $sqlr = $con->prepare($sql);
         $sqlr->execute();
-        header("Location: ajustes.php");
+        echo "<script>window.location.href = 'ajustes.php';</script>";
     }
 
 
@@ -74,8 +76,7 @@ if ($_POST) {
         $sql = "UPDATE setings SET $quien = NULL WHERE year_report = $anio";
         $sqlr = $con->prepare($sql);
         $sqlr->execute();
-        header("Location: ajustes.php");
-
+        echo "<script>window.location.href = 'ajustes.php';</script>";
     }
 
     if (isset($_POST['anteproyecto']) || isset($_POST['proyecto']) || isset($_POST['programa'])) {
@@ -104,6 +105,8 @@ if ($_POST) {
 
         $sqlr = $con->prepare($sql);
         $sqlr->execute();
+        echo "<script>window.location.href = 'ajustes.php';</script>";
+
     }
     
 
@@ -142,6 +145,8 @@ if ($_POST) {
         } else {
             echo '<script>alert("Formato de archivo no válido. Solo se permiten archivos jpg y png.")</script>';
         }
+        echo "<script>window.location.href = 'ajustes.php';</script>";
+
     }
 
 
@@ -180,6 +185,8 @@ if ($_POST) {
         } else {
             echo '<script>alert("Formato de archivo no válido. Solo se permiten archivos jpg y png.")</script>';
         }
+        echo "<script>window.location.href = 'ajustes.php';</script>";
+
     }
 
 
@@ -218,5 +225,7 @@ if ($_POST) {
         } else {
             echo '<script>alert("Formato de archivo no válido. Solo se permiten archivos jpg y png.")</script>';
         }
+        echo "<script>window.location.href = 'ajustes.php';</script>";
+
     }
 }

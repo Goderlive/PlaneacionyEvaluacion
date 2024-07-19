@@ -2,7 +2,7 @@
 require_once 'conection.php';
 
 function traeporDependenciasytrim($con, $id_dependencia, $trimestre){
-    $stm = $con->query("SELECT * FROM firmadosActividades WHERE id_dependencia = $id_dependencia AND trimestre = $trimestre");
+    $stm = $con->query("SELECT * FROM firmadosIndicadores WHERE id_dependencia = $id_dependencia AND trimestre = $trimestre");
     $formatos = $stm->fetch(PDO::FETCH_ASSOC);
     return $formatos;
 }
@@ -17,7 +17,6 @@ function TraeDependencias($con, $year){
 
 
 if(isset($_POST['subida'])){
-    session_start();
     if(!$_SESSION || $_SESSION['sistema'] != 'pbrm'){
         header("Location: ../index.php");
     }
@@ -36,7 +35,7 @@ if(isset($_POST['subida'])){
         $id_dependencia = $_POST['id_dependencia'];
     
         $year = date('Y');
-        $upload_dir = "../archivos/$year/$id_dependencia/$trimestre";
+        $upload_dir = "archivos/$year/$id_dependencia/$trimestre";
     
         if (!is_dir($upload_dir)) {
             mkdir($upload_dir, 0777, true);
@@ -46,7 +45,7 @@ if(isset($_POST['subida'])){
             try {
                 $file_path = $upload_dir . '/' . $file_name;
     
-                $query = "INSERT INTO firmadosActividades (dir_formatoactividades, id_dependencia, trimestre)
+                $query = "INSERT INTO firmadosindicadores (dir_formatoindicador, id_dependencia, trimestre)
                           VALUES (?, ?, ?)";
     
                 $stmt = $con->prepare($query);
@@ -55,7 +54,7 @@ if(isset($_POST['subida'])){
                 $stmt->bindParam(3, $trimestre);
     
                 if ($stmt->execute()) {
-                    header("Location: ../admin_formatos_actividades.php");
+                    echo "<script>window.location.href = 'admin_formatos_actividades_i.php';</script>";
                     exit;
                 } else {
                     echo "Error al ejecutar la consulta: " . $stmt->errorInfo()[2];

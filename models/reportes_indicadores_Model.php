@@ -41,3 +41,9 @@ function CuentaActividades($con, $id_dependencia, $periodicidad){
 
     return $c_avance;
 }
+
+function traeporDependenciasytrim($con, $id_dependencia, $trimestre){
+    $stm = $con->query("SELECT * FROM firmadosIndicadores WHERE id_dependencia = $id_dependencia AND trimestre = $trimestre");
+    $formatos = $stm->fetch(PDO::FETCH_ASSOC);
+    return $formatos;
+}

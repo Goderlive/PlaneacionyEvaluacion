@@ -18,7 +18,7 @@ function TraeSubAreas($con, $id_dependencia){
 
 function buscacincos($con, $id_usuario){
     $anio = date('Y');
-    $sql = "SELECT u.nombre, u.apellidos, u.id_usuario, u.correo_electronico, a.nombre_area FROM usuarios u
+    $sql = "SELECT u.nombre, u.apellidos, u.id_usuario, u.correo_electronico, a.nombre_area, u.tel FROM usuarios u
             LEFT JOIN permisos p ON p.id_usuario = u.id_usuario
             LEFT JOIN areas a ON a.id_area = p.id_area
             WHERE u.id_registro = $id_usuario AND u.activo = 1
@@ -32,7 +32,7 @@ function buscacincos($con, $id_usuario){
 
 function buscacuatros($con, $id_usuario){
     $anio = date('Y');
-    $sql = "SELECT u.nombre, u.apellidos, u.id_usuario, u.correo_electronico, d.nombre_dependencia FROM usuarios u
+    $sql = "SELECT u.nombre, u.apellidos, u.id_usuario, u.correo_electronico, d.nombre_dependencia, u.tel FROM usuarios u
             LEFT JOIN permisos p ON p.id_usuario = u.id_usuario
             LEFT JOIN dependencias d ON d.id_dependencia = p.id_dependencia
             WHERE u.id_registro = $id_usuario AND u.activo = 1

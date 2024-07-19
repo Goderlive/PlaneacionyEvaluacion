@@ -84,6 +84,79 @@ if(!$_SESSION['sistema'] == 'pbrm'):?>
 
 
 
+    <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
+            <br>
+            <h3 class="text-3xl font-bold dark:text-white">Formatos OSFEM Firmados</h3>
+
+            <br>
+
+            <div class="relative overflow-x-auto shadow-md sm:rounded-lg my'3">
+                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">
+                                Dependencia
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                1er T
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                2do T
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                3er T
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                4to T
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <?= $dependencia['nombre_dependencia'] ?>
+                            </th>
+                            <td class="px-6 py-4">
+                                <?php if ($formato = traeporDependenciasytrim($con, $id_dependencia, 1)) : ?>
+                                    <?php $dir = $formato['dir_formatoindicador'] ?>
+                                    <a href="<?= $dir ?>" target="_blank" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"> Imprimir </a>
+                                <?php else : ?>
+                                    Aún no subimos esta información
+                                <?php endif ?>
+
+                            </td>
+                            <td class="px-6 py-4">
+                                <?php if ($formato = traeporDependenciasytrim($con, $id_dependencia, 2)) : ?>
+                                    <?php $dir = $formato['dir_formatoindicador'] ?>
+                                    <a href="<?= $dir ?>" target="_blank" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"> Imprimir </a>
+                                <?php else : ?>
+                                    Aún no subimos esta información
+                                <?php endif ?>
+
+                            </td>
+                            <td class="px-6 py-4">
+                                <?php if ($formato = traeporDependenciasytrim($con, $id_dependencia, 3)) : ?>
+                                    <?php $dir = $formato['dir_formatoindicador'] ?>
+                                    <a href="<?= $dir ?>" target="_blank" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"> Imprimir </a>
+                                <?php else : ?>
+                                    Aún no subimos esta información
+                                <?php endif ?>
+
+                            </td>
+                            <td class="px-6 py-4">
+                                <?php if ($formato = traeporDependenciasytrim($con, $id_dependencia, 4)) : ?>
+                                    <?php $dir = $formato['dir_formatoindicador'] ?>
+                                    <a href="<?= $dir ?>" target="_blank" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"> Imprimir </a>
+                                <?php else : ?>
+                                    Aún no subimos esta información
+                                <?php endif ?>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+            </div><!-- Fin del contenedor principal -->
+
 
 </div><!-- Fin del contenedor principal -->
 <?php include 'footer.php';?>

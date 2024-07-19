@@ -61,6 +61,12 @@ function SumaAnual($data){
     }
     return $sum;
 }
+$anio = $_SESSION['anio'];
+
+
+$stm = $con->query("SELECT * FROM setings WHERE year_report = $anio");
+$logos = $stm->fetch(PDO::FETCH_ASSOC);
+
 
 
 
@@ -313,8 +319,10 @@ $titular_dependencia = $stm->fetch(PDO::FETCH_ASSOC);
 
 
 $stm = $con->query("SELECT * FROM setings a
-JOIN titulares t ON t.id_titular = a.id_uippe");
+JOIN titulares t ON t.id_titular = a.id_uippe
+WHERE a.year_report = $anio");
 $Director_gobierno_por_resultados = $stm->fetch(PDO::FETCH_ASSOC);
+
 
 $firmas = '
 <table style="width: 100%; text-align: center; border-spacing: 4px; ">

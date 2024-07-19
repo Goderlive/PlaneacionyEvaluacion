@@ -49,6 +49,9 @@ $id_dependencia = $permisos['id_dependencia'];
                                                 <?= $dependiente['nombre'] . " " . $dependiente['apellidos'] ?>
                                             </p>
                                             <p class="text-sm text-gray-500  dark:text-gray-400">
+                                                <?= $dependiente['tel'] ?>
+                                            </p>
+                                            <p class="text-sm text-gray-500  dark:text-gray-400">
                                                 <?= $dependiente['correo_electronico'] ?>
                                             </p>
                                             <p class="text-sm text-gray-500  dark:text-gray-400">
@@ -123,6 +126,7 @@ $id_dependencia = $permisos['id_dependencia'];
                         <div class=" flex flex-col items-center pb-10">
                             <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white"><?= $dep['nombre_dependencia'] ?></h5>
                             <span class="text-md text-gray-500 dark:text-gray-400"><?= $dep['nombre'] . " " . $dep['apellidos'] ?></span>
+                            <span class="text-md text-gray-500 dark:text-gray-400"><?= $dep['tel'] ?></span>
                             <span class="text-md text-gray-500 dark:text-gray-400"><?= $dep['correo_electronico'] ?></span>
                             <button data-modal-toggle="cambiarcontrasenia<?= $dep['id_usuario'] ?>" class="my-3 mx-2 text-xs px-3 py-2 block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">Cambiar Contraseña</button>
                             <form action="models/mi_perfil_Model.php" method="post">
@@ -262,6 +266,9 @@ $id_dependencia = $permisos['id_dependencia'];
                 <div class="flex-1 min-w-0">
                     <p class="text-sm font-medium text-gray-900  dark:text-white">
                         <?= $u['nombre'] . " " . $u['apellidos'] ?>
+                    </p>
+                    <p class="text-sm text-gray-500  dark:text-gray-400">
+                        <?= $u['tel'] ?>
                     </p>
                     <p class="text-sm text-gray-500  dark:text-gray-400">
                         <?= $u['correo_electronico'] ?>

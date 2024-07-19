@@ -7113,6 +7113,16 @@ CREATE TABLE firmadosActividades(
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 
+
+DROP TABLE IF EXISTS firmadosIndicadores;
+CREATE TABLE firmadosIndicadores(
+  id_formatoindocador INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  dir_formatoindicador VARCHAR(255),
+  id_dependencia INT, 
+  trimestre VARCHAR(5)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+
 DROP TABLE IF EXISTS udmed_pdm;
 CREATE TABLE udmed_pdm(
   id_udmed_pdm INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -11814,8 +11824,65 @@ CREATE TABLE actualizacionFoda(
   2t_txt TEXT,
   3t_txt TEXT,
   4t_txt TEXT,
+  i1t_txt TEXT,
+  i2t_txt TEXT,
+  i3t_txt TEXT,
+  i4t_txt TEXT,
   id_programa_presupuestario INT,
   txt_problematica TEXT,
   id_dependencia_responsable INT
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+
+
+DROP TABLE IF EXISTS diagnosticoPrograma;
+CREATE TABLE diagnosticoPrograma(
+  id_diagnosticoPrograma INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  id_programa INT,
+  id_dependencia INT
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+INSERT INTO diagnosticoPrograma(id_dependencia, id_programa) VALUES
+(52,75),
+(70,76),
+(63,78),
+(72,79),
+(72,80),
+(74,81),
+(66,82),
+(63,83),
+(74,84),
+(80,86),
+(73,88),
+(80,91),
+(63,92),
+(79,93),
+(82,94),
+(74,96),
+(73,97),
+(65,98),
+(51,99),
+(81,100),
+(65,101),
+(69,102),
+(68,104),
+(67,106),
+(70,107),
+(69,109),
+(69,111),
+(68,112),
+(70,113),
+(76,115),
+(70,116),
+(77,117),
+(77,118),
+(77,119),
+(77,120),
+(70,122),
+(83,128),
+(70,129),
+(75,130),
+(75,133),
+(75,140),
+(75,143),
+(75,145);
