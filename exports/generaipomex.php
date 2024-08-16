@@ -37,7 +37,8 @@ function traeIndicador($con, $id_dependencia)
     return $indicadores;
 }
 
-function fraccion4($con, $areas_ipo, $unidades_ipo, $trimestre){
+function fraccion4($con, $areas_ipo, $unidades_ipo, $trimestre)
+{
     $sentencia = "SELECT * FROM programas_presupuestarios pp
     LEFT JOIN proyectos py ON py.id_programa = pp.id_programa
     JOIN indicadores_uso iu ON iu.id_proyecto = py.id_proyecto
@@ -59,7 +60,7 @@ function fraccion4($con, $areas_ipo, $unidades_ipo, $trimestre){
         $nombre_area = $p['nombre_dependencia'];
         $super_porcentaje_areas = 90;
         $foundar = 0;
-        
+
         foreach ($areasipomex as $ar) { // Nos vincula las areas dadas de alta en el ipomex con las areas del simonts
             similar_text(mb_strtoupper($ar[1]), mb_strtoupper($nombre_area), $porcentaje);
             if ($porcentaje > $super_porcentaje_areas) {
@@ -88,7 +89,7 @@ function fraccion4($con, $areas_ipo, $unidades_ipo, $trimestre){
                         print $principal . "|" . $contador . "|" . $i['nombre'] . "|" . $actividad['nombre_actividad'] . "|" . $actividad['nombre_unidad'] . "<br>";
                     }
                 } else {
-                    $notas = "Se coloca el N/A en el criterio de avance de la meta ya que el área responsable no vinculó Metas a este indicador, sin embargo contiene metas relacionadas que ayudan a su cumplimiento";        
+                    $notas = "Se coloca el N/A en el criterio de avance de la meta ya que el área responsable no vinculó Metas a este indicador, sin embargo contiene metas relacionadas que ayudan a su cumplimiento";
                     $principal =  $contador . "|" . "2024" . "|" . "1° Anual" . "|" . $foundar[1] . "|" . $p['descripcion'] . "||" . "36555> DIRECCIÓN DE GOBIERNO POR RESULTADOS>2024>1" . "|" . $notas . "|";
                     print $principal . "|" . $contador . '|' . $i['nombre'] . "|N/A|N/A<br>";
                 }
@@ -107,19 +108,30 @@ function fraccion4($con, $areas_ipo, $unidades_ipo, $trimestre){
 
 function fraccion5($con, $areas_ipo, $indicadores_ipo, $unidades_ipo, $trimestre)
 {
-    $sentencia = "SELECT * FROM indicadores_uso iu
-    LEFT JOIN avances_indicadores ai ON ai.id_indicador = iu.id 
+    $sentencia = "SELECT 
+    *, 
+        SUM(CASE WHEN ai.trimestre = 1 THEN ai.avance_a ELSE 0 END) + 
+        SUM(CASE WHEN ai.trimestre = 2 THEN ai.avance_a ELSE 0 END) +
+        SUM(CASE WHEN ai.trimestre = 3 THEN ai.avance_a ELSE 0 END) +
+        SUM(CASE WHEN ai.trimestre = 4 THEN ai.avance_a ELSE 0 END) 
+    AS total_avance_a,
+        SUM(CASE WHEN ai.trimestre = 1 THEN ai.avance_b ELSE 0 END) + 
+        SUM(CASE WHEN ai.trimestre = 2 THEN ai.avance_b ELSE 0 END) +
+        SUM(CASE WHEN ai.trimestre = 3 THEN ai.avance_b ELSE 0 END) +
+        SUM(CASE WHEN ai.trimestre = 4 THEN ai.avance_b ELSE 0 END) 
+    AS total_avance_b
+    FROM indicadores_uso iu
+    LEFT JOIN avances_indicadores ai ON ai.id_indicador = iu.id AND ai.trimestre IN (1, 2, 3, 4)
     LEFT JOIN indicadores id ON id.id_indicador = iu.id_indicador_gaceta
     LEFT JOIN proyectos py ON py.id_proyecto = iu.id_proyecto
     LEFT JOIN programas_presupuestarios pp ON pp.id_programa = py.id_programa
     LEFT JOIN areas ar ON ar.id_area = iu.id_area
     LEFT JOIN dependencias dp ON dp.id_dependencia = iu.id_dependencia
-    WHERE dp.anio = 2024 AND dp.tipo = 1
+    WHERE dp.anio = 2024 AND dp.tipo = 1 
     GROUP BY iu.id
     ";
     $stm = $con->query($sentencia);
     $indicadores = $stm->fetchAll(PDO::FETCH_ASSOC);
-
 
     $areasipomex = limpiarDatos($areas_ipo);
     $indicadoresIPOMEX = limpiarDatos($indicadores_ipo);
@@ -212,10 +224,64 @@ function fraccion5($con, $areas_ipo, $indicadores_ipo, $unidades_ipo, $trimestre
             $nota = 'Sin información adicional';
         }
 
-        $prog_anual_a = $prog_a = $i['at1'] + $prog_a = $i['at2'] + $prog_a = $i['at3'] + $prog_a = $i['at4'];
-        $prog_anual_b = $prog_b = $i['bt1'] + $prog_b = $i['bt2'] + $prog_b = $i['bt3'] + $prog_b = $i['bt4'];
+        if ($i['tipo_op_a'] == 'Constante') {
+            // Encuentra el primer valor no vacío de los campos at1, at2, at3, at4
+            $prog_anual_a = $i['at1'] ?: $i['at2'] ?: $i['at3'] ?: $i['at4'];
+        } else {
+            // Suma los valores de los cuatro campos
+            $prog_anual_a = $i['at1'] + $i['at2'] + $i['at3'] + $i['at4'];
+        }
+        if ($i['tipo_op_b'] == 'Constante') {
+            // Encuentra el primer valor no vacío de los campos at1, at2, at3, at4
+            $prog_anual_a = $i['bt1'] ?: $i['bt2'] ?: $i['bt3'] ?: $i['bt4'];
+        } else {
+            // Suma los valores de los cuatro campos
+            $prog_anual_a = $i['bt1'] + $i['bt2'] + $i['bt3'] + $i['bt4'];
+        }
 
-        $general = $contador_principal . '|2024|1° Trimestre|' .
+
+        $prog_anual_b = $i['bt1'] + $i['bt2'] + $i['bt3'] + $i['bt4'];
+
+        $id_indicador = $i['id'];
+        // Aqui vamos a verificar si existe una reconduccion, y la vamos a citar 
+        $stm = $con->query("SELECT * FROM reconducciones_indicadores WHERE id_indicador = $id_indicador ORDER BY id_reconduccion_indicadores DESC");
+        if ($reconducciones = $stm->fetch(PDO::FETCH_ASSOC)) {
+            $prog_inicial_a = explode("|", $reconducciones['programacion_inicial_a']);
+            $prog_inicial_b = explode("|", $reconducciones['programacion_inicial_b']);
+
+            $prog_modificada_a = explode("|", $reconducciones['programacion_modificada_a']);
+            $prog_modificada_b = explode("|", $reconducciones['programacion_modificada_b']);
+
+            $suma_inicial_a = $prog_inicial_a[0] + $prog_inicial_a[1] + $prog_inicial_a[2] + $prog_inicial_a[3];
+            $suma_inicial_b = $prog_inicial_b[0] + $prog_inicial_b[1] + $prog_inicial_b[2] + $prog_inicial_b[3];
+
+            $anual_modificado_a = $prog_modificada_a[0] + $prog_modificada_a[1] + $prog_modificada_a[2] + $prog_modificada_a[3];
+            $anual_modificado_b = $prog_modificada_b[0] + $prog_modificada_b[1] + $prog_modificada_b[2] + $prog_modificada_b[3];
+
+            if ($prog_anual_a == $suma_inicial_a) {
+                $anual_modificado_a = 0;
+            } else {
+                $anual_modificado_a = $anual_modificado_a;
+            }
+
+            if ($prog_anual_b == $suma_inicial_b) {
+                $anual_modificado_a = 0;
+            } else {
+                $anual_modificado_a = $anual_modificado_b;
+            }
+
+            $prog_anual_a = $suma_inicial_a;
+            $prog_anual_b = $suma_inicial_b;
+
+        } else {
+            $anual_modificado_a = 0;
+            $anual_modificado_b = 0;
+        }
+
+
+
+
+        $general = $contador_principal . '|2024|2° Trimestre|' .
             $foundar[4] . '|' .
             $i['objetivo_pp'] . '|' .
             $foundin[1] . '|' .
@@ -229,18 +295,18 @@ function fraccion5($con, $areas_ipo, $indicadores_ipo, $unidades_ipo, $trimestre
             $nota . "|" .
             $contador_principal;
 
-
-        print $general . "|" . $founduna[0] . "|" . $i['linea_base'] . "|" . $prog_anual_a . "|0|" . $i['avance_a'] . "<br>";
-        print $general . "|" . $foundunb[0] . "|" . $i['linea_base'] . "|" . $prog_anual_b . "|0|" . $i['avance_b'] . "<br>";
-
-
+        print $general . "|" . $founduna[0] . "|" . $i['linea_base'] . "|" . $prog_anual_a . "|" . $anual_modificado_a . "|" . $i['total_avance_a'] . "<br>";
+        print $general . "|" . $foundunb[0] . "|" . $i['linea_base'] . "|" . $prog_anual_b . "|" . $anual_modificado_b . "|" . $i['total_avance_b'] . "<br>";
+        $anual_modificado_a = 0;
+        $anual_modificado_b = 0;
         $contador_principal += 1;
     }
 }
 
 
 
-function fraccion6($con, $areas_ipo){
+function fraccion6($con, $areas_ipo)
+{
     $sentencia = "SELECT * FROM indicadores_uso iu
     JOIN indicadores id ON id.id_indicador = iu.id_indicador_gaceta
     LEFT JOIN proyectos py ON py.id_proyecto = iu.id_proyecto
@@ -253,7 +319,7 @@ function fraccion6($con, $areas_ipo){
     $indicadores = $stm->fetchAll(PDO::FETCH_ASSOC);
 
     $areasipomex = limpiarDatos($areas_ipo);
-$contador =1;
+    $contador = 1;
     foreach ($indicadores as $i) {
         $found = 0;
         $super_porcentaje = 10;

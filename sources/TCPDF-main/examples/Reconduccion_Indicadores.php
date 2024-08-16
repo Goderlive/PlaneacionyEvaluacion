@@ -123,7 +123,7 @@ $encabezado_gen_aux_etc = ' &nbsp;
 				<td style="width: 100%; border: 1px solid black; border-collapse: collapse;">Objetivo: '. $reconduccion['objetivo'] .'</td> 
 			</tr>
 			<tr>
-				<td style="width: 100%; border: 1px solid black; border-collapse: collapse;">Objetivo: '. $reconduccion['proyecto'] .  ' ' . $reconduccion['proyecto_name'] .'</td> 
+				<td style="width: 100%; border: 1px solid black; border-collapse: collapse;">Proyecto: '. $reconduccion['proyecto'] .  ' ' . $reconduccion['proyecto_name'] .'</td> 
 			</tr>
 		</tbody>
 	</table>

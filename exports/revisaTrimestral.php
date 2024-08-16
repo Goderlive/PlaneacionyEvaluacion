@@ -32,7 +32,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['entrada'])) {
     $result = $con->query($sentencia);
     $actividades = $result->fetchAll(PDO::FETCH_ASSOC);
 
-
     //Funcion para traer los avances de cada actividad
     function traeAvances($con, $id_actividad, $trimestre){
         if($trimestre == 1){
@@ -70,6 +69,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['entrada'])) {
         return $result; 
     }
     
+    // Mostramos el titulo
+    print "<h3>Estamos consultando la comparación con el trimestre " . $trimestre . "</h3><br>"; 
 
     //Recorremos cada actividad 
 
@@ -85,7 +86,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['entrada'])) {
         }
         
         if($find == 0){
-            print $clave . $ac['nombre_actividad'] . "<br>";
+            print $clave . " - " . $ac['nombre_actividad'] . "<br>";
         }
     }
 
@@ -110,7 +111,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['entrada'])) {
     }
 
 
-
+    print "Se muestran las diferencias: <br> "; 
 
     foreach ($actividades as $ac){
         if($trimestre == 1){

@@ -948,71 +948,75 @@ if ($_SESSION['sistema'] == 'pbrm') {
                 <?php endif ?>
             <?php endif ?>
 
-            <?php if ($permisos['nivel'] == 1) : // Area de Administradores
+            <?php if ($permisos['nivel'] == 1) : // Area de Administradores 
             ?>
-                <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white"> Formatos PDF</h5>
-                <div class="grid grid-cols-6">
-                    <form action="sources\TCPDF-main\examples\formatos\<?= $ajustes['year_report'] ?>\ante_01a_todos.php" method="post">
-                        <button type="submit" name="01a" value="01a" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01a</button>
-                    </form>
-                    <form action="sources\TCPDF-main\examples\formatos\<?= $ajustes['year_report'] ?>\ante_01b_todos.php" method="post">
-                        <button type="submit" name="01b" value="01b" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01b</button>
-                    </form>
-                    <form action="sources\TCPDF-main\examples\formatos\<?= $ajustes['year_report'] ?>\ante_01c_todos.php" method="post">
-                        <button type="submit" name="01c" value="01c" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01c</button>
-                    </form>
-                    <form action="sources\TCPDF-main\examples\formatos\<?= $ajustes['year_report'] ?>\ante_01d_todos.php" method="post">
-                        <button type="submit" name="01d" value="01d" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01d</button>
-                    </form>
-                    <form action="sources\TCPDF-main\examples\formatos\<?= $ajustes['year_report'] ?>\ante_01e_todos.php" method="post">
-                        <button type="submit" name="01e" value="01e" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01e</button>
-                    </form>
-                    <form action="sources\TCPDF-main\examples\formatos\<?= $ajustes['year_report'] ?>\ante_02a_todos.php" method="post">
-                        <button type="submit" name="02a" value="02a" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">02a</button>
-                    </form>
-                </div>
-                <br>
-                <h5 class="mt-4 mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white"> Formatos TXT</h5>
-                <div class="grid grid-cols-6">
-                    <form action="sources\TCPDF-main\examples\ante_01a_todos.php" method="post">
-                        <button type="submit" name="01a" value="01a" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01a</button>
-                    </form>
-                    <form action="sources\TCPDF-main\examples\ante_01b_todos.php" method="post">
-                        <button type="submit" name="01b" value="01b" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01b</button>
-                    </form>
-                    <form action="sources\TCPDF-main\examples\ante_01c_todos.php" method="post">
-                        <button type="submit" name="01c" value="01c" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01c</button>
-                    </form>
-                    <form action="sources\TCPDF-main\examples\ante_01d_todos.php" method="post">
-                        <button type="submit" name="01d" value="01d" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01d</button>
-                    </form>
-                    <form action="sources\TCPDF-main\examples\ante_01e_todos.php" method="post">
-                        <button type="submit" name="01e" value="01e" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01e</button>
-                    </form>
-                    <form action="sources\TCPDF-main\examples\ante_02a_todos.php" method="post">
-                        <button type="submit" name="02a" value="02a" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">02a</button>
-                    </form>
-                </div>
-                <br>
-                Enlistaremos todas las actividades por area y las
+                <?php if (verificaAnteproyecto($con, $_SESSION['anio']) == 1): //Nos verifica si estan llenas las tablas de anteproyecto y de ser asi, nos muestra la impresion 
+                ?>
+                    <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white"> Formatos PDF</h5>
+                    <div class="grid grid-cols-6">
+                        <form action="sources\TCPDF-main\examples\formatos\<?= $ajustes['year_report'] ?>\ante_01a_todos.php" method="post">
+                            <button type="submit" name="01a" value="01a" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01a</button>
+                        </form>
+                        <form action="sources\TCPDF-main\examples\formatos\<?= $ajustes['year_report'] ?>\ante_01b_todos.php" method="post">
+                            <button type="submit" name="01b" value="01b" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01b</button>
+                        </form>
+                        <form action="sources\TCPDF-main\examples\formatos\<?= $ajustes['year_report'] ?>\ante_01c_todos.php" method="post">
+                            <button type="submit" name="01c" value="01c" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01c</button>
+                        </form>
+                        <form action="sources\TCPDF-main\examples\formatos\<?= $ajustes['year_report'] ?>\ante_01d_todos.php" method="post">
+                            <button type="submit" name="01d" value="01d" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01d</button>
+                        </form>
+                        <form action="sources\TCPDF-main\examples\formatos\<?= $ajustes['year_report'] ?>\ante_01e_todos.php" method="post">
+                            <button type="submit" name="01e" value="01e" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01e</button>
+                        </form>
+                        <form action="sources\TCPDF-main\examples\formatos\<?= $ajustes['year_report'] ?>\ante_02a_todos.php" method="post">
+                            <button type="submit" name="02a" value="02a" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">02a</button>
+                        </form>
+                    </div>
+                    <br>
+                    <h5 class="mt-4 mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white"> Formatos TXT</h5>
+                    <div class="grid grid-cols-6">
+                        <form action="sources\TCPDF-main\examples\ante_01a_todos.php" method="post">
+                            <button type="submit" name="01a" value="01a" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01a</button>
+                        </form>
+                        <form action="sources\TCPDF-main\examples\ante_01b_todos.php" method="post">
+                            <button type="submit" name="01b" value="01b" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01b</button>
+                        </form>
+                        <form action="sources\TCPDF-main\examples\ante_01c_todos.php" method="post">
+                            <button type="submit" name="01c" value="01c" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01c</button>
+                        </form>
+                        <form action="sources\TCPDF-main\examples\ante_01d_todos.php" method="post">
+                            <button type="submit" name="01d" value="01d" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01d</button>
+                        </form>
+                        <form action="sources\TCPDF-main\examples\ante_01e_todos.php" method="post">
+                            <button type="submit" name="01e" value="01e" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01e</button>
+                        </form>
+                        <form action="sources\TCPDF-main\examples\ante_02a_todos.php" method="post">
+                            <button type="submit" name="02a" value="02a" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">02a</button>
+                        </form>
+                    </div>
+                    <br>
+                    Enlistaremos todas las actividades por area y las
 
-                <div class="mt-5">
+                    <div class="mt-5">
 
-                    <?php if(revisaAreas($con, $permisos['anio'] +1)): //Se revisan las areas, si tiene datos del 2023 avisa que todo chido, podemos continuar, si no, else?>
-                        <b>Usted cumple con los requisitos para exportar el programa anual </b> <br><br><br>
-                    <?php else: ?>
-                        <b>Usted NO cumple con los requisitos para exportar el programa anual </b> <br>
-                        <b>Las áreas aun no realizan actualizacion al año <?= $permisos['anio'] +1 ?></b><br><br>
-                        <a href="actualizar_programa_anual.php" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Actualizar Áreas</a>
-                        <br><br><br>
-                    <?php endif ?>
-                    <b>Exportar Programa Anual a SIMONTS <?= $permisos['anio'] +1 ?></b> <br>
+                        <?php if (revisaAreas($con, $permisos['anio'] + 1)): //Se revisan las areas, si tiene datos del 2023 avisa que todo chido, podemos continuar, si no, else
+                        ?>
+                            <b>Usted cumple con los requisitos para exportar el programa anual </b> <br><br><br>
+                        <?php else: ?>
+                            <b>Usted NO cumple con los requisitos para exportar el programa anual </b> <br>
+                            <b>Las áreas aun no realizan actualizacion al año <?= $permisos['anio'] + 1 ?></b><br><br>
+                            <a href="actualizar_programa_anual.php" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Actualizar Áreas</a>
+                            <br><br><br>
+                        <?php endif ?>
+                    </div>
+                <?php else: // En caso de no estar creado el anteproyecto, nos da la opcion de crearlo. 
+                ?>
+                    <b>Exportar Programa Anual a SIMONTS <?= $permisos['anio'] + 1 ?></b> <br>
                     <form action="exporta_programa_anual.php" method="post">
                         <button type="submit" name="export_programa_anual" class="mt-2 focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Exportar</button>
                     </form>
-
-                </div>
-
+                <?php endif ?>
             <?php endif ?>
         </div>
     </body>

@@ -4,13 +4,19 @@ require_once 'conection.php';
 function TraeDependencias($con, $id_usuario)
 {
     $stm = $con->query("SELECT * FROM dependencias dp 
-    WHERE id_administrador = $id_usuario");
+    LEFT JOIN titulares tt ON tt.id_dependencia = dp.id_dependencia
+    WHERE id_administrador = $id_usuario
+    ORDER BY dp.id_dependencia ASC");
     $dependencias = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $dependencias;
 }
 
 function TraeTodasDependencias($con, $anio){
-    $stm = $con->query("SELECT * FROM dependencias dp WHERE dp.anio = $anio");
+    $sentencia ="SELECT dp.*, tt.nombre, tt.apellidos FROM dependencias dp 
+    LEFT JOIN titulares tt ON tt.id_dependencia = dp.id_dependencia
+    WHERE dp.anio = $anio
+    ORDER BY dp.id_dependencia ASC";
+    $stm = $con->query($sentencia);
     $dependencias = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $dependencias;
 }
@@ -58,6 +64,7 @@ function TraeDependenciasPDM($con, $permiso)
     LEFT JOIN areas ar ON ar.id_dependencia = dp.id_dependencia
     LEFT JOIN actividades ac ON ac.id_area = ar.id_area
     LEFT JOIN lineasactividades li ON li.id_actividad = ac.id_actividad
+    LEFT JOIN titulares tt ON tt.id_dependencia = dp.id_dependencia
     WHERE dp.anio = $anio
     GROUP BY dp.id_dependencia
     ");
@@ -80,15 +87,18 @@ function TraerAreas($con, $id_dependencia)
 
 function Pendientespbrm($con, $id_dependencia)
 {
-    $sentencia = "SELECT COUNT(*) AS total_resultados FROM avances av
-    JOIN actividades ac ON av.id_actividad = ac.id_actividad
+    $sentencia = "SELECT COUNT(*) AS total_resultados 
+    FROM avances av
+    LEFT JOIN actividades ac ON av.id_actividad = ac.id_actividad
     LEFT JOIN areas ar ON ar.id_area = ac.id_area
     LEFT JOIN dependencias dp ON dp.id_dependencia = ar.id_dependencia
-    WHERE dp.id_dependencia = $id_dependencia AND av.validado = 0";
+    WHERE dp.id_dependencia = $id_dependencia AND av.validado != 1";
     $stm = $con->query($sentencia);
     $areas = $stm->fetch(PDO::FETCH_ASSOC);
     return $areas;
 }
+
+
 function Pendientespdm($con, $id_dependencia)
 {
     $sentencia = "SELECT COUNT(*) AS total_resultados FROM avances av
@@ -134,11 +144,12 @@ function Pendientesareaspdm($con, $id_area)
 
 function Actividades_DB($con, $id_area)
 {
-    $sql = "SELECT a.*, p.*, li.* 
+    $sql = "SELECT a.*, p.*, li.*, um.* 
 FROM actividades a
 LEFT JOIN programaciones p ON p.id_actividad = a.id_actividad
 LEFT JOIN lineasactividades la ON la.id_actividad = a.id_actividad
 LEFT JOIN pdm_lineas li ON li.id_linea = la.id_linea 
+LEFT JOIN unidades_medida um ON um.id_unidad = a.id_unidad 
 WHERE a.id_area = $id_area
 GROUP BY a.id_actividad
 ORDER BY CAST(a.codigo_actividad AS UNSIGNED) ASC

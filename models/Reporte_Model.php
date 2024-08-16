@@ -63,6 +63,7 @@ function Actividades_DB($con, $id_area)
 {
     $sql = "SELECT * FROM actividades a
     LEFT JOIN programaciones p ON p.id_actividad = a.id_actividad
+    LEFT JOIN unidades_medida u ON u.id_unidad = a.id_unidad
     WHERE a.id_area = $id_area";
     $stm = $con->query($sql);
     $actividades = $stm->fetchAll(PDO::FETCH_ASSOC);
@@ -179,17 +180,14 @@ function cleanFileName($fileName) {
 
 if (isset($_POST['jfnkasjnkasdf34q345']) && $_POST['jfnkasjnkasdf34q345'] == "Enviar") {
     if ($_SESSION['sistema'] == 'pbrm') {
-
-        print '<pre>';
-        var_dump($_POST);
-        die();
+        
         $year = date('Y');
         $mes = $_POST['mes'];
         $id_actividad = $_POST['id_actividad'];
         $id_dependencia = $_POST['id_dependencia'];
         $id_area = $_POST['id_area'];
-        $localidades = isset($_POST['localidades']) ? implode(",", $_POST['localidades']) : NULL;
-        $beneficiarios = (isset($_POST['beneficiarios']) && $_POST['beneficiarios'] != "") ? $_POST['beneficiarios'] : NULL;
+        $localidades = isset($_POST['localidades']) ? json_encode($_POST['localidades']) : NULL;
+        $beneficiarios = isset($_POST['beneficiarios']) ? json_encode($_POST['beneficiarios']) : NULL;
         $recursos_federales = isset($_POST['recursos_federales']) ? $_POST['recursos_federales'] : NULL;
         $recursos_estatales = isset($_POST['recursos_estatales']) ? $_POST['recursos_estatales'] : NULL;
         $justificacion = isset($_POST['justificacion']) ? $_POST['justificacion'] : NULL;
@@ -197,6 +195,7 @@ if (isset($_POST['jfnkasjnkasdf34q345']) && $_POST['jfnkasjnkasdf34q345'] == "En
         $actividad_trimestral = isset($_POST['actividad_trimestral']) ? $_POST['actividad_trimestral'] : NULL;
         $$path_evidencia_evidencia = NULL;  // Inicializa la variable
         $path_evidencia_evidencia_mini = NULL;  // Inicializa la variable
+        $anio = $_SESSION['anio'];
 
         if ($recursos_federales || $recursos_estatales || $recursos_propios) {
             $recursos = '';
@@ -327,9 +326,9 @@ if (isset($_POST['jfnkasjnkasdf34q345']) && $_POST['jfnkasjnkasdf34q345'] == "En
             }
         }
 
-        $sql = "INSERT INTO avances (mes, avance, justificacion, path_evidenia_evidencia, path_evidenia_evidencia_mini, descripcion_evidencia, id_actividad, id_usuario_avance, localidades, beneficiarios, recursos, actividad_trimestral) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+        $sql = "INSERT INTO avances (mes, avance, justificacion, path_evidenia_evidencia, path_evidenia_evidencia_mini, descripcion_evidencia, id_actividad, id_usuario_avance, localidades, beneficiarios, recursos, actividad_trimestral, anio) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
         $sqlr = $con->prepare($sql);
-        $sqlr->execute(array($mes, $_POST['avance'], $justificacion, $path_evidencia_evidencia, $path_evidencia_evidencia_mini, $_POST['descripcion_evidencia'], $id_actividad, $_POST['id_usuario'], $localidades, $beneficiarios, $recursos, $actividad_trimestral));
+        $sqlr->execute(array($mes, $_POST['avance'], $justificacion, $path_evidencia_evidencia, $path_evidencia_evidencia_mini, $_POST['descripcion_evidencia'], $id_actividad, $_POST['id_usuario'], $localidades, $beneficiarios, $recursos, $actividad_trimestral, $anio));
 
 
         if(isset($_POST['udmed'])) {

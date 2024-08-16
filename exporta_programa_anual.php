@@ -20,13 +20,24 @@ $anioobjetivo = $_SESSION['anio'] + 1;
 
 function Verificador($con, $anioobjetivo)
 {
-    $stm = $con->query("SELECT * FROM dependencias WHERE anio = $anioobjetivo");
-    $existenDependencias = $stm->fetch(PDO::FETCH_ASSOC);
+    $stm = $con->query("
+    SELECT 
+        CASE 
+            WHEN 
+                EXISTS (SELECT 1 FROM dependencias WHERE anio = $anioobjetivo) AND 
+                EXISTS (SELECT 1 FROM areas WHERE anio = $anioobjetivo) AND
+                EXISTS (SELECT 1 FROM areas WHERE anio = $anioobjetivo)
+            THEN true
+            ELSE false
+        END AS registros_existentes
+");
+    $existenDependencias = $stm->fetchColumn();
     if ($existenDependencias) {
         return true;
     } else {
         return false;
     }
+    
 }
 
 function CreaDependencias($con, $anioobjetivo)
@@ -172,12 +183,13 @@ function transfiereLineas($con, $anioobjetivo)
 
 function transfierePermisos($con, $anioobjetivo)
 {
+    $anio_actual = $_SESSION['anio'];
     try {
         $sentencia = "SELECT * FROM usuarios u
         JOIN permisos p ON p.id_usuario = u.id_usuario
-        WHERE p.anio = :anioObjetivo - 1";
+        WHERE p.anio = $anio_actual";
         $stm = $con->prepare($sentencia);
-        $stm->execute([':anioObjetivo' => $anioobjetivo]);
+        $stm->execute();
         $usuarios = $stm->fetchAll(PDO::FETCH_ASSOC);
 
         foreach ($usuarios as $u) {
@@ -313,12 +325,13 @@ function transfiereIndicadores($con, $anioobjetivo)
             <ul class="space-y-4 text-left text-gray-500 dark:text-gray-400 mt-5">
 
                 <!-- Lo primero que todo es verificar que no exista nada previo del año anterior -->
-                <?php if (Verificador($con, $anioobjetivo) == true) : ?>
+                <?php if (Verificador($con, $anioobjetivo) == true): ?>
                     <li class="flex items-center space-x-3 rtl:space-x-reverse">
                         <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6" />
                         </svg>
                         <span>No se cumplen con los requisitos</span>
+                        <span>Por favor contacte al administrador</span>
                     </li>
                     <?php die(); ?>
                 <?php else : ?>

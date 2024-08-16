@@ -29,10 +29,12 @@ if ($_SESSION['sistema'] == "pbrm") {
         <div class="container mx-auto">
             <br>
             <?= breadcrumbs(array("Inicio" => "index.php", "Indicadores" => "indicadores.php", "Reconducción de Indicadores" => "")) ?>
-
-
             <br>
 
+
+            <div class="p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300" role="alert">
+                <span class="font-medium">Reconducciones Indicadores </span> <a href="revisa_todas_reconduccionesi.php">Todas</a>
+            </div>
 
             <?php if ($permisos['nivel'] == 1) : ?>
                 <?php if (!$_POST) : //Si no hay un post va a elistar las dependencias que nos corresponden segun el permiso

@@ -149,6 +149,9 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                     <?php foreach ($dependencias as $dp) : ?>
                         <div class="items-start p-4 ml-2 mr-2 mb-4 text-center  bg-white rounded-lg border border-gray-400 shadow-md dark:bg-gray-800 dark:border-gray-700">
                             <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"> <?= $dp['nombre_dependencia'] ?> </h5>
+                            <?php if ($dp['nombre']): ?>
+                                <h5 class="mb-2 font-bold tracking-tight text-gray-900 dark:text-white"> <?= mb_strtoupper($dp['nombre'], 'UTF-8') . " " . mb_strtoupper($dp['apellidos'], 'UTF-8') ?> </h5>
+                            <?php endif ?>
                             <?php $pendientespbrm = Pendientespbrm($con, $dp['id_dependencia']) ?>
                             <?php $pendientespdm = Pendientespdm($con, $dp['id_dependencia']) ?>
                             <?php if ($pendientespbrm['total_resultados'] != 0) : ?>
@@ -249,32 +252,32 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                                     </div>
                                 <?php endif ?>
                                 <div id="toast-interactive" class="p-1 text-gray-500 bg-white rounded-lg shadow dark:bg-gray-800 dark:text-gray-400" role="alert">
-                                        <span class="mb-1 text-sm font-semibold text-gray-900 dark:text-white"><?= $meses[intval(date('m'))] ?></span>
-                                        <br>
-                                        <?php $validadas = ActividadesValidadas($con, $a['id_area'], date('m')) ?>
-                                        <?php if ($validadas == $totalActividades) : ?>
-                                            <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-white bg-green-400 rounded-lg">
-                                                OK!
-                                            </div>
-                                        <?php else : ?>
+                                    <span class="mb-1 text-sm font-semibold text-gray-900 dark:text-white"><?= $meses[intval(date('m'))] ?></span>
+                                    <br>
+                                    <?php $validadas = ActividadesValidadas($con, $a['id_area'], date('m')) ?>
+                                    <?php if ($validadas == $totalActividades) : ?>
+                                        <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-white bg-green-400 rounded-lg">
+                                            OK!
+                                        </div>
+                                    <?php else : ?>
 
-                                            <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-white bg-red-600 rounded-lg">
-                                                <?php $sinvalidar = SinValidar($con, $a['id_area'], date('m'), $_SESSION) ?>
-                                                <?= $sinvalidar ?>
-                                            </div>
-                                            <br>
-                                            <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-white bg-yellow-300 rounded-lg">
-                                                <?php $pendientes = PendientesSegunPermisos($con, $a['id_area'], $_SESSION, date('m')) ?>
-                                                <?= $pendientes ?>
-                                            </div>
-                                            <br>
-                                            <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-white bg-gray-700 rounded-lg">
-                                                <?php //deberia ser una resta simple de las anteriores  
-                                                ?>
-                                                <?= $totalActividades - $sinvalidar - $pendientes ?>
-                                            </div>
-                                        <?php endif ?>
-                                    </div>
+                                        <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-white bg-red-600 rounded-lg">
+                                            <?php $sinvalidar = SinValidar($con, $a['id_area'], date('m'), $_SESSION) ?>
+                                            <?= $sinvalidar ?>
+                                        </div>
+                                        <br>
+                                        <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-white bg-yellow-300 rounded-lg">
+                                            <?php $pendientes = PendientesSegunPermisos($con, $a['id_area'], $_SESSION, date('m')) ?>
+                                            <?= $pendientes ?>
+                                        </div>
+                                        <br>
+                                        <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-white bg-gray-700 rounded-lg">
+                                            <?php //deberia ser una resta simple de las anteriores  
+                                            ?>
+                                            <?= $totalActividades - $sinvalidar - $pendientes ?>
+                                        </div>
+                                    <?php endif ?>
+                                </div>
 
 
 
@@ -367,7 +370,12 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                                         <?= $a['nombre_actividad'] ?>
                                     </td>
                                     <td class="px-6 py-4">
-                                        <?= $a['unidad'] ?>
+                                        <?php if ($a['id_unidad'] != '') {
+                                            $unidaddemedida = $a['nombre_unidad'];
+                                        } else {
+                                            $unidaddemedida = $a['unidad'];
+                                        } ?>
+                                        <?= $unidaddemedida ?>
                                     </td>
                                     <td class="px-6 py-4">
                                         <?= $anual ?>
@@ -452,7 +460,12 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                                                     <?= $m['nombre_actividad'] ?>
                                                 </th>
                                                 <td class="py-2 px-6" align="center" valign="top">
-                                                    <?= $m['unidad'] ?>
+                                                    <?php if ($m['id_unidad'] != '') {
+                                                        $unidaddemedida = $m['nombre_unidad'];
+                                                    } else {
+                                                        $unidaddemedida = $m['unidad'];
+                                                    } ?>
+                                                    <?= $unidaddemedida ?>
                                                 </td>
                                                 <td class="py-2 px-6" align="center" valign="top">
                                                     <?= $anual ?>
@@ -495,7 +508,11 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                                                         </td>
                                                         <td scope="row" class="py-2 px-6" align="center" valign="top">
                                                             <?php if ($avanceMensual['beneficiarios']) :
-                                                                print $avanceMensual['beneficiarios'] . ' ' . $avanceMensual['udmed']; ?>
+                                                                $nbeneficiarios = json_decode($avanceMensual['beneficiarios']);
+                                                                foreach($nbeneficiarios as $b){
+                                                                    print $b . "<br>";
+                                                                }
+                                                                $avanceMensual['udmed']; ?>
                                                             <?php else : ?>
                                                                 <b> No selecciono beneficiarios </b>
                                                             <?php endif ?>

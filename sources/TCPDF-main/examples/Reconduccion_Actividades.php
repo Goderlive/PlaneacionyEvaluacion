@@ -306,19 +306,19 @@ if (!(count($programaciones) > 0) && !$reconduccion['imprimir']) {
 			<td bgcolor="#97d6f7" style="width: 7%; border: 1px solid black; border-collapse: collapse; text-align: center">Autorizado Modificado</td> 
 		</tr>
 		<tr>
-			<td style="width: 8%; border: 1px solid black; border-collapse: collapse; text-align: center">&nbsp;<br>N/A<br>&nbsp;</td> 
-			<td style="width: 9%; border: 1px solid black; border-collapse: collapse; text-align: center">&nbsp;<br>N/A<br>&nbsp;</td> 
-			<td style="width: 8%; border: 1px solid black; border-collapse: collapse; text-align: center">&nbsp;<br>N/A<br>&nbsp;</td> 
-			<td style="width: 8%; border: 1px solid black; border-collapse: collapse; text-align: center">&nbsp;<br>N/A<br>&nbsp;</td> 
-			<td style="width: 8%; border: 1px solid black; border-collapse: collapse; text-align: center">&nbsp;<br>N/A<br>&nbsp;</td> 
-			<td style="width: 7%; border: 1px solid black; border-collapse: collapse; text-align: center">&nbsp;<br>N/A<br>&nbsp;</td> 
+			<td style="width: 8%; border: 1px solid black; border-collapse: collapse; text-align: center; font-size: 6px;">&nbsp;<br>N/A<br>&nbsp;</td> 
+			<td style="width: 9%; border: 1px solid black; border-collapse: collapse; text-align: center; font-size: 6px;">&nbsp;<br>N/A<br>&nbsp;</td> 
+			<td style="width: 8%; border: 1px solid black; border-collapse: collapse; text-align: center; font-size: 6px;">&nbsp;<br>N/A<br>&nbsp;</td> 
+			<td style="width: 8%; border: 1px solid black; border-collapse: collapse; text-align: center; font-size: 6px;">&nbsp;<br>N/A<br>&nbsp;</td> 
+			<td style="width: 8%; border: 1px solid black; border-collapse: collapse; text-align: center; font-size: 6px;">&nbsp;<br>N/A<br>&nbsp;</td> 
+			<td style="width: 7%; border: 1px solid black; border-collapse: collapse; text-align: center; font-size: 6px;">&nbsp;<br>N/A<br>&nbsp;</td> 
 			<td  style="width: 4%">&nbsp;</td> 
-			<td style="width: 8%; border: 1px solid black; border-collapse: collapse; text-align: center">&nbsp;<br>N/A<br>&nbsp;</td> 
-			<td style="width: 9%; border: 1px solid black; border-collapse: collapse; text-align: center">&nbsp;<br>N/A<br>&nbsp;</td> 
-			<td style="width: 8%; border: 1px solid black; border-collapse: collapse; text-align: center">&nbsp;<br>N/A<br>&nbsp;</td> 
-			<td style="width: 8%; border: 1px solid black; border-collapse: collapse; text-align: center">&nbsp;<br>N/A<br>&nbsp;</td> 
-			<td style="width: 8%; border: 1px solid black; border-collapse: collapse; text-align: center">&nbsp;<br>N/A<br>&nbsp;</td> 
-			<td style="width: 7%; border: 1px solid black; border-collapse: collapse; text-align: center">&nbsp;<br>N/A<br>&nbsp;</td> 
+			<td style="width: 8%; border: 1px solid black; border-collapse: collapse; text-align: center; font-size: 6px;">&nbsp;<br>N/A<br>&nbsp;</td> 
+			<td style="width: 9%; border: 1px solid black; border-collapse: collapse; text-align: center; font-size: 6px;">&nbsp;<br>N/A<br>&nbsp;</td> 
+			<td style="width: 8%; border: 1px solid black; border-collapse: collapse; text-align: center; font-size: 6px;">&nbsp;<br>N/A<br>&nbsp;</td> 
+			<td style="width: 8%; border: 1px solid black; border-collapse: collapse; text-align: center; font-size: 6px;">&nbsp;<br>N/A<br>&nbsp;</td> 
+			<td style="width: 8%; border: 1px solid black; border-collapse: collapse; text-align: center; font-size: 6px;">&nbsp;<br>N/A<br>&nbsp;</td> 
+			<td style="width: 7%; border: 1px solid black; border-collapse: collapse; text-align: center; font-size: 6px;">&nbsp;<br>N/A<br>&nbsp;</td> 
 		</tr>
 	</tbody>
 </table>';

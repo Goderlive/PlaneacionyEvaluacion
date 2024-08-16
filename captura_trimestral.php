@@ -77,21 +77,32 @@ function traeActividades($con){
 
     <?php if (!$_POST) : ?>
         <br>
+        <div class="text-center">
+            <br>
+            <h4 class="text-2xl font-bold dark:text-white">Generación de archivo para captura trimestral</h4>
+            <br><br>
+        </div>
         <div>
             <form class="max-w-sm mx-auto" method="POST">
-                <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione Indicadores o Actividades</label>
-                <select id="countries" name="tipo" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <label for="tipo" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione Indicadores o Actividades</label>
+                <select id="tipo" name="tipo" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     <option value="1">Actividades</option>
                     <option value="2">Incicadores</option>
-                    <option value="3">Lineas de Acción</option>
                 </select>
                 <br>
-                <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione el Trimestre a Capturar</label>
-                <select id="countries" name="trimestre" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <label for="trimestre" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione el Trimestre a Capturar</label>
+                <select id="trimestre" name="trimestre" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     <option value="1">1er Trimestre</option>
                     <option value="2">2do Trimestre</option>
                     <option value="3">3er Trimestre</option>
                     <option value="4">4to Trimestre</option>
+                </select>
+                <br>
+                <label for="periodicidad" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mostrar Información</label>
+                <select id="periodicidad" name="periodicidad" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option value="1">Trimestral</option>
+                    <option value="2">Mensual</option>
+                    <option value="3">Ambos</option>
                 </select>
                 <br>
                 <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Continuar</button>
@@ -132,7 +143,7 @@ function traeActividades($con){
                 LEFT JOIN dependencias_generales dg ON iu.id_dep_general = dg.id_dependencia
                 LEFT JOIN dependencias_auxiliares da ON da.id_dependencia_auxiliar = iu.id_dep_aux
                 LEFT JOIN proyectos py ON py.id_proyecto = iu.id_proyecto
-                WHERE ai.trimestre = 2 AND dp.anio = '2024' AND (i.frecuencia = 'Trimestral' OR i.frecuencia = 'Mensual' OR i.frecuencia = 'Semestral')
+                WHERE ai.trimestre = 2 AND dp.anio = '2024' AND (i.frecuencia != 'Anual')
                 ORDER BY dg.clave_dependencia, da.clave_dependencia_auxiliar, py.codigo_proyecto
                 ";
 
@@ -193,13 +204,14 @@ function traeActividades($con){
             <br><br><br>
             <?php if (isset($_POST) && $_POST['tipo'] == 1) : ?>
 
-                <?php $meses = defineElMes($_POST['trimestre']);
-                ?>
+                <?php $meses = defineElMes($_POST['trimestre']) ?>
 
-                <h2>Nos imprime las actividades listas para capturar</h2>
+
+                <h2>Nos muestra las actividades listas para capturar</h2>
                 <?php $actividadesyavances = traeActividades($con) ?>
+                
+                "Dep. Gen"|"Dep. Aux"|"Proyecto"|"No. Actividad"|"Nombre Actividad"|"Programado Anual"|""|
                 <?php
-
                 $contador = 0;
                 print "<table>";
                 foreach ($actividadesyavances as $a) :
@@ -217,6 +229,18 @@ function traeActividades($con){
                             $avance = array(array("avance"=> "sin avance"), array("avance"=> "sin avance"), array("avance"=> "sin avance"));
                         }
 
+                        if($trimestre == 1){
+                        $metatrimpro = $a['enero'] + $a['febrero'] + $a['marzo'];
+                        }
+                        if($trimestre == 2){
+                        $metatrimpro = $a['abril'] + $a['mayo'] + $a['junio'];
+                        }
+                        if($trimestre == 3){
+                        $metatrimpro = $a['julio'] + $a['agosto'] + $a['septiembre'];
+                        }
+                        if($trimestre == 4){
+                        $metatrimpro = $a['octubre'] + $a['noviembre'] + $a['diciembre'];
+                        }
                         $metatrimpro = $a['abril'] + $a['mayo'] + $a['junio'];
                         $metaanual = $a['enero'] + $a['febrero'] + $a['marzo'] + $a['abril'] + $a['mayo'] + $a['junio'] + $a['julio'] + $a['agosto'] + $a['septiembre'] + $a['octubre'] + $a['noviembre'] + $a['diciembre'];
                         print '"' . $a['clave_dependencia'] . '"|"' . $a['clave_dependencia_auxiliar'] . '"|"' . $a['codigo_proyecto'] . '"|"' . $a['codigo_actividad'] . '"|"' . $a['nombre_actividad'] . '"|"';

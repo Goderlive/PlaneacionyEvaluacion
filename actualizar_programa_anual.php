@@ -15,13 +15,13 @@ require_once 'models/inicio_modelo.php';
 
 <?php
 
-//$anioobjetivo = $_SESSION['anio'] + 1;
-$anioobjetivo = '2024';
+$anioobjetivo = $_SESSION['anio'] + 1;
+//$anioobjetivo = '2024';
 
 
 function actualizaAnteDependencias($con,$anioobjetivo){
     $sentencia = "SELECT * FROM ante_dependencias a
-    LEFT JOIN dependencias_generales d ON a.id_dependencia_gen = d.id_dependencia  
+    LEFT JOIN dependencias_generales d ON a.id_dependencia_gen = d.id_dependencia
     WHERE a.anio = $anioobjetivo AND a.tipo = 1";
     $stm = $con->query($sentencia);
     $ante_dependencias = $stm->fetchAll(PDO::FETCH_ASSOC);

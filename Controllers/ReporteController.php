@@ -175,7 +175,7 @@ function BotonAvance($avanceThisMes, $numero){
 
 function localidades($locasa, $localidades){
     $nlocas = '';
-    $locas = explode(",", $locasa);
+    $locas = json_decode($locasa);
         foreach ($locas as $loca){
             $nlocas .= $localidades[$loca-1]['nombre_localidad'] . "<br>";
         }
@@ -337,6 +337,12 @@ function ModalesEvidencias($con, $actividades, $mes){
                 $textotrimestral = '';
             }
             
+            if($a['id_unidad'] != ''){
+                $unidaddemedida = $a['nombre_unidad'];
+            }else{
+                $unidaddemedida = $a['unidad'];
+            }
+
             $data .= ' 
                 <!-- Extra Large Modal -->
                 <div id="evidenciasModal'.$numero.'" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -388,7 +394,7 @@ function ModalesEvidencias($con, $actividades, $mes){
                                         $a['nombre_actividad'] 
                                     .'</th>
                                     <td class="py-2 px-6" align="center" valign="top">'.
-                                        $a['unidad']
+                                        $unidaddemedida
                                     .'</td>
                                     <td class="py-2 px-6" align="center" valign="top">'.
                                             $anual

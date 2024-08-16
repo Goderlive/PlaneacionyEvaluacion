@@ -9,9 +9,6 @@ if (isset($_SESSION) && isset($_SESSION['sistema']) && $_SESSION['sistema'] == "
     include 'head.php';
     // consultamos los permisos
 }
-
-
-
 ?>
 
 
@@ -21,7 +18,7 @@ if (isset($_SESSION) && isset($_SESSION['sistema']) && $_SESSION['sistema'] == "
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Revisar Reconducciones</title>
+    <title>Revisar Reconducciones de Indicadores</title>
 </head>
 
 <body>
@@ -35,7 +32,16 @@ if (isset($_SESSION) && isset($_SESSION['sistema']) && $_SESSION['sistema'] == "
         "Fecha: " . $a['fecha'] . "<br>" . 
         "Dependencia: " . $a['dep_general'] . "<br>" . 
         "Dependencia Aux: " . $a['dep_aux'] . "<br>" . 
-        "Nombre Indicador: " . $a['nombre_indicador'] . "<br><br><br><br>" 
+        "Proyecto: " . $a['proyecto'] . "<br>" . 
+        "Nombre Indicador:<br>" . $a['nombre_indicador'] . "<br>" .  
+        "Programacion A:" . $a['programacion_inicial_a'] . "<br>" . 
+        "Programacion B:" . $a['programacion_inicial_b'] . "<br>" . 
+        "<br>".
+        "Nuevo A:" . $a['programacion_modificada_a'] . "<br>" . 
+        "Nuevo B:" . $a['programacion_modificada_b'] . "<br>" . 
+        "Justificacion:<br>" . $a['justificacion_impacto'] . "<br>" . 
+
+        "<br><br><br><br>" 
         
         
         ;

@@ -137,10 +137,13 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                                     Variables
                                 </th>
                                 <th scope="col" class="px-3 py-3">
+                                    Frecuencia
+                                </th>
+                                <th scope="col" class="px-3 py-3">
                                     Unidad de Medida
                                 </th>
                                 <th scope="col" class="px-3 py-3">
-                                    Frecuencia
+                                    Tipo de Op
                                 </th>
                                 <th scope="col" class="px-3 py-3">
                                     Trimestre <?= $trimestre ?>
@@ -178,6 +181,9 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                                             } ?>
                                         </td>
                                         <td class="px-2 py-4">
+                                            <?= $datos['frecuencia']; ?>
+                                        </td>
+                                        <td class="px-2 py-4">
                                             <?= $datos['umedida_a'] . "<br>" ?>
                                             <?= $datos['umedida_b'] ?>
                                             <?php if ($datos['umedida_c']) {
@@ -185,7 +191,11 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
                                             } ?>
                                         </td>
                                         <td class="px-2 py-4">
-                                            <?= $datos['periodicidad']; ?>
+                                            <?= $datos['tipo_op_a'] . "<br>" ?>
+                                            <?= $datos['tipo_op_b'] ?>
+                                            <?php if ($datos['tipo_op_c']) {
+                                                print $datos['tipo_op_c'];
+                                            } ?>
                                         </td>
                                         <td class="px-2 py-4">
                                             <?= $datos[$ta[0]] . "<br>" . $datos[$ta[1]]; ?>

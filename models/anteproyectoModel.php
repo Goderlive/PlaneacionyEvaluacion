@@ -236,6 +236,23 @@ function traeActividadesDependencia($con, $id_dependencia){
     return $actividades;
 }
 
+function verificaAnteproyecto($con, $anio){
+    $sentencia = "SELECT EXISTS (
+    SELECT 1
+    FROM ante_dependencias d
+    JOIN ante_areas a ON a.id_dependencia = d.id_antedependencia
+    JOIN ante_actividades act ON act.id_area = a.id_area
+    WHERE d.anio = 2025 
+    AND a.anio = 2025 
+    AND act.anio = 2025
+) AS registros_existentes;
+";
+    $stm = $con->query($sentencia);
+    $anteproyecto = $stm->fetchAll(PDO::FETCH_ASSOC);
+    $anteproyecto = $anteproyecto[0]['registros_existentes'];
+
+    return $anteproyecto;
+}
 
 function actividadesArea($con, $id_area){
     $sentencia = "SELECT * FROM ante_actividades a

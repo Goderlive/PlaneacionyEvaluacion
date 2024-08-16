@@ -270,7 +270,7 @@ function BotonPBRM($avanceMensual, $permisos, $id_area, $el_mes){
 
 function localidades($locasa, $localidades){
     $retu = '';
-    $locas = explode(",", $locasa);
+    $locas = json_decode($locasa);
     foreach ($locas as $loca){
             $retu .= $localidades[$loca-1]['nombre_localidad'] . "<br>";
         }
