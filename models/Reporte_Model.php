@@ -26,7 +26,7 @@ function GetModificaciones($con, $id_avance){
 
 function traelocalidades($con)
 {
-    $stm = $con->query("SELECT * FROM localidades");
+    $stm = $con->query("SELECT * FROM localidades WHERE valor >= 0 ORDER BY nombre_localidad ASC");
     $localidades = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $localidades;
 }

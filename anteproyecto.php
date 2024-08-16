@@ -948,8 +948,28 @@ if ($_SESSION['sistema'] == 'pbrm') {
                 <?php endif ?>
             <?php endif ?>
 
-            <?php if ($permisos['nivel'] == 1) : // Area de Administradores 
-            ?>
+            <?php if ($permisos['nivel'] == 1) : // Area de Administradores ?>
+
+                <!-- 
+                Vamos a redactarlo porque siento que no lo estamos pensando bien:
+                Primero lo primero:
+                Si no tenemos ningun registro del a;o en ante_dependencias, ante_areas y ante_actividades, vamos a crear los antes de todos. 
+                
+                Vamos a crear 3 apartados, Anteproyecto, Proyecto y programa anual.
+                1. Verificacion de Existencia
+                Si no.. Creacion de apartado
+                else:
+                2. Verificacion del avance
+                
+                
+                -->
+
+                <?php if (verificaAnteproyecto($con, $_SESSION['anio']) != 1): //Nos verifica si estan llenas las tablas de anteproyecto y de ser asi, nos muestra la impresion 
+                ?>
+
+                Aqui nos muestra que no hemos hecho nuestro anteproyecto
+                <?php endif ?>
+
                 <?php if (verificaAnteproyecto($con, $_SESSION['anio']) == 1): //Nos verifica si estan llenas las tablas de anteproyecto y de ser asi, nos muestra la impresion 
                 ?>
                     <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white"> Formatos PDF</h5>
@@ -1010,9 +1030,8 @@ if ($_SESSION['sistema'] == 'pbrm') {
                             <br><br><br>
                         <?php endif ?>
                     </div>
-                <?php else: // En caso de no estar creado el anteproyecto, nos da la opcion de crearlo. 
-                ?>
-                    <b>Exportar Programa Anual a SIMONTS <?= $permisos['anio'] + 1 ?></b> <br>
+
+                    <b>Exportar Programa Anual (Anteproyecto) a SIMONTS <?= $permisos['anio'] + 1 ?></b> <br>
                     <form action="exporta_programa_anual.php" method="post">
                         <button type="submit" name="export_programa_anual" class="mt-2 focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Exportar</button>
                     </form>
