@@ -145,9 +145,8 @@ $user = get_usuario($id_usuario,$con);
                                         </div>
                                         <div class="mt-2 mb-4 text-sm text-left">
                                             <?= $meses[$m['mes']] . " - " . $m['nombre_actividad'] ?>
-                                        </div>
-                                        <div class="mt-2 mb-4 text-sm text-left">
-                                            <?= $meses[$m['mes']] . " - " . $m['nombre_actividad'] ?>
+                                            <?= muestraPermitidas($m['permitidas']) ?>
+                                            <?= ($m['mensaje'] != '' ? $m['mensaje'] : "Sin Mensaje") ?>
                                         </div>
                                         <div class="flex">
                                             <form action="reportes.php" method="post">
