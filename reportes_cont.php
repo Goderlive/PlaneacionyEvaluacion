@@ -86,7 +86,7 @@ session_start();
                     <?php endif ?>
 
                     <?php if ($actividad['lineaactividad']) : ?>
-<br><br>
+                        <br><br>
                         <table>
                             <tr>
                                 <td style="width: 10%" ;>
@@ -124,11 +124,11 @@ session_start();
                                     <td style="width: 15%" ;>
                                         <label for="udmed" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Unidad de Medida</label>
                                         <select id="udmed" name="udmed" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                                            <option disabled>Seleccione su unidad</option>
-                                            <?php $udmed = traeudmed($con) ?>
+                                            <option value="" selected disabled>Seleccione su unidad</option>
+                                            <?php $udmed = traeudmed($con); ?>
                                             <?php foreach ($udmed as $u) : ?>
                                                 <option value="<?= $u['nombre'] ?>"><?= $u['nombre'] ?></option>
-                                            <?php endforeach ?>
+                                            <?php endforeach; ?>
                                         </select>
                                     </td>
                                 </tr>
@@ -218,6 +218,15 @@ session_start();
 
                 formContainer.appendChild(fieldGroup);
             }
+        </script>
+        <script>
+            document.querySelector('form').addEventListener('submit', function(e) {
+                const udmedSelect = document.getElementById('udmed');
+                if (udmedSelect.value === "") {
+                    e.preventDefault();
+                    alert('Por favor, seleccione una unidad de medida.');
+                }
+            });
         </script>
     </body>
 

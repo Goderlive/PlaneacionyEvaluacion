@@ -31,7 +31,7 @@ function traeudmed($con){
 
 
 function traelocalidades($con){
-    $stm = $con->query("SELECT * FROM localidades");
+    $stm = $con->query("SELECT * FROM localidades WHERE valor >= 0 ORDER BY nombre_localidad ASC");
     $localidades = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $localidades;
 }
@@ -68,6 +68,7 @@ function traeDatosDependencia($con, $id_actividad){
 if (isset($_POST['actualizar']) && $_POST['actualizar'] == "actualizar") {
     print '<pre>';
     var_dump($_POST);
+    die();
     session_start();
     if ($_SESSION['sistema'] == 'pbrm') {
         $id_modificacion = $_POST['id_modificacion'];
