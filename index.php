@@ -83,6 +83,8 @@ $user = get_usuario($id_usuario,$con);
                                         </div>
                                         <div class="mt-2 mb-4 text-sm text-left">
                                             <?= $meses[$m['mes']] . " - " . $m['nombre_actividad'] ?>
+                                            <?= muestraPermitidas($m['permitidas']) ?>
+                                            <?= ($m['mensaje'] != '' ? $m['mensaje'] : "Sin Mensaje") ?>
                                         </div>
                                         <div class="flex">
                                             <form action="actividades_avances.php" method="post">
@@ -140,6 +142,9 @@ $user = get_usuario($id_usuario,$con);
                                             </svg>
                                             <span class="sr-only">Info</span>
                                             <h3 class="text-lg font-medium text-left"> <?= $m['nombre_dependencia'] . " - " . $m['nombre_area'] ?> </h3>
+                                        </div>
+                                        <div class="mt-2 mb-4 text-sm text-left">
+                                            <?= $meses[$m['mes']] . " - " . $m['nombre_actividad'] ?>
                                         </div>
                                         <div class="mt-2 mb-4 text-sm text-left">
                                             <?= $meses[$m['mes']] . " - " . $m['nombre_actividad'] ?>

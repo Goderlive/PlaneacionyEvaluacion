@@ -105,3 +105,14 @@ function AlertaReconduccionIndicadores($con)
 			</div>';
 	}
 }
+
+
+function muestraPermitidas($m){
+	$text = '<ul class="max-w-md space-y-1 text-gray-500 list-disc list-inside dark:text-gray-400">';
+	$m = json_decode($m);
+	foreach($m as $n){
+		$text .= '<li class="text-purple-800">'. $n .'</li>';
+	}
+	$text .= '</ul>';
+	return $text;
+}
