@@ -56,7 +56,7 @@ $id_avance = $_POST['id_avance'];
 
     function localidades($locasa, $localidades)
     {
-        $locas = explode(",", $locasa);
+        $locas = json_decode($locasa);
         foreach ($locas as $loca) {
             print $localidades[$loca - 1]['nombre_localidad'] . "<br>";
         }
@@ -170,7 +170,11 @@ $id_avance = $_POST['id_avance'];
                         </td>
                         <td scope="row" class="py-2 px-6" align="center" valign="top">
                             <?php if ($avance['beneficiarios']) :
-                                print $avance['beneficiarios'] . " " . $avance['udmed']; ?>
+                                $beneficiarios = json_decode($avance['beneficiarios']);
+                                foreach($beneficiarios as $b){
+                                    print $b . " " . $avance['udmed']; 
+                                }
+                                    ?>
                             <?php else : ?>
                                 <b> No selecciono beneficiarios </b>
                             <?php endif ?>

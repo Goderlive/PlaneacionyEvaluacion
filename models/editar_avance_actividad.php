@@ -66,9 +66,6 @@ function traeDatosDependencia($con, $id_actividad){
 }
 
 if (isset($_POST['actualizar']) && $_POST['actualizar'] == "actualizar") {
-    print '<pre>';
-    var_dump($_POST);
-    die();
     session_start();
     if ($_SESSION['sistema'] == 'pbrm') {
         $id_modificacion = $_POST['id_modificacion'];
@@ -85,13 +82,13 @@ if (isset($_POST['actualizar']) && $_POST['actualizar'] == "actualizar") {
         $id_actividad = $avance['id_actividad'];
 
         if(is_array($_POST['localidades'])){
-            $localidades = implode(",", $_POST['localidades']);
-        }else{
-            $localidades = $_POST['localidades'];
+            $localidades = json_encode($_POST['localidades']);
+        }
+        if(is_array($_POST['beneficiarios'])){
+            $beneficiarios = json_encode($_POST['beneficiarios']);
         }
         
         $udmed = (isset($_POST['udmed']) && $_POST['udmed'] != "") ? $_POST['udmed'] : NULL;
-        $beneficiarios = (isset($_POST['beneficiarios']) && $_POST['beneficiarios'] != "") ? $_POST['beneficiarios'] : NULL;
         $recursos_federales = isset($_POST['recursos_federales']) ? $_POST['recursos_federales'] : NULL;
         $recursos_estatales = isset($_POST['recursos_estatales']) ? $_POST['recursos_estatales'] : NULL;
         $recursos_propios = isset($_POST['recursos_propios']) ? $_POST['recursos_propios'] : NULL;
