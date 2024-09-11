@@ -47,7 +47,7 @@ function lista_localidades($con){
 
 function localidades($locasa, $localidades)
 {
-    $locas = explode(",", $locasa);
+    $locas = json_decode($locasa);
     foreach ($locas as $loca) {
         print $localidades[$loca - 1]['nombre_localidad'] . "<br>";
     }

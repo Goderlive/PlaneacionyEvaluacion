@@ -1,12 +1,14 @@
 <?php
 session_start();
-if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
-?>
-    <script>
-        window.location.href = 'login.php';
-    </script>
-<?php
+if (!$_SESSION || $_SESSION['sistema'] != 'pbrm'){
+    echo "<script> window.location.href = 'login.hp' </script>";
+    die();
 }
+if ($_SESSION['nivel'] != 1 && $_SESSION['nivel'] != 2){
+    echo " <script> window.location.href = 'index.php'; </script>";
+    die();
+}
+
 
 ?>
 <!DOCTYPE html>
@@ -22,12 +24,6 @@ if (!$_SESSION || $_SESSION['sistema'] != 'pbrm') {
 
 
 <body>
-    <?php
-    if ($_SESSION['nivel'] != 1 && $_SESSION['nivel'] != 2) : ?>
-        <script>
-            window.location.href = 'index.php';
-        </script>
-    <?php endif ?>
     <div class="container mx-auto">
         <br>
 

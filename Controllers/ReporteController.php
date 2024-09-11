@@ -174,12 +174,19 @@ function BotonAvance($avanceThisMes, $numero){
 
 
 function localidades($locasa, $localidades){
-    $nlocas = '';
-    $locas = json_decode($locasa);
+    if($locasa){
+        $nlocas = '';
+        $locas = json_decode($locasa);
         foreach ($locas as $loca){
-            $nlocas .= $localidades[$loca-1]['nombre_localidad'] . "<br>";
+            foreach($localidades as $lo){
+                if($loca == $lo['id_localidad'])
+                $nlocas .= $lo['nombre_localidad'] . "<br>";
+            }
         }
-    return $nlocas;
+        return $nlocas;
+    }else{
+        return null;
+    }
 }
 
 function tiempos($dato_timestamp){

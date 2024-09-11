@@ -60,7 +60,7 @@ function CuentaActividadesArea($con, $id_area)
 function TraeDependenciasPDM($con, $permiso)
 {
     $anio = $permiso['anio'];
-    $stm = $con->query("SELECT dp.* FROM dependencias dp 
+    $stm = $con->query("SELECT dp.*, tt.*, dp.id_dependencia as id_dependencia FROM dependencias dp 
     LEFT JOIN areas ar ON ar.id_dependencia = dp.id_dependencia
     LEFT JOIN actividades ac ON ac.id_area = ar.id_area
     LEFT JOIN lineasactividades li ON li.id_actividad = ac.id_actividad
@@ -92,7 +92,7 @@ function Pendientespbrm($con, $id_dependencia)
     LEFT JOIN actividades ac ON av.id_actividad = ac.id_actividad
     LEFT JOIN areas ar ON ar.id_area = ac.id_area
     LEFT JOIN dependencias dp ON dp.id_dependencia = ar.id_dependencia
-    WHERE dp.id_dependencia = $id_dependencia AND av.validado != 1";
+    WHERE dp.id_dependencia = $id_dependencia AND av.validado = 0";
     $stm = $con->query($sentencia);
     $areas = $stm->fetch(PDO::FETCH_ASSOC);
     return $areas;
@@ -103,9 +103,10 @@ function Pendientespdm($con, $id_dependencia)
 {
     $sentencia = "SELECT COUNT(*) AS total_resultados FROM avances av
     JOIN actividades ac ON av.id_actividad = ac.id_actividad
+    JOIN lineasactividades la ON la.id_actividad = ac.id_actividad
     LEFT JOIN areas ar ON ar.id_area = ac.id_area
     LEFT JOIN dependencias dp ON dp.id_dependencia = ar.id_dependencia
-    WHERE dp.id_dependencia = $id_dependencia AND av.validado_2 = 0";
+    WHERE dp.id_dependencia = $id_dependencia AND av.validado_2 = 0 AND la.id_linea != ''";
     $stm = $con->query($sentencia);
     $areas = $stm->fetch(PDO::FETCH_ASSOC);
     return $areas;

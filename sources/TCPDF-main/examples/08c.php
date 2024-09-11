@@ -76,7 +76,7 @@ JOIN titulares t ON t.id_titular = a.id_uippe");
 $Director_gobierno_por_resultados = $stm->fetch(PDO::FETCH_ASSOC);
 
 
-$stmset = $con->query("SELECT * FROM setings");
+$stmset = $con->query("SELECT * FROM setings WHERE year_report = $anio");
 $logos = $stmset->fetch(PDO::FETCH_ASSOC);
 
 

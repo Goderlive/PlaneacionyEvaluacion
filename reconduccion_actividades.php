@@ -584,7 +584,7 @@ if ($_SESSION['sistema'] == "pbrm") {
 					</form>
 				</div>
 
-				<?php $dependencias = Traedepndencias($con) ?>
+				<?php $dependencias = Traedepndencias($con, $_SESSION['anio']) ?>
 				<div class="grid grid-cols-4">
 					<?php foreach ($dependencias as $dp) : ?>
 						<div class="items-start p-4 ml-2 mr-2 mb-4 text-center  bg-white rounded-lg border border-gray-400 shadow-md dark:bg-gray-800 dark:border-gray-700">

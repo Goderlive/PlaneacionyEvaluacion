@@ -34,9 +34,9 @@ function traeUnidades($con)
 
 
 
-function Traedepndencias($con)
+function Traedepndencias($con, $anio)
 {
-    $stm = $con->query("SELECT * FROM dependencias");
+    $stm = $con->query("SELECT * FROM dependencias WHERE anio = $anio");
     $dependencias = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $dependencias;
 }

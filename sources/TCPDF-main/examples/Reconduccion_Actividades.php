@@ -23,7 +23,7 @@ $pdf->setKeywords('Reconduccion, Actividades');
 $pdf->SetPrintHeader(false);
 $pdf->SetPrintFooter(false);
 // set font
-$pdf->setFont('helvetica', '', 7);
+$pdf->setFont('helvetica', '', 6);
 
 // add a page
 $pdf->AddPage();
@@ -180,6 +180,8 @@ if (!(count($programaciones) > 0) && !$reconduccion['imprimir']) {
     </tr>
   </tbody>
 </table>
+    <table><tr><td style="width:100%; height: 7px; text-align: left; font-size: 8px"></td></tr></table>
+
 ';
 
 	$oficio_movimiento_fecha = '&nbsp;
@@ -226,7 +228,7 @@ if (!(count($programaciones) > 0) && !$reconduccion['imprimir']) {
 				<td style="width: 48%; border: 1px solid black; border-collapse: collapse;"></td> 
 			</tr>
 			<tr>
-				<td style="width: 48%; border: 1px solid black; border-collapse: collapse; font-size: 6px;">Objetivo: ' . $objetivo_programa . '</td> 
+				<td style="width: 48%; border: 1px solid black; border-collapse: collapse; font-size: 5px;">Objetivo: ' . $objetivo_programa . '</td> 
 				<td style="width: 4%"></td>
 				<td style="width: 48%; border: 1px solid black; border-collapse: collapse;"></td> 
 			</tr>
@@ -266,7 +268,7 @@ if (!(count($programaciones) > 0) && !$reconduccion['imprimir']) {
 			<tr>
 				<td style="width: 48%; border: 1px solid black; border-collapse: collapse;"></td> 
 				<td style="width: 4%"></td>
-				<td style="width: 48%; border: 1px solid black; border-collapse: collapse; font-size: 6px;">Objetivo: ' . $objetivo_programa . '</td> 
+				<td style="width: 48%; border: 1px solid black; border-collapse: collapse; font-size: 5px;">Objetivo: ' . $objetivo_programa . '</td> 
 			</tr>
 		</tbody>
 	</table>	
@@ -426,7 +428,7 @@ if (!(count($programaciones) > 0) && !$reconduccion['imprimir']) {
 
 		$table = '&nbsp;
 	<br>&nbsp;
-	<table style="width: 100%;">
+	<table style="width: 100%; padding: 2px;">
 		<tbody>
 			<tr>
 				<td bgcolor="#97d6f7" rowspan="2" style="width: 7%; border: 1px solid black; border-collapse: collapse; text-align: center;">&nbsp; <br>Codigo</td>

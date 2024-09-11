@@ -45,6 +45,7 @@ if (!isset($_SESSION['sistema']) == "pbrm") {
         $programainicio = $programa[0];
         $programafin = $programa[1];
 
+
         if ($hoy >= $programainicio && $hoy <= $programafin) { // En caso de pro
             return "Programa";
         } elseif ($hoy >= $proyectoinicio && $hoy <= $proyectofin) {
@@ -125,7 +126,7 @@ if (!isset($_SESSION['sistema']) == "pbrm") {
                             <?= item_principal($actual, $anteproyecto, "AnteProyecto", "anteproyecto.php", array(1, 2, 3), $mi_permiso) ?>
                         <?php endif ?>
                         
-                        <?php if ($_SESSION['rol'] == 3) : ?>
+                        <?php if ($_SESSION['nivel'] > 2) : ?>
                             <?= item_principal($actual, $anteproyecto, $menuProyecto, "anteproyecto.php", array(4), $mi_permiso) ?>
                         <?php endif ?>
 

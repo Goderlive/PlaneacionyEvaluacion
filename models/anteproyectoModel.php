@@ -12,7 +12,8 @@ function traePrograma($con, $id_area){
 function traeFoda($con, $id_area){
     $sentencia = "SELECT * FROM ante_unob WHERE id_area = $id_area";
     $stm = $con->query($sentencia);
-    return $foda = $stm->fetch(PDO::FETCH_ASSOC);
+    $foda = $stm->fetch(PDO::FETCH_ASSOC);
+    return $foda;
 }
 
 
@@ -58,14 +59,85 @@ function traeEstrategias($con, $id_objetivo){
     return $estrategias = $stm->fetchAll(PDO::FETCH_ASSOC);
 }
 
+function validaActividad($con, $id_actividad, $sesion){
+    if($sesion['nivel'] > 3){
+        if($sesion['id_area']){
+            return false;
+        }
+        if($sesion['id_dependencia']){
+            $id_dependencia = $sesion['id_dependencia'];
+            $sentencia = "SELECT d.id_antedependencia FROM ante_dependencias d
+                JOIN ante_areas a ON a.id_dependencia = d.id_antedependencia
+                JOIN ante_actividades ac ON ac.id_area = a.id_area
+                WHERE ac.id_actividad = $id_actividad
+                AND d.id_seguimiento_dependencia = $id_dependencia
+            ";
+            $stm = $con->query($sentencia);
+            $consulta = $stm->fetch(PDO::FETCH_ASSOC);
+            return $consulta;
+            
+        }
+    }else{
+        return true;
+    }
+}
+
+
+function validaArea($con, $id_area, $sesion){
+    if($sesion['nivel'] > 3){
+        if($sesion['id_area']){
+            return false;
+        }
+        if($sesion['id_dependencia']){
+            $id_dependencia = $sesion['id_dependencia'];
+            $sentencia = "SELECT * 
+                FROM ante_dependencias d
+                JOIN ante_areas a ON a.id_dependencia = d.id_antedependencia
+                WHERE a.id_area = $id_area
+                AND d.id_seguimiento_dependencia = $id_dependencia
+            ";
+            $stm = $con->query($sentencia);
+            $consulta = $stm->fetch(PDO::FETCH_ASSOC);
+            return $consulta;
+        }
+    }else{
+        return true;
+    }
+}
+
+
+function validaIndicador($con, $id_indicador, $sesion){
+    if($sesion['nivel'] > 3){
+        if($sesion['id_area']){
+            return false;
+        }
+        if($sesion['id_dependencia']){
+            $id_dependencia = $sesion['id_dependencia'];
+            $sentencia = "SELECT * 
+                FROM ante_dependencias d
+                JOIN ante_indicadores_uso i ON i.id_dependencia = d.id_antedependencia
+                WHERE i.id = $id_indicador
+                AND d.id_seguimiento_dependencia = $id_dependencia
+            ";
+            $stm = $con->query($sentencia);
+            $consulta = $stm->fetch(PDO::FETCH_ASSOC);
+            return $consulta;
+        }
+    }else{
+        return true;
+    }
+}
+
 function traeIndicador($con, $id_indicador){
-    $sentencia = "SELECT * FROM ante_indicadores_uso WHERE id = $id_indicador";
+    $sentencia = "SELECT * FROM ante_indicadores_uso iu 
+    LEFT JOIN indicadores id ON id.id_indicador = iu.id_indicador_gaceta
+    WHERE id = $id_indicador";
     $stm = $con->query($sentencia);
     return $indicadores = $stm->fetch(PDO::FETCH_ASSOC);
 }
 
 function revisaAreas($con, $anio){
-    $sentencia = "SELECT * FROM ante_areas a
+    $sentencia = "SELECT a.id_area FROM ante_areas a
     LEFT JOIN proyectos p ON p.id_proyecto = a.id_proyecto
     WHERE p.anio = $anio";
     $stm = $con->query($sentencia);
@@ -108,6 +180,14 @@ function traeODSO($con){
     $sentencia = "SELECT * FROM objetivos_ods";
     $stm = $con->query($sentencia);
     return $oel = $stm->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
+function tieneMatriz($con, $id_dependencia){
+    $sentencia = "SELECT id_diagnosticoPrograma FROM diagnosticoprograma WHERE id_dependencia = $id_dependencia";
+    $stm = $con->query($sentencia);
+    $oel = $stm->fetch(PDO::FETCH_ASSOC);
+    return $oel;
 }
 
 function traeImpacto($con){
@@ -199,19 +279,26 @@ function traeRisks($con, $id_actividad){
 }
 
 function traeActividad($con, $id_actividad){
-    $sentencia = "SELECT *, a.id_actividad as id_actividad FROM ante_actividades a
+    $sentencia = "SELECT *, a.id_actividad as id_actividad 
+    FROM ante_actividades a
     LEFT JOIN ante_programaciones p ON p.id_actividad = a.id_actividad
-    LEFT JOIN lineasactividades la ON la.id_actividad = a.id_actividad
+    LEFT JOIN ante_lineasactividades la ON la.id_actividad = a.id_actividad
     LEFT JOIN pdm_lineas pl ON pl.id_linea = la.id_linea
     LEFT JOIN pdm_estrategias pe ON pe.id_estrategia = pl.id_estrategia
     LEFT JOIN pdm_objetivos po ON po.id_objetivo = pe.id_objetivo
     WHERE a.id_actividad = $id_actividad";
     $stm = $con->query($sentencia);
-    return $oel = $stm->fetch(PDO::FETCH_ASSOC);
+    try {
+        $dato = $stm->fetch(PDO::FETCH_ASSOC);
+    } catch (\Throwable $th) {
+        throw $th;
+    }
+    return $dato;
 }
 
 function traeIndicadores($con, $id_dependencia){
-    $sentencia = "SELECT * FROM ante_indicadores_uso
+    $sentencia = "SELECT * FROM ante_indicadores_uso iu
+    LEFT JOIN indicadores i ON i.id_indicador = iu.id_indicador_gaceta
     WHERE id_dependencia = $id_dependencia";
     $stm = $con->query($sentencia);
     $indicadores = $stm->fetchAll(PDO::FETCH_ASSOC);
@@ -236,34 +323,46 @@ function traeActividadesDependencia($con, $id_dependencia){
     return $actividades;
 }
 
-function verificaAnteproyecto($con, $anio){
-    $sentencia = "SELECT EXISTS (
-    SELECT 1
+function verificaAnteproyecto($con, $anio, $etapa){
+    $sentencia = "SELECT *
     FROM ante_dependencias d
     JOIN ante_areas a ON a.id_dependencia = d.id_antedependencia
     JOIN ante_actividades act ON act.id_area = a.id_area
-    WHERE d.anio = 2025 
-    AND a.anio = 2025 
-    AND act.anio = 2025
-) AS registros_existentes;
-";
+    WHERE d.anio = $anio 
+    AND a.anio = $anio 
+    AND act.anio = $anio
+    AND d.etapa = $etapa ";
     $stm = $con->query($sentencia);
-    $anteproyecto = $stm->fetchAll(PDO::FETCH_ASSOC);
-    $anteproyecto = $anteproyecto[0]['registros_existentes'];
-
+    $anteproyecto = $stm->fetch(PDO::FETCH_ASSOC);
     return $anteproyecto;
 }
 
+
+function catalogoActualizado($con, $anio){
+    $sentencia = "SELECT 
+    CASE 
+        WHEN EXISTS (SELECT 1 FROM dependencias_generales WHERE anio = $anio) 
+        AND EXISTS (SELECT 1 FROM dependencias_auxiliares WHERE anio = $anio) 
+        THEN 1 
+        ELSE 0 
+    END AS result;
+";
+    $stm = $con->query($sentencia);
+    $existe = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $existe;
+}
+
+
 function actividadesArea($con, $id_area){
-    $sentencia = "SELECT * FROM ante_actividades a
-    LEFT JOIN lineasactividades la ON la.id_actividad = a.id_actividad  
+    $sentencia = "SELECT *, a.id_actividad as id_actividad FROM ante_actividades a
+    JOIN ante_programaciones p ON p.id_actividad = a.id_actividad
+    LEFT JOIN ante_lineasactividades la ON la.id_actividad = a.id_actividad  
     LEFT JOIN pdm_lineas pl ON pl.id_linea = la.id_linea
-    LEFT JOIN ante_programaciones p ON p.id_actividad = a.id_actividad
     LEFT JOIN unidades_medida u ON u.id_unidad = a.id_unidad
     WHERE a.id_area = $id_area
     GROUP BY a.id_actividad";
     $stm = $con->query($sentencia);
-    return $oel = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $stm->fetchAll(PDO::FETCH_ASSOC);
 }
 
 
@@ -468,8 +567,11 @@ if(isset($_POST['program_indicador'])){
     $tipo_op_b = (isset($_POST['tipo_op_b'])) ? $_POST['tipo_op_b'] : NULL;
     $tipo_op_c = (isset($_POST['tipo_op_c'])) ? $_POST['tipo_op_c'] : NULL;
     $umedida_a = (isset($_POST['umedida_a'])) ? $_POST['umedida_a'] : NULL;
+    $id_umedida_a = (isset($_POST['id_umedida_a'])) ? $_POST['id_umedida_a'] : NULL;
     $umedida_b = (isset($_POST['umedida_b'])) ? $_POST['umedida_b'] : NULL;
+    $id_umedida_b = (isset($_POST['id_umedida_b'])) ? $_POST['id_umedida_b'] : NULL;
     $umedida_c = (isset($_POST['umedida_c'])) ? $_POST['umedida_c'] : NULL;
+    $id_umedida_c = (isset($_POST['id_umedida_c'])) ? $_POST['id_umedida_c'] : NULL;
     $interpretacion = (isset($_POST['interpretacion'])) ? $_POST['interpretacion'] : NULL;
     $factor_de_comparacion = (isset($_POST['factor_de_comparacion'])) ? $_POST['factor_de_comparacion'] : NULL;
     $desc_factor_de_comparacion = (isset($_POST['desc_factor_de_comparacion'])) ? $_POST['desc_factor_de_comparacion'] : NULL;
@@ -492,7 +594,37 @@ if(isset($_POST['program_indicador'])){
     $id_alta = (isset($_POST['id_alta'])) ? $_POST['id_alta'] : NULL;
     $validado = 1;
 
-    $sql = "UPDATE ante_indicadores_uso SET tipo_op_a = '$tipo_op_a', tipo_op_b = '$tipo_op_b', tipo_op_c = '$tipo_op_c', umedida_a = '$umedida_a', umedida_b = '$umedida_b', umedida_c = '$umedida_c', interpretacion = '$interpretacion', factor_de_comparacion = '$factor_de_comparacion', desc_factor_de_comparacion = '$desc_factor_de_comparacion', linea_base = '$linea_base', actividades_ids = '$actividades_ids', desc_meta_anual = '$desc_meta_anual', medios_de_verificacion = '$medios_de_verificacion', at1 = '$at1', at2 = '$at2', at3 = '$at3', at4 = '$at4', bt1 = '$bt1', bt2 = '$bt2', bt3 = '$bt3', bt4 = '$bt4', ct1 = '$ct1', ct2 = '$ct2', ct3 = '$ct3', ct4 = '$ct4', id_alta = '$id_alta', validado = '$validado' WHERE id = ?";
+    $sql = "UPDATE ante_indicadores_uso SET 
+    tipo_op_a = '$tipo_op_a', 
+    tipo_op_b = '$tipo_op_b', 
+    tipo_op_c = '$tipo_op_c', 
+    umedida_a = '$umedida_a', 
+    id_umedida_a = '$id_umedida_a', 
+    umedida_b = '$umedida_b', 
+    id_umedida_b = '$id_umedida_b', 
+    umedida_c = '$umedida_c', 
+    id_umedida_c = '$id_umedida_c', 
+    interpretacion = '$interpretacion', 
+    factor_de_comparacion = '$factor_de_comparacion', 
+    desc_factor_de_comparacion = '$desc_factor_de_comparacion', 
+    linea_base = '$linea_base', 
+    actividades_ids = '$actividades_ids', 
+    desc_meta_anual = '$desc_meta_anual', 
+    medios_de_verificacion = '$medios_de_verificacion', 
+    at1 = '$at1', 
+    at2 = '$at2', 
+    at3 = '$at3', 
+    at4 = '$at4', 
+    bt1 = '$bt1', 
+    bt2 = '$bt2', 
+    bt3 = '$bt3', 
+    bt4 = '$bt4', 
+    ct1 = '$ct1', 
+    ct2 = '$ct2', 
+    ct3 = '$ct3', 
+    ct4 = '$ct4', 
+    id_alta = '$id_alta', 
+    validado = '$validado' WHERE id = ?";
     $sqlr = $con->prepare($sql);
     $sqlr->execute(array($id_indicador));
 

@@ -11,6 +11,7 @@ if ($_SESSION['sistema'] == 'pbrm') {
     require_once 'Controllers/anteproyectoController.php';
     $real_anio = date('Y');
     $user_anio = $_SESSION['anio'];
+    $data = "crea_anteproyecto";
 ?>
     <!DOCTYPE html>
     <html lang="es">
@@ -25,12 +26,34 @@ if ($_SESSION['sistema'] == 'pbrm') {
 
 
     <body>
+        <?php
+        if (isset($_GET['objetivo']) || isset($_GET['estrategia']) || isset($foda['linea_accion'])) {
+            echo "<script>
+            window.onload = function() {
+                document.getElementById('pdm').scrollIntoView();
+            }
+          </script>";
+        }
+        if (isset($_GET['objetivo_ods'])) {
+            echo "<script>
+            window.onload = function() {
+                document.getElementById('ods').scrollIntoView();
+            }
+          </script>";
+        }
+        ?>
         <div class="container mx-auto">
             <br>
-            <?= breadcrumbs(array("Inicio" => "index.php", "Proyecto 2024" => "anteproyecto.php")) ?>
+            <?php $nombre = "Anteproyecto " . $_SESSION['anio'] + 1 ?>
+            <?= breadcrumbs(array("Inicio" => "index.php", $nombre => "anteproyecto.php")) ?>
             <br>
             <?php if ($_GET) : ?>
                 <?php if (isset($_GET['tipo']) && $_GET['tipo'] == 'b') : ?>
+                    <?php if (!validaArea($con, $_GET['id_area'], $_SESSION)): ?>
+                        <script>
+                            location.href = "index.php";
+                        </script>
+                    <?php endif ?>
                     <?php $foda = traeFoda($con, $_GET['id_area']) ?>
                     <div class="bg-blue-50 rounded-lg py-2 my-2 px-2">
                         <form action="" method="POST">
@@ -66,7 +89,7 @@ if ($_SESSION['sistema'] == 'pbrm') {
                         </form>
                     </div>
                     <br>
-                    <div class="bg-yellow-50 rounded-lg my-2 py-2 px-2">
+                    <div class="bg-yellow-50 rounded-lg my-2 py-2 px-2" id="pdm">
                         <h4 class="text-2xl font-bold dark:text-white">Objetivos, Estrategias y Lineas de Acción del PDM atendidas:</h4>
                         <br>
                         <?php if (isset($foda['linea_accion'])) : ?>
@@ -138,7 +161,7 @@ if ($_SESSION['sistema'] == 'pbrm') {
 
                     </div>
                     <br>
-                    <div class="bg-blue-50 rounded-lg my-2 py-2 px-2">
+                    <div class="bg-blue-50 rounded-lg my-2 py-2 px-2" id="ods">
                         <h4 class="text-2xl font-bold dark:text-white">Objetivos y Metas para el Desarrollo Sostenible (ODS), atendidas por el Programa Presupuestario:</h4>
                         <br>
                         <?php if (isset($foda['id_ods'])) : ?>
@@ -196,17 +219,40 @@ if ($_SESSION['sistema'] == 'pbrm') {
                 <?php if (isset($_GET['programar_indicador']) && $_GET['programar_indicador'] == 'programar_indicador') : ?>
                     <?php $indicador = traeIndicador($con, $_GET['id_indicador']);
                     $actividadest = traeActividadesDependencia($con, $permisos['id_dependencia']) ?>
+                    <?php $unidades = traeUnidades($con) ?>
+
+                    <?php if (!validaIndicador($con, $_GET['id_indicador'], $_SESSION)): ?>
+                        <script>
+                            location.href = "index.php";
+                        </script>
+                    <?php endif ?>
 
                     <div class="p-6 space-y-6">
-                        Nombre del Indicador: <b><?= $indicador['nombre_indicador'] ?></b><br>
-                        Dimensión que atiende: <?= $indicador['dimension'] ?> <br>
+                        Nombre del Indicador: <b><?= $indicador['nombre'] ?></b><br>
                         Tipo: <?= $indicador['tipo'] ?><br>
                         Formula: <?= $indicador['formula'] ?> <br>
                         Tipo de Indicador: <?= $indicador['tipo'] ?><br>
-                        Periodicidad: <b><?= $indicador['periodicidad'] ?></b><br>
+                        Periodicidad: <b><?= $indicador['frecuencia'] ?></b><br>
                         id: <?= $indicador['id'] ?>
-                        <form action="" method="post">
+                        <form action="" id="miFormulario" method="post">
                             <input type="hidden" name="id_indicador" value="<?= $indicador['id'] ?>">
+                            <div>
+
+                                <form class="max-w-sm mx-auto">
+                                    <label for="dimension" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Dimensión que Atiende</label>
+                                    <select id="dimension" name="dimension" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <option value="eficiencia">Eficiencia</option>
+                                        <option value="eficacia">Eficacia</option>
+                                        <option value="calidad">Calidad</option>
+                                        <option value="economía">Economía</option>
+
+
+
+
+                                    </select>
+                                </form>
+
+                            </div>
                             <div>
                                 <label for="interpretacion" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Interpretación (maximo 250 caracteres)</label>
                                 <input type="text" maxlength="250" name="interpretacion" id="interpretacion" value="<?= (isset($indicador['interpretacion'])) ? $indicador['interpretacion'] : "" ?>" placeholder="Se registrará en forma numérica la descripción del factor de comparación." class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
@@ -232,9 +278,17 @@ if ($_SESSION['sistema'] == 'pbrm') {
                                 <input type="text" maxlength="250" name="medios_de_verificacion" id="medios_de_verificacion" value="<?= (isset($indicador['medios_de_verificacion'])) ? $indicador['medios_de_verificacion'] : "" ?>" placeholder="Fuentes de información que se utilizarán." class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                             </div><br>
                             <div>
+
+                                <?php
+                                if (isset($indicador['actividades_ids'])) {
+                                    $id_actividades = json_decode($indicador['actividades_ids']);
+                                } else {
+                                    $id_actividades = array("", "");
+                                }
+                                ?>
                                 <label for="actividades" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione todas las Actividades Relacionadas</label>
-                                <select multiple name="id_actividades[]" id="actividades" size="7" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    <option selected>Seleccione las Actividades</option>
+                                <select multiple name="id_actividades[]" id="actividades" size="15" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option disabled>Seleccione las Actividades</option>
                                     <?php
                                     usort($actividadest, function ($a, $b) {
                                         return $a['id_area'] - $b['id_area'];
@@ -252,9 +306,10 @@ if ($_SESSION['sistema'] == 'pbrm') {
                                             $contadorArea = $value['id_area'];
                                         endif;
                                     ?>
-                                        <option value="<?= $value['id_actividad'] ?>"><?= $value['nombre_actividad'] ?></option>
+                                        <option <?= (in_array($value['id_actividad'], $id_actividades)) ? "selected" : '' ?> value="<?= $value['id_actividad'] ?>"><?= $value['nombre_actividad'] ?></option>
                                     <?php endforeach; ?>
                                 </select>
+
                             </div><br>
 
                             <div class="relative overflow-x-auto">
@@ -268,7 +323,7 @@ if ($_SESSION['sistema'] == 'pbrm') {
                                                 Tipo de Operación
                                             </th>
                                             <th scope="col" class="px-6 py-3">
-                                                U. de Med.
+                                                Unidad de Medida
                                             </th>
                                             <th scope="col" class="px-6 py-3">
                                                 1er T
@@ -286,62 +341,76 @@ if ($_SESSION['sistema'] == 'pbrm') {
                                     </thead>
                                     <tbody>
                                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                            <th class="px-6 py-4">
+                                            <td class="px-6 py-4">
                                                 <?= $indicador['variable_a'] ?>
-                                            </th>
-                                            <th class="px-6 py-4">
+                                            </td>
+                                            <td class="px-6 py-4">
                                                 <select id="tipo_op_a" name="tipo_op_a" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                    <option value="Sumable">Sumable</option>
-                                                    <option value="Constante">Constante</option>
-                                                    <option value="No Sumable">No Sumable</option>
-                                                    <option value="Promedio">Promedio</option>
-                                                    <option value="Valor Actual">Valor Actual</option>
+                                                    <option <?= ($indicador['tipo_op_a'] == 'Sumable') ? 'selected' : '' ?> value="Sumable">Sumable</option>
+                                                    <option <?= ($indicador['tipo_op_a'] == 'Constante') ? 'selected' : '' ?> value="Constante">Constante</option>
+                                                    <option <?= ($indicador['tipo_op_a'] == 'No Sumable') ? 'selected' : '' ?> value="No Sumable">No Sumable</option>
+                                                    <option <?= ($indicador['tipo_op_a'] == 'Promedio') ? 'selected' : '' ?> value="Promedio">Promedio</option>
+                                                    <option <?= ($indicador['tipo_op_a'] == 'Valor Actual') ? 'selected' : '' ?> value="Valor Actual">Valor Actual</option>
                                                 </select>
-                                            </th>
-                                            <th class="px-6 py-4">
-                                                <input type="text" name="umedida_a" value="<?= (isset($indicador['umedida_a'])) ? $indicador['umedida_a'] : "" ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                                            </th>
-                                            <th class="px-6 py-4">
-                                                <input type="number" name="at1" value="<?= (isset($indicador['at1'])) ? $indicador['at1'] : "" ?>" <?= ($indicador['periodicidad'] == "Anual" || $indicador['periodicidad'] == "Semestral") ? "disabled readonly" : '' ?> class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                                            </th>
-                                            <td class="px-6 py-4">
-                                                <input type="number" name="at2" value="<?= (isset($indicador['at2'])) ? $indicador['at2'] : "" ?>" <?= ($indicador['periodicidad'] == "Anual") ? "disabled readonly" : '' ?> class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                             </td>
                                             <td class="px-6 py-4">
-                                                <input type="number" name="at3" value="<?= (isset($indicador['at3'])) ? $indicador['at3'] : "" ?>" <?= ($indicador['periodicidad'] == "Anual" || $indicador['periodicidad'] == "Semestral") ? "disabled readonly" : '' ?> class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                                <select id="id_umedida_a" name="id_umedida_a" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                    <option value="">Selecciona</option>
+                                                    <?php foreach ($unidades as $u) : ?>
+                                                        <option <?= (($indicador['id_umedida_a']) == $u['id_unidad']) ? 'selected' : '' ?> value="<?= $u['id_unidad']; ?>">
+                                                            <?php echo $u['nombre_unidad']; ?>
+                                                        </option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                                <!-- <input type="text" name="umedida_a" value="<?= (isset($indicador['umedida_a'])) ? $indicador['umedida_a'] : "" ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required> -->
                                             </td>
                                             <td class="px-6 py-4">
-                                                <input type="number" name="at4" value="<?= (isset($indicador['at4'])) ? $indicador['at4'] : "" ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                                <input type="number" min="0" name="at1" value="<?= (isset($indicador['at1'])) ? $indicador['at1'] : "" ?>" <?= ($indicador['frecuencia'] == "Anual" || $indicador['frecuencia'] == "Semestral") ? "disabled readonly" : '' ?> class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="number" min="0" name="at2" value="<?= (isset($indicador['at2'])) ? $indicador['at2'] : "" ?>" <?= ($indicador['frecuencia'] == "Anual") ? "disabled readonly" : '' ?> class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="number" min="0" name="at3" value="<?= (isset($indicador['at3'])) ? $indicador['at3'] : "" ?>" <?= ($indicador['frecuencia'] == "Anual" || $indicador['frecuencia'] == "Semestral") ? "disabled readonly" : '' ?> class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="number" min="0" name="at4" value="<?= (isset($indicador['at4'])) ? $indicador['at4'] : "" ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                             </td>
                                         </tr>
 
                                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                            <th class="px-6 py-4">
+                                            <td class="px-6 py-4">
                                                 <?= $indicador['variable_b'] ?>
-                                            </th>
-                                            <th class="px-6 py-4">
+                                            </td>
+                                            <td class="px-6 py-4">
                                                 <select id="tipo_op_b" name="tipo_op_b" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                    <option value="Sumable">Sumable</option>
-                                                    <option value="Constante">Constante</option>
-                                                    <option value="No Sumable">No Sumable</option>
-                                                    <option value="Promedio">Promedio</option>
-                                                    <option value="Valor Actual">Valor Actual</option>
+                                                    <option <?= ($indicador['tipo_op_b'] == 'Sumable') ? 'selected' : '' ?> value="Sumable">Sumable</option>
+                                                    <option <?= ($indicador['tipo_op_b'] == 'Constante') ? 'selected' : '' ?> value="Constante">Constante</option>
+                                                    <option <?= ($indicador['tipo_op_b'] == 'No Sumable') ? 'selected' : '' ?> value="No Sumable">No Sumable</option>
+                                                    <option <?= ($indicador['tipo_op_b'] == 'Promedio') ? 'selected' : '' ?> value="Promedio">Promedio</option>
+                                                    <option <?= ($indicador['tipo_op_b'] == 'Valor Actual') ? 'selected' : '' ?> value="Valor Actual">Valor Actual</option>
                                                 </select>
-                                            </th>
-                                            <th class="px-6 py-4">
-                                                <input type="text" name="umedida_b" value="<?= (isset($indicador['umedida_b'])) ? $indicador['umedida_b'] : "" ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                                            </th>
-                                            <th class="px-6 py-4">
-                                                <input type="number" name="bt1" value="<?= (isset($indicador['bt1'])) ? $indicador['bt1'] : "" ?>" <?= ($indicador['periodicidad'] == "Anual" || $indicador['periodicidad'] == "Semestral") ? "disabled readonly" : '' ?> class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                                            </th>
-                                            <td class="px-6 py-4">
-                                                <input type="number" name="bt2" value="<?= (isset($indicador['bt2'])) ? $indicador['bt2'] : "" ?>" <?= ($indicador['periodicidad'] == "Anual") ? "disabled readonly" : '' ?> class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                             </td>
                                             <td class="px-6 py-4">
-                                                <input type="number" name="bt3" value="<?= (isset($indicador['bt3'])) ? $indicador['bt3'] : "" ?>" <?= ($indicador['periodicidad'] == "Anual" || $indicador['periodicidad'] == "Semestral") ? "disabled readonly" : '' ?> class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                                <select id="id_umedida_b" name="id_umedida_b" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                    <option value="">Selecciona</option>
+                                                    <?php foreach ($unidades as $u) : ?>
+                                                        <option <?= (($indicador['id_umedida_b']) == $u['id_unidad']) ? 'selected' : '' ?> value="<?= $u['id_unidad']; ?>">
+                                                            <?php echo $u['nombre_unidad']; ?>
+                                                        </option>
+                                                    <?php endforeach; ?>
                                             </td>
                                             <td class="px-6 py-4">
-                                                <input type="number" name="bt4" value="<?= (isset($indicador['bt4'])) ? $indicador['bt4'] : "" ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                                <input type="number" min="0" name="bt1" value="<?= (isset($indicador['bt1'])) ? $indicador['bt1'] : "" ?>" <?= ($indicador['frecuencia'] == "Anual" || $indicador['frecuencia'] == "Semestral") ? "disabled readonly" : '' ?> class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="number" min="0" name="bt2" value="<?= (isset($indicador['bt2'])) ? $indicador['bt2'] : "" ?>" <?= ($indicador['frecuencia'] == "Anual") ? "disabled readonly" : '' ?> class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="number" min="0" name="bt3" value="<?= (isset($indicador['bt3'])) ? $indicador['bt3'] : "" ?>" <?= ($indicador['frecuencia'] == "Anual" || $indicador['frecuencia'] == "Semestral") ? "disabled readonly" : '' ?> class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="number" min="0" name="bt4" value="<?= (isset($indicador['bt4'])) ? $indicador['bt4'] : "" ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                             </td>
                                         </tr>
 
@@ -386,10 +455,10 @@ if ($_SESSION['sistema'] == 'pbrm') {
                                         <input type="hidden" name="id_indicador" value="<?= $i['id'] ?>">
                                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                             <td class="px-6 py-4">
-                                                <?= $i['nombre_indicador'] ?>
+                                                <?= $i['nombre'] ?>
                                                 </th>
                                             <td class="px-6 py-4">
-                                                <?= $i['periodicidad'] ?>
+                                                <?= $i['frecuencia'] ?>
                                                 </th>
                                             <td class="px-6 py-4">
                                                 A: <?= $i['variable_a'] ?>
@@ -413,189 +482,137 @@ if ($_SESSION['sistema'] == 'pbrm') {
 
 
                 <?php if (isset($_GET['id_actividad'])) : ?>
+                    <?php if (!validaActividad($con, $_GET['id_actividad'], $_SESSION)): ?>
+                        <script>
+                            location.href = "index.php";
+                        </script>
+                    <?php endif ?>
                     <?php $actividad = traeActividad($con, $_GET['id_actividad']) ?>
                     <?php $unidades = traeUnidades($con) ?>
 
                     <div class="relative overflow-x-auto">
-                        <form action="" method="post">
+                        <form action="" method="post" class="max-w-3xl mx-auto">
                             <input type="hidden" name="id_actividad" value="<?= $actividad['id_actividad'] ?>">
                             <input type="hidden" name="id_area" value="<?= $actividad['id_area'] ?>">
-                            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                    <th scope="col" class="px-2 py-2">
-                                        Actividad
-                                    </th>
-                                    <th scope="col" class="px-2 py-2">
-                                        Unidad de Medida
-                                    </th>
-                                </thead>
-                                <tbody>
-                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                        <th scope="row" class="px-6 py-4">
-                                            <input type="text" maxlength="250" id="nombre_actividad" name="nombre_actividad" value="<?= $actividad['nombre_actividad'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                                        </th>
-                                        <td class="px-6 py-4">
-                                            <?php if ($actividad['id_unidad'] === null) {
-                                                $idGuardado = 0;
-                                            } else {
-                                                $idGuardado = $actividad['id_unidad'];
-                                            } ?>
 
-                                            <select name="id_unidad" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                <option value="">Selecciona</option>
-                                                <?php foreach ($unidades as $u) : ?>
-                                                    <option value="<?= $u['id_unidad']; ?>" <?php if ($u['id_unidad'] == $idGuardado) echo 'selected'; ?>>
-                                                        <?php echo $u['nombre_unidad']; ?>
-                                                    </option>
-                                                <?php endforeach; ?>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+
+                            <label for="nombre_actividad" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Descripción de la Actividad</label>
+                            <input type="text" maxlength="250" id="nombre_actividad" name="nombre_actividad" value="<?= $actividad['nombre_actividad'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                            <br>
+                            <label for="id_unidad" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Unidad de Medida</label>
+                            <?php if ($actividad['id_unidad'] === null) {
+                                $idGuardado = 0;
+                            } else {
+                                $idGuardado = $actividad['id_unidad'];
+                            } ?>
+
+                            <select name="id_unidad" id="id_unidad" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option value="">Selecciona</option>
+                                <?php foreach ($unidades as $u) : ?>
+                                    <option value="<?= $u['id_unidad']; ?>" <?php if ($u['id_unidad'] == $idGuardado) echo 'selected'; ?>>
+                                        <?php echo $u['nombre_unidad']; ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+
                             <br>
                             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                    <th scope="col" class="px-2 py-2">
+                                    <th scope="col" class="px-1 py-1">
                                         Ene
                                     </th>
-                                    <th scope="col" class="px-2 py-2">
+                                    <th scope="col" class="px-1 py-1">
                                         Feb
                                     </th>
-                                    <th scope="col" class="px-2 py-2">
+                                    <th scope="col" class="px-1 py-1">
                                         Mar
                                     </th>
-                                    <th scope="col" class="px-2 py-2">
+                                    <th scope="col" class="px-1 py-1">
                                         Abr
                                     </th>
-                                    <th scope="col" class="px-2 py-2">
+                                    <th scope="col" class="px-1 py-1">
                                         May
                                     </th>
-                                    <th scope="col" class="px-2 py-2">
+                                    <th scope="col" class="px-1 py-1">
                                         Jun
                                     </th>
-                                    <th scope="col" class="px-2 py-2">
+                                    <th scope="col" class="px-1 py-1">
                                         Jul
                                     </th>
-                                    <th scope="col" class="px-2 py-2">
+                                    <th scope="col" class="px-1 py-1">
                                         Ago
                                     </th>
-                                    <th scope="col" class="px-2 py-2">
+                                    <th scope="col" class="px-1 py-1">
                                         Sep
                                     </th>
-                                    <th scope="col" class="px-2 py-2">
+                                    <th scope="col" class="px-1 py-1">
                                         Oct
                                     </th>
-                                    <th scope="col" class="px-2 py-2">
+                                    <th scope="col" class="px-1 py-1">
                                         Nov
                                     </th>
-                                    <th scope="col" class="px-2 py-2">
+                                    <th scope="col" class="px-1 py-1">
                                         Dic
                                     </th>
                                 </thead>
                                 <tbody>
-                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                        <td class="px-6 py-4">
-                                            <input type="number" id="enero" name="enero" value="<?= $actividad['enero'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                    <tr class="bg-white">
+                                        <td class="px-1 py-1">
+                                            <input type="number" min="0" id="enero" name="enero" value="<?= $actividad['enero'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                         </td>
-                                        <td class="px-6 py-4">
-                                            <input type="number" id="febrero" name="febrero" value="<?= $actividad['febrero'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        <td class="px-1 py-1">
+                                            <input type="number" min="0" id="febrero" name="febrero" value="<?= $actividad['febrero'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                         </td>
-                                        <td class="px-6 py-4">
-                                            <input type="number" id="marzo" name="marzo" value="<?= $actividad['marzo'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        <td class="px-1 py-1">
+                                            <input type="number" min="0" id="marzo" name="marzo" value="<?= $actividad['marzo'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                         </td>
-                                        <td class="px-6 py-4">
-                                            <input type="number" id="abril" name="abril" value="<?= $actividad['abril'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        <td class="px-1 py-1">
+                                            <input type="number" min="0" id="abril" name="abril" value="<?= $actividad['abril'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                         </td>
-                                        <td class="px-6 py-4">
-                                            <input type="number" id="mayo" name="mayo" value="<?= $actividad['mayo'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        <td class="px-1 py-1">
+                                            <input type="number" min="0" id="mayo" name="mayo" value="<?= $actividad['mayo'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                         </td>
-                                        <td class="px-6 py-4">
-                                            <input type="number" id="junio" name="junio" value="<?= $actividad['junio'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        <td class="px-1 py-1">
+                                            <input type="number" min="0" id="junio" name="junio" value="<?= $actividad['junio'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                         </td>
-                                        <td class="px-6 py-4">
-                                            <input type="number" id="julio" name="julio" value="<?= $actividad['julio'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        <td class="px-1 py-1">
+                                            <input type="number" min="0" id="julio" name="julio" value="<?= $actividad['julio'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                         </td>
-                                        <td class="px-6 py-4">
-                                            <input type="number" id="agosto" name="agosto" value="<?= $actividad['agosto'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        <td class="px-1 py-1">
+                                            <input type="number" min="0" id="agosto" name="agosto" value="<?= $actividad['agosto'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                         </td>
-                                        <td class="px-6 py-4">
-                                            <input type="number" id="septiembre" name="septiembre" value="<?= $actividad['septiembre'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        <td class="px-1 py-1">
+                                            <input type="number" min="0" id="septiembre" name="septiembre" value="<?= $actividad['septiembre'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                         </td>
-                                        <td class="px-6 py-4">
-                                            <input type="number" id="octubre" name="octubre" value="<?= $actividad['octubre'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        <td class="px-1 py-1">
+                                            <input type="number" min="0" id="octubre" name="octubre" value="<?= $actividad['octubre'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                         </td>
-                                        <td class="px-6 py-4">
-                                            <input type="number" id="noviembre" name="noviembre" value="<?= $actividad['noviembre'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        <td class="px-1 py-1">
+                                            <input type="number" min="0" id="noviembre" name="noviembre" value="<?= $actividad['noviembre'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                         </td>
-                                        <td class="px-6 py-4">
-                                            <input type="number" id="diciembre" name="diciembre" value="<?= $actividad['diciembre'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        <td class="px-1 py-1">
+                                            <input type="number" min="0" id="diciembre" name="diciembre" value="<?= $actividad['diciembre'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <?php if ($actividad['validado'] == 1) : ?>
-                                            <td>
-                                                <button type="submit" name="actividad_update" class="mt-5 text-white bg-yellow-700 hover:bg-yellow-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-800">Modificar</button>
-                                            </td>
-                                        <?php else : ?>
-                                            <td>
-                                                <br>
-                                                <button type="submit" name="actividad_update" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Programar</button>
-                                            </td>
-                                        <?php endif ?>
-                                    </tr>
-                                </tbody>
                             </table><br>
+
+
+                            <?php if ($actividad['validado'] == 1) : ?>
+                                <td>
+                                    <button type="submit" name="actividad_update" class="mt-5 text-white bg-yellow-700 hover:bg-yellow-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-800">Modificar</button>
+                                </td>
+                            <?php else : ?>
+                                <td>
+                                    <br>
+                                    <button type="submit" name="actividad_update" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Programar</button>
+                                </td>
+                            <?php endif ?>
+
 
                             <?php if ($actividad['lineaactividad']) : ?>
                                 Obetivo: <?= $actividad['nombre_objetivo'] ?> <br>
                                 Estrategia: <?= $actividad['nombre_estrategia'] ?> <br>
                                 Línea de Acción: <?= $actividad['nombre_linea'] ?> <br>
-                            <?php endif ?>
-
-
-                            <?php if ($risk = traeRisks($con, $actividad['id_actividad'])) : ?>
-                                el riesgo es: <?= $risk['probabilidad'] . ' y ' . $risk['impacto'] ?>
-                            <?php else : ?>
-
-                                <div class="relative overflow-x-auto">
-                                    Riesgos:
-                                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                            <tr>
-                                                <th scope="col" class="px-6 py-3">
-                                                    Probabilidad
-                                                </th>
-                                                <th scope="col" class="px-6 py-3">
-                                                    Impacto
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                                <td class="px-6 py-4">
-                                                    <?php $probabilidad =  traeProbabilidad($con)  ?>
-                                                    <select id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                        <option selected>Seleccione un Nivel de Probabilidad</option>
-                                                        <?php foreach ($probabilidad as $i) : ?>
-                                                            <option value="<?= $i['valor_probabilidad'] ?>"><?= $i['valor_probabilidad'] . "-" . $i['nombre_probabilidad'] ?></option>
-                                                        <?php endforeach ?>
-                                                    </select>
-                                                </td>
-                                                <td class="px-6 py-4">
-                                                    <?php $impacto =  traeImpacto($con)  ?>
-                                                    <select id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                        <option selected>Seleccione un Nivel de Impacto</option>
-                                                        <?php foreach ($impacto as $i) : ?>
-                                                            <option value="<?= $i['valor_impacto'] ?>"><?= $i['valor_impacto'] . "-" . $i['nombre_impacto'] ?></option>
-                                                        <?php endforeach ?>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-
                             <?php endif ?>
                         </form>
                     </div>
@@ -681,40 +698,40 @@ if ($_SESSION['sistema'] == 'pbrm') {
                                 <tbody>
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                         <td class="px-6 py-4">
-                                            <input type="number" id="enero" name="enero" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                            <input type="number" min="0" id="enero" name="enero" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                         </td>
                                         <td class="px-6 py-4">
-                                            <input type="number" id="febrero" name="febrero" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                            <input type="number" min="0" id="febrero" name="febrero" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                         </td>
                                         <td class="px-6 py-4">
-                                            <input type="number" id="marzo" name="marzo" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                            <input type="number" min="0" id="marzo" name="marzo" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                         </td>
                                         <td class="px-6 py-4">
-                                            <input type="number" id="abril" name="abril" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                            <input type="number" min="0" id="abril" name="abril" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                         </td>
                                         <td class="px-6 py-4">
-                                            <input type="number" id="mayo" name="mayo" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                            <input type="number" min="0" id="mayo" name="mayo" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                         </td>
                                         <td class="px-6 py-4">
-                                            <input type="number" id="junio" name="junio" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                            <input type="number" min="0" id="junio" name="junio" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                         </td>
                                         <td class="px-6 py-4">
-                                            <input type="number" id="julio" name="julio" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                            <input type="number" min="0" id="julio" name="julio" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                         </td>
                                         <td class="px-6 py-4">
-                                            <input type="number" id="agosto" name="agosto" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                            <input type="number" min="0" id="agosto" name="agosto" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                         </td>
                                         <td class="px-6 py-4">
-                                            <input type="number" id="septiembre" name="septiembre" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                            <input type="number" min="0" id="septiembre" name="septiembre" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                         </td>
                                         <td class="px-6 py-4">
-                                            <input type="number" id="octubre" name="octubre" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                            <input type="number" min="0" id="octubre" name="octubre" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                         </td>
                                         <td class="px-6 py-4">
-                                            <input type="number" id="noviembre" name="noviembre" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                            <input type="number" min="0" id="noviembre" name="noviembre" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                         </td>
                                         <td class="px-6 py-4">
-                                            <input type="number" id="diciembre" name="diciembre" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                            <input type="number" min="0" id="diciembre" name="diciembre" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                         </td>
                                     </tr>
                                     <tr>
@@ -735,6 +752,11 @@ if ($_SESSION['sistema'] == 'pbrm') {
 
                 <?php if (isset($_GET['tipo']) && $_GET['tipo'] == 'a') : ?>
                     <?php $id_area = $_GET['id_area'] ?>
+                    <?php if (!validaArea($con, $_GET['id_area'], $_SESSION)): ?>
+                        <script>
+                            location.href = "index.php";
+                        </script>
+                    <?php endif ?>
                     <?php $actividadesAreas = actividadesArea($con, $id_area) ?>
                     <div class="relative overflow-x-auto">
                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -843,7 +865,11 @@ if ($_SESSION['sistema'] == 'pbrm') {
                                                 <?php if ($aca['validado'] == 1) : ?>
                                                     <button type="submit" name="id_actividad" value="<?= $aca['id_actividad'] ?>" class="text-white bg-yellow-700 hover:bg-yellow-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-800">Modificar</button>
                                                 <?php else : ?>
-                                                    <button type="submit" name="id_actividad" value="<?= $aca['id_actividad'] ?>" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Programar</button>
+                                                    <?php if ($_SESSION['nivel'] == 1): ?>
+                                                        <button type="submit" name="eliminar" value="<?= $aca['id_actividad'] ?>" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Eliminar</button>
+                                                    <?php else: ?>
+                                                        <button type="submit" name="id_actividad" value="<?= $aca['id_actividad'] ?>" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Programar</button>
+                                                    <?php endif ?>
                                                 <?php endif ?>
                                             </form>
                                         </td>
@@ -868,33 +894,46 @@ if ($_SESSION['sistema'] == 'pbrm') {
 
 
             <?php if (!$_GET) : ?>
-                <?php if ($permisos['nivel'] == 4) :  // Primero veridicamos el permiso... EN CASO DE ENLACE 
+                <?php if ($permisos['nivel'] == 4 || isset($_POST['id_dependencia'])) :  // Primero veridicamos el permiso... EN CASO DE ENLACE 
                 ?>
+                    <?php
+                    if (isset($_SESSION['id_dependencia'])) {
+                        $id_dependencia = $_SESSION['id_dependencia'];
+                    }
+                    if (isset($_POST['id_dependencia'])) {
+                        $id_dependencia = $_POST['id_dependencia'];
+                    }
+
+                    ?>
                     <h2 class="text-4xl font-bold dark:text-white">Formatos para Imprimir</h2>
 
                     <br>
                     <div class="flex items-center w-full space-x-2">
                         <br>
-                        <form action="sources/TCPDF-main/examples/ante_01a.php" method="post">
-                            <input type="hidden" name="id_dependencia" value="<?= $permisos['id_dependencia'] ?>">
+                        <form action="sources/TCPDF-main/examples/formatos/<?= $_SESSION['anio'] + 1 ?>/01a.php" method="post">
+                            <input type="hidden" name="id_dependencia" value="<?= $id_dependencia ?>">
+                            <input type="hidden" name="etapa" value="1">
                             <button type="submit" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">01a</button>
                         </form>
 
-                        <?= boton1b($con, $permisos['id_dependencia']) ?>
-                        <?= boton01c($con, $permisos['id_dependencia']) ?>
-                        <?= boton01d($con, $permisos['id_dependencia']) ?>
-                        <form action="sources/TCPDF-main/examples/ante_01e.php" method="post">
-                            <input type="hidden" name="id_dependencia" value="<?= $permisos['id_dependencia'] ?>">
-                            <button type="submit" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">01e</button>
-                        </form>
-                        <?= boton02a($con, $permisos['id_dependencia']) ?>
+                        <?= boton1b($con, $id_dependencia, $_SESSION['anio'], 1) ?>
+                        <?= boton01c($con, $id_dependencia, $_SESSION['anio'], 1) ?>
+                        <?= boton01d($con, $id_dependencia, $_SESSION['anio'], 1) ?>
+                        <?php if (tieneMatriz($con, $id_dependencia)): ?>
+                            <form action="sources\TCPDF-main\examples\formatos\<?= $ajustes['year_report'] + 1 ?>\01e.php" method="post">
+                                <input type="hidden" name="id_dependencia" value="<?= $id_dependencia ?>">
+                                <input type="hidden" name="etapa" value="1">
+                                <button type="submit" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">01e</button>
+                            </form>
+                        <?php endif ?>
+                        <?= boton02a($con, $id_dependencia, $_SESSION['anio'], 1) ?>
                     </div>
                     <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
 
                     <h2 class="text-4xl font-bold dark:text-white">Captura de Información</h2>
                     <br>
                     <div class="mt-5">
-                        <a href="?id_dependencia=<?= $permisos['id_dependencia'] ?>&tipo=d" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Indicadores</a>
+                        <a href="?id_dependencia=<?= $id_dependencia ?>&tipo=d" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Indicadores</a>
                     </div>
                     <br><br>
                     <div class="grid grid-cols-4">
@@ -902,8 +941,8 @@ if ($_SESSION['sistema'] == 'pbrm') {
                         $all = '';
                         //Tenemos 2 opciones, que sea un enlace de varias areas, o que sea de una sola area
                         //En caso de que sea un enlace general. le asignamos la chave de la dependencia, y asi lo buscaremos con un metodo especial
-                        if ($permisos['id_dependencia'] != '') {
-                            $dep = $permisos['id_dependencia'];
+                        if ($id_dependencia != '') {
+                            $dep = $id_dependencia;
                             $areas = anteAreas_con($con, $dep);
                         } else { // En caso de que el permiso se encuentre en
                             $dep = $permisos['id_area'];
@@ -948,7 +987,8 @@ if ($_SESSION['sistema'] == 'pbrm') {
                 <?php endif ?>
             <?php endif ?>
 
-            <?php if ($permisos['nivel'] == 1) : // Area de Administradores ?>
+            <?php if ($permisos['nivel'] == 1 && !$_POST && !$_GET) : // Area de Administradores ////////////////////////////////////////////////////////////
+            ?>
 
                 <!-- 
                 Vamos a redactarlo porque siento que no lo estamos pensando bien:
@@ -964,77 +1004,144 @@ if ($_SESSION['sistema'] == 'pbrm') {
                 
                 -->
 
-                <?php if (verificaAnteproyecto($con, $_SESSION['anio']) != 1): //Nos verifica si estan llenas las tablas de anteproyecto y de ser asi, nos muestra la impresion 
+                <?php if (!verificaAnteproyecto($con, $_SESSION['anio'] + 1, 1) && !verificaAnteproyecto($con, $_SESSION['anio'] + 1, 2)): //Nos verifica si estan llenas las tablas de anteproyecto y de ser asi, nos muestra la impresion 
                 ?>
+                    <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">No se ha creado el anteproyecto.</h5>
+                    <form action="exports/crea_antenproyecto.php" method="post">
+                        <input type="hidden" name="etapa" value="1">
+                        <button type="submit" name="anteproyecto" value="anteproyecto" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Crear Anteproyecto <?= $_SESSION['anio'] + 1 ?></button>
+                    </form>
+                <?php else: ?>
+                    <br>
+                    <h2 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-center">Etapa: Anteproyecto</h2> <br>
+                    <!-- Inicia la caja general -->
+                    <div class="grid grid-cols-2">
+                        <div class="max-w-xl p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                            <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">Administra Dependencias</h5>
+                            <?php $dependencias = dependencias($con, $_SESSION['anio']) ?>
+                            <?php foreach ($dependencias as $d): ?>
+                                <form action="" method="POST">
+                                    <input type="hidden" name="id_dependencia" value="<?= $d['id_dependencia'] ?>">
+                                    <button type="submit"><?= $d['nombre_dependencia'] ?></button>
+                                </form>
+                            <?php endforeach ?>
 
-                Aqui nos muestra que no hemos hecho nuestro anteproyecto
+                        </div>
+                        <!-- Inicia la caja de las impresiones  -->
+                        <div class="max-w-xl p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700" style="max-height: 200px; overflow-y: auto;">
+
+
+                            <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">Formatos PDF</h5>
+                            <div class="grid grid-cols-6">
+                                <form action="sources\TCPDF-main\examples\formatos\<?= $ajustes['year_report'] + 1 ?>\01a.php" method="post">
+                                    <input type="hidden" name="etapa" value="1">
+                                    <button type="submit" name="01a" value="01a" class="ml-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01a</button>
+                                </form>
+                                <form action="sources\TCPDF-main\examples\formatos\<?= $ajustes['year_report'] + 1 ?>\01b.php" method="post">
+                                    <input type="hidden" name="etapa" value="1">
+                                    <button type="submit" name="01b" value="01b" class="ml-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01b</button>
+                                </form>
+                                <form action="sources\TCPDF-main\examples\formatos\<?= $ajustes['year_report'] + 1 ?>\01c.php" method="post">
+                                    <input type="hidden" name="etapa" value="1">
+                                    <button type="submit" name="01c" value="01c" class="ml-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01c</button>
+                                </form>
+                                <form action="sources\TCPDF-main\examples\formatos\<?= $ajustes['year_report'] + 1 ?>\01d.php" method="post">
+                                    <input type="hidden" name="etapa" value="1">
+                                    <button type="submit" name="01d" value="01d" class="ml-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01d</button>
+                                </form>
+                                <form action="sources\TCPDF-main\examples\formatos\<?= $ajustes['year_report'] + 1 ?>\01e.php" method="post">
+                                    <input type="hidden" name="etapa" value="1">
+                                    <button type="submit" name="01e" value="01e" class="ml-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01e</button>
+                                </form>
+                                <form action="sources\TCPDF-main\examples\formatos\<?= $ajustes['year_report'] + 1 ?>\02a.php" method="post">
+                                    <input type="hidden" name="etapa" value="1">
+                                    <button type="submit" name="02a" value="02a" class="ml-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">02a</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
                 <?php endif ?>
 
-                <?php if (verificaAnteproyecto($con, $_SESSION['anio']) == 1): //Nos verifica si estan llenas las tablas de anteproyecto y de ser asi, nos muestra la impresion 
-                ?>
-                    <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white"> Formatos PDF</h5>
-                    <div class="grid grid-cols-6">
-                        <form action="sources\TCPDF-main\examples\formatos\<?= $ajustes['year_report'] ?>\ante_01a_todos.php" method="post">
-                            <button type="submit" name="01a" value="01a" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01a</button>
-                        </form>
-                        <form action="sources\TCPDF-main\examples\formatos\<?= $ajustes['year_report'] ?>\ante_01b_todos.php" method="post">
-                            <button type="submit" name="01b" value="01b" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01b</button>
-                        </form>
-                        <form action="sources\TCPDF-main\examples\formatos\<?= $ajustes['year_report'] ?>\ante_01c_todos.php" method="post">
-                            <button type="submit" name="01c" value="01c" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01c</button>
-                        </form>
-                        <form action="sources\TCPDF-main\examples\formatos\<?= $ajustes['year_report'] ?>\ante_01d_todos.php" method="post">
-                            <button type="submit" name="01d" value="01d" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01d</button>
-                        </form>
-                        <form action="sources\TCPDF-main\examples\formatos\<?= $ajustes['year_report'] ?>\ante_01e_todos.php" method="post">
-                            <button type="submit" name="01e" value="01e" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01e</button>
-                        </form>
-                        <form action="sources\TCPDF-main\examples\formatos\<?= $ajustes['year_report'] ?>\ante_02a_todos.php" method="post">
-                            <button type="submit" name="02a" value="02a" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">02a</button>
-                        </form>
-                    </div>
-                    <br>
-                    <h5 class="mt-4 mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white"> Formatos TXT</h5>
-                    <div class="grid grid-cols-6">
-                        <form action="sources\TCPDF-main\examples\ante_01a_todos.php" method="post">
-                            <button type="submit" name="01a" value="01a" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01a</button>
-                        </form>
-                        <form action="sources\TCPDF-main\examples\ante_01b_todos.php" method="post">
-                            <button type="submit" name="01b" value="01b" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01b</button>
-                        </form>
-                        <form action="sources\TCPDF-main\examples\ante_01c_todos.php" method="post">
-                            <button type="submit" name="01c" value="01c" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01c</button>
-                        </form>
-                        <form action="sources\TCPDF-main\examples\ante_01d_todos.php" method="post">
-                            <button type="submit" name="01d" value="01d" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01d</button>
-                        </form>
-                        <form action="sources\TCPDF-main\examples\ante_01e_todos.php" method="post">
-                            <button type="submit" name="01e" value="01e" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01e</button>
-                        </form>
-                        <form action="sources\TCPDF-main\examples\ante_02a_todos.php" method="post">
-                            <button type="submit" name="02a" value="02a" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">02a</button>
-                        </form>
-                    </div>
-                    <br>
-                    Enlistaremos todas las actividades por area y las
 
-                    <div class="mt-5">
 
-                        <?php if (revisaAreas($con, $permisos['anio'] + 1)): //Se revisan las areas, si tiene datos del 2023 avisa que todo chido, podemos continuar, si no, else
-                        ?>
-                            <b>Usted cumple con los requisitos para exportar el programa anual </b> <br><br><br>
-                        <?php else: ?>
-                            <b>Usted NO cumple con los requisitos para exportar el programa anual </b> <br>
-                            <b>Las áreas aun no realizan actualizacion al año <?= $permisos['anio'] + 1 ?></b><br><br>
-                            <a href="actualizar_programa_anual.php" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Actualizar Áreas</a>
-                            <br><br><br>
-                        <?php endif ?>
-                    </div>
 
-                    <b>Exportar Programa Anual (Anteproyecto) a SIMONTS <?= $permisos['anio'] + 1 ?></b> <br>
-                    <form action="exporta_programa_anual.php" method="post">
-                        <button type="submit" name="export_programa_anual" class="mt-2 focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Exportar</button>
-                    </form>
+
+                <?php // Ahora el Proyecto, mostramos lo mismo ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                ?><br><br>
+                <?php if (verificaAnteproyecto($con, $_SESSION['anio'] + 1, 1)):  ?>
+                    <?php if (!verificaAnteproyecto($con, $_SESSION['anio'] + 1, 1) && !verificaAnteproyecto($con, $_SESSION['anio'] + 1, 2)): //Nos verifica si estan llenas las tablas de anteproyecto y de ser asi, nos muestra la impresion 
+                    ?>
+                        <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">No se ha creado el Proyecto.</h5>
+                        <h5 class="mb-2 text-md font-bold tracking-tight text-gray-900 dark:text-white">Recuerda que al crear el Proyecto, ya no se podra administrar el Anteproyecto</h5>
+                        <form action="exports/crea_antenproyecto.php" method="post">
+                            <input type="hidden" name="etapa" value="2">
+                            <button type="submit" name="anteproyecto" value="anteproyecto" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Crear Proyecto <?= $_SESSION['anio'] + 1 ?></button>
+                        </form>
+                    <?php else: ?>
+                        <br>
+                        <h2 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-center">Etapa: Proyecto</h2> <br>
+                        <!-- Inicia la caja general -->
+                        <div class="grid grid-cols-2">
+                            <div class="max-w-xl p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                                <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">Administra Dependencias</h5>
+                                <?php $dependencias = dependencias($con, $_SESSION['anio']) ?>
+                                <?php foreach ($dependencias as $d): ?>
+                                    <form action="" method="POST">
+                                        <input type="hidden" name="id_dependencia" value="<?= $d['id_dependencia'] ?>">
+                                        <button type="submit"><?= $d['nombre_dependencia'] ?></button>
+                                    </form>
+                                <?php endforeach ?>
+
+                            </div>
+                            <!-- Inicia la caja de las impresiones  -->
+                            <div class="max-w-xl p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700" style="max-height: 200px; overflow-y: auto;">
+
+
+                                <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">Formatos PDF</h5>
+                                <div class="grid grid-cols-6">
+                                    <form action="sources\TCPDF-main\examples\formatos\<?= $ajustes['year_report'] ?>\01a.php" method="post">
+                                        <button type="submit" name="01a" value="01a" class="ml-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01a</button>
+                                    </form>
+                                    <form action="sources\TCPDF-main\examples\formatos\<?= $ajustes['year_report'] ?>\01b.php" method="post">
+                                        <button type="submit" name="01b" value="01b" class="ml-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01b</button>
+                                    </form>
+                                    <form action="sources\TCPDF-main\examples\formatos\<?= $ajustes['year_report'] ?>\01c.php" method="post">
+                                        <button type="submit" name="01c" value="01c" class="ml-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01c</button>
+                                    </form>
+                                    <form action="sources\TCPDF-main\examples\formatos\<?= $ajustes['year_report'] ?>\01d.php" method="post">
+                                        <button type="submit" name="01d" value="01d" class="ml-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01d</button>
+                                    </form>
+                                    <form action="sources\TCPDF-main\examples\formatos\<?= $ajustes['year_report'] ?>\01e.php" method="post">
+                                        <button type="submit" name="01e" value="01e" class="ml-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">01e</button>
+                                    </form>
+                                    <form action="sources\TCPDF-main\examples\formatos\<?= $ajustes['year_report'] ?>\02a.php" method="post">
+                                        <button type="submit" name="02a" value="02a" class="ml-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">02a</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+
+                        <br>
+                        <div class="mt-5">
+                            <?php if (revisaAreas($con, $permisos['anio'] + 1) && catalogoActualizado($con, $_SESSION['anio'] + 1)): //Se revisan las areas, si tiene datos del 2023 avisa que todo chido, podemos continuar, si no, else 
+                            ?>
+                                <b>Usted cumple con los requisitos para exportar el programa anual </b> <br><br><br>
+                            <?php else: ?>
+                                <?php if (catalogoActualizado($con, $_SESSION['anio'] + 1)): ?>
+                                    <b>Usted NO cumple con los requisitos para exportar el programa anual </b> <br>
+                                    <b>Las claves aun no se han actualizado para al año <?= $permisos['anio'] + 1 ?></b><br><br>
+                                    <a href="actualizar_programa_anual.php" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Actualizar Áreas</a>
+                                    <br><br><br>
+                                <?php endif ?>
+                            <?php endif ?>
+                        </div>
+                        <b>Exportar Programa Anual (Anteproyecto) a SIMONTS <?= $permisos['anio'] + 1 ?></b> <br>
+                        <form action="exporta_programa_anual.php" method="post">
+                            <button type="submit" name="export_programa_anual" class="mt-2 focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Exportar</button>
+                        </form>
+                    <?php endif ?>
                 <?php endif ?>
             <?php endif ?>
         </div>
@@ -1045,11 +1152,16 @@ if ($_SESSION['sistema'] == 'pbrm') {
 
 
 
-
-
-
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
+    <script>
+        document.getElementById('miFormulario').addEventListener('submit', function(event) {
+            var selectElement = document.getElementById('id_unidad');
+            if (selectElement.value === "") {
+                event.preventDefault(); // Evita que el formulario se envíe
+                alert("Por favor, selecciona una unidad válida.");
+            }
+        });
+    </script>
 
     </html>
 <?php

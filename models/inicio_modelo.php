@@ -78,7 +78,7 @@ function VerificaModificaciones($con){
     JOIN actividades ac ON ac.id_actividad = av.id_actividad
     LEFT JOIN areas ar ON ar.id_area = ac.id_area
     LEFT JOIN dependencias dp ON dp.id_dependencia = ar.id_dependencia
-    WHERE ma.atendida = 0 AND dp.anio = $anio LIMIT 5");
+    WHERE ma.atendida = 0 AND dp.anio = $anio");
     $modificaciones = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $modificaciones;
 }

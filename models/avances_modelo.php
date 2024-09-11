@@ -32,7 +32,6 @@ function ConsultaAvancesActividades($con){
     WHERE a.validado != 1 OR a.validado_2 != 1
     GROUP BY a.id_actividad");
     $data_avances_actividades = $stm->fetchAll(PDO::FETCH_ASSOC);
-    //var_dump($data_avances_actividades);
     return $data_avances_actividades;
 }
 

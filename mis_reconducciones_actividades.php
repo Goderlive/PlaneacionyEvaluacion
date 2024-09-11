@@ -65,6 +65,9 @@ $thismes = ceil(date('m'));
                             <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
                                     <th scope="col" class="py-3 px-6">
+                                        Id
+                                    </th>
+                                    <th scope="col" class="py-3 px-6">
                                         Area
                                     </th>
                                     <th scope="col" class="py-3 px-6">
@@ -79,6 +82,9 @@ $thismes = ceil(date('m'));
                                 </tr>
                             </thead>
                             <tr>
+                                <th scope="col" class="py-3 px-6">
+                                    <?= $p['id_reconduccion_actividades'] ?>
+                                </th>
                                 <th scope="col" class="py-3 px-6 bg-gray-50">
                                     <?= NombreArea($con, $p['id_area']) ?>
                                 </th>
@@ -155,6 +161,9 @@ $thismes = ceil(date('m'));
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="py-3 px-6">
+                                    ID
+                                </th>
+                                <th scope="col" class="py-3 px-6">
                                     Area
                                 </th>
                                 <th scope="col" class="py-3 px-6">
@@ -172,6 +181,9 @@ $thismes = ceil(date('m'));
                             </tr>
                         </thead>
                         <tr>
+                            <th scope="col" class="py-3 px-6">
+                                <?= $v['id_reconduccion_actividades'] ?>
+                            </th>
                             <th scope="col" class="py-3 px-6">
                                 <?= NombreArea($con, $v['id_area']) ?>
                             </th>
