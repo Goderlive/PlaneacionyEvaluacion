@@ -1,6 +1,32 @@
 <?php
 require_once 'conection.php';
 
+class ReporteModel {
+
+    private $con;
+
+    public function __construct() {
+        // La variable $con viene del archivo db.php
+        global $con;
+        $this->con = $con;
+    }
+
+    public function getActividades() {
+        $sql = "SELECT id_actividad FROM actividades";
+        $stmt = $this->con->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function actualizarActividad($id, $nombre, $descripcion) {
+        $sql = "UPDATE actividades SET nombre = :nombre, descripcion = :descripcion WHERE id = :id";
+        $stmt = $this->con->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':nombre', $nombre);
+        $stmt->bindParam(':descripcion', $descripcion);
+        return $stmt->execute();
+    }
+}
+
 function NombreArea($con, $id_area)
 {
     $stm = $con->query("SELECT * FROM areas WHERE id_area = $id_area");

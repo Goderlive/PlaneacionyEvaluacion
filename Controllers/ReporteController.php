@@ -1,6 +1,23 @@
 <?php
 date_default_timezone_set('America/Mexico_City');
 require_once 'models/Reporte_Model.php';
+
+
+class ReportesController {
+
+    private $reporteModel;
+
+    public function __construct() {
+        $this->reporteModel = new ReporteModel();
+    }
+
+    public function obtenerActividades() {
+        // Aquí podrías añadir más lógica si fuera necesario.
+        return $this->reporteModel->getActividades();
+    }
+}
+
+
 if (!isset($_POST['id_area'])){
     ?>
     <script>
@@ -462,61 +479,6 @@ function ModalesEvidencias($con, $actividades, $mes){
     return $data;
 }
 
-
-
-function Actividades($con, $mes, $id_area, $meses, $actividadesDB, $unidades){
-    $resp = '';
-    foreach ($actividadesDB as $a){
-        $avance = AvanceMes($con, $a['id_actividad'], $mes);
-
-
-        $anual = $a['enero'] + $a['febrero'] + $a['marzo'] + $a['abril'] + $a['mayo'] + $a['junio'] + $a['julio'] + $a['agosto'] + $a['septiembre'] + $a['octubre'] + $a['noviembre'] + $a['diciembre'];
-        $mesi = strtolower($meses[$mes]);
-
-        $botones = ValidaBotones($con, $mes, $avance, $a['codigo_actividad'], $a['id_actividad']);
-        $avance = barraAvance($con, $a['id_actividad'], $mes);
-
-        $avanceThisMes = AvanceThisMes($con, $a['id_actividad'], $mes);
-        $avanceThisMes = ($avanceThisMes) ? $avanceThisMes['avance'] : "";
-        
-        $botonAvance = BotonAvance($avanceThisMes, $a['id_actividad']);
-
-        if($a['id_unidad']){
-            $unidad = $unidades[$a['id_unidad'] -1]['nombre_unidad'];
-        }else{
-            $unidad = $a['unidad'];
-        }
-
-        $resp .= 
-        '<tr class="bg-white text-center border-b dark:bg-gray-800 dark:border-gray-700">
-            <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">'.
-                $a['codigo_actividad']
-            .'</th>
-            <td class="px-6 py-4">'.
-                $a['nombre_actividad']
-            .'</td>
-            <td class="px-6 py-4">'.
-                $unidad
-            .'</td>
-            <td class="px-6 py-4">'.
-                $anual
-            .'</td>
-            <td class="px-6 py-4">'.
-                $avance  
-            .'</td>
-            <td class="px-6 py-4">'.
-                $a[$mesi]
-            .'</td>
-            <td class="px-6 py-4 text-center"> '.
-                $botonAvance  
-            .'</td>
-            <td class="px-6 py-4 text-right">'.
-            $botones
-            .'</td>
-        </tr>';
-    }
-    return $resp;
-}
 
 
 function buscalineas($con, $id_actividad){
