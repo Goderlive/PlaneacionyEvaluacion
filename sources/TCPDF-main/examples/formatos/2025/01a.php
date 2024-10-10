@@ -96,6 +96,9 @@ function traeDirector($con, $id_dependencia)
 $stm = $con->query("SELECT * FROM setings a
 JOIN titulares t ON t.id_titular = a.id_tesoreria");
 $tesorero = $stm->fetch(PDO::FETCH_ASSOC);
+if(!$tesorero){
+    $tesorero = array("id_titular" => 0, "nombre" => " ", "apellidos" => " ", "cargo" => " ", "gradoa" => " ", "id_area" => NULL, "id_registrante" => 0, "fecha_alta" => "", "id_dependencia" => 0);
+}
 
 $stm = $con->query("SELECT * FROM setings a
 JOIN titulares t ON t.id_titular = a.id_uippe");
@@ -133,7 +136,7 @@ foreach ($areas as $a) {
             <tr>
                 <td style="width:15%; text-align: center;" rowspan="3"><img src="../../../../../' . $logos['path_logo_ayuntamiento'] . '" style="width: 60px;" class="img-fluid" alt="" align="left"></td>    
                 <td style="width:70%; text-align: center; font-size: 12px">Sistema de Coordinación Hacendaria del Estado de México con sus Municipios</td>
-                <td style="width:15%; text-align: center;" rowspan="3"> <img src="../../../../../' . $logos['path_logo_administracion'] . '" class="img-fluid" alt="" align="right"></td>
+                <td style="width:15%; text-align: center;" rowspan="3"> <img src="../../../../../' . $logos['path_logo_administracion'] . '" class="img-fluid" style="width: 70px;" alt="" align="right"></td>
             </tr>
             <tr>
                 <td style="text-align: center; font-size: 12px"> Manual para la Planeación, Programación y Presupuesto de Egresos Municipal ' . ($anio + 1) . '</td>
