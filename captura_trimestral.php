@@ -5,9 +5,9 @@ if (!$_SESSION['sistema'] == "pbrm") {
     die();
 }
 $anio = $_SESSION['anio'];
-$trimestre = 1;
+$trimestre = 3;
 $id_usuario = $_SESSION['id_usuario'];
-$post_trimestre = 1;
+$post_trimestre = $_POST['trimestre'];
 require_once 'Controllers/Inicio_Controlador.php';
 include 'header.php';
 include 'head.php';
@@ -46,6 +46,16 @@ function revisaavances($con, $id_actividad, $mes1, $mes3){
     return $avances;
 }
 
+function avanceacumulado($con, $id_actividad, $mesfinal){
+    $sql = " SELECT SUM(avance) FROM avances 
+    WHERE id_actividad = $id_actividad AND mes BETWEEN 1 AND $mesfinal
+    ";
+$stm = $con->query($sql);
+$avances = $stm->fetchAll(PDO::FETCH_ASSOC);
+
+return $avances;
+}
+
 
 function traeActividades($con){
     $sql = " SELECT * FROM actividades ac
@@ -59,7 +69,7 @@ function traeActividades($con){
     ORDER BY dg.clave_dependencia, da.clave_dependencia_auxiliar, py.codigo_proyecto, ac.codigo_actividad
     ";
         $stm = $con->query($sql);
-        return $actividadesyavances = $stm->fetchAll(PDO::FETCH_ASSOC);
+        return $stm->fetchAll(PDO::FETCH_ASSOC);
 }
 ?>
 
@@ -135,7 +145,6 @@ function traeActividades($con){
 
         <?php if (isset($_POST['tipo']) && $_POST['tipo'] == 2) : ?>
 
-
             <?php $sql = " SELECT * FROM indicadores_uso iu
                 LEFT JOIN indicadores i ON i.id_indicador = iu.id_indicador_gaceta
                 LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador
@@ -143,7 +152,7 @@ function traeActividades($con){
                 LEFT JOIN dependencias_generales dg ON iu.id_dep_general = dg.id_dependencia
                 LEFT JOIN dependencias_auxiliares da ON da.id_dependencia_auxiliar = iu.id_dep_aux
                 LEFT JOIN proyectos py ON py.id_proyecto = iu.id_proyecto
-                WHERE ai.trimestre = 2 AND dp.anio = '2024' AND (i.frecuencia != 'Anual')
+                WHERE ai.trimestre = $trimestre AND dp.anio = '2024' AND (i.frecuencia = 'Trimestral')
                 ORDER BY dg.clave_dependencia, da.clave_dependencia_auxiliar, py.codigo_proyecto
                 ";
 
@@ -163,6 +172,9 @@ function traeActividades($con){
 
 
             Muestra los avances de indicadores <br>
+            <?php 
+            print '<pre>'; 
+            var_dump($trimestre); ?>
             <table>
 
                 <?php foreach ($indicadores_avances as $indica) : ?>
@@ -210,13 +222,15 @@ function traeActividades($con){
                 <h2>Nos muestra las actividades listas para capturar</h2>
                 <?php $actividadesyavances = traeActividades($con) ?>
                 
-                "Dep. Gen"|"Dep. Aux"|"Proyecto"|"No. Actividad"|"Nombre Actividad"|"Programado Anual"|""|
+                "Dep. Gen"|"Dep. Aux"|"Proyecto"|"No. Actividad"|"Nombre Actividad"|"Programado Anual"|"otro dato"| <br>
+                <br>
                 <?php
                 $contador = 0;
                 print "<table>";
                 foreach ($actividadesyavances as $a) :
                     if ($trimestre == $post_trimestre) {
                         $avance = revisaavances($con, $a['id_actividad'], $meses[0], $meses[1]);
+                        $avanceacumulado = avanceacumulado($con, $a['id_actividad'], $mes[1]);
 
                         $metatrimav = 0;
                         if($avance){
@@ -241,13 +255,18 @@ function traeActividades($con){
                         if($trimestre == 4){
                         $metatrimpro = $a['octubre'] + $a['noviembre'] + $a['diciembre'];
                         }
-                        $metatrimpro = $a['abril'] + $a['mayo'] + $a['junio'];
+
+                        
+                        $metatrimpro = $a['julio'] + $a['agosto'] + $a['septiembre'];
+                        $prog_acumulado = $a['enero'] + $a['febrero'] + $a['marzo'] + $a['abril'] + $a['mayo'] + $a['junio'] + $a['julio'] + $a['agosto'] + $a['septiembre'];
                         $metaanual = $a['enero'] + $a['febrero'] + $a['marzo'] + $a['abril'] + $a['mayo'] + $a['junio'] + $a['julio'] + $a['agosto'] + $a['septiembre'] + $a['octubre'] + $a['noviembre'] + $a['diciembre'];
                         print '"' . $a['clave_dependencia'] . '"|"' . $a['clave_dependencia_auxiliar'] . '"|"' . $a['codigo_proyecto'] . '"|"' . $a['codigo_actividad'] . '"|"' . $a['nombre_actividad'] . '"|"';
                         print $metaanual . '"|"' . $a['abril'] . '"|"' . $a['mayo'] . '"|"' . $a['junio'] . '"|"';
+                        print @$prog_acumulado . '"|"';
                         print @$avance[0]['avance'] . '"|"';
                         print @$avance[1]['avance'] . '"|"';
                         print @$avance[2]['avance'] . '"';
+                        print @$avanceacumulado . '"|"';
                         print "<br>";
                         $contador += 1;
                     } ?>

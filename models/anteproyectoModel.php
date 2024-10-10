@@ -184,7 +184,7 @@ function traeODSO($con){
 
 
 function tieneMatriz($con, $id_dependencia){
-    $sentencia = "SELECT id_diagnosticoPrograma FROM diagnosticoprograma WHERE id_dependencia = $id_dependencia";
+    $sentencia = "SELECT id_diagnosticoPrograma FROM diagnosticoPrograma WHERE id_dependencia = $id_dependencia";
     $stm = $con->query($sentencia);
     $oel = $stm->fetch(PDO::FETCH_ASSOC);
     return $oel;
@@ -560,6 +560,9 @@ if(isset($_POST['delete_ods'])){
 }
 
 if(isset($_POST['program_indicador'])){
+    print '<pre>';
+    var_dump($_POST);
+    die();
 
     $id_indicador = $_POST['id_indicador'];
     

@@ -50,10 +50,11 @@ $pdf->setFont('dejavusans', '', 7);
 
 $consulta = "SELECT * FROM ante_indicadores_uso iu
 LEFT JOIN ante_dependencias dp ON iu.id_dependencia = dp.id_antedependencia
+LEFT JOIN ante_areas aa ON aa.id_dependencia = dp.id_antedependencia
 LEFT JOIN proyectos py ON py.id_proyecto = iu.id_proyecto
 LEFT JOIN programas_presupuestarios pp ON pp.id_programa = py.id_programa
 LEFT JOIN dependencias_generales dg ON dg.id_dependencia = dp.id_dependencia_gen
-LEFT JOIN titulares tt ON tt.id_dependencia = dp.id_seguimiento_dependencia
+LEFT JOIN titulares tt ON tt.id_area = aa.id_area
 WHERE dp.anio = $anio + 1
 AND dp.etapa = $etapa
 
@@ -65,8 +66,6 @@ $consulta .= " GROUP BY pp.id_programa";
 
 $stm = $con->query($consulta);
 $programas = $stm->fetchAll(PDO::FETCH_ASSOC);
-
-
 
 $stm = $con->query("SELECT * FROM setings a
 JOIN titulares t ON t.id_titular = a.id_uippe");
@@ -195,7 +194,7 @@ foreach ($programas as $a) {
                 <td style="width:15%; text-align: center;" rowspan="3"> <img src="../../../../../' . $logos['path_logo_administracion'] . '" class="img-fluid" alt="" align="right"></td>
             </tr>
             <tr>
-            <td style="text-align: center; font-size: 10px"> Manual para la Planeación, Programación y Presupuesto de Egresos Municipal ' . $anio + 1 . '</td>
+            <td style="text-align: center; font-size: 10px"> Manual para la Planeación, Programación y Presupuesto de Egresos Municipal ' . ($anio + 1) . '</td>
             </tr>
             <tr>
                 <td style="text-align: center; font-size: 10px">&nbsp; <br> Presupuesto Basado en Resultados Municipal</td>
@@ -211,7 +210,7 @@ foreach ($programas as $a) {
                 <table style="width:70%">
                     <tr>
                         <td style="width:50%; text-align: center; border:1px solid gray; font-size: 8px"> Ejercicio Fiscal:</td>
-                        <td style="width:50%; text-align: center; border:1px solid gray; font-size: 8px">' . $anio + 1 . '</td>
+                        <td style="width:50%; text-align: center; border:1px solid gray; font-size: 8px">' . ($anio + 1) . '</td>
                         ' . $etapa . '
                     </tr>
                 </table>

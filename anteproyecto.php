@@ -217,8 +217,8 @@ if ($_SESSION['sistema'] == 'pbrm') {
 
 
                 <?php if (isset($_GET['programar_indicador']) && $_GET['programar_indicador'] == 'programar_indicador') : ?>
-                    <?php $indicador = traeIndicador($con, $_GET['id_indicador']);
-                    $actividadest = traeActividadesDependencia($con, $permisos['id_dependencia']) ?>
+                    <?php $indicador = traeIndicador($con, $_GET['id_indicador']) ?>
+                    <?php $actividadest = traeActividadesDependencia($con, $permisos['id_dependencia']) ?>
                     <?php $unidades = traeUnidades($con) ?>
 
                     <?php if (!validaIndicador($con, $_GET['id_indicador'], $_SESSION)): ?>
@@ -245,10 +245,6 @@ if ($_SESSION['sistema'] == 'pbrm') {
                                         <option value="eficacia">Eficacia</option>
                                         <option value="calidad">Calidad</option>
                                         <option value="economía">Economía</option>
-
-
-
-
                                     </select>
                                 </form>
 
@@ -610,9 +606,9 @@ if ($_SESSION['sistema'] == 'pbrm') {
 
 
                             <?php if ($actividad['lineaactividad']) : ?>
-                                Obetivo: <?= $actividad['nombre_objetivo'] ?> <br>
-                                Estrategia: <?= $actividad['nombre_estrategia'] ?> <br>
-                                Línea de Acción: <?= $actividad['nombre_linea'] ?> <br>
+                                Objetivo: <?= $actividad['nombre_objetivo'] ?> <br> <br>
+                                Estrategia: <?= $actividad['nombre_estrategia'] ?> <br> <br>
+                                Línea de Acción: <?= $actividad['nombre_linea'] ?> <br> <br>
                             <?php endif ?>
                         </form>
                     </div>
@@ -918,7 +914,9 @@ if ($_SESSION['sistema'] == 'pbrm') {
 
                         <?= boton1b($con, $id_dependencia, $_SESSION['anio'], 1) ?>
                         <?= boton01c($con, $id_dependencia, $_SESSION['anio'], 1) ?>
-                        <?= boton01d($con, $id_dependencia, $_SESSION['anio'], 1) ?>
+                        <?php if (tieneMatriz($con, $id_dependencia)): ?>
+                            <?= boton01d($con, $id_dependencia, $_SESSION['anio'], 1) ?>
+                        <?php endif ?>
                         <?php if (tieneMatriz($con, $id_dependencia)): ?>
                             <form action="sources\TCPDF-main\examples\formatos\<?= $ajustes['year_report'] + 1 ?>\01e.php" method="post">
                                 <input type="hidden" name="id_dependencia" value="<?= $id_dependencia ?>">

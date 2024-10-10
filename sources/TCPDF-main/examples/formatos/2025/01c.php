@@ -77,7 +77,9 @@ function traeAnteActividades($con, $id_area){
     LEFT JOIN unidades_medida u ON u.id_unidad = a.id_unidad
     LEFT JOIN ante_programaciones ap ON ap.id_actividad = a.id_actividad
     LEFT JOIN programaciones p ON p.id_actividad = a.id_actividad_seguimiento
-    WHERE id_area = $id_area";
+    WHERE id_area = $id_area
+    ORDER BY CAST(a.codigo_actividad AS UNSIGNED) ASC
+    ";
 
     $stm = $con->query($consulta);
     $actividades = $stm->fetchAll(PDO::FETCH_ASSOC); 
@@ -106,14 +108,14 @@ function generaRenglon($con, $anteActividades){
         $progAnte = $a['enero'] + $a['febrero'] + $a['marzo'] + $a['abril'] + $a['mayo'] + $a['junio'] + $a['julio'] + $a['agosto'] + $a['septiembre'] + $a['octubre'] + $a['noviembre'] + $a['diciembre']; 
         $progOrg = $a['aene'] + $a['afeb'] + $a['amar'] + $a['aabr'] + $a['amay'] + $a['ajun'] + $a['ajul'] + $a['aago'] + $a['asep'] + $a['aoct'] + $a['anov'] + $a['adic']; 
 
-        $varAbs = $progAnte - $sumaAvence;
-        $varPorcentual = ($varAbs && $sumaAvence != 0) ? substr(($progAnte/$sumaAvence) *100, 0, 3) . '%'  : '0%';
+        $varAbs = $progAnte - $progOrg;
+        $varPorcentual = ($varAbs && $progOrg != 0) ? substr(($progAnte/$progOrg) *100, 0, 3) . '%'  : '0%';
         $renglon .= '<tr>
                         <td style="text-align: center; border:1px solid gray; font-size: 7px">' . $a['codigo_actividad']. '</td>
                         <td style="text-align: left; border:1px solid gray; font-size: 7px">' . $a['nombre_actividad'] . '</td>
                         <td style="text-align: center; border:1px solid gray; font-size: 7px">' . $a['nombre_unidad']. '</td>
                         <td style="text-align: center; border:1px solid gray; font-size: 7px">' . $progOrg . '</td>
-                        <td style="text-align: center; border:1px solid gray; font-size: 7px">' . $sumaAvence . '</td>
+                        <td style="text-align: center; border:1px solid gray; font-size: 7px">' . $progOrg . '</td>
                         <td style="text-align: center; border:1px solid gray; font-size: 7px">' . $progAnte . '</td>
                         <td style="text-align: center; border:1px solid gray; font-size: 7px">' . $varAbs . '</td>
                         <td style="text-align: center; border:1px solid gray; font-size: 7px">' . $varPorcentual . '</td>
@@ -141,11 +143,21 @@ if($_SESSION['nivel'] == 4 && $_POST['id_dependencia']){
     $id_dependencia = $_POST['id_dependencia'];
     $consulta .= 'AND ar.id_dependencia = ' . $id_dependencia;
 }
+
 $stm = $con->query($consulta);
 $areas = $stm->fetchAll(PDO::FETCH_ASSOC);
 
 $stmset = $con->query("SELECT * FROM setings WHERE year_report = $anio");
 $logos = $stmset->fetch(PDO::FETCH_ASSOC);
+
+
+if($etapa == '1'){
+    $etapa = '<td colspan="4" style="width:10%; text-align: center; border:1px solid gray; font-size: 8px">Anteproyecto</td>';
+}elseif($etapa == '2'){
+    $etapa = '<td colspan="4" style="width:10%; text-align: center; border:1px solid gray; font-size: 8px">Proyecto</td>';
+}else{
+    $etapa = '';
+}
 
 
 
@@ -173,7 +185,7 @@ foreach($areas as $a){
                 <td style="width:15%; text-align: center;" rowspan="3"> <img src="../../../../../'.$logos['path_logo_administracion'].'" class="img-fluid" alt="" align="right"></td>
             </tr>
             <tr>
-                <td style="text-align: center; font-size: 12px"> Manual para la Planeación, Programación y Presupuesto de Egresos Municipal '. $anio + 1 .'</td>
+                <td style="text-align: center; font-size: 12px"> Manual para la Planeación, Programación y Presupuesto de Egresos Municipal '. ($anio + 1) .'</td>
             </tr>
             <tr>
                 <td style="text-align: center; font-size: 12px">&nbsp; <br> Presupuesto Basado en Resultados Municipal <br></td>
@@ -184,7 +196,8 @@ foreach($areas as $a){
         <tr>
             <td style="width:90%; text-align: rigth;" rowspan="3"></td>
             <td style="width:13%; text-align: center; border:1px solid gray; font-size: 8px"> Ejercicio Fiscal:</td>
-            <td style="width:13%; text-align: center; border:1px solid gray; font-size: 8px" rowspan="3">'. $anio + 1 .'</td>
+            <td style="width:13%; text-align: center; border:1px solid gray; font-size: 8px" rowspan="3">'. ($anio + 1) .'</td>
+            '. $etapa .'
         </tr>      
     </table>
 
@@ -240,8 +253,8 @@ foreach($areas as $a){
         <table><tr><td style="width:100%; height: 7px; text-align: left; font-size: 6px"></td></tr></table>
         <table style="width:100%; text-align: left; font-size: 6px">
             <tr>
-                <td style="width:12%; text-align: right; font-size: 8px">Descripción del Proyecto</td>
-                <td style="width:88%; text-align: left; border:1px solid gray; font-size: 7px">'.$a['objetivo_pp'].'</td>
+                <td style="width:8%; text-align: right; font-size: 8px">Descripción del Proyecto</td>
+                <td style="width:92%; text-align: left; border:1px solid gray; font-size: 7px">'.$a['objetivo_pp'].'</td>
             </tr>
          </table>
         <table><tr><td style="width:100%; height: 7px; text-align: left; font-size: 6px"></td></tr></table>
@@ -249,18 +262,18 @@ foreach($areas as $a){
 
 
     $html3 = '
-    <table style="width:100%; padding: 2px">
+    <table style="width:100%; padding: 2px;">
         <tr>
             <td rowspan="3" style="width:4%; text-align: center; border:1px solid gray; font-size: 7px">&nbsp;<br>Código</td>
             <td rowspan="3" style="width:55%; text-align: center; border:1px solid gray; font-size: 7px">&nbsp;<br>Descripción de las Metas de Actividades Sustantivas Relevantes</td>
-            <td colspan="4" style="width:32%; text-align: center; border:1px solid gray; font-size: 7px ">Metas de Actividades</td>
+            <td colspan="4" style="width:32%; text-align: center; border:1px solid gray; font-size: 7px">Metas de Actividades</td>
             <td colspan="2" style="width:9%; text-align: center; border:1px solid gray; font-size: 7px">Variacion</td>
         </tr>
         <tr>
 
             <td rowspan="2" style="text-align: center; border:1px solid gray; font-size: 7px">Unidad de Medida</td>
             <td colspan="2" style="text-align: center; border:1px solid gray; font-size: 7px">'. $_SESSION['anio'] .'</td>
-            <td style="text-align: center; border:1px solid gray; font-size: 7px" >'. $_SESSION['anio'] + 1 .'</td>
+            <td style="text-align: center; border:1px solid gray; font-size: 7px" >'. ($_SESSION['anio'] + 1) .'</td>
             <td rowspan="2" style="text-align: center; border:1px solid gray; font-size: 7px">&nbsp;<br>Absoluta</td>
             <td rowspan="2" style="text-align: center; border:1px solid gray; font-size: 7px">%</td>
         </tr>
@@ -284,9 +297,9 @@ foreach($areas as $a){
         <td style="font-size: 8px; width: 33%; border: 1px solid gray;"> AUTORIZÓ </td>
     </tr>
     <tr>
-        <td style="font-size: 8px; width: 33%; border: 1px solid gray;"><br><br><br><br><br><br>'. mb_strtoupper($a['gradoa'],'utf-8') .' '. mb_strtoupper($a['nombre'],'utf-8') ." ". mb_strtoupper($a['apellidos'],'utf-8') .'<br>'. mb_strtoupper($a['cargo'],'utf-8') .' </td>
-        <td style="font-size: 8px; width: 33%; border: 1px solid gray;"><br><br><br><br><br><br> '. mb_strtoupper($Director['gradoa'],'utf-8') .' '. mb_strtoupper($Director['nombre'],'utf-8') ." ". mb_strtoupper($Director['apellidos'],'utf-8') .'<br>'. mb_strtoupper($Director['cargo'],'utf-8') .'</td>
-        <td style="font-size: 8px; width: 33%; border: 1px solid gray;"><br><br><br><br><br><br>'. mb_strtoupper($DirectorUIPPE['gradoa'],'utf-8') .' '. mb_strtoupper($DirectorUIPPE['nombre'],'utf-8') ." ". mb_strtoupper($DirectorUIPPE['apellidos'],'utf-8') .'<br>'. mb_strtoupper($DirectorUIPPE['cargo'],'utf-8') .'</td>
+        <td style="font-size: 8px; width: 33%; border: 1px solid gray;"><br><br><br><br><br>'. mb_strtoupper($a['gradoa'],'utf-8') .' '. mb_strtoupper($a['nombre'],'utf-8') ." ". mb_strtoupper($a['apellidos'],'utf-8') .'<br>'. mb_strtoupper($a['cargo'],'utf-8') .' </td>
+        <td style="font-size: 8px; width: 33%; border: 1px solid gray;"><br><br><br><br><br> '. mb_strtoupper($Director['gradoa'],'utf-8') .' '. mb_strtoupper($Director['nombre'],'utf-8') ." ". mb_strtoupper($Director['apellidos'],'utf-8') .'<br>'. mb_strtoupper($Director['cargo'],'utf-8') .'</td>
+        <td style="font-size: 8px; width: 33%; border: 1px solid gray;"><br><br><br><br><br>'. mb_strtoupper($DirectorUIPPE['gradoa'],'utf-8') .' '. mb_strtoupper($DirectorUIPPE['nombre'],'utf-8') ." ". mb_strtoupper($DirectorUIPPE['apellidos'],'utf-8') .'<br>'. mb_strtoupper($DirectorUIPPE['cargo'],'utf-8') .'</td>
     </tr>	
     </table>';
 

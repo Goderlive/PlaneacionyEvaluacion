@@ -6,26 +6,43 @@ class ReporteModel {
     private $con;
 
     public function __construct() {
-        // La variable $con viene del archivo db.php
         global $con;
         $this->con = $con;
     }
 
-    public function getActividades() {
-        $sql = "SELECT id_actividad FROM actividades";
-        $stmt = $this->con->query($sql);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    public function ejecutarConsulta($sql, $params = [], $fetchAll = true) {
+        $stmt = $this->con->prepare($sql);
+        $stmt->execute($params);
+
+        if (stripos($sql, 'SELECT') === 0) {
+            return $fetchAll ? $stmt->fetchAll(PDO::FETCH_ASSOC) : $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+
+        return $stmt->rowCount();
     }
 
-    public function actualizarActividad($id, $nombre, $descripcion) {
-        $sql = "UPDATE actividades SET nombre = :nombre, descripcion = :descripcion WHERE id = :id";
-        $stmt = $this->con->prepare($sql);
-        $stmt->bindParam(':id', $id);
-        $stmt->bindParam(':nombre', $nombre);
-        $stmt->bindParam(':descripcion', $descripcion);
-        return $stmt->execute();
+    public function getActividades($id_area) {
+        $sql = "SELECT * FROM actividades a
+        LEFT JOIN programaciones p ON p.id_actividad = a.id_actividad
+        LEFT JOIN unidades_medida u ON u.id_unidad = a.id_unidad
+        WHERE a.id_area = :id_area
+        ORDER BY a.codigo_actividad";
+        $params = ['id_area' => $id_area];
+        return $this->ejecutarConsulta($sql, $params);
+    }
+
+    public function getNombreArea_model($id_area) {
+        $sql = "SELECT nombre_area FROM areas WHERE id_area = :id_area";
+        $params = ['id_area' => $id_area];
+        return $this->ejecutarConsulta($sql, $params, false); // Usar fetch
     }
 }
+
+
+
+
+
+
 
 function NombreArea($con, $id_area)
 {
@@ -87,13 +104,7 @@ function CuentaActividades($con, $id_area, $mes)
 
 function Actividades_DB($con, $id_area)
 {
-    $sql = "SELECT * FROM actividades a
-    LEFT JOIN programaciones p ON p.id_actividad = a.id_actividad
-    LEFT JOIN unidades_medida u ON u.id_unidad = a.id_unidad
-    WHERE a.id_area = $id_area";
-    $stm = $con->query($sql);
-    $actividades = $stm->fetchAll(PDO::FETCH_ASSOC);
-    return $actividades;
+
 }
 
 function Actividad_DB($con, $id_actividad)

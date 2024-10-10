@@ -115,7 +115,7 @@ foreach($areas as $a){
                 <td style="width:15%; text-align: center;" rowspan="3"> <img src="../../../../../'.$logos['path_logo_administracion'].'" class="img-fluid" alt="" align="right"></td>
             </tr>
             <tr>
-                <td style="text-align: center; font-size: 12px"> Manual para la Planeación, Programación y Presupuesto de Egresos Municipal '. $anio + 1 .'</td>
+                <td style="text-align: center; font-size: 12px"> Manual para la Planeación, Programación y Presupuesto de Egresos Municipal '. ($anio + 1) .'</td>
             </tr>
             <tr>
                 <td style="text-align: center; font-size: 12px">&nbsp; <br> Presupuesto Basado en Resultados Municipal <br></td>
@@ -126,7 +126,7 @@ foreach($areas as $a){
         <tr>
             <td style="width:70%; text-align: rigth;" rowspan="3"></td>
             <td style="width:10%; text-align: center; border:1px solid gray; font-size: 10px; margin "> Ejercicio Fiscal:</td>
-            <td style="width:10%; text-align: center; border:1px solid gray; font-size: 10px">'. $anio + 1 .'</td>
+            <td style="width:10%; text-align: center; border:1px solid gray; font-size: 10px">'. ($anio + 1) .'</td>
             '. $etapa .'
         </tr>
     </table>
