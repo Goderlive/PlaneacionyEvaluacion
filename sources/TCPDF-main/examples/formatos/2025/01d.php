@@ -149,7 +149,7 @@ foreach ($indicadores as $a) {
             <td style="width:15%; text-align: center;" rowspan="3"> <img src="../../../../../' . $logos['path_logo_administracion'] . '" class="img-fluid" alt="" align="right"></td>
         </tr>
         <tr>
-            <td style="text-align: center; font-size: 12px"> Manual para la Planeación, Programación y Presupuesto de Egresos Municipal ' . $anio + 1 . '</td>
+            <td style="text-align: center; font-size: 12px"> Manual para la Planeación, Programación y Presupuesto de Egresos Municipal ' . ($anio + 1) . '</td>
         </tr>
         <tr>
             <td style="text-align: center; font-size: 12px">&nbsp; <br> Presupuesto Basado en Resultados Municipal <br></td>
@@ -166,7 +166,7 @@ foreach ($indicadores as $a) {
             <td style="width:20%; text-align: center; border:1px solid gray; font-size: 8px">No.: ' . $logos['numero_ente'] . '</td>
             <td style="width:30%;"></td>
             <td style="width:10%; text-align: center; border:1px solid gray; font-size: 8px">Ejercicio Fiscal:</td>
-            <td style="width:10%; text-align: center; border:1px solid gray; font-size: 9px">' . $anio + 1 . '</td>
+            <td style="width:10%; text-align: center; border:1px solid gray; font-size: 9px">' . ($anio + 1) . '</td>
 
 
         </tr>

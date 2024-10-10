@@ -138,6 +138,11 @@ WHERE dp.anio = $anio + 1
 AND dp.etapa = $etapa
 AND dp.tipo = 1
 ";
+
+if($_SESSION['id_dependencia']){
+    $id_dependencia = $_SESSION['id_dependencia'];
+    $consulta .= ' AND ar.id_dependencia = ' . $id_dependencia;
+}
 $stm = $con->query($consulta);
 $areas = $stm->fetchAll(PDO::FETCH_ASSOC);
 
@@ -188,7 +193,7 @@ foreach ($areas as $a) {
                 <td style="width:15%; text-align: center;" rowspan="3"> <img src="../../../../../' . $logos['path_logo_administracion'] . '" class="img-fluid" alt="" align="right"></td>
             </tr>
             <tr>
-                <td style="text-align: center; font-size: 10px"> Manual para la Planeación, Programación y Presupuesto de Egresos Municipal ' . $anio + 1 . '</td>
+                <td style="text-align: center; font-size: 10px"> Manual para la Planeación, Programación y Presupuesto de Egresos Municipal ' . ($anio + 1) . '</td>
             </tr>
             <tr>
                 <td style="text-align: center; font-size: 10px">&nbsp; <br> Presupuesto Basado en Resultados Municipal <br></td>
@@ -199,7 +204,7 @@ foreach ($areas as $a) {
             <tr>
                 <td style="width:95%; text-align: rigth;" rowspan="3"></td>
                 <td style="width:15%; text-align: center; border:1px solid gray; font-size: 8px"> Ejercicio Fiscal:</td>
-                <td style="width:15%; text-align: center; border:1px solid gray; font-size: 8px">' . $anio + 1 . '</td>
+                <td style="width:15%; text-align: center; border:1px solid gray; font-size: 8px">' . ($anio + 1) . '</td>
                 '. $etapa .'
             </tr>
         </table>

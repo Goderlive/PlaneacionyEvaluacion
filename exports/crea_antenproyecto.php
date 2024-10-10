@@ -137,7 +137,7 @@ function traeArea($con, $id_area)
     $stm = $con->query($sentencia);
     $fodas = $stm->fetchAll(PDO::FETCH_ASSOC);
 
-    if(!$fodas){
+    if (!$fodas) {
         $sentencia = "SELECT *, aar.id_area
         FROM ante_unob ab 
         JOIN areas ar ON ar.id_seguimiento_area = ab.id_area
@@ -148,7 +148,7 @@ function traeArea($con, $id_area)
         AND dp.tipo = 1
         ";
         $stm = $con->query($sentencia);
-        $fodas = $stm->fetchAll(PDO::FETCH_ASSOC);    
+        $fodas = $stm->fetchAll(PDO::FETCH_ASSOC);
     }
 
     // Las recorreremos en las AREAS y las metemos en ante_areas.
@@ -181,10 +181,13 @@ function traeArea($con, $id_area)
 
 
     // Actividades /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    $sentenciaAc = "SELECT * 
+    $sentenciaAc = "SELECT *, a.id_actividad as id_actividad 
     FROM actividades a 
     JOIN programaciones p ON p.id_actividad = a.id_actividad 
-    WHERE anio = $anio";
+    LEFT JOIN lineasactividades la ON la.id_actividad = a.id_actividad 
+    WHERE a.anio = $anio
+    GROUP BY a.id_actividad
+    ";
     $stm = $con->query($sentenciaAc);
     $actividades = $stm->fetchAll(PDO::FETCH_ASSOC);
 
@@ -200,7 +203,7 @@ function traeArea($con, $id_area)
             $alcanzado_anual_anterior = traeAvances($con, $a['id_actividad']);
             $id_area = traeArea($con, $a['id_area']);
             $id_validacion = $_SESSION['id_usuario'];
-            $validado = 0;
+            $validado = 1;
             $etapa = 1;
 
             $sql = "INSERT INTO ante_actividades (codigo_actividad, nombre_actividad, unidad, id_unidad, programado_anual_anterior, alcanzado_anual_anterior, id_area, id_validacion, validado, anio, etapa, id_actividad_seguimiento) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -233,13 +236,24 @@ function traeArea($con, $id_area)
             } catch (Throwable $th) {
                 throw $th;
             }
+
+            if ($a['lineaactividad']) {
+                $id_linea = $a['id_linea'];
+                $udmed = $a['udmed'];
+                $sqllin = "INSERT INTO ante_lineasactividades (id_actividad, id_linea, udmed, anio, etapa) VALUES (?,?,?,?,?)";
+                $sqllinr = $con->prepare($sqllin);
+                try {
+                    $sqllinr->execute(array($n_id_actividad, $id_linea, $udmed, $aniod, $etapa));
+                } catch (Throwable $th) {
+                    throw $th;
+                }
+            }
         }
     } else {
         echo "Algo no salio bien, contactar al administrador Error: AC001TS";
         die();
     }
     echo "Las Actividades se exportaron correctamente<br>";
-
 
 
 
@@ -281,13 +295,14 @@ function traeArea($con, $id_area)
             $ct2 = $i['ct2'];
             $ct3 = $i['ct3'];
             $ct4 = $i['ct4'];
+            $validado = 1;
             $id_dependencia = $i['id_dependencia'];
             $id_area = traeArea($con, $i['id_area']);
 
-            $sql = "INSERT INTO ante_indicadores_uso (id_indicador_gaceta, anio, id_dep_general, id_dep_aux, id_proyecto, tipo_op_a, tipo_op_b, tipo_op_c, umedida_a, umedida_b, umedida_c, interpretacion, dimension, factor_de_comparacion, desc_factor_de_comparacion, linea_base, medios_de_verificacion, desc_meta_anual, at1, at2, at3, at4, bt1, bt2, bt3, bt4, ct1, ct2, ct3, ct4, id_dependencia) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            $sql = "INSERT INTO ante_indicadores_uso (id_indicador_gaceta, anio, id_dep_general, id_dep_aux, id_proyecto, tipo_op_a, tipo_op_b, tipo_op_c, umedida_a, umedida_b, umedida_c, interpretacion, dimension, factor_de_comparacion, desc_factor_de_comparacion, linea_base, medios_de_verificacion, desc_meta_anual, at1, at2, at3, at4, bt1, bt2, bt3, bt4, ct1, ct2, ct3, ct4, validado, id_dependencia, id_area) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
             $sqlr = $con->prepare($sql);
             try {
-                $sqlr->execute(array($id_indicador_gaceta, $aniod, $id_dep_general, $id_dep_aux, $id_proyecto, $tipo_op_a, $tipo_op_b, $tipo_op_c, $umedida_a, $umedida_b, $umedida_c, $interpretacion, $dimension, $factor_de_comparacion, $desc_factor_de_comparacion, $linea_base, $medios_de_verificacion, $desc_meta_anual, $at1, $at2, $at3, $at4, $bt1, $bt2, $bt3, $bt4, $ct1, $ct2, $ct3, $ct4, $id_dependencia));
+                $sqlr->execute(array($id_indicador_gaceta, $aniod, $id_dep_general, $id_dep_aux, $id_proyecto, $tipo_op_a, $tipo_op_b, $tipo_op_c, $umedida_a, $umedida_b, $umedida_c, $interpretacion, $dimension, $factor_de_comparacion, $desc_factor_de_comparacion, $linea_base, $medios_de_verificacion, $desc_meta_anual, $at1, $at2, $at3, $at4, $bt1, $bt2, $bt3, $bt4, $ct1, $ct2, $ct3, $ct4, $validado, $id_dependencia, $id_area));
             } catch (Throwable $th) {
                 throw $th;
             }
