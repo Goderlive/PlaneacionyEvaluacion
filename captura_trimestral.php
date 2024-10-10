@@ -5,9 +5,9 @@ if (!$_SESSION['sistema'] == "pbrm") {
     die();
 }
 $anio = $_SESSION['anio'];
-$trimestre = 1;
+$trimestre = 3;
 $id_usuario = $_SESSION['id_usuario'];
-$post_trimestre = 1;
+$post_trimestre = $_POST['trimestre'];
 require_once 'Controllers/Inicio_Controlador.php';
 include 'header.php';
 include 'head.php';
@@ -59,7 +59,7 @@ function traeActividades($con){
     ORDER BY dg.clave_dependencia, da.clave_dependencia_auxiliar, py.codigo_proyecto, ac.codigo_actividad
     ";
         $stm = $con->query($sql);
-        return $actividadesyavances = $stm->fetchAll(PDO::FETCH_ASSOC);
+        return $stm->fetchAll(PDO::FETCH_ASSOC);
 }
 ?>
 
@@ -135,7 +135,6 @@ function traeActividades($con){
 
         <?php if (isset($_POST['tipo']) && $_POST['tipo'] == 2) : ?>
 
-
             <?php $sql = " SELECT * FROM indicadores_uso iu
                 LEFT JOIN indicadores i ON i.id_indicador = iu.id_indicador_gaceta
                 LEFT JOIN avances_indicadores ai ON iu.id = ai.id_indicador
@@ -143,7 +142,7 @@ function traeActividades($con){
                 LEFT JOIN dependencias_generales dg ON iu.id_dep_general = dg.id_dependencia
                 LEFT JOIN dependencias_auxiliares da ON da.id_dependencia_auxiliar = iu.id_dep_aux
                 LEFT JOIN proyectos py ON py.id_proyecto = iu.id_proyecto
-                WHERE ai.trimestre = 2 AND dp.anio = '2024' AND (i.frecuencia != 'Anual')
+                WHERE ai.trimestre = $trimestre AND dp.anio = '2024' AND (i.frecuencia = 'Trimestral')
                 ORDER BY dg.clave_dependencia, da.clave_dependencia_auxiliar, py.codigo_proyecto
                 ";
 
@@ -163,6 +162,9 @@ function traeActividades($con){
 
 
             Muestra los avances de indicadores <br>
+            <?php 
+            print '<pre>'; 
+            var_dump($trimestre); ?>
             <table>
 
                 <?php foreach ($indicadores_avances as $indica) : ?>
@@ -210,7 +212,8 @@ function traeActividades($con){
                 <h2>Nos muestra las actividades listas para capturar</h2>
                 <?php $actividadesyavances = traeActividades($con) ?>
                 
-                "Dep. Gen"|"Dep. Aux"|"Proyecto"|"No. Actividad"|"Nombre Actividad"|"Programado Anual"|""|
+                "Dep. Gen"|"Dep. Aux"|"Proyecto"|"No. Actividad"|"Nombre Actividad"|"Programado Anual"|""| <br>
+                <br>
                 <?php
                 $contador = 0;
                 print "<table>";

@@ -174,8 +174,7 @@ function traeArea($con, $id_area)
             }
         }
     } else {
-        echo "Algo no salio bien, contactar al administrador Error: A01B001R";
-        die();
+        echo "No habia fodas: A01B001R";
     }
     echo "El formato 01b se exporto correctamente<br>";
 
