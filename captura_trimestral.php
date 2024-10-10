@@ -51,9 +51,10 @@ function avanceacumulado($con, $id_actividad, $mesfinal){
     WHERE id_actividad = $id_actividad AND mes BETWEEN 1 AND $mesfinal
     ";
 $stm = $con->query($sql);
-$avances = $stm->fetchAll(PDO::FETCH_ASSOC);
+$avances = $stm->fetch(PDO::FETCH_ASSOC);
 
-return $avances;
+return $avances['SUM(avance)'];
+
 }
 
 
@@ -229,7 +230,7 @@ function traeActividades($con){
                 foreach ($actividadesyavances as $a) :
                     if ($trimestre == $post_trimestre) {
                         $avance = revisaavances($con, $a['id_actividad'], $meses[0], $meses[1]);
-                        $avanceacumulado = avanceacumulado($con, $a['id_actividad'], $mes[1]);
+                        $avanceacumulado = avanceacumulado($con, $a['id_actividad'], $meses[1]);
 
                         $metatrimav = 0;
                         if($avance){
@@ -264,7 +265,7 @@ function traeActividades($con){
                         print @$prog_acumulado . '"|"';
                         print @$avance[0]['avance'] . '"|"';
                         print @$avance[1]['avance'] . '"|"';
-                        print @$avance[2]['avance'] . '"';
+                        print @$avance[2]['avance'] . '"|"';
                         print @$avanceacumulado . '"|"';
                         print "<br>";
                         $contador += 1;
