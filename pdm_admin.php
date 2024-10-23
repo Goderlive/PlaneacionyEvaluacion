@@ -7,7 +7,7 @@ if (!isset($_SESSION) || !isset($_SESSION['sistema']) || !$_SESSION['sistema'] =
     header("Location: login.php");
 }
 //require_once 'Controllers/Inicio_Controlador.php';
-require_once 'models\pdm_admin_model.php';
+require_once 'models/pdm_admin_model.php';
 include 'header.php';
 include 'head.php';
 
@@ -16,7 +16,7 @@ include 'head.php';
 
 $unt = array("20240101", "20240310");
 $dot = array("20240401", "20240710");
-$trt = array("20240801", "20241010");
+$trt = array("20240801", "20241018");
 $cut = array("20241101", "20241220");
 
 $hoy = date('Y') . date('m') . date('d');
